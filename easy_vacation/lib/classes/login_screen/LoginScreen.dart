@@ -1,4 +1,4 @@
-import 'package:easy_vacation/styles/LoginScreenStyles.dart';
+import 'package:easy_vacation/styles/RegistrationStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -10,133 +10,189 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-  final _formKey = GlobalKey<_LoginScreenState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _useridController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(30),
-
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            SizedBox(height: 60),
-
-            Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: blue,
-                shape: BoxShape.circle
-              ),
-              child:
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('assets/palm.webp'),
+            const SizedBox(height: 40),
+            
+            // Logo Section
+            Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: blue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const CircleAvatar(
+                    radius: 45,
+                    backgroundImage: AssetImage('assets/palm.webp'),
+                  ),
                 ),
+                const SizedBox(height: 12),
+                Text('EasyVacation', style: header_2),
+              ],
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 30),
 
-            Text('EasyVacation', style: header_2),
+            // Welcome Section
+            Column(
+              children: [
+                Text('Welcome Back', style: header_1),
+                const SizedBox(height: 8),
+                Text('Login to your account', style: header_3),
+              ],
+            ),
 
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-            Text('Welcome Back', style: header_1),
-
-            Text('Login to your account', style: header_3),
-
-            SizedBox(height: 30),
-
+            // Form Section
             Form(
               key: _formKey,
               child: Column(
                 children: [
                   TextFormField(
-                    controller: _usernameController,
-                    decoration: input_decor('Phone Or Email', Icon(Icons.account_circle_outlined) ),
+                    controller: _useridController,
+                    decoration: input_decor('Phone Or Email', const Icon(Icons.account_circle_outlined)),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your name';
+                        return 'Please enter your phone/email';
                       }
                       return null;
                     },
                   ),
 
-                  SizedBox(height: 10),
+                  const SizedBox(height: 16),
 
                   TextFormField(
                     obscureText: true,
                     controller: _passwordController,
-                    decoration: input_decor('Password', Icon(Icons.lock) ),
+                    decoration: input_decor('Password', const Icon(Icons.lock)),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your password';
                       }
                       return null;
                     },
-                  )
+                  ),
                 ],
               )
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 25),
 
-            ElevatedButton(
-              style: login_button_style,
-              onPressed: ()=>{}, 
-              child: Text(
-                'Login', 
-                style: login_text_style
-              )
+            // Login Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: login_button_style.copyWith(
+                  minimumSize: MaterialStateProperty.all(const Size(0, 55)),
+                ),
+                onPressed: () => {},
+                child: Text(
+                  'Login', 
+                  style: login_text_style
+                )
+              ),
             ),
 
-            SizedBox(height: 20),
-            Text('Forgot Password?', style: header_3),
-            SizedBox(height: 10),
-            Text('Already have an account? Sign Up', style: header_3),
-            SizedBox(height: 25),
+            const SizedBox(height: 20),
 
+            // Links Section
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Add forgot password functionality
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: header_3.copyWith(
+                      color: blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () {
+                    // Add navigation to sign up screen
+                  },
+                  child: Text(
+                    "Don't have an account? Sign Up",
+                    style: header_3.copyWith(
+                      color: blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 25),
+
+            // Divider with "Or Continue With"
             Row(
               children: [
                 Expanded(
                   child: Divider(
                     color: grey,
                     thickness: 1,
-                    endIndent: 10, // space between line and text
                   ),
                 ),
-                Text(
-                  "Or Continue With",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: grey,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    "Or Continue With",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: grey,
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Divider(
                     color: grey,
                     thickness: 1,
-                    indent: 10, // space between text and line
                   ),
                 ),
               ],
             ),
             
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
 
+            // Social Icons
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon( FontAwesomeIcons.google , color: grey ),
-                Icon( FontAwesomeIcons.facebook , color: grey )
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(FontAwesomeIcons.google, color: grey, size: 20),
+                ),
+                const SizedBox(width: 20),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: grey.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(FontAwesomeIcons.facebook, color: grey, size: 20),
+                ),
               ],
-            )
-
-
+            ),
           ],
         ),
       ),
