@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/ConfirmListingScreen.dart';
 import 'package:easy_vacation/classes/LoginScreen.dart';
 import 'package:easy_vacation/classes/SignUpScreen.dart';
 import 'package:easy_vacation/classes/CreateListingScreen.dart';
@@ -14,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CreateListing()
+      home: ConfirmAndPostScreen()
     );
   }
 }
