@@ -1,3 +1,4 @@
+import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/styles/RegistrationStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -49,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Text('Welcome Back', style: header_1),
                 const SizedBox(height: 8),
-                Text('Login to your account', style: header_3),
+                Text('Login to your account', style: small_grey_text),
               ],
             ),
 
@@ -116,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     'Forgot Password?',
-                    style: header_3.copyWith(
+                    style: small_grey_text.copyWith(
                       color: blue,
                       fontWeight: FontWeight.w500,
                     ),
@@ -129,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     "Don't have an account? Sign Up",
-                    style: header_3.copyWith(
+                    style: small_grey_text.copyWith(
                       color: blue,
                       fontWeight: FontWeight.w500,
                     ),

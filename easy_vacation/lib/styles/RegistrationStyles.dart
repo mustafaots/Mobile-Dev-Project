@@ -1,24 +1,10 @@
-import 'dart:ui';
+import 'package:easy_vacation/shared/colors.dart';
 import 'package:flutter/material.dart';
 
-var blue = Color.fromARGB(255, 36, 112, 255);
-var grey = const Color.fromARGB(255, 118, 118, 118);
-var lightGrey = const Color.fromARGB(255, 240, 240, 240);
+var header_1 = TextStyle(fontWeight: FontWeight.bold, fontSize: 30);
+var header_2 = TextStyle(fontWeight: FontWeight.w500, fontSize: 20);
 
-var header_1 = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 30,
-);
-
-var header_2 = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 20,
-);
-
-var header_3 = TextStyle(
-  color: grey,
-  fontSize: 14,
-);
+var small_grey_text = TextStyle(color: grey, fontSize: 14);
 
 var app_bar_style = TextStyle(
   color: Colors.white,
@@ -32,18 +18,10 @@ var app_title_style = TextStyle(
   fontWeight: FontWeight.w500,
 );
 
-var signin_link_style = TextStyle(
-  fontSize: 20,
-);
-
-var forgotpassword_link_style = TextStyle(
-  color: blue,
-);
-
 InputDecoration input_decor(String text, Icon icon) {
   return InputDecoration(
     labelText: text,
-    labelStyle: TextStyle(color: grey, fontSize: 14),
+    labelStyle: TextStyle(color: grey, fontSize: 16),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: BorderSide(color: grey.withOpacity(0.3)),
@@ -58,7 +36,8 @@ InputDecoration input_decor(String text, Icon icon) {
     ),
     filled: true,
     fillColor: lightGrey,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    contentPadding:
+        const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     prefixIcon: icon,
     prefixIconColor: grey,
   );
@@ -69,14 +48,10 @@ var login_button_style = ButtonStyle(
   backgroundColor: MaterialStateProperty.all(blue),
   foregroundColor: MaterialStateProperty.all(Colors.white),
   shape: MaterialStateProperty.all(
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
+    RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   ),
   elevation: MaterialStateProperty.all(2),
 );
 
-var login_text_style = TextStyle(
-  fontSize: 16,
-  fontWeight: FontWeight.w600,
-);
+var login_text_style =
+    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600);

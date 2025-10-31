@@ -1,3 +1,5 @@
+import 'package:easy_vacation/shared/colors.dart';
+import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/styles/RegistrationStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            const SizedBox(height: 40),
+            space(40),
             
             // Header Section
             Row(
@@ -39,8 +41,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Create\nYour Account',
                         style: header_1.copyWith(fontSize: 28),
                       ),
-                      const SizedBox(height: 8),
-                      Text('Join EasyVacation today', style: header_3),
+                      space(8),
+                      Text('Join EasyVacation today', style: small_grey_text),
                     ],
                   ),
                 ),
@@ -58,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
 
-            const SizedBox(height: 30),
+            space(25),
 
             // Form Section
             Form(
@@ -82,7 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  space(12),
 
                   Row(
                     children: [
@@ -101,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  space(12),
 
                   Row(
                     children: [
@@ -120,46 +122,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  space(20),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          decoration: input_decor('Password', const Icon(Icons.lock)),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          obscureText: true,
-                          controller: _password_2_Controller,
-                          decoration: input_decor('Confirm', const Icon(Icons.lock)),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Passwords do not match';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    obscureText: true,
+                    controller: _passwordController,
+                    decoration: input_decor('Password', const Icon(Icons.lock)),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  space(12),
+
+                  TextFormField(
+                    obscureText: true,
+                    controller: _password_2_Controller,
+                    decoration: input_decor('Confirm Password', const Icon(Icons.lock)),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 25),
+            space(25),
 
             // Sign Up Button
             SizedBox(
@@ -176,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            space(20),
 
             // Login Link
             GestureDetector(
@@ -185,14 +179,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               },
               child: Text(
                 'Already have an account? Login',
-                style: header_3.copyWith(
+                style: small_grey_text.copyWith(
                   color: blue,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
 
-            const SizedBox(height: 20),
+            space(20),
 
             // Divider with "Or Continue With"
             Row(
@@ -222,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
 
-            const SizedBox(height: 15),
+            space(15),
 
             // Social Icons
             Row(
