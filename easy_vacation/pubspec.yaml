@@ -45,6 +45,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  google_fonts: ^6.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -89,4 +90,16 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/
+    #welcome page assets 
+    - assets/images/homepic.png
+    #my bookings assets 
+    - assets/images/cozy_cabin.jpg
+    - assets/images/beachfront_villa.jpg
+    - assets/images/city_loft.jpg
+    #post details assets 
+    - assets/images/beachfront_cottage.jpg
+    - assets/images/living_room.jpg
+    - assets/images/bedroom_ocean_view.jpg
+    - assets/images/host_Ali.jpg
+    - assets/images/reviewer_alex.jpg
+    - assets/images/reviewer_maria.jpg
