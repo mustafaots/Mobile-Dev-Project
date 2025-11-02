@@ -10,7 +10,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.1.0
   confetti: ^0.8.0
-  speech_to_text: ^6.6.0
   font_awesome_flutter: ^10.7.0
   geocoding: ^4.0.0
   speech_to_text: ^7.3.0
