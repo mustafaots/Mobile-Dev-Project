@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/MAS/post_details/post_details.dart';
 import 'package:flutter/material.dart';
 
 class Activities extends StatelessWidget {
@@ -25,39 +26,49 @@ class Activities extends StatelessWidget {
           child: Row(
             children: [
               for(var i=1; i<=5; i++)
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  width: 260,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'assets/images/skiing.jpg',
-                          width: 260,
-                          height: 200,
-                          fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    ///////////////////////////////////////////////////////
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PostDetailsScreen()),
+                    );
+                    ///////////////////////////////////////////////////////
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    width: 260,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            'assets/images/skiing.jpg',
+                            width: 260,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('Chrea'),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.star_border_outlined,
-                                color: Color.fromARGB(255, 255, 207, 14)),
-                            SizedBox(width: 4),
-                            Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          ],
+                        ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('Chrea'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.star_border_outlined,
+                                  color: Color.fromARGB(255, 255, 207, 14)),
+                              SizedBox(width: 4),
+                              Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                )
             ],
           ),
         ),
@@ -77,29 +88,39 @@ class Activities extends StatelessWidget {
                 ),
               ),
               for(var i=0; i<5; i++)
-                Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset('assets/images/bike_riding.jpg',
-                        width: double.infinity,
+                GestureDetector(
+                  onTap: () {
+                    ///////////////////////////////////////////////////////
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PostDetailsScreen()),
+                    );
+                    ///////////////////////////////////////////////////////
+                  },
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset('assets/images/bike_riding.jpg',
+                          width: double.infinity,
+                        ),
                       ),
-                    ),
-                    ListTile(
-                      title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
-                      subtitle: Text('Sahara'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.star_border_outlined,
-                              color: Color.fromARGB(255, 255, 207, 14)),
-                          SizedBox(width: 4),
-                          Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                      ListTile(
+                        title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text('Sahara'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.star_border_outlined,
+                                color: Color.fromARGB(255, 255, 207, 14)),
+                            SizedBox(width: 4),
+                            Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
             ],
           ),
         )

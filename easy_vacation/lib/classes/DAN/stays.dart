@@ -103,7 +103,7 @@ class Stays extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.asset('assets/images/apar1.jpg',
+                          child: Image.asset('assets/images/apar2.jpg',
                             width: double.infinity,
                           ),
                         ),
