@@ -15,6 +15,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _useridController = TextEditingController();
 
+  // destructor to avoid memory leaks
+  @override
+  void dispose(){
+    super.dispose();
+
+    _passwordController.dispose();
+    _useridController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
