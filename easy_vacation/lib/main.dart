@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/login_screen/LoginScreen.dart';
+import 'package:easy_vacation/classes/addReviewPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen()
+      home: AddReviewPage()
     );
   }
 }
