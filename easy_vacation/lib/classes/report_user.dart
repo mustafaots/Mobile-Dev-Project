@@ -80,6 +80,9 @@ class _ReportUserState extends State<ReportUser> {
                   SizedBox(height: 10,),
                   Text('Additional Details(Optional)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
                   TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
                     maxLines: 6,
                     decoration: InputDecoration(
                       hintText: 'Provide more information',
