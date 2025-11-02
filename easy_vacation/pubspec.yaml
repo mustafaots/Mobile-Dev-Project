@@ -13,6 +13,7 @@ dependencies:
   speech_to_text: ^6.6.0
   font_awesome_flutter: ^10.7.0
   geocoding: ^4.0.0
+  speech_to_text: ^7.3.0
   http: ^1.2.0
 dev_dependencies:
   flutter_test:
