@@ -1,3 +1,7 @@
+import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
+import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings/my_bookings.dart';
+import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 import 'package:flutter/material.dart';
 import 'vehicules.dart';
 import 'stays.dart';
@@ -11,6 +15,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  List staticNavigation = [
+    HomeScreen(),
+    MyBookingsScreen(),
+    '',
+    NotificationsPage(),
+    ProfilePage()
+  ];
+
   int selectedIndex = 0;
   List searchContent = ['type', 'wilaya', 'region'];
   final FocusNode _searchFocusNode = FocusNode();
@@ -184,7 +197,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          ///////////////////////////////////////////////////////
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateListing()),
+          );
+          ///////////////////////////////////////////////////////
         },
         shape: CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 46, 196, 255),
@@ -203,7 +221,13 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) => {
           setState(() {
             _navIdx = index;
-          })
+          }),
+          ///////////////////////////////////////////////////////
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => staticNavigation[_navIdx] ),
+          )
+          ///////////////////////////////////////////////////////
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),

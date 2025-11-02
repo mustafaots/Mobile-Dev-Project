@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/styles/RegistrationStyles.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: login_button_style.copyWith(
                   minimumSize: MaterialStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () => {},
+                onPressed: () => {
+
+                ///////////////////////////////////////////////////////
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                )
+                ///////////////////////////////////////////////////////
+
+                },
                 child: Text(
                   'Login', 
                   style: login_text_style

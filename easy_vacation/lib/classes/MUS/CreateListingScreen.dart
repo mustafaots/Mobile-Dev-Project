@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/MUS/ConfirmListingScreen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/styles/CreateListingStyles.dart';
@@ -156,7 +157,13 @@ class _CreateListingState extends State<CreateListing> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // TODO: Navigate to payment
+
+                    ///////////////////////////////////////////////////////
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfirmAndPostScreen()),
+                    );
+                    ///////////////////////////////////////////////////////
                   }
                 },
                 child: Text(

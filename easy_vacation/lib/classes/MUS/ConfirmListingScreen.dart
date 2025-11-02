@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -162,7 +163,16 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                           ),
                         );
                       }
-                    : null, // disabled if not agreed
+                    : ()=>{
+                      ///////////////////////////////////////////////////////
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      )
+                      ///////////////////////////////////////////////////////
+                    }, // disabled if not agreed
+
+                    
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   backgroundColor: Colors.blueAccent,

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/my_bookings/my_bookings.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings/my_bookings.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PostDetailsScreen extends StatelessWidget {
