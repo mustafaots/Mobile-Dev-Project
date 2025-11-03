@@ -1,3 +1,4 @@
+import 'package:easy_vacation/classes/MUS/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/classes/MAS/post_details.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -64,7 +65,7 @@ class EasyVacationWelcome extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PostDetailsScreen()),
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
                     );
                   },
                   style: AppTheme.primaryButtonStyle.copyWith(

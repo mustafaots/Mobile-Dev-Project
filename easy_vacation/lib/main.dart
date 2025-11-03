@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const LoginScreen(), // Or your desired home screen
+      home: const EasyVacationWelcome(), // Or your desired home screen
     );
   }
 }
