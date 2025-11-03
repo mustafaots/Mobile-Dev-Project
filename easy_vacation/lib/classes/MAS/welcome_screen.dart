@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/MAS/post_details/post_details.dart';
+import 'package:easy_vacation/classes/MAS/post_details.dart';
 class EasyVacationWelcome extends StatelessWidget {
   const EasyVacationWelcome({super.key});
 

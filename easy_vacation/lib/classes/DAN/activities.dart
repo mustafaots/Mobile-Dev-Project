@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/MAS/post_details/post_details.dart';
+import 'package:easy_vacation/classes/MAS/post_details.dart';
 import 'package:flutter/material.dart';
 
 class Activities extends StatelessWidget {

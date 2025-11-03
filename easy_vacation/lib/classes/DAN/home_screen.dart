@@ -1,6 +1,6 @@
 import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
 import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
-import 'package:easy_vacation/classes/MAS/my_bookings/my_bookings.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings.dart';
 import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 import 'package:flutter/material.dart';
 import 'vehicules.dart';
