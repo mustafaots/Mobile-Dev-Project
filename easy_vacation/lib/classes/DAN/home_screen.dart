@@ -15,13 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   List staticNavigation = [
-    HomeScreen(),
-    MyBookingsScreen(),
+    const HomeScreen(),
+    const MyBookingsScreen(),
     '',
-    NotificationsPage(),
-    ProfilePage()
+    const NotificationsPage(),
+    const ProfilePage()
   ];
 
   int selectedIndex = 0;
@@ -32,10 +31,42 @@ class _HomeScreenState extends State<HomeScreen> {
   int _navIdx = 0;
 
   List<Widget> screens = [
-    Stays(),
-    Vehicules(),
-    Activities()
+    const Stays(),
+    const Vehicules(),
+    const Activities()
   ];
+
+  // Define colors locally as fallback
+  static const Color primaryColor = Colors.blueAccent;
+  static const Color white = Colors.white;
+  static const Color black = Colors.black87;
+  static const Color grey = Color(0xFF6B7280);
+
+  // Local input decoration method
+  InputDecoration _inputDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Color(0xFF6B7280), fontSize: 16),
+      hintText: label,
+      hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: primaryColor),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+      ),
+      filled: true,
+      fillColor: const Color(0xFFF9FAFB),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      prefixIcon: Icon(icon, color: const Color(0xFF6B7280)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +75,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           'EasyVacation',
           style: TextStyle(
-            color: Colors.black,
+            color: black,
             fontWeight: FontWeight.bold,
-            fontSize: 17
+            fontSize: 18,
           ),
-          
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: white,
+        elevation: 0,
         actions: [
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.travel_explore_sharp),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Icon(Icons.travel_explore_sharp, color: primaryColor),
           )
         ],
       ),
@@ -65,77 +97,69 @@ class _HomeScreenState extends State<HomeScreen> {
         }, 
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white
+            color: white,
           ),
           height: double.infinity,
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 10,),
+                const SizedBox(height: 10),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
                     focusNode: _searchFocusNode,
                     controller: _searchController,
-                    cursorColor: Colors.lightBlueAccent,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color.fromARGB(40, 210, 210, 210),
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'search...',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                          width: 1,
-                          color: const Color.fromARGB(31, 72, 72, 72)
-                        )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: const Color.fromARGB(255, 46, 196, 255)
-                        )
-                      )
+                    cursorColor: primaryColor,
+                    decoration: _inputDecoration('Search...', Icons.search),
+                  ),
+                ),
+
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for(var i = 0; i < searchContent.length; i++)
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: i == 0 ? 20 : 8,
+                              right: i == searchContent.length - 1 ? 20 : 0,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                FocusScope.of(context).requestFocus(_searchFocusNode);
+                                _searchController.text = '';
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: primaryColor.withOpacity(0.1),
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: primaryColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  searchContent[i], 
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                      ],
                     ),
                   ),
                 ),
 
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      for(var i=0; i<searchContent.length; i++)
-                        GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).requestFocus(_searchFocusNode);
-                            _searchController.text = '';
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 20),
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            width: 58,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(78, 154, 212, 251),
-                              border: Border.all(
-                                width: 1.5,
-                                color: const Color.fromARGB(255, 40, 198, 255)
-                              ),
-                              borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Center(
-                              child: Text(searchContent[i], style: TextStyle(color: const Color.fromARGB(255, 84, 177, 252)),),
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
+                const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                color: isSelected ? Colors.black : Colors.blueGrey,
+                                color: isSelected ? black : grey,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -167,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 3,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: isSelected ? Colors.lightBlue : Colors.transparent,
+                                color: isSelected ? primaryColor : Colors.transparent,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),
@@ -180,54 +204,50 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 Divider(
                   height: 0,
-                  color: const Color.fromARGB(109, 158, 158, 158),
+                  color: grey.withOpacity(0.3),
                   thickness: 1,
-                  indent: 0,
-                  endIndent: 0,
                 ),
 
-                SizedBox(height: 30,),
+                const SizedBox(height: 30),
 
-                screens[selectedIndex]
+                screens[selectedIndex],
               ],
             ),
-          )
+          ),
         ),
       ),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ///////////////////////////////////////////////////////
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateListing()),
+            MaterialPageRoute(builder: (context) => const CreateListing()),
           );
-          ///////////////////////////////////////////////////////
         },
-        shape: CircleBorder(),
-        backgroundColor: const Color.fromARGB(255, 46, 196, 255),
-        child: Icon(Icons.add, color: const Color.fromARGB(255, 0, 0, 0), size: 30),
+        shape: const CircleBorder(),
+        backgroundColor: primaryColor,
+        child: Icon(Icons.add, color: white, size: 30),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 5,
-        selectedItemColor: const Color.fromARGB(255, 46, 196, 255),
-        unselectedItemColor: Colors.blueGrey,
+        backgroundColor: white,
+        elevation: 8,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: grey,
         currentIndex: _navIdx,
-        onTap: (index) => {
-          setState(() {
-            _navIdx = index;
-          }),
-          ///////////////////////////////////////////////////////
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => staticNavigation[_navIdx] ),
-          )
-          ///////////////////////////////////////////////////////
+        onTap: (index) {
+          if (index != 2) { // Skip the empty middle item
+            setState(() {
+              _navIdx = index;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => staticNavigation[index]),
+            );
+          }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),

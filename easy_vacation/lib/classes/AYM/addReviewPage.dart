@@ -1,33 +1,14 @@
+// addReviewPage.dart
+import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:confetti/confetti.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:math';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Add a Review',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.light(
-          primary: Color(0xFF4A90E2),
-          secondary: Color(0xFFF5A623),
-          surface: Color(0xFFF2F2F7),
-          onSurface: Color(0xFF1D1D1F),
-        ),
-      ),
-      home: const AddReviewPage(),
-    );
-  }
-}
+import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
+import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings.dart';
+import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 
 class AddReviewPage extends StatefulWidget {
   const AddReviewPage({Key? key}) : super(key: key);
@@ -49,6 +30,15 @@ class _AddReviewPageState extends State<AddReviewPage> {
   bool _isListening = false;
   bool _showPreview = false;
   bool _showCategories = false;
+  int _navIdx = 0;
+
+  List staticNavigation = [
+    const HomeScreen(),
+    const MyBookingsScreen(),
+    '',
+    const NotificationsPage(),
+    const ProfilePage()
+  ];
 
   // Emoji reactions data
   final List<Map<String, dynamic>> _emojiReactions = [
@@ -161,6 +151,22 @@ class _AddReviewPageState extends State<AddReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2F2F7),
+      appBar: AppBar(
+        title: Text(
+          'Add a Review',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -187,33 +193,6 @@ class _AddReviewPageState extends State<AddReviewPage> {
 
             Column(
               children: [
-                // Header
-                Container(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        key: const Key('close_button'),
-                        icon: Icon(Icons.close, size: 24),
-                        onPressed: () => Navigator.of(context).pop(),
-                        color: Color(0xFF1D1D1F),
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Add a Review',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1D1D1F),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 48),
-                    ],
-                  ),
-                ),
-
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.all(16),
@@ -607,6 +586,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
           ],
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -651,6 +631,50 @@ class _AddReviewPageState extends State<AddReviewPage> {
           ),
         ],
       ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      elevation: 8,
+      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: Color(0xFF6B7280),
+      currentIndex: _navIdx,
+      onTap: (index) {
+        if (index != 2) {
+          setState(() {
+            _navIdx = index;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => staticNavigation[index]),
+          );
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book_online_outlined),
+          label: 'Bookings',
+        ),
+        BottomNavigationBarItem(
+          icon: SizedBox.shrink(),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications_outlined),
+          label: 'Notifications',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

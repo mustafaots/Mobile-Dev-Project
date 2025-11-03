@@ -1,4 +1,5 @@
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/MUS/SignUpScreen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/styles/RegistrationStyles.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: const CircleAvatar(
                     radius: 45,
-                    backgroundImage: AssetImage('assets/palm.webp'),
+                    child: Icon(
+                      Icons.landscape,
+                      size: 60,
+                      color: Color.fromARGB(255, 135, 201, 119), 
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -147,11 +152,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     // Add navigation to sign up screen
                   },
-                  child: Text(
-                    "Don't have an account? Sign Up",
-                    style: small_grey_text.copyWith(
-                      color: blue,
-                      fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () {
+                      ///////////////////////////////////////////////////////
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      );
+                      ///////////////////////////////////////////////////////
+                    },
+                    child: Text(
+                      "Don't have an account? Sign Up",
+                      style: small_grey_text.copyWith(
+                        color: blue,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

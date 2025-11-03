@@ -1,59 +1,51 @@
+// ProfilePage.dart
+import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'EasyVacation Profile',
-      theme: ThemeData(
-        useMaterial3: true,
-        primaryColor: const Color(0xFF3A8DDE),
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-        fontFamily: 'Plus Jakarta Sans',
-      ),
-      home: const ProfilePage(),
-    );
-  }
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class _ProfilePageState extends State<ProfilePage> {
+  List staticNavigation = [
+    const HomeScreen(),
+    const MyBookingsScreen(),
+    '',
+    const NotificationsPage(),
+    const ProfilePage()
+  ];
+
+  int _navIdx = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: const Row(
-                children: [
-                  SizedBox(width: 48),
-                  Expanded(
-                    child: Text(
-                      'Profile',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF333333),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 48),
-                ],
-              ),
-            ),
-
             // Profile Section
             Padding(
               padding: const EdgeInsets.all(16),
@@ -74,11 +66,11 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'MOhamed',
+                    'Mohamed',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF333333),
+                      color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -86,21 +78,28 @@ class ProfilePage extends StatelessWidget {
                     'Mohamed@easyvacation.com',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF666666),
+                      color: Color(0xFF6B7280),
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Subscription Card - FIXED VERSION
+            // Subscription Card
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -108,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                       width: 40,
                       height: 40,
                       decoration: const BoxDecoration(
-                        color: Color(0xFFFFA500),
+                        color: Colors.amber,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: const Icon(
@@ -126,7 +125,7 @@ class ProfilePage extends StatelessWidget {
                               text: 'Subscription: ',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xFF333333),
+                                color: Colors.black87,
                               ),
                             ),
                             TextSpan(
@@ -134,7 +133,7 @@ class ProfilePage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFFFFA500),
+                                color: Colors.amber,
                               ),
                             ),
                           ],
@@ -183,17 +182,22 @@ class ProfilePage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Handle logout
+                    ///////////////////////////////////////////////////////
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                    ///////////////////////////////////////////////////////
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0x1AFF0000),
-                    foregroundColor: const Color(0xFFFF0000),
+                    backgroundColor: Colors.red.withOpacity(0.1),
+                    foregroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 0,
                   ),
@@ -211,6 +215,7 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -221,7 +226,14 @@ class ProfilePage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -229,7 +241,7 @@ class ProfilePage extends StatelessWidget {
           onTap: () {
             // Handle menu item tap
           },
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           child: Container(
             padding: const EdgeInsets.all(16),
             height: 56,
@@ -239,12 +251,12 @@ class ProfilePage extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3A8DDE).withOpacity(0.1),
+                    color: Colors.blueAccent.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Icon(
                     icon,
-                    color: const Color(0xFF3A8DDE),
+                    color: Colors.blueAccent,
                     size: 24,
                   ),
                 ),
@@ -254,13 +266,13 @@ class ProfilePage extends StatelessWidget {
                     title,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Color(0xFF333333),
+                      color: Colors.black87,
                     ),
                   ),
                 ),
                 const Icon(
                   Icons.chevron_right,
-                  color: Color(0xFF999999),
+                  color: Color(0xFF6B7280),
                   size: 24,
                 ),
               ],
@@ -268,6 +280,50 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      elevation: 8,
+      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: Color(0xFF6B7280),
+      currentIndex: _navIdx,
+      onTap: (index) {
+        if (index != 2) {
+          setState(() {
+            _navIdx = index;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => staticNavigation[index]),
+          );
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book_online_outlined),
+          label: 'Bookings',
+        ),
+        BottomNavigationBarItem(
+          icon: SizedBox.shrink(),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications_outlined),
+          label: 'Notifications',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

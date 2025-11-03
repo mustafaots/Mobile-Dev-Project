@@ -1,3 +1,4 @@
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class ReportUser extends StatefulWidget {
@@ -8,7 +9,6 @@ class ReportUser extends StatefulWidget {
 }
 
 class _ReportUserState extends State<ReportUser> {
-
   List problems = [
     'Inappropriate content',
     'Spam or scam',
@@ -22,38 +22,38 @@ class _ReportUserState extends State<ReportUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white,
       appBar: AppBar(
-        title: Text('Report'),
+        title: const Text('Report'),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
+        foregroundColor: AppTheme.black,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsetsGeometry.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Tell us what's wrong",
-                style: TextStyle(
+                style: AppTheme.header1.copyWith(
                   fontSize: 25,
-                  fontWeight: FontWeight.bold
                 ),
               ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 10,
                 children: [
                   for(var problem in problems)
                     Container(
-                      padding: EdgeInsets.all(0),
+                      margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
+                        color: AppTheme.white,
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           width: 1,
-                          color: const Color.fromARGB(38, 104, 104, 104)
+                          color: AppTheme.grey.withOpacity(0.3)
                         )
                       ),
                       child: Theme(
@@ -63,10 +63,10 @@ class _ReportUserState extends State<ReportUser> {
                           hoverColor: Colors.transparent,
                         ),
                         child: RadioListTile(
-                          activeColor: const Color.fromARGB(255, 92, 211, 255),
+                          activeColor: AppTheme.primaryColor,
                           dense: true,
                           value: problem,
-                          title: Text(problem, style: TextStyle(fontSize: 14)),
+                          title: Text(problem, style: const TextStyle(fontSize: 16)),
                           groupValue: selectedOption,
                           onChanged: (value) {
                             setState(() {
@@ -75,53 +75,39 @@ class _ReportUserState extends State<ReportUser> {
                           },
                         ),
                       )
-                    )
-                  ,
-                  SizedBox(height: 10,),
-                  Text('Additional Details(Optional)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+                    ),
+                  const SizedBox(height: 20),
+                  Text('Additional Details (Optional)', 
+                    style: TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.black,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   TextField(
                     onTapOutside: (event) {
                       FocusScope.of(context).unfocus();
                     },
                     maxLines: 6,
-                    decoration: InputDecoration(
-                      hintText: 'Provide more information',
-                      hintStyle: TextStyle(
-                        color: const Color.fromARGB(147, 19, 19, 19)
+                    decoration: AppTheme.inputDecoration('Provide more information', Icons.description)
+                      .copyWith(
+                        contentPadding: const EdgeInsets.all(16),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                          color: const Color.fromARGB(49, 0, 0, 0)
-                        )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                          color: const Color.fromARGB(255, 92, 211, 255),
-                          width: 2,
-                        )
-                      )
-                    ),
                   ),
 
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 50),
 
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: EdgeInsets.symmetric(vertical: 13),
-                        backgroundColor: const Color.fromARGB(255, 92, 211, 255)
-                      ),
+                      style: AppTheme.primaryButtonStyle,
                       onPressed: () {
-                        
+                        // Handle report submission
                       },
-                      child: Text(
+                      child: const Text(
                         'Submit Report',
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.w500
                         ),

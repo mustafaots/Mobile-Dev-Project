@@ -1,3 +1,4 @@
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPlan extends StatefulWidget {
@@ -8,11 +9,10 @@ class SubscriptionPlan extends StatefulWidget {
 }
 
 class _SubscriptionPlanState extends State<SubscriptionPlan> {
-
   List<Map<String, dynamic>> subscriptions = [
     {
       'type': 'Free',
-      'icon': Icon(Icons.person_outline, color: Colors.blue, size: 25),
+      'icon': Icons.person_outline,
       'cost': '0.00',
       'details': [
         'Pay-per-cost',
@@ -22,7 +22,7 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
     },
     {
       'type': 'Monthly',
-      'icon': Icon(Icons.calendar_month_outlined, color: Colors.blue, size: 25),
+      'icon': Icons.calendar_month_outlined,
       'cost': '19.99',
       'details': [
         'Unlimited listings',
@@ -32,7 +32,7 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
     },
     {
       'type': 'Yearly',
-      'icon': Icon(Icons.star_outline, color: Colors.blue, size: 25),
+      'icon': Icons.star_outline,
       'cost': '199.99',
       'details': [
         'All Monthly benefits',
@@ -43,8 +43,7 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
     }
   ];
 
-
-  Widget plan(String tp, Icon icon, String price, List details, bool selected, int idx) {
+  Widget plan(String tp, IconData icon, String price, List details, bool selected, int idx) {
     return GestureDetector(
       onTap: () {
         for(var sub in subscriptions) {
@@ -54,65 +53,80 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
         setState(() {});
       },
       child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: AppTheme.white,
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            width: (selected) ? 2: 1,
-            color: (selected) ? const Color.fromARGB(255, 244, 185, 10): Color.fromARGB(23, 58, 57, 57),
+            width: selected ? 2 : 1,
+            color: selected ? AppTheme.primaryColor : AppTheme.grey.withOpacity(0.3),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(selected ? 0.1 : 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.zero,
-              leading: icon,
-              trailing: (tp == 'Yearly') ? Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: const Color.fromARGB(255, 244, 185, 10)
+            Row(
+              children: [
+                Icon(icon, color: AppTheme.primaryColor, size: 28),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    tp,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                child: Text('Recommended', style: TextStyle(color: Colors.white, fontSize: 12),),
-              ): null,
-              title: Text(
-                tp,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                if (tp == 'Yearly') 
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.amber
+                    ),
+                    child: const Text('Recommended', 
+                      style: TextStyle(
+                        color: Colors.white, 
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              '\$$price',
+              style: const TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.w900,
               ),
             ),
-            SizedBox(height: 4),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '\$$price',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-            SizedBox(height: 8),
+            const SizedBox(height: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (var detail in details)
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.check, color: Colors.blue, size: 20),
-                        SizedBox(width: 6),
+                        Icon(Icons.check, color: AppTheme.primaryColor, size: 20),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             detail,
-                            style: TextStyle(fontSize: 15),
+                            style: const TextStyle(fontSize: 15),
                           ),
                         ),
                       ],
@@ -120,20 +134,22 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
                   ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
-              height: 40,
+              height: 48,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: (selected) ? Colors.blue: Color.fromARGB(57, 93, 177, 246),
+                  backgroundColor: selected ? AppTheme.primaryColor : AppTheme.primaryColor.withOpacity(0.1),
+                  foregroundColor: selected ? AppTheme.white : AppTheme.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: () {},
                 child: Text(
                   'Select Plan',
                   style: TextStyle(
-                    color: (selected) ? Colors.white:Color.fromARGB(255, 5, 124, 222),
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -146,21 +162,24 @@ class _SubscriptionPlanState extends State<SubscriptionPlan> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
-        title: Text('Choose your plan'),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back, color: AppTheme.black),
+        ),
+        title: const Text('Choose your plan'),
         centerTitle: true,
+        backgroundColor: AppTheme.white,
+        foregroundColor: AppTheme.black,
+        elevation: 0,
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
-            spacing: 30,
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for (var i = 0; i < subscriptions.length; i++)

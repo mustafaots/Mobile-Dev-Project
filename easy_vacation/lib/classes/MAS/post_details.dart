@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/classes/MAS/my_bookings.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_vacation/shared/themes.dart';
 
 class PostDetailsScreen extends StatelessWidget {
   const PostDetailsScreen({super.key});
@@ -9,7 +8,7 @@ class PostDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F8),
+      backgroundColor: AppTheme.lightGrey,
       body: SafeArea(
         child: Stack(
           children: [
@@ -54,31 +53,22 @@ class PostDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-         
-            ElevatedButton(onPressed: (){
-              Navigator.pop(context);
-            }, child: const Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-            ),
-            ),
-             
-          
           const Spacer(),
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.bookmark_border,
-              color: Colors.black87,
-              size: 24,
+            icon: Icon(Icons.bookmark_border, color: AppTheme.black, size: 24),
+            style: IconButton.styleFrom(
+              backgroundColor: AppTheme.white,
+              padding: const EdgeInsets.all(12),
             ),
           ),
+          const SizedBox(width: 8),
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.share,
-              color: Colors.black87,
-              size: 24,
+            icon: Icon(Icons.share, color: AppTheme.black, size: 24),
+            style: IconButton.styleFrom(
+              backgroundColor: AppTheme.white,
+              padding: const EdgeInsets.all(12),
             ),
           ),
         ],
@@ -197,12 +187,12 @@ class PostDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
-          const Text(
-            '\6000DZD/night',
+          Text(
+            '6000 DZD/night',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: AppTheme.black,
             ),
           ),
         ],
@@ -216,14 +206,13 @@ class PostDetailsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 8),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 8),
             child: Text(
               'Reviews',
-              style: TextStyle(
-                fontSize: 20,
+              style: AppTheme.header2.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: AppTheme.black,
               ),
             ),
           ),
@@ -313,55 +302,37 @@ class PostDetailsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 8),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 8),
             child: Text(
               'Availability',
-              style: TextStyle(
-                fontSize: 20,
+              style: AppTheme.header2.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: AppTheme.black,
               ),
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+            decoration: AppTheme.cardDecoration,
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.chevron_left,
-                      color: Colors.grey,
-                    ),
-                    const Text(
+                    Icon(Icons.chevron_left, color: AppTheme.grey),
+                    Text(
                       'May 2024',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: AppTheme.black,
                       ),
                     ),
-                    const Icon(
-                      Icons.chevron_right,
-                      color: Colors.grey,
-                    ),
+                    Icon(Icons.chevron_right, color: AppTheme.grey),
                   ],
                 ),
                 const SizedBox(height: 16),
-                // Calendar grid
                 _buildCalendarGrid(),
               ],
             ),
@@ -389,9 +360,9 @@ class PostDetailsScreen extends StatelessWidget {
             child: Text(
               day,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: AppTheme.grey,
               ),
             ),
           )).toList(),
@@ -404,7 +375,6 @@ class PostDetailsScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 4),
             child: Row(
               children: calendarDays[row].asMap().entries.map((entry) {
-                //int index = entry.key;
                 String day = entry.value;
                 bool isAvailable = !['13', '14', '23', '24'].contains(day);
                 bool isSelected = ['7', '8', '9', '10'].contains(day);
@@ -413,7 +383,7 @@ class PostDetailsScreen extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFF13C8EC).withOpacity(0.2) : Colors.transparent,
+                      color: isSelected ? AppTheme.primaryColor.withOpacity(0.2) : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -422,8 +392,8 @@ class PostDetailsScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: isAvailable 
-                            ? (isSelected ? const Color(0xFF13C8EC) : Colors.black87)
-                            : Colors.grey,
+                            ? (isSelected ? AppTheme.primaryColor : AppTheme.black)
+                            : AppTheme.grey,
                         decoration: !isAvailable ? TextDecoration.lineThrough : null,
                       ),
                     ),
@@ -444,29 +414,26 @@ class PostDetailsScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFFF6F8F8),
-         
+          color: AppTheme.lightGrey,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
         ),
         child: Row(
           children: [
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  // navigation to my bookings
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => MyBookingsScreen()),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF13C8EC),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 4,
-                ),
+                style: AppTheme.primaryButtonStyle,
                 child: const Text(
                   'Reserve Now',
                   style: TextStyle(
@@ -482,8 +449,8 @@ class PostDetailsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[200],
-                  foregroundColor: Colors.grey[800],
+                  backgroundColor: AppTheme.white,
+                  foregroundColor: AppTheme.grey,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -492,7 +459,7 @@ class PostDetailsScreen extends StatelessWidget {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.edit, size: 20, color: Colors.grey),
+                    Icon(Icons.edit, size: 20),
                     SizedBox(width: 4),
                     Text(
                       'Edit',

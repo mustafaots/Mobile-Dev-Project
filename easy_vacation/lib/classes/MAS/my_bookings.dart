@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+import 'package:easy_vacation/shared/themes.dart';
 
 class MyBookingsScreen extends StatelessWidget {
   const MyBookingsScreen({super.key});
@@ -8,7 +7,7 @@ class MyBookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F8),
+      backgroundColor: AppTheme.lightGrey,
       body: SafeArea(
         child: Column(
           children: [
@@ -29,7 +28,7 @@ class MyBookingsScreen extends StatelessWidget {
                       status: 'Confirmed',
                       statusColor: Colors.green,
                       title: 'Cozy Cabin in the Woods',
-                      price: '\7000 DZD',
+                      price: '7000 DZD',
                       date: '12-15 May, 2024',
                     ),
                     _buildBookingCard(
@@ -37,7 +36,7 @@ class MyBookingsScreen extends StatelessWidget {
                       status: 'Pending',
                       statusColor: Colors.orange,
                       title: 'Beachfront Villa',
-                      price: '\25000 DZD',
+                      price: '25000 DZD',
                       date: '20-28 June, 2024',
                     ),
                     _buildBookingCard(
@@ -45,7 +44,7 @@ class MyBookingsScreen extends StatelessWidget {
                       status: 'Canceled',
                       statusColor: Colors.red,
                       title: 'City Loft',
-                      price: '\8000 DZD',
+                      price: '8000 DZD',
                       date: '5-7 August, 2024',
                     ),
                     
@@ -66,25 +65,14 @@ class MyBookingsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          ElevatedButton(onPressed:(
-            ) {
-              Navigator.pop(context);
-              
-            }, child: Icon(
-              Icons.arrow_back,
-              color: Colors.black87,
-
-            ),
-            ) 
-          ,
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               'My Bookings',
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 18,
+              style: AppTheme.header2.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: AppTheme.black,
               ),
             ),
           ),
@@ -95,40 +83,36 @@ class MyBookingsScreen extends StatelessWidget {
   }
 
   Widget _buildFilterChips() {
+    final List<String> filters = ['All', 'Pending', 'Confirmed', 'Canceled'];
+    
     return SizedBox(
       height: 40,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: [
-          _buildFilterChip('All', isSelected: true),
-          const SizedBox(width: 8),
-          _buildFilterChip('Pending', isSelected: false),
-          const SizedBox(width: 8),
-          _buildFilterChip('Confirmed', isSelected: false),
-          const SizedBox(width: 8),
-          _buildFilterChip('Canceled', isSelected: false),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(String label, {bool isSelected = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF13C8EC) : const Color(0xFF13C8EC).withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.white : Colors.black87,
-          ),
-        ),
+        children: filters.asMap().entries.map((entry) {
+          final index = entry.key;
+          final filter = entry.value;
+          final isSelected = index == 0; // First one selected by default
+          
+          return Padding(
+            padding: EdgeInsets.only(right: index < filters.length - 1 ? 8 : 0),
+            child: FilterChip(
+              label: Text(filter),
+              selected: isSelected,
+              onSelected: (_) {},
+              backgroundColor: AppTheme.white,
+              selectedColor: AppTheme.primaryColor,
+              labelStyle: TextStyle(
+                color: isSelected ? AppTheme.white : AppTheme.black,
+                fontWeight: FontWeight.w500,
+              ),
+              shape: StadiumBorder(
+                side: BorderSide(color: AppTheme.grey.withOpacity(0.3)),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -143,17 +127,7 @@ class MyBookingsScreen extends StatelessWidget {
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 0),
-          ),
-        ],
-      ),
+      decoration: AppTheme.cardDecoration,
       child: Column(
         children: [
           // Image
@@ -179,7 +153,7 @@ class MyBookingsScreen extends StatelessWidget {
               children: [
                 Text(
                   status,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: statusColor,
@@ -188,10 +162,9 @@ class MyBookingsScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   title,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 18,
+                  style: AppTheme.header2.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: AppTheme.black,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -203,16 +176,16 @@ class MyBookingsScreen extends StatelessWidget {
                         children: [
                           Text(
                             price,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(
                               fontSize: 16,
-                              color: Colors.grey,
+                              color: AppTheme.grey,
                             ),
                           ),
                           Text(
                             date,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(
                               fontSize: 16,
-                              color: Colors.grey,
+                              color: AppTheme.grey,
                             ),
                           ),
                         ],
@@ -222,20 +195,13 @@ class MyBookingsScreen extends StatelessWidget {
                       width: 100,
                       child: ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF13C8EC),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                        style: AppTheme.primaryButtonStyle.copyWith(
+                          minimumSize: MaterialStateProperty.all(const Size(0, 36)),
+                          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 8)),
                         ),
-                        child: Text(
+                        child: const Text(
                           'View Details',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                     ),
@@ -253,33 +219,29 @@ class MyBookingsScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(48),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: AppTheme.cardDecoration,
       child: Column(
         children: [
-          const Icon(
+          Icon(
             Icons.luggage,
             size: 64,
-            color: Colors.grey,
+            color: AppTheme.grey,
           ),
           const SizedBox(height: 16),
           Text(
             'No Bookings Yet',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
+            style: AppTheme.header2.copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: AppTheme.black,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'You have no upcoming or past bookings. Time to plan your next adventure!',
             textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: AppTheme.grey,
             ),
           ),
           const SizedBox(height: 24),
@@ -287,21 +249,8 @@ class MyBookingsScreen extends StatelessWidget {
             width: 150,
             child: ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF13C8EC),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                'Explore Stays',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              style: AppTheme.primaryButtonStyle,
+              child: const Text('Explore Stays'),
             ),
           ),
         ],

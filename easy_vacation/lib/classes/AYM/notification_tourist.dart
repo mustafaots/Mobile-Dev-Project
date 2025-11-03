@@ -1,68 +1,50 @@
+// notification_tourist.dart
+import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
+import 'package:easy_vacation/classes/MAS/my_bookings.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class NotificationsPage extends StatefulWidget {
+  const NotificationsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'EasyVacation',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.light(
-          primary: const Color(0xFF13C8EC),
-          background: Colors.white,
-          onBackground: const Color(0xFF0D191B),
-          surface: Colors.white,
-          onSurface: const Color(0xFF0D191B),
-          secondary: const Color(0xFF4C8D9A),
-        ),
-        fontFamily: 'PlusJakartaSans',
-      ),
-      home: const NotificationsPage(),
-    );
-  }
+  State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
-class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({super.key});
+class _NotificationsPageState extends State<NotificationsPage> {
+  List staticNavigation = [
+    const HomeScreen(),
+    const MyBookingsScreen(),
+    '',
+    const NotificationsPage(),
+    const ProfilePage()
+  ];
+
+  int _navIdx = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Notifications',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF0D191B)),
-                  ),
-                  const Text(
-                    'Notifications',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0D191B),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.more_horiz, color: Color(0xFF0D191B)),
-                  ),
-                ],
-              ),
-            ),
             // Notifications Content
             Expanded(
               child: SingleChildScrollView(
@@ -79,7 +61,7 @@ class NotificationsPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0D191B),
+                              color: Colors.black87,
                             ),
                           ),
                         ],
@@ -103,12 +85,12 @@ class NotificationsPage extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF13C8EC).withOpacity(0.2),
+                                    color: Colors.blueAccent.withOpacity(0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.calendar_today,
-                                    color: Color(0xFF13C8EC),
+                                    color: Colors.blueAccent,
                                     size: 20,
                                   ),
                                 ),
@@ -121,7 +103,7 @@ class NotificationsPage extends StatelessWidget {
                                         'Your booking is confirmed!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF0D191B),
+                                          color: Colors.black87,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -129,7 +111,7 @@ class NotificationsPage extends StatelessWidget {
                                         'You have successfully booked \'Vintage VW Camper\' for Aug 15-20.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -137,7 +119,7 @@ class NotificationsPage extends StatelessWidget {
                                         '2 hours ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                     ],
@@ -167,12 +149,12 @@ class NotificationsPage extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.yellow.withOpacity(0.2),
+                                    color: Colors.amber.withOpacity(0.2),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.star,
-                                    color: Colors.yellow,
+                                    color: Colors.amber,
                                     size: 20,
                                   ),
                                 ),
@@ -185,7 +167,7 @@ class NotificationsPage extends StatelessWidget {
                                         'Share your experience',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF0D191B),
+                                          color: Colors.black87,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -193,14 +175,14 @@ class NotificationsPage extends StatelessWidget {
                                         'Your stay at \'Lakeside Cabin Retreat\' ended yesterday. How was it?',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                       const SizedBox(height: 12),
                                       ElevatedButton(
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: const Color(0xFF13C8EC),
+                                          backgroundColor: Colors.blueAccent,
                                           foregroundColor: Colors.white,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(24),
@@ -252,7 +234,7 @@ class NotificationsPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0D191B),
+                              color: Colors.black87,
                             ),
                           ),
                         ],
@@ -269,8 +251,6 @@ class NotificationsPage extends StatelessWidget {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            // Host Reply Notification
-                            const Divider(),
                             // Rental Reminder Notification
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,13 +258,13 @@ class NotificationsPage extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFE7F1F3),
+                                    color: Color(0xFFF3F4F6),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.directions_car,
                                     size: 20,
-                                    color: Color(0xFF4C8D9A),
+                                    color: Color(0xFF6B7280),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -295,7 +275,7 @@ class NotificationsPage extends StatelessWidget {
                                       const Text(
                                         'Your \'Fiat 500\' rental is starting in 3 days.',
                                         style: TextStyle(
-                                          color: Color(0xFF0D191B),
+                                          color: Colors.black87,
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -303,7 +283,7 @@ class NotificationsPage extends StatelessWidget {
                                         '3 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                     ],
@@ -319,13 +299,13 @@ class NotificationsPage extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFE7F1F3),
+                                    color: Color(0xFFF3F4F6),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.campaign,
                                     size: 20,
-                                    color: Color(0xFF4C8D9A),
+                                    color: Color(0xFF6B7280),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -337,7 +317,7 @@ class NotificationsPage extends StatelessWidget {
                                         'New summer deals!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFF0D191B),
+                                          color: Colors.black87,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -345,7 +325,7 @@ class NotificationsPage extends StatelessWidget {
                                         'Check out our new listings with up to 20% off.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -353,7 +333,7 @@ class NotificationsPage extends StatelessWidget {
                                         '5 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF4C8D9A),
+                                          color: Color(0xFF6B7280),
                                         ),
                                       ),
                                     ],
@@ -372,128 +352,51 @@ class NotificationsPage extends StatelessWidget {
           ],
         ),
       ),
-      // Bottom Navigation Bar
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      elevation: 8,
+      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: Color(0xFF6B7280),
+      currentIndex: _navIdx,
+      onTap: (index) {
+        if (index != 2) {
+          setState(() {
+            _navIdx = index;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => staticNavigation[index]),
+          );
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // Home
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.home_outlined,
-                    color: Color(0xFF4C8D9A),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Home',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF4C8D9A),
-                    ),
-                  ),
-                ],
-              ),
-              // Wishlist
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.favorite_border,
-                    color: Color(0xFF4C8D9A),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Wishlist',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF4C8D9A),
-                    ),
-                  ),
-                ],
-              ),
-              // Messages
-              // Notifications (Active)
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Stack(
-                    children: [
-                      const Icon(
-                        Icons.notifications,
-                        color: Color(0xFF13C8EC),
-                      ),
-                      Positioned(
-                        top: -4,
-                        right: -4,
-                        child: Container(
-                          width: 16,
-                          height: 16,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF13C8EC),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Center(
-                            child: Text(
-                              '2',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Notifications',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF13C8EC),
-                    ),
-                  ),
-                ],
-              ),
-              // Profile
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.person_outline,
-                    color: Color(0xFF4C8D9A),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Profile',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF4C8D9A),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book_online_outlined),
+          label: 'Bookings',
         ),
-      ),
+        BottomNavigationBarItem(
+          icon: SizedBox.shrink(),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.notifications_outlined),
+          label: 'Notifications',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

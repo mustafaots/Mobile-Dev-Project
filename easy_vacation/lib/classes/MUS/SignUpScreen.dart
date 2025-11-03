@@ -1,4 +1,5 @@
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/styles/RegistrationStyles.dart';
@@ -66,8 +67,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: const CircleAvatar(
-                    radius: 35,
-                    backgroundImage: AssetImage('assets/palm.webp'),
+                    radius: 45,
+                    child: Icon(
+                      Icons.landscape,
+                      size: 60,
+                      color: Color.fromARGB(255, 135, 201, 119), 
+                    ),
                   ),
                 ),
               ],
@@ -199,11 +204,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onTap: () {
                 // Add navigation to login screen
               },
-              child: Text(
-                'Already have an account? Login',
-                style: small_grey_text.copyWith(
-                  color: blue,
-                  fontWeight: FontWeight.w500,
+              child: GestureDetector(
+                onTap: () {
+                  ///////////////////////////////////////////////////////
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                  ///////////////////////////////////////////////////////
+                },
+                child: Text(
+                  "Already have an account? Login",
+                  style: small_grey_text.copyWith(
+                    color: blue,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

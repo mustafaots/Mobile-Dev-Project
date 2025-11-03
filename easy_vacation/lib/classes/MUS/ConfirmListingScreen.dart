@@ -1,5 +1,6 @@
+// ConfirmListingScreen.dart
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
-import 'package:easy_vacation/shared/colors.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmAndPostScreen extends StatefulWidget {
@@ -15,24 +16,19 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppTheme.lightGrey,
       appBar: AppBar(
         title: const Text("Confirm & Post"),
-        backgroundColor: blue,
-        foregroundColor: white,
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: AppTheme.white,
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+            Container(
+              decoration: AppTheme.cardDecoration,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -46,48 +42,26 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Base Price"),
-                        Text("\$50"),
-                      ],
-                    ),
+                    _buildSummaryRow("Base Price", "\$50"),
                     const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Service Fee"),
-                        Text("\$5"),
-                      ],
-                    ),
+                    _buildSummaryRow("Service Fee", "\$5"),
                     const Divider(height: 20, thickness: 1),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          "Total",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "\$55",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                      ],
+                    _buildSummaryRow(
+                      "Total",
+                      "\$55",
+                      isBold: true,
+                      isColored: true,
                     ),
                     const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.blue[50],
+                        color: AppTheme.primaryColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.star, color: Colors.blueAccent),
+                          Icon(Icons.star, color: AppTheme.primaryColor),
                           SizedBox(width: 8),
                           Text("Subscription: \n Premium Plan (30 days)"),
                         ],
@@ -97,14 +71,9 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+            Container(
+              decoration: AppTheme.cardDecoration,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -128,9 +97,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
             Row(
               children: [
                 Checkbox(
@@ -138,7 +105,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                   onChanged: (val) {
                     setState(() => agreedCheck = val!);
                   },
-                  activeColor: Colors.blueAccent,
+                  activeColor: AppTheme.primaryColor,
                 ),
                 const Expanded(
                   child: Text(
@@ -148,9 +115,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 30),
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -159,36 +124,48 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Listing posted successfully!"),
-                            backgroundColor: Colors.green,
+                            backgroundColor: AppTheme.successColor,
                           ),
                         );
                       }
-                    : ()=>{
-                      ///////////////////////////////////////////////////////
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      )
-                      ///////////////////////////////////////////////////////
-                    }, // disabled if not agreed
-
-                    
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.blueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                    : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      },
+                style: AppTheme.primaryButtonStyle,
                 child: const Text(
                   "Post Listing",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 18, color: AppTheme.white),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSummaryRow(String label, String value,
+      {bool isBold = false, bool isColored = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: isBold
+              ? const TextStyle(fontWeight: FontWeight.bold)
+              : null,
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            color: isColored ? AppTheme.primaryColor : null,
+          ),
+        ),
+      ],
     );
   }
 }
