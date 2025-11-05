@@ -1,4 +1,3 @@
-// ProfilePage.dart
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:flutter/material.dart';
@@ -44,110 +43,110 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Profile Section
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Container(
-                    width: 128,
-                    height: 128,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Mohamed',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Mohamed@easyvacation.com',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF6B7280),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Subscription Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Profile Section
+              Padding(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
+                child: Column(
                   children: [
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: 128,
+                      height: 128,
                       decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: const Icon(
-                        Icons.workspace_premium,
-                        color: Colors.white,
-                        size: 24,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Subscription: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Monthly',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.amber,
-                              ),
-                            ),
-                          ],
-                        ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Mohamed',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Mohamed@easyvacation.com',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xFF6B7280),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
 
-            // Menu Items
-            Expanded(
-              child: Padding(
+              // Subscription Card
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Icon(
+                          Icons.workspace_premium,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      const Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Subscription: ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Monthly',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.amber,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Menu Items (no Expanded here!)
+              Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
@@ -173,46 +172,45 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-            ),
 
-            // Logout Button
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    ///////////////////////////////////////////////////////
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                    ///////////////////////////////////////////////////////
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red.withOpacity(0.1),
-                    foregroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+              // Logout Button
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red.withOpacity(0.1),
+                      foregroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                  icon: const Icon(Icons.logout, size: 20),
-                  label: const Text(
-                    'Log out',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                    icon: const Icon(Icons.logout, size: 20),
+                    label: const Text(
+                      'Log out',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -289,7 +287,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Colors.white,
       elevation: 8,
       selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: Color(0xFF6B7280),
+      unselectedItemColor: const Color(0xFF6B7280),
       currentIndex: _navIdx,
       onTap: (index) {
         if (index != 2) {

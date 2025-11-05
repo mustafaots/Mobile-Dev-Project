@@ -1,9 +1,6 @@
 // addReviewPage.dart
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:confetti/confetti.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:math';
 import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
 import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
@@ -25,9 +22,6 @@ class _AddReviewPageState extends State<AddReviewPage> {
   int _valueRating = 0;
   String _selectedEmoji = '';
   final TextEditingController _reviewController = TextEditingController();
-  final ConfettiController _confettiController = ConfettiController(duration: Duration(seconds: 2));
-  final stt.SpeechToText _speechToText = stt.SpeechToText();
-  bool _isListening = false;
   bool _showPreview = false;
   bool _showCategories = false;
   int _navIdx = 0;
@@ -40,7 +34,6 @@ class _AddReviewPageState extends State<AddReviewPage> {
     const ProfilePage()
   ];
 
-  // Emoji reactions data
   final List<Map<String, dynamic>> _emojiReactions = [
     {'emoji': '😠', 'label': 'Terrible', 'value': 1},
     {'emoji': '😕', 'label': 'Poor', 'value': 2},
@@ -49,7 +42,6 @@ class _AddReviewPageState extends State<AddReviewPage> {
     {'emoji': '🤩', 'label': 'Excellent', 'value': 5},
   ];
 
-  // Review suggestions
   final List<String> _suggestions = [
     'Great service!',
     'Very clean and tidy',
@@ -60,25 +52,9 @@ class _AddReviewPageState extends State<AddReviewPage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _reviewController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
   void dispose() {
     _reviewController.dispose();
-    _confettiController.dispose();
     super.dispose();
-  }
-
-  void _logReviewSubmission(int rating, String review) {
-    assert(() {
-      print('Review Submission - Rating: $rating stars, Review: $review');
-      return true;
-    }());
   }
 
   bool _canSubmit() {
@@ -92,42 +68,20 @@ class _AddReviewPageState extends State<AddReviewPage> {
     return ratingProgress + reviewProgress + categoryProgress;
   }
 
-  void _toggleListening() async {
-    if (!_isListening) {
-      bool available = await _speechToText.initialize();
-      if (available) {
-        setState(() => _isListening = true);
-        _speechToText.listen(
-          onResult: (result) {
-            setState(() {
-              _reviewController.text = result.recognizedWords;
-            });
-          },
-        );
-      }
-    } else {
-      setState(() => _isListening = false);
-      _speechToText.stop();
-    }
-  }
-
   void _submitReview() {
     if (_canSubmit()) {
-      _confettiController.play();
-      _logReviewSubmission(_rating, _reviewController.text);
-      
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Review Submitted!', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.bold)),
-          content: Text('Thank you for your feedback!', style: GoogleFonts.plusJakartaSans()),
+          title: const Text('Review Submitted!', style: TextStyle(fontWeight: FontWeight.bold)),
+          content: const Text('Thank you for your feedback!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
-              child: Text('OK', style: GoogleFonts.plusJakartaSans()),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -136,23 +90,29 @@ class _AddReviewPageState extends State<AddReviewPage> {
   }
 
   List<Color> _getBackgroundColors() {
-    if (_rating == 0) return [Color(0xFFF2F2F7), Color(0xFFF2F2F7)];
+    if (_rating == 0) return [const Color(0xFFF2F2F7), const Color(0xFFF2F2F7)];
     switch (_rating) {
-      case 1: return [Color(0xFFFFE5E5), Color(0xFFFFF5F5)];
-      case 2: return [Color(0xFFFFF0E5), Color(0xFFFFF9F5)];
-      case 3: return [Color(0xFFFFFFE5), Color(0xFFFFFFF5)];
-      case 4: return [Color(0xFFF0FFE5), Color(0xFFF9FFF5)];
-      case 5: return [Color(0xFFE5FFEE), Color(0xFFF5FFFA)];
-      default: return [Color(0xFFF2F2F7), Color(0xFFF2F2F7)];
+      case 1:
+        return [const Color(0xFFFFE5E5), const Color(0xFFFFF5F5)];
+      case 2:
+        return [const Color(0xFFFFF0E5), const Color(0xFFFFF9F5)];
+      case 3:
+        return [const Color(0xFFFFFFE5), const Color(0xFFFFFFF5)];
+      case 4:
+        return [const Color(0xFFF0FFE5), const Color(0xFFF9FFF5)];
+      case 5:
+        return [const Color(0xFFE5FFEE), const Color(0xFFF5FFFA)];
+      default:
+        return [const Color(0xFFF2F2F7), const Color(0xFFF2F2F7)];
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF2F2F7),
+      backgroundColor: const Color(0xFFF2F2F7),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Add a Review',
           style: TextStyle(
             color: Colors.black87,
@@ -163,16 +123,15 @@ class _AddReviewPageState extends State<AddReviewPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SafeArea(
         child: Stack(
           children: [
-            // Animated background gradient
             AnimatedContainer(
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -181,281 +140,199 @@ class _AddReviewPageState extends State<AddReviewPage> {
                 ),
               ),
             ),
-
-            // Confetti
-            ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirection: -pi / 2,
-              emissionFrequency: 0.05,
-              numberOfParticles: 20,
-              gravity: 0.1,
-            ),
-
             Column(
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        // Rating Title
-                        Text(
+                        const SizedBox(height: 8),
+                        const Text(
                           'Rate Your Experience',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF1D1D1F),
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
 
-                        // Animated Stars
+                        // Star rating
                         Row(
-                          key: const Key('star_rating_row'),
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(5, (index) {
                             bool isSelected = index < _rating;
-                            return AnimatedContainer(
-                              key: Key('star_$index'),
-                              duration: Duration(milliseconds: 200),
-                              transform: isSelected ? 
-                                (Matrix4.identity()..scale(1.2)) : Matrix4.identity(),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _rating = index + 1;
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(4),
-                                  child: Icon(
-                                    isSelected ? Icons.star : Icons.star_border,
-                                    color: isSelected ? Color(0xFFF5A623) : Color(0xFF8E8E93),
-                                    size: 42,
-                                  ),
+                            return GestureDetector(
+                              onTap: () => setState(() => _rating = index + 1),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Icon(
+                                  isSelected ? Icons.star : Icons.star_border,
+                                  color: isSelected ? const Color(0xFFF5A623) : const Color(0xFF8E8E93),
+                                  size: 40,
                                 ),
                               ),
                             );
                           }),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           '$_rating/5 Stars',
-                          style: GoogleFonts.plusJakartaSans(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF8E8E93),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
 
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                        // Emoji Reactions
-                        Column(
-                          key: const Key('emoji_reactions'),
-                          children: [
-                            Text(
-                              'How was your experience?',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1D1D1F).withOpacity(0.8),
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: _emojiReactions.map((reaction) {
-                                return GestureDetector(
-                                  key: Key('emoji_${reaction['value']}'),
-                                  onTap: () {
-                                    setState(() {
-                                      _selectedEmoji = reaction['emoji'];
-                                      _rating = reaction['value'];
-                                    });
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: _selectedEmoji == reaction['emoji'] ? 
-                                            Color(0xFF4A90E2).withOpacity(0.1) : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Text(
-                                          reaction['emoji'],
-                                          style: TextStyle(fontSize: 28),
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        reaction['label'],
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 12,
-                                          color: Color(0xFF1D1D1F),
-                                        ),
-                                      ),
-                                    ],
+                        // Emoji reaction
+                        const Text(
+                          'How was your experience?',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1D1D1F),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: _emojiReactions.map((reaction) {
+                            return GestureDetector(
+                              onTap: () => setState(() {
+                                _selectedEmoji = reaction['emoji'];
+                                _rating = reaction['value'];
+                              }),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: _selectedEmoji == reaction['emoji']
+                                          ? const Color(0xFF4A90E2).withOpacity(0.1)
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(reaction['emoji'], style: const TextStyle(fontSize: 28)),
                                   ),
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    reaction['label'],
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF1D1D1F),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
 
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
 
-                        // Category Ratings Toggle
+                        // Category ratings
                         Row(
-                          key: const Key('category_toggle_row'),
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Detailed Ratings',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF1D1D1F),
                               ),
                             ),
                             Switch(
-                              key: const Key('category_toggle_switch'),
                               value: _showCategories,
                               onChanged: (value) => setState(() => _showCategories = value),
-                              activeColor: Color(0xFF4A90E2),
+                              activeColor: const Color(0xFF4A90E2),
                             ),
                           ],
                         ),
 
                         if (_showCategories) ...[
-                          SizedBox(height: 16),
-                          _buildCategoryRating('Cleanliness', _cleanlinessRating, (value) => _cleanlinessRating = value),
-                          _buildCategoryRating('Service', _serviceRating, (value) => _serviceRating = value),
-                          _buildCategoryRating('Location', _locationRating, (value) => _locationRating = value),
-                          _buildCategoryRating('Value', _valueRating, (value) => _valueRating = value),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                          _buildCategoryRating('Cleanliness', _cleanlinessRating, (v) => _cleanlinessRating = v),
+                          _buildCategoryRating('Service', _serviceRating, (v) => _serviceRating = v),
+                          _buildCategoryRating('Location', _locationRating, (v) => _locationRating = v),
+                          _buildCategoryRating('Value', _valueRating, (v) => _valueRating = v),
                         ],
 
-                        // Share Your Thoughts Section
-                        Align(
+                        const SizedBox(height: 24),
+
+                        const Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Share Your Thoughts',
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1D1D1F),
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
-                        // Smart Suggestions
+                        // Suggestions
                         Wrap(
-                          key: const Key('suggestions_wrap'),
                           spacing: 8,
                           runSpacing: 8,
-                          children: _suggestions.map((suggestion) => InputChip(
-                            key: Key('suggestion_${suggestion.hashCode}'),
-                            label: Text(
-                              suggestion,
-                              style: GoogleFonts.plusJakartaSans(fontSize: 12),
-                            ),
-                            onSelected: (_) {
-                              setState(() {
-                                if (_reviewController.text.isNotEmpty) {
-                                  _reviewController.text += ' $suggestion';
-                                } else {
-                                  _reviewController.text = suggestion;
-                                }
-                              });
-                            },
-                            backgroundColor: Color(0xFF4A90E2).withOpacity(0.1),
-                            labelStyle: TextStyle(color: Color(0xFF4A90E2)),
-                          )).toList(),
+                          children: _suggestions.map((suggestion) {
+                            return InputChip(
+                              label: Text(suggestion, style: const TextStyle(fontSize: 12, color: Color(0xFF4A90E2))),
+                              onSelected: (_) {
+                                setState(() {
+                                  if (_reviewController.text.isNotEmpty) {
+                                    _reviewController.text += ' $suggestion';
+                                  } else {
+                                    _reviewController.text = suggestion;
+                                  }
+                                });
+                              },
+                              backgroundColor: const Color(0xFF4A90E2).withOpacity(0.1),
+                            );
+                          }).toList(),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
 
-                        // Text Field with Voice
-                        Container(
-                          key: const Key('review_text_field_container'),
-                          constraints: BoxConstraints(maxWidth: 480),
-                          child: TextField(
-                            key: const Key('review_text_field'),
-                            controller: _reviewController,
-                            maxLines: 6,
-                            decoration: InputDecoration(
-                              hintText: 'Tell us about your stay, what you liked, and what could be improved...',
-                              hintStyle: GoogleFonts.plusJakartaSans(
-                                color: Color(0xFF8E8E93),
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: Color(0xFFCFE3E7),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: Color(0xFF4A90E2),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.all(16),
-                              suffixIcon: IconButton(
-                                key: const Key('voice_button'),
-                                icon: Icon(
-                                  _isListening ? Icons.mic : Icons.mic_none,
-                                  color: _isListening ? Colors.red : Color(0xFF4A90E2),
-                                ),
-                                onPressed: _toggleListening,
-                              ),
+                        // Review text
+                        TextField(
+                          controller: _reviewController,
+                          maxLines: 6,
+                          decoration: InputDecoration(
+                            hintText: 'Tell us about your stay...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Color(0xFFCFE3E7)),
                             ),
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              color: Color(0xFF1D1D1F),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Color(0xFF4A90E2)),
                             ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(16),
                           ),
                         ),
 
-                        // Character Counter
-                        Container(
-                          key: const Key('character_counter'),
-                          width: double.infinity,
-                          padding: EdgeInsets.only(top: 8),
-                          child: Text(
-                            '${_reviewController.text.length}/300 characters',
-                            textAlign: TextAlign.right,
-                            style: GoogleFonts.plusJakartaSans(
-                              color: _reviewController.text.length > 300 ? 
-                                Colors.red : Color(0xFF8E8E93),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
+                        const SizedBox(height: 20),
 
-                        SizedBox(height: 20),
-
-                        // Review Preview Toggle
+                        // Preview toggle
                         Row(
-                          key: const Key('preview_toggle_row'),
                           children: [
                             Switch(
-                              key: const Key('preview_toggle_switch'),
                               value: _showPreview,
                               onChanged: (value) => setState(() => _showPreview = value),
-                              activeColor: Color(0xFF4A90E2),
+                              activeColor: const Color(0xFF4A90E2),
                             ),
-                            Text(
+                            const Text(
                               'Preview Review',
-                              style: GoogleFonts.plusJakartaSans(
+                              style: TextStyle(
                                 color: Color(0xFF1D1D1F),
                                 fontWeight: FontWeight.w500,
                               ),
@@ -463,117 +340,79 @@ class _AddReviewPageState extends State<AddReviewPage> {
                           ],
                         ),
 
-                        if (_showPreview) ...[
-                          SizedBox(height: 16),
+                        if (_showPreview)
                           Card(
-                            key: const Key('preview_card'),
                             margin: EdgeInsets.zero,
                             elevation: 2,
                             child: Padding(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    children: [
-                                      // Star rating preview
-                                      Row(
-                                        children: List.generate(5, (index) => Icon(
-                                          index < _rating ? Icons.star : Icons.star_border,
-                                          size: 16,
-                                          color: Color(0xFFF5A623),
-                                        )),
-                                      ),
-                                      Spacer(),
-                                      Text(
-                                        'Now',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 12,
-                                          color: Color(0xFF8E8E93),
-                                        ),
-                                      ),
-                                    ],
+                                    children: List.generate(5, (index) {
+                                      return Icon(
+                                        index < _rating ? Icons.star : Icons.star_border,
+                                        size: 16,
+                                        color: const Color(0xFFF5A623),
+                                      );
+                                    }),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Text(
-                                    _reviewController.text.isEmpty ? 
-                                      'Your review will appear here...' : _reviewController.text,
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 14,
-                                      color: Color(0xFF1D1D1F),
-                                    ),
+                                    _reviewController.text.isEmpty
+                                        ? 'Your review will appear here...'
+                                        : _reviewController.text,
                                   ),
-                                  if (_selectedEmoji.isNotEmpty) ...[
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Mood: $_selectedEmoji',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 12,
-                                        color: Color(0xFF8E8E93),
-                                      ),
+                                  if (_selectedEmoji.isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text('Mood: $_selectedEmoji', style: const TextStyle(fontSize: 12)),
                                     ),
-                                  ],
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
-                        ],
                       ],
                     ),
                   ),
                 ),
 
-                // Smart Submit Button with Progress
+                // Submit button
                 AnimatedContainer(
-                  key: const Key('submit_section'),
-                  duration: Duration(milliseconds: 300),
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
+                  duration: const Duration(milliseconds: 300),
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                        offset: Offset(0, -2),
-                      ),
-                    ],
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, -2))],
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Progress indicator
                       LinearProgressIndicator(
-                        key: const Key('progress_indicator'),
                         value: _getProgressValue(),
-                        backgroundColor: Color(0xFFE5E5EA),
-                        color: Color(0xFF4A90E2),
+                        backgroundColor: const Color(0xFFE5E5EA),
+                        color: const Color(0xFF4A90E2),
                         minHeight: 4,
                       ),
-                      SizedBox(height: 12),
+                      const SizedBox(height: 12),
                       ElevatedButton(
-                        key: const Key('submit_button'),
                         onPressed: _canSubmit() ? _submitReview : null,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _canSubmit() ? Color(0xFF4A90E2) : Color(0xFF8E8E93),
+                          backgroundColor: _canSubmit() ? const Color(0xFF4A90E2) : const Color(0xFF8E8E93),
                           foregroundColor: Colors.white,
-                          minimumSize: Size(double.infinity, 56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          minimumSize: const Size(double.infinity, 56),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           elevation: 2,
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.rate_review, size: 20),
                             SizedBox(width: 8),
                             Text(
                               'Submit Review',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -592,15 +431,14 @@ class _AddReviewPageState extends State<AddReviewPage> {
 
   Widget _buildCategoryRating(String category, int rating, Function(int) onRatingChanged) {
     return Padding(
-      key: Key('${category.toLowerCase()}_rating'),
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
           Expanded(
             flex: 2,
             child: Text(
               category,
-              style: GoogleFonts.plusJakartaSans(
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF1D1D1F),
@@ -614,16 +452,11 @@ class _AddReviewPageState extends State<AddReviewPage> {
               children: List.generate(5, (index) {
                 bool isSelected = index < rating;
                 return GestureDetector(
-                  key: Key('${category.toLowerCase()}_star_$index'),
                   onTap: () => setState(() => onRatingChanged(index + 1)),
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 100),
-                    transform: isSelected ? (Matrix4.identity()..scale(1.1)) : Matrix4.identity(),
-                    child: Icon(
-                      isSelected ? Icons.star : Icons.star_border,
-                      size: 20,
-                      color: isSelected ? Color(0xFFF5A623) : Color(0xFF8E8E93),
-                    ),
+                  child: Icon(
+                    isSelected ? Icons.star : Icons.star_border,
+                    size: 20,
+                    color: isSelected ? const Color(0xFFF5A623) : const Color(0xFF8E8E93),
                   ),
                 );
               }),
@@ -640,7 +473,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
       backgroundColor: Colors.white,
       elevation: 8,
       selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: Color(0xFF6B7280),
+      unselectedItemColor: const Color(0xFF6B7280),
       currentIndex: _navIdx,
       onTap: (index) {
         if (index != 2) {
@@ -654,26 +487,11 @@ class _AddReviewPageState extends State<AddReviewPage> {
         }
       },
       items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book_online_outlined),
-          label: 'Bookings',
-        ),
-        BottomNavigationBarItem(
-          icon: SizedBox.shrink(),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_outlined),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.book_online_outlined), label: 'Bookings'),
+        BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined), label: 'Notifications'),
+        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
       ],
     );
   }
