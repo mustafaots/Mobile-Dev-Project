@@ -1,5 +1,6 @@
 // addReviewPage.dart
 import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
@@ -108,20 +109,20 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7),
+      backgroundColor: AppTheme.white,
       appBar: AppBar(
         title: const Text(
           'Add a Review',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back, color: AppTheme.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -151,7 +152,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1D1D1F),
+                            color: AppTheme.black,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -168,7 +169,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                                 padding: const EdgeInsets.all(4),
                                 child: Icon(
                                   isSelected ? Icons.star : Icons.star_border,
-                                  color: isSelected ? const Color(0xFFF5A623) : const Color(0xFF8E8E93),
+                                  color: isSelected ? AppTheme.neutralColor : AppTheme.grey,
                                   size: 40,
                                 ),
                               ),
@@ -180,7 +181,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           '$_rating/5 Stars',
                           style: const TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF8E8E93),
+                            color: AppTheme.grey,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -193,7 +194,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF1D1D1F),
+                            color: AppTheme.darkGrey,
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -211,7 +212,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                                     padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       color: _selectedEmoji == reaction['emoji']
-                                          ? const Color(0xFF4A90E2).withOpacity(0.1)
+                                          ? AppTheme.primaryColor
                                           : Colors.transparent,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -222,7 +223,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                                     reaction['label'],
                                     style: const TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF1D1D1F),
+                                      color: AppTheme.darkGrey,
                                     ),
                                   ),
                                 ],
@@ -242,13 +243,13 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF1D1D1F),
+                                color: AppTheme.darkGrey,
                               ),
                             ),
                             Switch(
                               value: _showCategories,
                               onChanged: (value) => setState(() => _showCategories = value),
-                              activeColor: const Color(0xFF4A90E2),
+                              activeColor: AppTheme.primaryColor,
                             ),
                           ],
                         ),
@@ -270,7 +271,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF1D1D1F),
+                              color: AppTheme.darkGrey,
                             ),
                           ),
                         ),
@@ -282,18 +283,8 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           runSpacing: 8,
                           children: _suggestions.map((suggestion) {
                             return InputChip(
-                              label: Text(suggestion, style: const TextStyle(fontSize: 12, color: Color(0xFF4A90E2))),
-                              onSelected: (_) {
-                                setState(() {
-                                  if (_reviewController.text.isNotEmpty) {
-                                    _reviewController.text += ' $suggestion';
-                                  } else {
-                                    _reviewController.text = suggestion;
-                                  }
-                                });
-                              },
-                              backgroundColor: const Color(0xFF4A90E2).withOpacity(0.1),
-                            );
+                              label: Text(suggestion, style: const TextStyle(fontSize: 12, color: AppTheme.primaryColor),
+                            ) );
                           }).toList(),
                         ),
                         const SizedBox(height: 12),
@@ -306,14 +297,14 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                             hintText: 'Tell us about your stay...',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFFCFE3E7)),
+                              borderSide: const BorderSide(color: AppTheme.white),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF4A90E2)),
+                              borderSide: const BorderSide(color: AppTheme.primaryColor),
                             ),
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: AppTheme.white,
                             contentPadding: const EdgeInsets.all(16),
                           ),
                         ),
@@ -326,12 +317,12 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                             Switch(
                               value: _showPreview,
                               onChanged: (value) => setState(() => _showPreview = value),
-                              activeThumbColor: const Color(0xFF4A90E2),
+                              activeThumbColor: AppTheme.primaryColor,
                             ),
                             const Text(
                               'Preview Review',
                               style: TextStyle(
-                                color: Color(0xFF1D1D1F),
+                                color: AppTheme.darkGrey,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -352,7 +343,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                                       return Icon(
                                         index < _rating ? Icons.star : Icons.star_border,
                                         size: 16,
-                                        color: const Color(0xFFF5A623),
+                                        color: AppTheme.neutralColor,
                                       );
                                     }),
                                   ),
@@ -389,16 +380,16 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     children: [
                       LinearProgressIndicator(
                         value: _getProgressValue(),
-                        backgroundColor: const Color(0xFFE5E5EA),
-                        color: const Color(0xFF4A90E2),
+                        backgroundColor: AppTheme.lightGrey,
+                        color: AppTheme.primaryColor,
                         minHeight: 4,
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
                         onPressed: _canSubmit() ? _submitReview : null,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _canSubmit() ? const Color(0xFF4A90E2) : const Color(0xFF8E8E93),
-                          foregroundColor: Colors.white,
+                          backgroundColor: _canSubmit() ? AppTheme.primaryColor : AppTheme.grey,
+                          foregroundColor: AppTheme.white,
                           minimumSize: const Size(double.infinity, 56),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           elevation: 2,
@@ -439,7 +430,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF1D1D1F),
+                color: AppTheme.darkGrey,
               ),
             ),
           ),
@@ -454,7 +445,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                   child: Icon(
                     isSelected ? Icons.star : Icons.star_border,
                     size: 20,
-                    color: isSelected ? const Color(0xFFF5A623) : const Color(0xFF8E8E93),
+                    color: isSelected ? AppTheme.neutralColor : AppTheme.grey,
                   ),
                 );
               }),
@@ -468,10 +459,10 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   BottomNavigationBar _buildBottomNavigationBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white,
       elevation: 8,
-      selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: const Color(0xFF6B7280),
+      selectedItemColor: AppTheme.primaryColor,
+      unselectedItemColor: AppTheme.grey,
       currentIndex: _navIdx,
       onTap: (index) {
         if (index != 2) {

@@ -6,10 +6,12 @@ class AppTheme {
   static const Color primaryColor = Color.fromARGB(255, 20, 29, 153);
   static const Color white = Colors.white;
   static const Color black = Colors.black87;
+  static const Color darkGrey = Color(0xFF374151);
   static const Color grey = Color(0xFF6B7280);
   static const Color lightGrey = Color(0xFFF3F4F6);
   static const Color successColor = Colors.green;
   static const Color failureColor = Colors.red;
+  static const Color neutralColor = Colors.amber;
 
   // Text Styles
   static const TextStyle header1 = TextStyle(

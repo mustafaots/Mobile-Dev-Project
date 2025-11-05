@@ -25,17 +25,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.white,
       appBar: AppBar(
         title: const Text(
           'Notifications',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
       ),
       body: SafeArea(
@@ -57,7 +57,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                              color: AppTheme.black,
                             ),
                           ),
                         ],
@@ -66,7 +66,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     // New Notifications Card
                     Card(
                       elevation: 2,
-                      color: Colors.white,
+                      color: AppTheme.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -81,12 +81,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.blueAccent.withOpacity(0.2),
+                                    color: AppTheme.primaryColor,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.calendar_today,
-                                    color: Colors.blueAccent,
+                                    color: AppTheme.primaryColor,
                                     size: 20,
                                   ),
                                 ),
@@ -99,7 +99,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'Your booking is confirmed!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
+                                          color: AppTheme.black,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -107,7 +107,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'You have successfully booked \'Vintage VW Camper\' for Aug 15-20.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -115,7 +115,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         '2 hours ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                     ],
@@ -145,12 +145,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: Colors.amber.withOpacity(0.2),
+                                    color: AppTheme.neutralColor,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.star,
-                                    color: Colors.amber,
+                                    color: AppTheme.neutralColor,
                                     size: 20,
                                   ),
                                 ),
@@ -163,7 +163,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'Share your experience',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
+                                          color: AppTheme.black,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -171,7 +171,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'Your stay at \'Lakeside Cabin Retreat\' ended yesterday. How was it?',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                       const SizedBox(height: 12),
@@ -230,7 +230,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                              color: AppTheme.black,
                             ),
                           ),
                         ],
@@ -239,7 +239,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     // Earlier Notifications Card
                     Card(
                       elevation: 2,
-                      color: Colors.white,
+                      color: AppTheme.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -254,13 +254,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFF3F4F6),
+                                    color: AppTheme.lightGrey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.directions_car,
                                     size: 20,
-                                    color: Color(0xFF6B7280),
+                                    color: AppTheme.grey,
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -271,7 +271,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       const Text(
                                         'Your \'Fiat 500\' rental is starting in 3 days.',
                                         style: TextStyle(
-                                          color: Colors.black87,
+                                          color: AppTheme.black,
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -279,7 +279,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         '3 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                     ],
@@ -295,13 +295,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
-                                    color: Color(0xFFF3F4F6),
+                                    color: AppTheme.lightGrey,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.campaign,
                                     size: 20,
-                                    color: Color(0xFF6B7280),
+                                    color: AppTheme.grey,
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -313,7 +313,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'New summer deals!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
+                                          color: AppTheme.black,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -321,7 +321,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'Check out our new listings with up to 20% off.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -329,7 +329,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         '5 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Color(0xFF6B7280),
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                     ],
