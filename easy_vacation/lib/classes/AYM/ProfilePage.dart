@@ -12,35 +12,23 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List staticNavigation = [
-    const HomeScreen(),
-    const MyBookingsScreen(),
-    '',
-    const NotificationsPage(),
-    const ProfilePage()
-  ];
-
-  int _navIdx = 0;
+  int _navIdx = 4; // Profile is index 4
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      appBar:  AppBar(
         title: const Text(
           'Profile',
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 23,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -84,68 +72,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-
-              // Subscription Card
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: const Icon(
-                          Icons.workspace_premium,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      const Expanded(
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Subscription: ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Monthly',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // ... rest of your existing profile content
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: SubscriptionCard(),
               ),
-
-              // Menu Items (no Expanded here!)
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -172,8 +103,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-
-              // Logout Button
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: SizedBox(
@@ -182,8 +111,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const LoginScreen(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -213,7 +150,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -280,48 +216,68 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
 
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: const Color(0xFF6B7280),
-      currentIndex: _navIdx,
-      onTap: (index) {
-        if (index != 2) {
-          setState(() {
-            _navIdx = index;
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => staticNavigation[index]),
-          );
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book_online_outlined),
-          label: 'Bookings',
-        ),
-        BottomNavigationBarItem(
-          icon: SizedBox.shrink(),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_outlined),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: 'Profile',
-        ),
-      ],
+// Extract subscription card to separate widget
+class SubscriptionCard extends StatelessWidget {
+  const SubscriptionCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: const BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: const Icon(
+              Icons.workspace_premium,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          const Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Subscription: ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'Monthly',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.amber,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

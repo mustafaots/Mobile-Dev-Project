@@ -5,10 +5,34 @@ import 'package:easy_vacation/shared/themes.dart';
 class PostDetailsScreen extends StatelessWidget {
   const PostDetailsScreen({super.key});
 
+  // Move static data to class level to avoid rebuilding
+  static const List<List<String>> _calendarDays = [
+    ['28', '29', '30', '1', '2', '3', '4'],
+    ['5', '6', '7', '8', '9', '10', '11'],
+    ['12', '13', '14', '15', '16', '17', '18'],
+    ['19', '20', '21', '22', '23', '24', '25'],
+    ['26', '27', '28', '29', '30', '31', '1'],
+  ];
+
+  static const List<String> _weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.lightGrey,
+      appBar: AppBar(
+        title: const Text(
+          'Listing Details',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
+        ),
+
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      backgroundColor: AppTheme.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -16,31 +40,15 @@ class PostDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header with back button and actions
-                  _buildHeader(context),
-                  
-                  // Image gallery
                   _buildImageGallery(),
-                  
-                  // Title and description
                   _buildTitleSection(),
-                  
-                  // Host info and price
                   _buildHostInfo(),
-                  
-                  // Reviews section
                   _buildReviewsSection(),
-                
-                  // Availability calendar
                   _buildAvailabilitySection(),
-                  
-                  // Bottom spacing
                   const SizedBox(height: 112),
                 ],
               ),
             ),
-            
-            // Bottom action buttons
             _buildBottomActions(context),
           ],
         ),
@@ -48,66 +56,61 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
+  Widget _buildHeader() {
+    return Row(
         children: [
-          const Spacer(),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.bookmark_border, color: AppTheme.black, size: 24),
+            icon: Icon(Icons.bookmark_border, color: AppTheme.white, size: 24),
             style: IconButton.styleFrom(
-              backgroundColor: AppTheme.white,
+              backgroundColor: AppTheme.primaryColor,
               padding: const EdgeInsets.all(12),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 16),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.share, color: AppTheme.black, size: 24),
+            icon: Icon(Icons.share, color: AppTheme.white, size: 24),
             style: IconButton.styleFrom(
-              backgroundColor: AppTheme.white,
+              backgroundColor: AppTheme.primaryColor,
               padding: const EdgeInsets.all(12),
             ),
           ),
         ],
-      ),
     );
   }
 
   Widget _buildImageGallery() {
     return SizedBox(
       height: 200,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: [
-          _buildImageItem('assets/images/beachfront_cottage.jpg', 'A beautiful beachfront cottage with a porch'),
-          const SizedBox(width: 12),
-          _buildImageItem('assets/images/living_room.jpg', 'The cozy living room of the cottage with a fireplace'),
-          const SizedBox(width: 12),
-          _buildImageItem('assets/images/bedroom_ocean_view.jpg', 'A bedroom with a view of the ocean'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImageItem(String imagePath, String altText) {
-    return Container(
-      width: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.cover,
-        ),
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          final images = const [
+            {'path': 'assets/images/beachfront_cottage.jpg', 'alt': 'A beautiful beachfront cottage with a porch'},
+            {'path': 'assets/images/living_room.jpg', 'alt': 'The cozy living room of the cottage with a fireplace'},
+            {'path': 'assets/images/bedroom_ocean_view.jpg', 'alt': 'A bedroom with a view of the ocean'},
+          ];
+          return Container(
+            width: 300,
+            margin: EdgeInsets.only(right: index < 2 ? 12 : 0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                image: AssetImage(images[index]['path']!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildTitleSection() {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,6 +134,8 @@ class PostDetailsScreen extends StatelessWidget {
               height: 1.5,
             ),
           ),
+          const SizedBox(height: 16),
+          _buildHeader(),
         ],
       ),
     );
@@ -343,20 +348,11 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildCalendarGrid() {
-    const List<String> weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-    const List<List<String>> calendarDays = [
-      ['28', '29', '30', '1', '2', '3', '4'],
-      ['5', '6', '7', '8', '9', '10', '11'],
-      ['12', '13', '14', '15', '16', '17', '18'],
-      ['19', '20', '21', '22', '23', '24', '25'],
-      ['26', '27', '28', '29', '30', '31', '1'],
-    ];
-
     return Column(
       children: [
         // Week days header
         Row(
-          children: weekDays.map((day) => Expanded(
+          children: _weekDays.map((day) => Expanded(
             child: Text(
               day,
               textAlign: TextAlign.center,
@@ -370,11 +366,11 @@ class PostDetailsScreen extends StatelessWidget {
         const SizedBox(height: 8),
         
         // Calendar days
-        for (int row = 0; row < calendarDays.length; row++)
+        for (int row = 0; row < _calendarDays.length; row++)
           Padding(
             padding: const EdgeInsets.only(bottom: 4),
             child: Row(
-              children: calendarDays[row].asMap().entries.map((entry) {
+              children: _calendarDays[row].asMap().entries.map((entry) {
                 String day = entry.value;
                 bool isAvailable = !['13', '14', '23', '24'].contains(day);
                 bool isSelected = ['7', '8', '9', '10'].contains(day);
@@ -430,7 +426,22 @@ class PostDetailsScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyBookingsScreen()),
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const MyBookingsScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.fastOutSlowIn,
+                          )),
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
                   );
                 },
                 style: AppTheme.primaryButtonStyle,

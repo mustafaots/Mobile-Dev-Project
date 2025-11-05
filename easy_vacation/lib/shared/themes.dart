@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Colors - Use Flutter's standard colors for consistency
-  static const Color primaryColor = Colors.blueAccent;
+  static const Color primaryColor = Color.fromARGB(255, 20, 29, 153);
   static const Color white = Colors.white;
   static const Color black = Colors.black87;
   static const Color grey = Color(0xFF6B7280);

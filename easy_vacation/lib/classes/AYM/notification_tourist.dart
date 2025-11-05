@@ -1,5 +1,6 @@
 // notification_tourist.dart
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
 import 'package:easy_vacation/classes/MAS/my_bookings.dart';
@@ -32,15 +33,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 23,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
       ),
       body: SafeArea(
         child: Column(
@@ -182,8 +179,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                       ElevatedButton(
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.blueAccent,
-                                          foregroundColor: Colors.white,
+                                          backgroundColor: AppTheme.primaryColor,
+                                          foregroundColor: AppTheme.white,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(24),
                                           ),
@@ -352,51 +349,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      selectedItemColor: Colors.blueAccent,
-      unselectedItemColor: Color(0xFF6B7280),
-      currentIndex: _navIdx,
-      onTap: (index) {
-        if (index != 2) {
-          setState(() {
-            _navIdx = index;
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => staticNavigation[index]),
-          );
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book_online_outlined),
-          label: 'Bookings',
-        ),
-        BottomNavigationBarItem(
-          icon: SizedBox.shrink(),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications_outlined),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          label: 'Profile',
-        ),
-      ],
     );
   }
 }

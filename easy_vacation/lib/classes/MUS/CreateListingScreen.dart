@@ -158,9 +158,19 @@ class _CreateListingState extends State<CreateListing> {
                   if (_formKey.currentState!.validate()) {
 
                     ///////////////////////////////////////////////////////
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => ConfirmAndPostScreen()),
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const ConfirmAndPostScreen(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                      (route) => false, // This removes all previous routes
                     );
                     ///////////////////////////////////////////////////////
                   }

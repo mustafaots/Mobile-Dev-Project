@@ -183,9 +183,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () => {
 
                 ///////////////////////////////////////////////////////
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const HomeScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                  (route) => false, // This removes all previous routes
                 )
                 ///////////////////////////////////////////////////////
 
@@ -207,9 +217,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: GestureDetector(
                 onTap: () {
                   ///////////////////////////////////////////////////////
-                  Navigator.pushReplacement(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const LoginScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false, // This removes all previous routes
                   );
                   ///////////////////////////////////////////////////////
                 },

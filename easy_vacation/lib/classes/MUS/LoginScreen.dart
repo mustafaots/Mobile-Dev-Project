@@ -115,12 +115,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 onPressed: () => {
 
-                ///////////////////////////////////////////////////////
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                )
-                ///////////////////////////////////////////////////////
+                  ///////////////////////////////////////////////////////
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false, // This removes all previous routes
+                  )
+                  ///////////////////////////////////////////////////////
 
                 },
                 child: Text(
@@ -155,9 +165,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: GestureDetector(
                     onTap: () {
                       ///////////////////////////////////////////////////////
-                      Navigator.pushReplacement(
+                      Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()),
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const SignUpScreen(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                        (route) => false, // This removes all previous routes
                       );
                       ///////////////////////////////////////////////////////
                     },

@@ -129,10 +129,22 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                         );
                       }
                     : () {
-                        Navigator.push(
+                        ///////////////////////////////////////////////////////
+                        Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => const HomeScreen(),
+                            transitionsBuilder: (_, animation, __, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(milliseconds: 300),
+                          ),
+                          (route) => false, // This removes all previous routes
                         );
+                        ///////////////////////////////////////////////////////
                       },
                 style: AppTheme.primaryButtonStyle,
                 child: const Text(

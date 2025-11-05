@@ -7,12 +7,22 @@ class MyBookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.lightGrey,
+      backgroundColor: AppTheme.white,
+      appBar: AppBar(
+        title: const Text(
+          'Bookings',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // Header
-            _buildHeader(context),
             
             // Filter chips
             _buildFilterChips(),
@@ -86,7 +96,7 @@ class MyBookingsScreen extends StatelessWidget {
     final List<String> filters = ['All', 'Pending', 'Confirmed', 'Canceled'];
     
     return SizedBox(
-      height: 40,
+      height: 60,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -100,6 +110,8 @@ class MyBookingsScreen extends StatelessWidget {
             child: FilterChip(
               label: Text(filter),
               selected: isSelected,
+              checkmarkColor: AppTheme.white, // Yellow checkmark
+              selectedShadowColor: AppTheme.white,
               onSelected: (_) {},
               backgroundColor: AppTheme.white,
               selectedColor: AppTheme.primaryColor,

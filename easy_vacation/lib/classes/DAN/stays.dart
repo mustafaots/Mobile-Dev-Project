@@ -9,7 +9,7 @@ class Stays extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Text('Featured Listings',
             style: TextStyle(
@@ -18,26 +18,35 @@ class Stays extends StatelessWidget {
             ),
           ),
         ),
-
-        SizedBox(height: 20,),
-
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              for(var i=1; i<=5; i++)
-
-              GestureDetector(
-                onTap: ()=>{
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 240,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: (){
                   ///////////////////////////////////////////////////////
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => PostDetailsScreen()),
-                  )
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false, // This removes all previous routes
+                  );
                   ///////////////////////////////////////////////////////
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.only(right: 20),
                   width: 260,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +60,7 @@ class Stays extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
@@ -69,45 +78,56 @@ class Stays extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-
-            ],
+              );
+            },
           ),
         ),
-
-        SizedBox(height: 30,),
-        
+        const SizedBox(height: 30),
         Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 30,
             children: [
-              Text('Recommended for You',
+              const Text('Recommended for You',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900
                 ),
               ),
-              for(var i=0; i<5; i++)
-                GestureDetector(
-                  onTap: ()=>{
-                    ///////////////////////////////////////////////////////
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PostDetailsScreen()),
-                    )
-                    ///////////////////////////////////////////////////////
-                  },
-                  child: Column(
+              const SizedBox(height: 20),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                          transitionsBuilder: (_, animation, __, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          transitionDuration: const Duration(milliseconds: 300),
+                        ),
+                      );
+                    },
+                    child: Column(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.asset('assets/images/apar2.jpg',
+                          child: Image.asset(
+                            'assets/images/apar2.jpg',
                             width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        ListTile(
+                        const ListTile(
                           title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
                           subtitle: Text('\$400/night'),
                           trailing: Row(
@@ -119,10 +139,13 @@ class Stays extends StatelessWidget {
                               Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                             ],
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                )
+                  );
+                },
+              )
             ],
           ),
         )
