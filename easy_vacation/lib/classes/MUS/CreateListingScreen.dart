@@ -47,7 +47,7 @@ class _CreateListingState extends State<CreateListing> {
             Center(
               child: InkWell(
                 onTap: () {
-                  // TODO: Implement photo upload
+
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
@@ -152,7 +152,7 @@ class _CreateListingState extends State<CreateListing> {
               child: ElevatedButton(
                 style: login_button_style.copyWith(
                   minimumSize:
-                      MaterialStateProperty.all(const Size(0, 55)),
+                      WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

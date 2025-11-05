@@ -1,14 +1,14 @@
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
-class SubscriptionPlan extends StatefulWidget {
-  const SubscriptionPlan({super.key});
+class SubscriptionPlanScreen extends StatefulWidget {
+  const SubscriptionPlanScreen({super.key});
 
   @override
-  State<SubscriptionPlan> createState() => _SubscriptionPlanState();
+  State<SubscriptionPlanScreen> createState() => _SubscriptionPlanScreenState();
 }
 
-class _SubscriptionPlanState extends State<SubscriptionPlan> {
+class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   List<Map<String, dynamic>> subscriptions = [
     {
       'type': 'Free',

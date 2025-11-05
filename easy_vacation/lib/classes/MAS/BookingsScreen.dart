@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
-class MyBookingsScreen extends StatelessWidget {
-  const MyBookingsScreen({super.key});
+class BookingsScreen extends StatelessWidget {
+  const BookingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,28 +66,6 @@ class MyBookingsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              'My Bookings',
-              textAlign: TextAlign.center,
-              style: AppTheme.header2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.black,
-              ),
-            ),
-          ),
-          const SizedBox(width: 48), // Spacer for balance
-        ],
       ),
     );
   }
@@ -208,8 +186,8 @@ class MyBookingsScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: AppTheme.primaryButtonStyle.copyWith(
-                          minimumSize: MaterialStateProperty.all(const Size(0, 36)),
-                          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 8)),
+                          minimumSize: WidgetStateProperty.all(const Size(0, 36)),
+                          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 8)),
                         ),
                         child: const Text(
                           'View Details',

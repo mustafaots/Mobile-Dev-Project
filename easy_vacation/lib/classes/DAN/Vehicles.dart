@@ -1,8 +1,8 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Vehicules extends StatelessWidget {
-  const Vehicules({super.key});
+class VehiclesScreen extends StatelessWidget {
+  const VehiclesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class Vehicules extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Vehicules',
+          child: Text('Featured Vehicles',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900

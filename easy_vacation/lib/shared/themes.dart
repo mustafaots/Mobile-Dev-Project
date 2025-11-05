@@ -69,14 +69,14 @@ class AppTheme {
 
   // Button Styles
   static final ButtonStyle primaryButtonStyle = ButtonStyle(
-    minimumSize: MaterialStateProperty.all(const Size(double.infinity, 55)),
-    backgroundColor: MaterialStateProperty.all(primaryColor),
-    foregroundColor: MaterialStateProperty.all(white),
-    shape: MaterialStateProperty.all(
+    minimumSize: WidgetStateProperty.all(const Size(double.infinity, 55)),
+    backgroundColor: WidgetStateProperty.all(primaryColor),
+    foregroundColor: WidgetStateProperty.all(white),
+    shape: WidgetStateProperty.all(
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
-    elevation: MaterialStateProperty.all(2),
-    padding: MaterialStateProperty.all(
+    elevation: WidgetStateProperty.all(2),
+    padding: WidgetStateProperty.all(
       const EdgeInsets.symmetric(vertical: 16),
     ),
   );

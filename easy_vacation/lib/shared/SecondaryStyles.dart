@@ -44,13 +44,13 @@ InputDecoration input_decor(String text, Icon icon) {
 }
 
 var login_button_style = ButtonStyle(
-  minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
-  backgroundColor: MaterialStateProperty.all(AppTheme.primaryColor),
-  foregroundColor: MaterialStateProperty.all(Colors.white),
-  shape: MaterialStateProperty.all(
+  minimumSize: WidgetStateProperty.all(const Size(double.infinity, 60)),
+  backgroundColor: WidgetStateProperty.all(AppTheme.primaryColor),
+  foregroundColor: WidgetStateProperty.all(Colors.white),
+  shape: WidgetStateProperty.all(
     RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   ),
-  elevation: MaterialStateProperty.all(2),
+  elevation: WidgetStateProperty.all(2),
 );
 
 var login_text_style =

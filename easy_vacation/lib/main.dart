@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/AYM/AddReviewScreen.dart';
 import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
 import 'package:easy_vacation/classes/DAN/HomeScreen.dart';

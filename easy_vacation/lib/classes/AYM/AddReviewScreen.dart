@@ -1,20 +1,18 @@
 // addReviewPage.dart
 import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
 import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
-import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 
-class AddReviewPage extends StatefulWidget {
-  const AddReviewPage({Key? key}) : super(key: key);
+class AddReviewScreen extends StatefulWidget {
+  const AddReviewScreen({Key? key}) : super(key: key);
 
   @override
-  _AddReviewPageState createState() => _AddReviewPageState();
+  _AddReviewScreenState createState() => _AddReviewScreenState();
 }
 
-class _AddReviewPageState extends State<AddReviewPage> {
+class _AddReviewScreenState extends State<AddReviewScreen> {
   int _rating = 0;
   int _cleanlinessRating = 0;
   int _serviceRating = 0;
@@ -28,10 +26,10 @@ class _AddReviewPageState extends State<AddReviewPage> {
 
   List staticNavigation = [
     const HomeScreen(),
-    const MyBookingsScreen(),
+    const BookingsScreen(),
     '',
-    const NotificationsPage(),
-    const ProfilePage()
+    const NotificationsScreen(),
+    const ProfileScreen()
   ];
 
   final List<Map<String, dynamic>> _emojiReactions = [
@@ -328,7 +326,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
                             Switch(
                               value: _showPreview,
                               onChanged: (value) => setState(() => _showPreview = value),
-                              activeColor: const Color(0xFF4A90E2),
+                              activeThumbColor: const Color(0xFF4A90E2),
                             ),
                             const Text(
                               'Preview Review',

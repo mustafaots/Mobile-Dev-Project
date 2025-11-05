@@ -1,17 +1,15 @@
-import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
-import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileScreenState extends State<ProfileScreen> {
   int _navIdx = 4; // Profile is index 4
 
   @override

@@ -1,14 +1,14 @@
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
-class ReportUser extends StatefulWidget {
-  const ReportUser({super.key});
+class ReportUserScreen extends StatefulWidget {
+  const ReportUserScreen({super.key});
 
   @override
-  State<ReportUser> createState() => _ReportUserState();
+  State<ReportUserScreen> createState() => _ReportUserScreenState();
 }
 
-class _ReportUserState extends State<ReportUser> {
+class _ReportUserScreenState extends State<ReportUserScreen> {
   List problems = [
     'Inappropriate content',
     'Spam or scam',

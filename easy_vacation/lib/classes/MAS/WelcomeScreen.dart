@@ -1,6 +1,5 @@
 import 'package:easy_vacation/classes/MUS/SignUpScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
 class EasyVacationWelcome extends StatelessWidget {

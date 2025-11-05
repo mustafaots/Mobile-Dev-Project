@@ -427,7 +427,7 @@ class PostDetailsScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const MyBookingsScreen(),
+                      pageBuilder: (_, __, ___) => const BookingsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
                         return SlideTransition(
                           position: Tween<Offset>(

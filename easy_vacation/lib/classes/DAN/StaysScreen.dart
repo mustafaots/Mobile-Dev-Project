@@ -1,8 +1,8 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Stays extends StatelessWidget {
-  const Stays({super.key});
+class StaysScreen extends StatelessWidget {
+  const StaysScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 style: login_button_style.copyWith(
-                  minimumSize: MaterialStateProperty.all(const Size(0, 55)),
+                  minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () => {
 

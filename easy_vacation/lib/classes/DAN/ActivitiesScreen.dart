@@ -1,8 +1,8 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Activities extends StatelessWidget {
-  const Activities({super.key});
+class ActivitiesScreen extends StatelessWidget {
+  const ActivitiesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

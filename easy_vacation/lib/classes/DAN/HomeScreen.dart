@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
 import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
@@ -20,10 +20,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _bottomNavScreens = [
     const _HomeContent(), // Extracted home content
-    const MyBookingsScreen(),
+    const BookingsScreen(),
     const SizedBox.shrink(), // Empty middle
-    const NotificationsPage(),
-    const ProfilePage()
+    const NotificationsScreen(),
+    const ProfileScreen()
   ];
 
   int _navIdx = 0;
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _navIdx == 0 
           ? AppBar(
               title: Text(
-                'EasyVacation',
+                'Home',
                 style: TextStyle(
                   color: AppTheme.black,
                   fontWeight: FontWeight.bold,
@@ -113,9 +113,9 @@ class __HomeContentState extends State<_HomeContent> {
   
   int selectedIndex = 0;
   final List<Widget> screens = const [
-    Stays(),
-    Vehicules(),
-    Activities()
+    StaysScreen(),
+    VehiclesScreen(),
+    ActivitiesScreen()
   ];
 
   @override

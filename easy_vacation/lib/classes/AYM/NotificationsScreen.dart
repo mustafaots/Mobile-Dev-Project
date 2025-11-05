@@ -1,24 +1,23 @@
-// notification_tourist.dart
 import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 
-class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
 
   @override
-  State<NotificationsPage> createState() => _NotificationsPageState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _NotificationsPageState extends State<NotificationsPage> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   List staticNavigation = [
     const HomeScreen(),
-    const MyBookingsScreen(),
+    const BookingsScreen(),
     '',
-    const NotificationsPage(),
-    const ProfilePage()
+    const NotificationsScreen(),
+    const ProfileScreen()
   ];
 
   int _navIdx = 0;
