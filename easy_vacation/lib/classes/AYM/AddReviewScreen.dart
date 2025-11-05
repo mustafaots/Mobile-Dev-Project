@@ -1,10 +1,10 @@
 // addReviewPage.dart
-import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
-import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
-import 'package:easy_vacation/classes/MAS/my_bookings.dart';
+import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
+import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 
 class AddReviewPage extends StatefulWidget {

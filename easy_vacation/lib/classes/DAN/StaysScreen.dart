@@ -1,8 +1,8 @@
-import 'package:easy_vacation/classes/MAS/post_details.dart';
+import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Activities extends StatelessWidget {
-  const Activities({super.key});
+class Stays extends StatelessWidget {
+  const Stays({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +11,9 @@ class Activities extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Activities',
+          child: Text('Featured Listings',
             style: TextStyle(
-              fontSize: 23,
+              fontSize: 20,
               fontWeight: FontWeight.w900
             ),
           ),
@@ -27,8 +27,9 @@ class Activities extends StatelessWidget {
             itemCount: 5,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: (){
+                  ///////////////////////////////////////////////////////
+                  Navigator.pushAndRemoveUntil(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -40,7 +41,9 @@ class Activities extends StatelessWidget {
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
+                    (route) => false, // This removes all previous routes
                   );
+                  ///////////////////////////////////////////////////////
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
@@ -51,7 +54,7 @@ class Activities extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/skiing.jpg',
+                          'assets/images/apar2.jpg',
                           width: 260,
                           height: 200,
                           fit: BoxFit.cover,
@@ -60,8 +63,8 @@ class Activities extends StatelessWidget {
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('Chrea'),
+                        title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text('\$300/night'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -98,7 +101,7 @@ class Activities extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: (){
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -118,15 +121,15 @@ class Activities extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            'assets/images/bike_riding.jpg',
+                            'assets/images/apar2.jpg',
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
                         ),
                         const ListTile(
-                          title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('Sahara'),
+                          title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('\$400/night'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

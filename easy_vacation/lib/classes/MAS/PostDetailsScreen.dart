@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/MAS/my_bookings.dart';
+import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
 class PostDetailsScreen extends StatelessWidget {

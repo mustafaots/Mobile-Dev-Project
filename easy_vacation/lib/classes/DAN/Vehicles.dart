@@ -1,8 +1,8 @@
-import 'package:easy_vacation/classes/MAS/post_details.dart';
+import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Stays extends StatelessWidget {
-  const Stays({super.key});
+class Vehicules extends StatelessWidget {
+  const Vehicules({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class Stays extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Listings',
+          child: Text('Featured Vehicules',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900
@@ -27,9 +27,8 @@ class Stays extends StatelessWidget {
             itemCount: 5,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: (){
-                  ///////////////////////////////////////////////////////
-                  Navigator.pushAndRemoveUntil(
+                onTap: () {
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -41,9 +40,7 @@ class Stays extends StatelessWidget {
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
-                    (route) => false, // This removes all previous routes
                   );
-                  ///////////////////////////////////////////////////////
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
@@ -54,7 +51,7 @@ class Stays extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/apar2.jpg',
+                          'assets/images/mercedes.jpg',
                           width: 260,
                           height: 200,
                           fit: BoxFit.cover,
@@ -63,15 +60,15 @@ class Stays extends StatelessWidget {
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('\$300/night'),
+                        title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text('\$100/day'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star_border_outlined,
                                 color: Color.fromARGB(255, 255, 207, 14)),
                             SizedBox(width: 4),
-                            Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            Text('4.4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                           ],
                         ),
                       ),
@@ -101,7 +98,7 @@ class Stays extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -121,15 +118,15 @@ class Stays extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            'assets/images/apar2.jpg',
+                            'assets/images/mercedes.jpg',
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
                         ),
                         const ListTile(
-                          title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('\$400/night'),
+                          title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('\$135/day'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -145,7 +142,7 @@ class Stays extends StatelessWidget {
                     ),
                   );
                 },
-              )
+              )       
             ],
           ),
         )

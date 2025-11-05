@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:easy_vacation/classes/MUS/SignUpScreen.dart';
 import 'package:easy_vacation/shared/SecondaryStyles.dart';
 import 'package:easy_vacation/shared/themes.dart';

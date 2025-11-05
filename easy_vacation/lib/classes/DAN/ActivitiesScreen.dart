@@ -1,8 +1,8 @@
-import 'package:easy_vacation/classes/MAS/post_details.dart';
+import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
 
-class Vehicules extends StatelessWidget {
-  const Vehicules({super.key});
+class Activities extends StatelessWidget {
+  const Activities({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +11,9 @@ class Vehicules extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Vehicules',
+          child: Text('Featured Activities',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 23,
               fontWeight: FontWeight.w900
             ),
           ),
@@ -51,7 +51,7 @@ class Vehicules extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/mercedes.jpg',
+                          'assets/images/skiing.jpg',
                           width: 260,
                           height: 200,
                           fit: BoxFit.cover,
@@ -60,15 +60,15 @@ class Vehicules extends StatelessWidget {
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('\$100/day'),
+                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text('Chrea'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star_border_outlined,
                                 color: Color.fromARGB(255, 255, 207, 14)),
                             SizedBox(width: 4),
-                            Text('4.4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                           ],
                         ),
                       ),
@@ -118,15 +118,15 @@ class Vehicules extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            'assets/images/mercedes.jpg',
+                            'assets/images/bike_riding.jpg',
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
                         ),
                         const ListTile(
-                          title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('\$135/day'),
+                          title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('Sahara'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -142,7 +142,7 @@ class Vehicules extends StatelessWidget {
                     ),
                   );
                 },
-              )       
+              )
             ],
           ),
         )

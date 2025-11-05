@@ -1,14 +1,14 @@
-import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
-import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
-import 'package:easy_vacation/classes/MAS/my_bookings.dart';
+import 'package:easy_vacation/classes/AYM/UserProfileScreen.dart';
+import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
+import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/SecondaryStyles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
-import 'vehicules.dart';
-import 'stays.dart';
-import 'activities.dart';
+import 'Vehicles.dart';
+import 'StaysScreen.dart';
+import 'ActivitiesScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

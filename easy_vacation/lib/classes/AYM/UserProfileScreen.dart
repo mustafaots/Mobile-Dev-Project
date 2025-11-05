@@ -1,8 +1,8 @@
-import 'package:easy_vacation/classes/DAN/home_screen.dart';
+import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
-import 'package:easy_vacation/classes/MAS/my_bookings.dart';
+import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
+import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
