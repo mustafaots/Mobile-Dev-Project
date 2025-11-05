@@ -9,7 +9,7 @@ class AppTheme {
   static const Color grey = Color(0xFF6B7280);
   static const Color lightGrey = Color(0xFFF3F4F6);
   static const Color successColor = Colors.green;
-   static const Color failureColor = Colors.red;
+  static const Color failureColor = Colors.red;
 
   // Text Styles
   static const TextStyle header1 = TextStyle(
