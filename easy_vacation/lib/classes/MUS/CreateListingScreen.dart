@@ -1,7 +1,7 @@
 import 'package:easy_vacation/classes/MUS/ConfirmListingScreen.dart';
-import 'package:easy_vacation/shared/colors.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
-import 'package:easy_vacation/styles/SecondaryStyles.dart';
+import 'package:easy_vacation/shared/SecondaryStyles.dart';
 import 'package:flutter/material.dart';
 
 class CreateListing extends StatefulWidget {
@@ -32,10 +32,10 @@ class _CreateListingState extends State<CreateListing> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Create Listing"),
-        backgroundColor: blue,
-        foregroundColor: white,
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: AppTheme.white,
       ),
-      backgroundColor: white,
+      backgroundColor: AppTheme.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -54,9 +54,9 @@ class _CreateListingState extends State<CreateListing> {
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
-                    color: lightGrey,
+                    color: AppTheme.lightGrey,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: grey.withOpacity(0.5)),
+                    border: Border.all(color: AppTheme.grey.withOpacity(0.5)),
                   ),
                   child: const Icon(
                     Icons.photo_camera,

@@ -1,8 +1,8 @@
 import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
-import 'package:easy_vacation/shared/colors.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
-import 'package:easy_vacation/styles/SecondaryStyles.dart';
+import 'package:easy_vacation/shared/SecondaryStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: blue,
+                    color: AppTheme.primaryColor,
                     shape: BoxShape.circle,
                   ),
                   child: const CircleAvatar(
@@ -183,7 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () => {
 
                 ///////////////////////////////////////////////////////
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                 )
@@ -216,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Text(
                   "Already have an account? Login",
                   style: small_grey_text.copyWith(
-                    color: blue,
+                    color: AppTheme.primaryColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -230,7 +230,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Expanded(
                   child: Divider(
-                    color: grey,
+                    color: AppTheme.grey,
                     thickness: 1,
                   ),
                 ),
@@ -240,13 +240,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     "Or Continue With",
                     style: TextStyle(
                       fontSize: 12,
-                      color: grey,
+                      color: AppTheme.grey,
                     ),
                   ),
                 ),
                 Expanded(
                   child: Divider(
-                    color: grey,
+                    color: AppTheme.grey,
                     thickness: 1,
                   ),
                 ),
@@ -262,19 +262,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: grey.withOpacity(0.3)),
+                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.google, color: grey, size: 20),
+                  child: Icon(FontAwesomeIcons.google, color: AppTheme.grey, size: 20),
                 ),
                 const SizedBox(width: 20),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: grey.withOpacity(0.3)),
+                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.facebook, color: grey, size: 20),
+                  child: Icon(FontAwesomeIcons.facebook, color: AppTheme.grey, size: 20),
                 ),
               ],
             ),

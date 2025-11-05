@@ -2,7 +2,12 @@ import 'package:easy_vacation/classes/AYM/ProfilePage.dart';
 import 'package:easy_vacation/classes/AYM/notification_tourist.dart';
 import 'package:easy_vacation/classes/MAS/my_bookings.dart';
 import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
+import 'package:easy_vacation/shared/SecondaryStyles.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/shared/themes.dart';
+
+
 import 'vehicules.dart';
 import 'stays.dart';
 import 'activities.dart';
@@ -36,38 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const Activities()
   ];
 
-  // Define colors locally as fallback
-  static const Color primaryColor = Colors.blueAccent;
-  static const Color white = Colors.white;
-  static const Color black = Colors.black87;
-  static const Color grey = Color(0xFF6B7280);
-
-  // Local input decoration method
-  InputDecoration _inputDecoration(String label, IconData icon) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Color(0xFF6B7280), fontSize: 16),
-      hintText: label,
-      hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: primaryColor),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
-      ),
-      filled: true,
-      fillColor: const Color(0xFFF9FAFB),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      prefixIcon: Icon(icon, color: const Color(0xFF6B7280)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,17 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           'EasyVacation',
           style: TextStyle(
-            color: black,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
         ),
-        backgroundColor: white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.travel_explore_sharp, color: primaryColor),
+            child: Icon(Icons.travel_explore_sharp, color: AppTheme.primaryColor),
           )
         ],
       ),
@@ -97,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }, 
         child: Container(
           decoration: BoxDecoration(
-            color: white,
+            color: AppTheme.white,
           ),
           height: double.infinity,
           width: double.infinity,
@@ -110,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: TextField(
                     focusNode: _searchFocusNode,
                     controller: _searchController,
-                    cursorColor: primaryColor,
-                    decoration: _inputDecoration('Search...', Icons.search),
+                    cursorColor: AppTheme.primaryColor,
+                    decoration: input_decor('Search...', Icon(Icons.search)),
                   ),
                 ),
 
@@ -136,17 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: primaryColor.withOpacity(0.1),
+                                  color: AppTheme.primaryColor.withOpacity(0.1),
                                   border: Border.all(
                                     width: 1.5,
-                                    color: primaryColor,
+                                    color: AppTheme.primaryColor,
                                   ),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(
                                   searchContent[i], 
                                   style: TextStyle(
-                                    color: primaryColor,
+                                    color: AppTheme.primaryColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -183,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                color: isSelected ? black : grey,
+                                color: isSelected ? AppTheme.black : AppTheme.grey,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -191,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 3,
                               width: 50,
                               decoration: BoxDecoration(
-                                color: isSelected ? primaryColor : Colors.transparent,
+                                color: isSelected ? AppTheme.primaryColor : Colors.transparent,
                                 borderRadius: BorderRadius.circular(2),
                               ),
                             ),
@@ -204,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 Divider(
                   height: 0,
-                  color: grey.withOpacity(0.3),
+                  color: AppTheme.grey.withOpacity(0.3),
                   thickness: 1,
                 ),
 
@@ -225,18 +198,18 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         shape: const CircleBorder(),
-        backgroundColor: primaryColor,
-        child: Icon(Icons.add, color: white, size: 30),
+        backgroundColor: AppTheme.primaryColor,
+        child: Icon(Icons.add, color: AppTheme.white, size: 30),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: white,
+        backgroundColor: AppTheme.white,
         elevation: 8,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: grey,
+        selectedItemColor: AppTheme.primaryColor,
+        unselectedItemColor: AppTheme.grey,
         currentIndex: _navIdx,
         onTap: (index) {
           if (index != 2) { // Skip the empty middle item

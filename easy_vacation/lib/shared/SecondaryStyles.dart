@@ -1,10 +1,10 @@
-import 'package:easy_vacation/shared/colors.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 var header_1 = TextStyle(fontWeight: FontWeight.bold, fontSize: 30);
 var header_2 = TextStyle(fontWeight: FontWeight.w500, fontSize: 20);
 
-var small_grey_text = TextStyle(color: grey, fontSize: 14);
+var small_grey_text = TextStyle(color: AppTheme.grey, fontSize: 14);
 
 var app_bar_style = TextStyle(
   color: Colors.white,
@@ -13,7 +13,7 @@ var app_bar_style = TextStyle(
 );
 
 var app_title_style = TextStyle(
-  color: blue,
+  color: AppTheme.primaryColor,
   fontSize: 35,
   fontWeight: FontWeight.w500,
 );
@@ -21,31 +21,31 @@ var app_title_style = TextStyle(
 InputDecoration input_decor(String text, Icon icon) {
   return InputDecoration(
     labelText: text,
-    labelStyle: TextStyle(color: grey, fontSize: 16),
+    labelStyle: TextStyle(color: AppTheme.grey, fontSize: 16),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: grey.withOpacity(0.3)),
+      borderSide: BorderSide(color: AppTheme.grey.withOpacity(0.3)),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: blue),
+      borderSide: BorderSide(color: AppTheme.primaryColor),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: grey.withOpacity(0.3)),
+      borderSide: BorderSide(color: AppTheme.grey.withOpacity(0.3)),
     ),
     filled: true,
-    fillColor: lightGrey,
+    fillColor: AppTheme.lightGrey,
     contentPadding:
         const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     prefixIcon: icon,
-    prefixIconColor: grey,
+    prefixIconColor: AppTheme.grey,
   );
 }
 
 var login_button_style = ButtonStyle(
   minimumSize: MaterialStateProperty.all(const Size(double.infinity, 60)),
-  backgroundColor: MaterialStateProperty.all(blue),
+  backgroundColor: MaterialStateProperty.all(AppTheme.primaryColor),
   foregroundColor: MaterialStateProperty.all(Colors.white),
   shape: MaterialStateProperty.all(
     RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -58,10 +58,10 @@ var login_text_style =
 
 ButtonStyle radio_button_style(bool isSelected) {
   return ElevatedButton.styleFrom(
-    backgroundColor: white,
-    foregroundColor: isSelected ? blue : black,
+    backgroundColor: AppTheme.white,
+    foregroundColor: isSelected ? AppTheme.primaryColor : AppTheme.black,
     side: BorderSide(
-      color: isSelected ? blue : Colors.grey,
+      color: isSelected ? AppTheme.primaryColor : Colors.grey,
       width: 2,
     ),
     shape: RoundedRectangleBorder(
