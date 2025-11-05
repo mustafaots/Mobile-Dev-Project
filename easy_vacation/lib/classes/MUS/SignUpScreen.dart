@@ -2,7 +2,7 @@ import 'package:easy_vacation/classes/DAN/home_screen.dart';
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:easy_vacation/shared/colors.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
-import 'package:easy_vacation/styles/RegistrationStyles.dart';
+import 'package:easy_vacation/styles/SecondaryStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
