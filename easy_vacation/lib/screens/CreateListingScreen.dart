@@ -1,7 +1,7 @@
 import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
-import 'package:easy_vacation/shared/SecondaryStyles.dart';
+import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:flutter/material.dart';
 
 class CreateListing extends StatefulWidget {

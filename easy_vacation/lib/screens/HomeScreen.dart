@@ -2,7 +2,7 @@ import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/screens/NotificationsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:easy_vacation/screens/CreateListingScreen.dart';
-import 'package:easy_vacation/shared/SecondaryStyles.dart';
+import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
