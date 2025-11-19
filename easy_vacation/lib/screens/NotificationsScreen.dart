@@ -22,8 +22,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     const ProfileScreen()
   ];
 
-  int _navIdx = 0;
-
   @override
   Widget build(BuildContext context) {
     final dpr = MediaQuery.of(context).devicePixelRatio;

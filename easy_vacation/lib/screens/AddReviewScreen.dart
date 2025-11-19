@@ -2,9 +2,6 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/screens/ProfileScreen.dart';
-import 'package:easy_vacation/screens/NotificationsScreen.dart';
-import 'package:easy_vacation/screens/BookingsScreen.dart';
 
 class AddReviewScreen extends StatefulWidget {
   const AddReviewScreen({Key? key}) : super(key: key);

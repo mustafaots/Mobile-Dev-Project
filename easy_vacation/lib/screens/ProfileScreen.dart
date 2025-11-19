@@ -1,5 +1,4 @@
 import 'package:easy_vacation/screens/LoginScreen.dart';
-import 'package:easy_vacation/screens/ReportUserScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -12,7 +11,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _navIdx = 4; // Profile is index 4
 
   @override
   Widget build(BuildContext context) {
