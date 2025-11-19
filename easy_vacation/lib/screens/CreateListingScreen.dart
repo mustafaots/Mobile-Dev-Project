@@ -1,4 +1,5 @@
 import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
+import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
@@ -31,9 +32,40 @@ class _CreateListingState extends State<CreateListing> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create Listing"),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.white,
+        title: Text(
+          'Listing Details',
+          style: TextStyle(
+            color: AppTheme.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
+        ),
+        backgroundColor: AppTheme.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              ///////////////////////////////////////////////////////
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  transitionsBuilder: (_, animation, __, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+                (route) => false, // This removes all previous routes
+              );
+              ///////////////////////////////////////////////////////
+            },
+            icon: Icon(Icons.home_filled, size: 40, ),
+            color: AppTheme.primaryColor,
+          ),
+        ],
       ),
       backgroundColor: AppTheme.white,
       body: SingleChildScrollView(

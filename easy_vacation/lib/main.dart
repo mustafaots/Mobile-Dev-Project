@@ -2,6 +2,7 @@ import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/screens/NotificationsScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/screens/VehiclesScreen.dart';
 import 'package:easy_vacation/screens/WelcomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
@@ -24,11 +25,11 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white, // Force white background
         appBarTheme: const AppBarTheme(
           backgroundColor: AppTheme.primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: AppTheme.white,
           elevation: 0,
         ),
       ),
-      home: const EasyVacationWelcome(), // Or your desired home screen
+      home: const WelcomeScreen(), // Or your desired home screen
     );
   }
 }

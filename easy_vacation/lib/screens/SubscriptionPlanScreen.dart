@@ -1,3 +1,4 @@
+import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -147,7 +148,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: selected ? AppTheme.primaryColor : AppTheme.primaryColor.withOpacity(0.1),
-                  foregroundColor: selected ? AppTheme.white : AppTheme.primaryColor,
+                  foregroundColor: AppTheme.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -172,20 +173,38 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back, color: AppTheme.black),
-        ),
         title: Text(
-          'Choose your plan',
+          'Choose Your Plan',
           style: TextStyle(
-            color: AppTheme.black, // Added AppTheme color
+            color: AppTheme.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
           ),
         ),
-        centerTitle: true,
         backgroundColor: AppTheme.white,
-        foregroundColor: AppTheme.black,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              ///////////////////////////////////////////////////////
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  transitionsBuilder: (_, animation, __, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                )
+              );
+            },
+            icon: Icon(Icons.home_filled, size: 40, ),
+            color: AppTheme.primaryColor,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

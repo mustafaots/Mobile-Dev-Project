@@ -39,17 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(4),
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor,
                     shape: BoxShape.circle,
-                  ),
-                  child: const CircleAvatar(
-                    radius: 45,
-                    child: Icon(
-                      Icons.landscape,
-                      size: 60,
-                      color: AppTheme.successColor, 
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/ev_icon.png'),
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

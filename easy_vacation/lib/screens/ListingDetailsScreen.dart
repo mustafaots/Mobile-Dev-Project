@@ -1,4 +1,5 @@
 import 'package:easy_vacation/screens/BookingsScreen.dart';
+import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -30,6 +31,30 @@ class PostDetailsScreen extends StatelessWidget {
         ),
         backgroundColor: AppTheme.white,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              ///////////////////////////////////////////////////////
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  transitionsBuilder: (_, animation, __, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+                (route) => false, // This removes all previous routes
+              );
+              ///////////////////////////////////////////////////////
+            },
+            icon: Icon(Icons.home_filled, size: 40, ),
+            color: AppTheme.primaryColor,
+          ),
+        ],
       ),
       backgroundColor: AppTheme.white,
       body: SafeArea(
@@ -178,12 +203,15 @@ class PostDetailsScreen extends StatelessWidget {
                       size: 16,
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      '4.9 (127 reviews)',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: AppTheme.grey,
+                    Expanded( // This fixes the overflow
+                      child: Text(
+                        '4.9 (127 reviews)',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          color: AppTheme.grey,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Adds "..." if needed
                       ),
                     ),
                   ],

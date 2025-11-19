@@ -1,4 +1,4 @@
-import 'package:easy_vacation/screens/PostDetailsScreen.dart';
+import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -7,6 +7,10 @@ class ActivitiesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.of(context).devicePixelRatio;
+    final cardCacheW = (260 * dpr).toInt();
+    final cardCacheH = (200 * dpr).toInt();
+    final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,14 +58,16 @@ class ActivitiesScreen extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/skiing.jpg',
                           width: 260,
-                          height: 200,
+                          height: 170,
                           fit: BoxFit.cover,
+                          cacheWidth: cardCacheW,
+                          cacheHeight: cardCacheH,
                         ),
                       ),
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
+                        title: Text('Skiing', style: TextStyle(fontWeight: FontWeight.bold),),
                         subtitle: Text('Chrea'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -123,6 +129,8 @@ class ActivitiesScreen extends StatelessWidget {
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
+                            cacheWidth: fullWidthCache,
+                            cacheHeight: cardCacheH,
                           ),
                         ),
                         const ListTile(

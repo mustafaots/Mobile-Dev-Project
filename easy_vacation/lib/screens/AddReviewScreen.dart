@@ -78,7 +78,21 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                ///////////////////////////////////////////////////////
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const HomeScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  )
+                );
+                ///////////////////////////////////////////////////////
               },
               child: const Text('OK'),
             ),
@@ -111,20 +125,39 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
     return Scaffold(
       backgroundColor: AppTheme.white,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Add a Review',
           style: TextStyle(
             color: AppTheme.black,
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 23,
           ),
         ),
         backgroundColor: AppTheme.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppTheme.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ///////////////////////////////////////////////////////
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  transitionsBuilder: (_, animation, __, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(milliseconds: 300),
+                )
+              );
+              ///////////////////////////////////////////////////////
+            },
+            icon: Icon(Icons.home_filled, size: 40, ),
+            color: AppTheme.primaryColor,
+          ),
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -414,7 +447,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -453,35 +485,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: AppTheme.white,
-      elevation: 8,
-      selectedItemColor: AppTheme.primaryColor,
-      unselectedItemColor: AppTheme.grey,
-      currentIndex: _navIdx,
-      onTap: (index) {
-        if (index != 2) {
-          setState(() {
-            _navIdx = index;
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => staticNavigation[index]),
-          );
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.book_online_outlined), label: 'Bookings'),
-        BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined), label: 'Notifications'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
-      ],
     );
   }
 }

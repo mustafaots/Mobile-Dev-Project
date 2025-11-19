@@ -1,3 +1,4 @@
+import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -59,7 +60,7 @@ class BookingsScreen extends StatelessWidget {
                     ),
                     
                     // Empty state
-                    _buildEmptyState(),
+                    _buildEmptyState(context),
                   ],
                 ),
               ),
@@ -208,7 +209,7 @@ class BookingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(48),
@@ -241,7 +242,24 @@ class BookingsScreen extends StatelessWidget {
           SizedBox(
             width: 150,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: ()=>{
+                ///////////////////////////////////////////////////////
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => const HomeScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(milliseconds: 300),
+                  ),
+                  (route) => false, // This removes all previous routes
+                )
+                ///////////////////////////////////////////////////////
+              },
               style: AppTheme.primaryButtonStyle,
               child: Text(
                 'Explore Stays',

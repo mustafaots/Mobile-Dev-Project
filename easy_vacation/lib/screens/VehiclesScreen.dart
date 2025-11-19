@@ -1,4 +1,4 @@
-import 'package:easy_vacation/screens/PostDetailsScreen.dart';
+import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +7,10 @@ class VehiclesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.of(context).devicePixelRatio;
+    final cardCacheW = (260 * dpr).toInt();
+    final cardCacheH = (200 * dpr).toInt();
+    final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,11 +57,13 @@ class VehiclesScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/mercedes.jpg',
-                          width: 260,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                            'assets/images/mercedes.jpg',
+                            width: 260,
+                            height: 170,
+                            fit: BoxFit.cover,
+                            cacheWidth: cardCacheW,
+                            cacheHeight: cardCacheH,
+                          ),
                       ),
                       ListTile(
                         dense: true,
@@ -145,6 +151,8 @@ class VehiclesScreen extends StatelessWidget {
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
+                            cacheWidth: fullWidthCache,
+                            cacheHeight: cardCacheH,
                           ),
                         ),
                         ListTile(

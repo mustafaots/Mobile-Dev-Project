@@ -1,4 +1,4 @@
-import 'package:easy_vacation/screens/PostDetailsScreen.dart';
+import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +7,10 @@ class StaysScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.of(context).devicePixelRatio;
+    final cardCacheW = (260 * dpr).toInt();
+    final cardCacheH = (200 * dpr).toInt();
+    final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,8 +60,10 @@ class StaysScreen extends StatelessWidget {
                         child: Image.asset(
                           'assets/images/apar2.jpg',
                           width: 260,
-                          height: 200,
+                          height: 170,
                           fit: BoxFit.cover,
+                          cacheWidth: cardCacheW,
+                          cacheHeight: cardCacheH,
                         ),
                       ),
                       ListTile(
@@ -146,6 +152,8 @@ class StaysScreen extends StatelessWidget {
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
+                            cacheWidth: fullWidthCache,
+                            cacheHeight: cardCacheH,
                           ),
                         ),
                         ListTile(

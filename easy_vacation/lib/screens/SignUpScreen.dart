@@ -60,20 +60,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const CircleAvatar(
-                    radius: 45,
-                    child: Icon(
-                      Icons.landscape,
-                      size: 60,
-                      color: Color.fromARGB(255, 135, 201, 119), 
+                // Logo Section
+                Column(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor,
+                        shape: BoxShape.circle,
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/ev_icon.png'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),

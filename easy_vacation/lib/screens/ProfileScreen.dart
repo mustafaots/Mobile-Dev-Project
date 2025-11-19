@@ -1,4 +1,6 @@
 import 'package:easy_vacation/screens/LoginScreen.dart';
+import 'package:easy_vacation/screens/ReportUserScreen.dart';
+import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -82,21 +84,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildMenuItem(
                       icon: Icons.edit,
                       title: 'Edit profile',
+                      onTap: () {
+                        // Add navigation for edit profile
+                      },
                     ),
                     const SizedBox(height: 8),
                     _buildMenuItem(
                       icon: Icons.article,
                       title: 'View posts created',
+                      onTap: () {
+                        // Add navigation for view posts
+                      },
                     ),
                     const SizedBox(height: 8),
                     _buildMenuItem(
                       icon: Icons.history,
                       title: 'View booking history',
+                      onTap: () {
+                        // Add navigation for booking history
+                      },
                     ),
                     const SizedBox(height: 8),
                     _buildMenuItem(
                       icon: Icons.subscriptions,
-                      title: 'Manage subscription',
+                      title: 'Manage sub',
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => const SubscriptionPlanScreen(),
+                            transitionsBuilder: (_, animation, __, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(milliseconds: 300),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -154,6 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildMenuItem({
     required IconData icon,
     required String title,
+    required VoidCallback onTap,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -170,9 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            // Handle menu item tap
-          },
+          onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Container(
             padding: const EdgeInsets.all(16),
