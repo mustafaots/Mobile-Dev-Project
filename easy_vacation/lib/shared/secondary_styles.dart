@@ -7,7 +7,7 @@ var header_2 = TextStyle(fontWeight: FontWeight.w500, fontSize: 20);
 var small_grey_text = TextStyle(color: AppTheme.grey, fontSize: 14);
 
 var app_bar_style = TextStyle(
-  color: Colors.white,
+  color: AppTheme.white,
   fontSize: 30,
   fontWeight: FontWeight.w500,
 );
@@ -46,7 +46,7 @@ InputDecoration input_decor(String text, Icon icon) {
 var login_button_style = ButtonStyle(
   minimumSize: WidgetStateProperty.all(const Size(double.infinity, 60)),
   backgroundColor: WidgetStateProperty.all(AppTheme.primaryColor),
-  foregroundColor: WidgetStateProperty.all(Colors.white),
+  foregroundColor: WidgetStateProperty.all(AppTheme.white),
   shape: WidgetStateProperty.all(
     RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   ),
@@ -61,7 +61,7 @@ ButtonStyle radio_button_style(bool isSelected) {
     backgroundColor: AppTheme.white,
     foregroundColor: isSelected ? AppTheme.primaryColor : AppTheme.black,
     side: BorderSide(
-      color: isSelected ? AppTheme.primaryColor : Colors.grey,
+      color: isSelected ? AppTheme.primaryColor : AppTheme.grey,
       width: 2,
     ),
     shape: RoundedRectangleBorder(
