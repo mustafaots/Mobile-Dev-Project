@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Icon(
                       Icons.landscape,
                       size: 60,
-                      color: Color.fromARGB(255, 135, 201, 119), 
+                      color: AppTheme.successColor, 
                     ),
                   ),
                 ),

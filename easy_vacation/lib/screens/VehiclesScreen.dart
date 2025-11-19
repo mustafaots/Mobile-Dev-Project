@@ -1,4 +1,5 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class VehiclesScreen extends StatelessWidget {
@@ -9,12 +10,13 @@ class VehiclesScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text('Featured Vehicles',
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.w900
+              fontWeight: FontWeight.w900,
+              color: AppTheme.black, // Added AppTheme color
             ),
           ),
         ),
@@ -57,18 +59,38 @@ class VehiclesScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      const ListTile(
+                      ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('\$100/day'),
+                        title: Text(
+                          'Mercedes suv', 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.black, // Added AppTheme color
+                          ),
+                        ),
+                        subtitle: Text(
+                          '\$100/day',
+                          style: TextStyle(
+                            color: AppTheme.grey, // Added AppTheme color
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.star_border_outlined,
-                                color: Color.fromARGB(255, 255, 207, 14)),
-                            SizedBox(width: 4),
-                            Text('4.4', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            Icon(
+                              Icons.star_border_outlined,
+                              color: AppTheme.neutralColor, // Using neutralColor for stars
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '4.4', 
+                              style: TextStyle(
+                                fontSize: 16, 
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.black, // Added AppTheme color
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -85,10 +107,11 @@ class VehiclesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Recommended for You',
+              Text('Recommended for You',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w900
+                  fontWeight: FontWeight.w900,
+                  color: AppTheme.black, // Added AppTheme color
                 ),
               ),
               const SizedBox(height: 20),
@@ -124,16 +147,36 @@ class VehiclesScreen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const ListTile(
-                          title: Text('Mercedes suv', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('\$135/day'),
+                        ListTile(
+                          title: Text(
+                            'Mercedes suv', 
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.black, // Added AppTheme color
+                            ),
+                          ),
+                          subtitle: Text(
+                            '\$135/day',
+                            style: TextStyle(
+                              color: AppTheme.grey, // Added AppTheme color
+                            ),
+                          ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.star_border_outlined,
-                                  color: Color.fromARGB(255, 255, 207, 14)),
-                              SizedBox(width: 4),
-                              Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                              Icon(
+                                Icons.star_border_outlined,
+                                color: AppTheme.neutralColor, // Using neutralColor for stars
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '4.7', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.black, // Added AppTheme color
+                                ),
+                              ),
                             ],
                           ),
                         ),

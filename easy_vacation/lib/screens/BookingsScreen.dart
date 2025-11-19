@@ -9,15 +9,15 @@ class BookingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.white,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Bookings',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
       ),
       body: SafeArea(
@@ -36,7 +36,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       imagePath: 'assets/images/cozy_cabin.jpg',
                       status: 'Confirmed',
-                      statusColor: Colors.green,
+                      statusColor: AppTheme.successColor,
                       title: 'Cozy Cabin in the Woods',
                       price: '7000 DZD',
                       date: '12-15 May, 2024',
@@ -44,7 +44,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       imagePath: 'assets/images/beachfront_villa.jpg',
                       status: 'Pending',
-                      statusColor: Colors.orange,
+                      statusColor: AppTheme.neutralColor,
                       title: 'Beachfront Villa',
                       price: '25000 DZD',
                       date: '20-28 June, 2024',
@@ -52,7 +52,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       imagePath: 'assets/images/city_loft.jpg',
                       status: 'Canceled',
-                      statusColor: Colors.red,
+                      statusColor: AppTheme.failureColor,
                       title: 'City Loft',
                       price: '8000 DZD',
                       date: '5-7 August, 2024',
@@ -88,7 +88,7 @@ class BookingsScreen extends StatelessWidget {
             child: FilterChip(
               label: Text(filter),
               selected: isSelected,
-              checkmarkColor: AppTheme.white, // Yellow checkmark
+              checkmarkColor: AppTheme.white,
               selectedShadowColor: AppTheme.white,
               onSelected: (_) {},
               backgroundColor: AppTheme.white,
@@ -189,9 +189,12 @@ class BookingsScreen extends StatelessWidget {
                           minimumSize: WidgetStateProperty.all(const Size(0, 36)),
                           padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 8)),
                         ),
-                        child: const Text(
+                        child: Text(
                           'View Details',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.white,
+                          ),
                         ),
                       ),
                     ),
@@ -240,7 +243,10 @@ class BookingsScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               style: AppTheme.primaryButtonStyle,
-              child: const Text('Explore Stays'),
+              child: Text(
+                'Explore Stays',
+                style: TextStyle(color: AppTheme.white),
+              ),
             ),
           ),
         ],

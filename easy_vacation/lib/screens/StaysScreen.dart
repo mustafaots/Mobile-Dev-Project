@@ -1,20 +1,22 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
-class ActivitiesScreen extends StatelessWidget {
-  const ActivitiesScreen({super.key});
+class StaysScreen extends StatelessWidget {
+  const StaysScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Activities',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text('Featured Listings',
             style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.w900
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              color: AppTheme.black, // Added AppTheme color
             ),
           ),
         ),
@@ -27,8 +29,8 @@ class ActivitiesScreen extends StatelessWidget {
             itemCount: 5,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: (){
+                  Navigator.pushAndRemoveUntil(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -40,6 +42,7 @@ class ActivitiesScreen extends StatelessWidget {
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
+                    (route) => false,
                   );
                 },
                 child: Container(
@@ -51,24 +54,44 @@ class ActivitiesScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/skiing.jpg',
+                          'assets/images/apar2.jpg',
                           width: 260,
                           height: 200,
                           fit: BoxFit.cover,
                         ),
                       ),
-                      const ListTile(
+                      ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('Chrea'),
+                        title: Text(
+                          'BeachFront villa', 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.black, // Added AppTheme color
+                          ),
+                        ),
+                        subtitle: Text(
+                          '\$300/night',
+                          style: TextStyle(
+                            color: AppTheme.grey, // Added AppTheme color
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.star_border_outlined,
-                                color: Color.fromARGB(255, 255, 207, 14)),
-                            SizedBox(width: 4),
-                            Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            Icon(
+                              Icons.star_border_outlined,
+                              color: AppTheme.neutralColor, // Using neutralColor for stars
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '4.5', 
+                              style: TextStyle(
+                                fontSize: 16, 
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.black, // Added AppTheme color
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -85,10 +108,11 @@ class ActivitiesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Recommended for You',
+              Text('Recommended for You',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w900
+                  fontWeight: FontWeight.w900,
+                  color: AppTheme.black, // Added AppTheme color
                 ),
               ),
               const SizedBox(height: 20),
@@ -98,7 +122,7 @@ class ActivitiesScreen extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: (){
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -118,22 +142,42 @@ class ActivitiesScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            'assets/images/bike_riding.jpg',
+                            'assets/images/apar2.jpg',
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const ListTile(
-                          title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('Sahara'),
+                        ListTile(
+                          title: Text(
+                            'BeachFront villa', 
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.black, // Added AppTheme color
+                            ),
+                          ),
+                          subtitle: Text(
+                            '\$400/night',
+                            style: TextStyle(
+                              color: AppTheme.grey, // Added AppTheme color
+                            ),
+                          ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.star_border_outlined,
-                                  color: Color.fromARGB(255, 255, 207, 14)),
-                              SizedBox(width: 4),
-                              Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                              Icon(
+                                Icons.star_border_outlined,
+                                color: AppTheme.neutralColor, // Using neutralColor for stars
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '4.7', 
+                                style: TextStyle(
+                                  fontSize: 16, 
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.black, // Added AppTheme color
+                                ),
+                              ),
                             ],
                           ),
                         ),

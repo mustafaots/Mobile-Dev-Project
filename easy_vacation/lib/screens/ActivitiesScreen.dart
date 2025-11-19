@@ -1,8 +1,9 @@
 import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/shared/themes.dart';
 
-class StaysScreen extends StatelessWidget {
-  const StaysScreen({super.key});
+class ActivitiesScreen extends StatelessWidget {
+  const ActivitiesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +12,9 @@ class StaysScreen extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Listings',
+          child: Text('Featured Activities',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 23,
               fontWeight: FontWeight.w900
             ),
           ),
@@ -27,9 +28,8 @@ class StaysScreen extends StatelessWidget {
             itemCount: 5,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: (){
-                  ///////////////////////////////////////////////////////
-                  Navigator.pushAndRemoveUntil(
+                onTap: () {
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -41,9 +41,7 @@ class StaysScreen extends StatelessWidget {
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
-                    (route) => false, // This removes all previous routes
                   );
-                  ///////////////////////////////////////////////////////
                 },
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
@@ -54,7 +52,7 @@ class StaysScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/images/apar2.jpg',
+                          'assets/images/skiing.jpg',
                           width: 260,
                           height: 200,
                           fit: BoxFit.cover,
@@ -63,13 +61,13 @@ class StaysScreen extends StatelessWidget {
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text('\$300/night'),
+                        title: Text('skiing', style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text('Chrea'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star_border_outlined,
-                                color: Color.fromARGB(255, 255, 207, 14)),
+                                color: AppTheme.neutralColor),
                             SizedBox(width: 4),
                             Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                           ],
@@ -101,7 +99,7 @@ class StaysScreen extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -121,20 +119,20 @@ class StaysScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            'assets/images/apar2.jpg',
+                            'assets/images/bike_riding.jpg',
                             width: double.infinity,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
                         ),
                         const ListTile(
-                          title: Text('BeachFront villa', style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text('\$400/night'),
+                          title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text('Sahara'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.star_border_outlined,
-                                  color: Color.fromARGB(255, 255, 207, 14)),
+                                  color: AppTheme.neutralColor),
                               SizedBox(width: 4),
                               Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                             ],

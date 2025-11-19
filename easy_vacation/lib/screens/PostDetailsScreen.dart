@@ -1,5 +1,5 @@
+import 'package:easy_vacation/classes/BookingsScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
 class PostDetailsScreen extends StatelessWidget {
@@ -20,16 +20,15 @@ class PostDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Listing Details',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
       ),
       backgroundColor: AppTheme.white,
@@ -120,7 +119,7 @@ class PostDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: AppTheme.black,
               height: 1.2,
             ),
           ),
@@ -130,7 +129,7 @@ class PostDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: Colors.grey,
+              color: AppTheme.grey,
               height: 1.5,
             ),
           ),
@@ -158,7 +157,7 @@ class PostDetailsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -167,24 +166,24 @@ class PostDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    color: AppTheme.black,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     Icon(
                       Icons.star,
-                      color: Colors.amber,
+                      color: AppTheme.neutralColor,
                       size: 16,
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
                       '4.9 (127 reviews)',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
-                        color: Colors.grey,
+                        color: AppTheme.grey,
                       ),
                     ),
                   ],
@@ -262,10 +261,10 @@ class PostDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                    color: AppTheme.black,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -273,10 +272,10 @@ class PostDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   comment,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
-                    color: Colors.grey,
+                    color: AppTheme.grey,
                     height: 1.4,
                   ),
                 ),
@@ -294,7 +293,7 @@ class PostDetailsScreen extends StatelessWidget {
         for (int i = 1; i <= 5; i++)
           Icon(
             i <= rating ? Icons.star : (i - 0.5 <= rating ? Icons.star_half : Icons.star_border),
-            color: Colors.amber,
+            color: AppTheme.neutralColor,
             size: 16,
           ),
       ],
@@ -413,7 +412,7 @@ class PostDetailsScreen extends StatelessWidget {
           color: AppTheme.lightGrey,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppTheme.black.withOpacity(0.1),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),
@@ -445,11 +444,12 @@ class PostDetailsScreen extends StatelessWidget {
                   );
                 },
                 style: AppTheme.primaryButtonStyle,
-                child: const Text(
+                child: Text(
                   'Reserve Now',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: AppTheme.white,
                   ),
                 ),
               ),
@@ -467,16 +467,17 @@ class PostDetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.edit, size: 20),
-                    SizedBox(width: 4),
+                    Icon(Icons.edit, size: 20, color: AppTheme.grey),
+                    const SizedBox(width: 4),
                     Text(
                       'Edit',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: AppTheme.grey,
                       ),
                     ),
                   ],

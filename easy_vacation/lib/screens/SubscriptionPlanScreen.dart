@@ -63,7 +63,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(selected ? 0.1 : 0.05),
+              color: AppTheme.black.withOpacity(selected ? 0.1 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -80,9 +80,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                 Expanded(
                   child: Text(
                     tp,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      color: AppTheme.black, // Added AppTheme color
                     ),
                   ),
                 ),
@@ -91,11 +92,12 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Colors.amber
+                      color: AppTheme.neutralColor, // Using neutralColor for recommended badge
                     ),
-                    child: const Text('Recommended', 
+                    child: Text(
+                      'Recommended', 
                       style: TextStyle(
-                        color: Colors.white, 
+                        color: AppTheme.white, 
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -106,9 +108,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
             const SizedBox(height: 12),
             Text(
               '\$$price',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.w900,
+                color: AppTheme.black, // Added AppTheme color
               ),
             ),
             const SizedBox(height: 16),
@@ -126,7 +129,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                         Expanded(
                           child: Text(
                             detail,
-                            style: const TextStyle(fontSize: 15),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: AppTheme.black, // Added AppTheme color
+                            ),
                           ),
                         ),
                       ],
@@ -148,7 +154,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                 ),
                 onPressed: () {},
                 child: Text(
-                  'Select Plan',
+                  selected ? 'Current Plan' : 'Select Plan',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -170,7 +176,12 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back, color: AppTheme.black),
         ),
-        title: const Text('Choose your plan'),
+        title: Text(
+          'Choose your plan',
+          style: TextStyle(
+            color: AppTheme.black, // Added AppTheme color
+          ),
+        ),
         centerTitle: true,
         backgroundColor: AppTheme.white,
         foregroundColor: AppTheme.black,

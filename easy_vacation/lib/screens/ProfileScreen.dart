@@ -1,6 +1,6 @@
 import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_vacation/shared/themes.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,17 +15,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar:  AppBar(
+      backgroundColor: AppTheme.white,
+      appBar: AppBar(
         title: const Text(
           'Profile',
           style: TextStyle(
-            color: Colors.black87,
+            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.white,
         elevation: 0,
       ),
       body: SafeArea(
@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        color: AppTheme.black,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'Mohamed@easyvacation.com',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Color(0xFF6B7280),
+                        color: AppTheme.grey,
                       ),
                     ),
                   ],
@@ -122,8 +122,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.withOpacity(0.1),
-                      foregroundColor: Colors.red,
+                      backgroundColor: AppTheme.failureColor.withOpacity(0.1),
+                      foregroundColor: AppTheme.failureColor,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,
@@ -157,11 +157,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -183,12 +183,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent.withOpacity(0.1),
+                    color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Icon(
                     icon,
-                    color: Colors.blueAccent,
+                    color: AppTheme.primaryColor,
                     size: 24,
                   ),
                 ),
@@ -198,13 +198,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: AppTheme.black,
                     ),
                   ),
                 ),
                 const Icon(
                   Icons.chevron_right,
-                  color: Color(0xFF6B7280),
+                  color: AppTheme.grey,
                   size: 24,
                 ),
               ],
@@ -225,11 +225,11 @@ class SubscriptionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppTheme.black.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -240,13 +240,13 @@ class SubscriptionCard extends StatelessWidget {
           Container(
             width: 40,
             height: 40,
-            decoration: const BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+            decoration: BoxDecoration(
+              color: AppTheme.neutralColor,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
             child: const Icon(
               Icons.workspace_premium,
-              color: Colors.white,
+              color: AppTheme.white,
               size: 24,
             ),
           ),
@@ -259,7 +259,7 @@ class SubscriptionCard extends StatelessWidget {
                     text: 'Subscription: ',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: AppTheme.black,
                     ),
                   ),
                   TextSpan(
@@ -267,7 +267,7 @@ class SubscriptionCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.amber,
+                      color: AppTheme.neutralColor,
                     ),
                   ),
                 ],

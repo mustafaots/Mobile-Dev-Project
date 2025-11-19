@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
 import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
 
+
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
 

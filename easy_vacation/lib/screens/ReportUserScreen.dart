@@ -39,6 +39,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
               Text("Tell us what's wrong",
                 style: AppTheme.header1.copyWith(
                   fontSize: 25,
+                  color: AppTheme.black, // Added explicit black color
                 ),
               ),
               const SizedBox(height: 30),
@@ -66,7 +67,13 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                           activeColor: AppTheme.primaryColor,
                           dense: true,
                           value: problem,
-                          title: Text(problem, style: const TextStyle(fontSize: 16)),
+                          title: Text(
+                            problem, 
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppTheme.black, // Added explicit black color
+                            )
+                          ),
                           groupValue: selectedOption,
                           onChanged: (value) {
                             setState(() {
@@ -101,7 +108,15 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      style: AppTheme.primaryButtonStyle,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryColor,
+                        foregroundColor: AppTheme.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
                       onPressed: () {
                         // Handle report submission
                       },
