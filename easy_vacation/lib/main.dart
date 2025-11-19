@@ -1,4 +1,5 @@
 import 'package:easy_vacation/screens/WelcomeScreen.dart';
+import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,12 @@ class MainApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const WelcomeScreen(), // Or your desired home screen
+      home: const WelcomeScreen()
     );
   }
 }
+
+//const ProfileScreen(      postsCount: 24,
+ //     followersCount: 128,
+ //     followingCount: 56,
+ //     isFollowing: false,), // Or your desired home screen

@@ -1,5 +1,6 @@
 import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -34,7 +35,6 @@ class PostDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              ///////////////////////////////////////////////////////
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
@@ -48,7 +48,6 @@ class PostDetailsScreen extends StatelessWidget {
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
-              ///////////////////////////////////////////////////////
             },
             icon: Icon(Icons.home_filled, size: 40, ),
             color: AppTheme.primaryColor,
@@ -65,8 +64,8 @@ class PostDetailsScreen extends StatelessWidget {
                 children: [
                   _buildImageGallery(),
                   _buildTitleSection(),
-                  _buildHostInfo(),
-                  _buildReviewsSection(),
+                  _buildHostInfo(context),
+                  _buildReviewsSection(context),
                   _buildAvailabilitySection(),
                   const SizedBox(height: 112),
                 ],
@@ -164,19 +163,48 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHostInfo() {
+  Widget _buildHostInfo(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/host_Ali.jpg'),
-                fit: BoxFit.cover,
+          // Host Profile Picture with Blue Ring and Gesture Detector
+          GestureDetector(
+            onTap: () {
+              _navigateToProfile(
+                context,
+                userName: 'Ali',
+                userEmail: 'ali@example.com',
+                userImage: 'assets/images/host_Ali.jpg',
+                postsCount: 24,
+                followersCount: 128,
+                followingCount: 56,
+                reviewsCount: 127,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(.5), // This creates the ring space
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.primaryColor,
+                  width: 2,
+                ),
+              ),
+              child: Container(
+                width: 52, // Reduced to account for padding
+                height: 52,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/host_Ali.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                  border: Border.all(
+                    color: AppTheme.white,
+                    width: 2,
+                  ),
+                ),
               ),
             ),
           ),
@@ -202,7 +230,7 @@ class PostDetailsScreen extends StatelessWidget {
                       size: 16,
                     ),
                     const SizedBox(width: 4),
-                    Expanded( // This fixes the overflow
+                    Expanded(
                       child: Text(
                         '4.9 (127 reviews)',
                         style: TextStyle(
@@ -210,7 +238,7 @@ class PostDetailsScreen extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: AppTheme.grey,
                         ),
-                        overflow: TextOverflow.ellipsis, // Adds "..." if needed
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -231,7 +259,7 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewsSection() {
+  Widget _buildReviewsSection(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -248,36 +276,85 @@ class PostDetailsScreen extends StatelessWidget {
             ),
           ),
           _buildReviewItem(
+            context,
             'assets/images/reviewer_alex.jpg',
             'Alex Johnson',
             4.5,
             'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
+            postsCount: 18,
+            followersCount: 89,
+            followingCount: 45,
+            reviewsCount: 23,
           ),
           _buildReviewItem(
+            context,
             'assets/images/reviewer_maria.jpg',
             'Maria Garcia',
             5.0,
             'A perfect getaway. The location is unbeatable. Highly recommended.',
+            postsCount: 32,
+            followersCount: 156,
+            followingCount: 78,
+            reviewsCount: 45,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildReviewItem(String avatarPath, String name, double rating, String comment) {
+  Widget _buildReviewItem(
+    BuildContext context,
+    String avatarPath, 
+    String name, 
+    double rating, 
+    String comment, {
+    int postsCount = 0,
+    int followersCount = 0,
+    int followingCount = 0,
+    int reviewsCount = 0,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: AssetImage(avatarPath),
-                fit: BoxFit.cover,
+          // Reviewer Profile Picture with Blue Ring and Gesture Detector
+          GestureDetector(
+            onTap: () {
+              _navigateToProfile(
+                context,
+                userName: name,
+                userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
+                userImage: avatarPath,
+                postsCount: postsCount,
+                followersCount: followersCount,
+                followingCount: followingCount,
+                reviewsCount: reviewsCount,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(.5), // Ring space
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppTheme.primaryColor,
+                  width: 1.5,
+                ),
+              ),
+              child: Container(
+                width: 37, // Reduced to account for padding
+                height: 37,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage(avatarPath),
+                    fit: BoxFit.cover,
+                  ),
+                  border: Border.all(
+                    color: AppTheme.white,
+                    width: 1.5,
+                  ),
+                ),
               ),
             ),
           ),
@@ -513,6 +590,45 @@ class PostDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _navigateToProfile(
+    BuildContext context, {
+    required String userName,
+    required String userEmail,
+    required String userImage,
+    required int postsCount,
+    required int followersCount,
+    required int followingCount,
+    required int reviewsCount,
+  }) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => ProfileScreen(
+          userName: userName,
+          userEmail: userEmail,
+          userImage: userImage,
+          postsCount: postsCount,
+          followersCount: followersCount,
+          followingCount: followingCount,
+          reviewsCount: reviewsCount,
+        ),
+        transitionsBuilder: (_, animation, __, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.fastOutSlowIn,
+            )),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 300),
       ),
     );
   }

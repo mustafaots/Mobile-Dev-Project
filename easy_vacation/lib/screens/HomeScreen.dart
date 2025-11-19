@@ -1,4 +1,4 @@
-import 'package:easy_vacation/screens/ProfileScreen.dart';
+import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/NotificationsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:easy_vacation/screens/CreateListingScreen.dart';
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const BookingsScreen(),
     const SizedBox.shrink(), // Empty middle
     const NotificationsScreen(),
-    const ProfileScreen()
+    const SettingsScreen()
   ];
 
   int _navIdx = 0;
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.book_online_outlined), label: 'Bookings'),
           BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'Settings'),
         ],
       ),
     );

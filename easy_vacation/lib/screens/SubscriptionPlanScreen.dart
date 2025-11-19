@@ -200,6 +200,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                   transitionDuration: const Duration(milliseconds: 300),
                 )
               );
+              ///////////////////////////////////////////////////////
             },
             icon: Icon(Icons.home_filled, size: 40, ),
             color: AppTheme.primaryColor,

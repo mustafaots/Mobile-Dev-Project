@@ -1,0 +1,534 @@
+import 'package:easy_vacation/screens/CreateListingScreen.dart';
+import 'package:easy_vacation/shared/themes.dart';
+import 'package:flutter/material.dart';
+
+class ListingsHistory extends StatefulWidget {
+  const ListingsHistory({super.key});
+
+  @override
+  State<ListingsHistory> createState() => _ListingsHistoryState();
+}
+
+class _ListingsHistoryState extends State<ListingsHistory> {
+  final List<Post> _userPosts = [
+    Post(
+      id: '1',
+      image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
+      title: 'Beautiful Beach Day in Bali',
+      location: 'Bali, Indonesia',
+      description: 'Spent an amazing week in this beautiful beachfront villa. The sunsets were absolutely breathtaking!',
+      likes: 42,
+      comments: 8,
+      date: '2 days ago',
+      status: 'active',
+    ),
+    Post(
+      id: '2',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
+      title: 'Mountain Adventure in Swiss Alps',
+      location: 'Swiss Alps',
+      description: 'Hiking through the Swiss Alps was an unforgettable experience. The crisp mountain air and stunning views made every step worth it.',
+      likes: 89,
+      comments: 15,
+      date: '1 week ago',
+      status: 'active',
+    ),
+    Post(
+      id: '3',
+      image: 'https://images.unsplash.com/photo-1549294413-26f195200c16',
+      title: 'City Exploration - Tokyo',
+      location: 'Tokyo, Japan',
+      description: 'Tokyo never fails to amaze me. From ancient temples to futuristic technology, this city has it all.',
+      likes: 156,
+      comments: 23,
+      date: '2 weeks ago',
+      status: 'active',
+    ),
+    Post(
+      id: '4',
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
+      title: 'Desert Safari Experience',
+      location: 'Dubai, UAE',
+      description: 'An incredible desert safari experience with traditional Bedouin culture and amazing dune bashing.',
+      likes: 67,
+      comments: 12,
+      date: '3 weeks ago',
+      status: 'draft',
+    ),
+  ];
+
+  String _currentFilter = 'all';
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredPosts = _currentFilter == 'all' 
+      ? _userPosts 
+      : _userPosts.where((post) => post.status == _currentFilter).toList();
+
+    return Scaffold(
+      backgroundColor: AppTheme.white,
+      appBar: AppBar(
+        title: Text(
+          'My Posts',
+          style: TextStyle(
+            color: AppTheme.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
+        ),
+        backgroundColor: AppTheme.white,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Filter Chips
+            _buildFilterSection(),
+            
+            // Posts List
+            Expanded(
+              child: filteredPosts.isEmpty
+                  ? _buildEmptyState()
+                  : _buildPostsList(filteredPosts),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildFilterChip('All', 'all'),
+            const SizedBox(width: 8),
+            _buildFilterChip('Active', 'active'),
+            const SizedBox(width: 8),
+            _buildFilterChip('Drafts', 'draft'),
+            const SizedBox(width: 8),
+            _buildFilterChip('Archived', 'archived'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, String value) {
+    final isSelected = _currentFilter == value;
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) {
+        setState(() {
+          _currentFilter = value;
+        });
+      },
+      backgroundColor: AppTheme.white,
+      selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+      checkmarkColor: AppTheme.primaryColor,
+      labelStyle: TextStyle(
+        color: isSelected ? AppTheme.primaryColor : AppTheme.grey,
+        fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: isSelected ? AppTheme.primaryColor : AppTheme.grey.withOpacity(0.3),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.article,
+            size: 80,
+            color: AppTheme.grey.withOpacity(0.5),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No Posts Found',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.grey,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _currentFilter == 'all' 
+                ? 'You haven\'t created any posts yet.'
+                : 'No ${_currentFilter} posts found.',
+            style: TextStyle(
+              fontSize: 16,
+              color: AppTheme.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPostsList(List<Post> posts) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      itemCount: posts.length,
+      itemBuilder: (context, index) {
+        return _buildPostCard(posts[index]);
+      },
+    );
+  }
+
+  Widget _buildPostCard(Post post) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppTheme.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Post Image
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                child: Image.network(
+                  post.image,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              
+              // Status Badge
+              Positioned(
+                top: 12,
+                left: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(post.status),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    _getStatusText(post.status),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // Post Content
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title and Menu
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        post.title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.black,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    PopupMenuButton<String>(
+                      icon: Icon(Icons.more_vert, color: AppTheme.grey),
+                      onSelected: (value) => _handlePostAction(value, post),
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit Post'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Text('Delete Post'),
+                        ),
+                        if (post.status == 'draft')
+                          const PopupMenuItem(
+                            value: 'publish',
+                            child: Text('Publish'),
+                          ),
+                        if (post.status == 'active')
+                          const PopupMenuItem(
+                            value: 'archive',
+                            child: Text('Archive'),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // Location
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      size: 14,
+                      color: AppTheme.grey,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      post.location,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppTheme.grey,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // Description
+                Text(
+                  post.description,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppTheme.black,
+                    height: 1.4,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+
+                const SizedBox(height: 12),
+
+                // Stats and Date
+                Row(
+                  children: [
+                    // Likes
+                    _buildStatItem(Icons.favorite, '${post.likes}'),
+                    const SizedBox(width: 16),
+                    
+                    // Comments
+                    _buildStatItem(Icons.comment, '${post.comments}'),
+                    
+                    const Spacer(),
+                    
+                    // Date
+                    Text(
+                      post.date,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppTheme.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(IconData icon, String count) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppTheme.grey),
+        const SizedBox(width: 4),
+        Text(
+          count,
+          style: TextStyle(
+            fontSize: 14,
+            color: AppTheme.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'active':
+        return AppTheme.successColor;
+      case 'draft':
+        return AppTheme.neutralColor;
+      case 'archived':
+        return AppTheme.grey;
+      default:
+        return AppTheme.grey;
+    }
+  }
+
+  String _getStatusText(String status) {
+    switch (status) {
+      case 'active':
+        return 'Published';
+      case 'draft':
+        return 'Draft';
+      case 'archived':
+        return 'Archived';
+      default:
+        return status;
+    }
+  }
+
+  void _handlePostAction(String action, Post post) {
+    switch (action) {
+      case 'edit':
+        _editPost(post);
+        break;
+      case 'delete':
+        _deletePost(post);
+        break;
+      case 'publish':
+        _publishPost(post);
+        break;
+      case 'archive':
+        _archivePost(post);
+        break;
+    }
+  }
+
+  void _editPost(Post post) {
+    // Navigate to edit post screen
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Editing: ${post.title}'),
+        backgroundColor: AppTheme.primaryColor,
+      ),
+    );
+  }
+
+  void _deletePost(Post post) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Post'),
+        content: Text('Are you sure you want to delete "${post.title}"? This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _userPosts.removeWhere((p) => p.id == post.id);
+              });
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('Post deleted successfully'),
+                  backgroundColor: AppTheme.successColor,
+                ),
+              );
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.failureColor,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _publishPost(Post post) {
+    setState(() {
+      final index = _userPosts.indexWhere((p) => p.id == post.id);
+      if (index != -1) {
+        _userPosts[index] = post.copyWith(status: 'active');
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Post published successfully'),
+        backgroundColor: AppTheme.successColor,
+      ),
+    );
+  }
+
+  void _archivePost(Post post) {
+    setState(() {
+      final index = _userPosts.indexWhere((p) => p.id == post.id);
+      if (index != -1) {
+        _userPosts[index] = post.copyWith(status: 'archived');
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Post archived'),
+        backgroundColor: AppTheme.neutralColor,
+      ),
+    );
+  }
+}
+
+class Post {
+  final String id;
+  final String image;
+  final String title;
+  final String location;
+  final String description;
+  final int likes;
+  final int comments;
+  final String date;
+  final String status;
+
+  Post({
+    required this.id,
+    required this.image,
+    required this.title,
+    required this.location,
+    required this.description,
+    required this.likes,
+    required this.comments,
+    required this.date,
+    required this.status,
+  });
+
+  Post copyWith({
+    String? status,
+  }) {
+    return Post(
+      id: id,
+      image: image,
+      title: title,
+      location: location,
+      description: description,
+      likes: likes,
+      comments: comments,
+      date: date,
+      status: status ?? this.status,
+    );
+  }
+}
