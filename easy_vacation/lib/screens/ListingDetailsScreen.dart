@@ -35,7 +35,7 @@ class PostDetailsScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               ///////////////////////////////////////////////////////
-              Navigator.pushAndRemoveUntil(
+              Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
@@ -47,7 +47,6 @@ class PostDetailsScreen extends StatelessWidget {
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
-                (route) => false, // This removes all previous routes
               );
               ///////////////////////////////////////////////////////
             },
@@ -451,7 +450,7 @@ class PostDetailsScreen extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const BookingsScreen(),

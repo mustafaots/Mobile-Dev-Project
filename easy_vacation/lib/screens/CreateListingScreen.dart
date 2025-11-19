@@ -46,7 +46,7 @@ class _CreateListingState extends State<CreateListing> {
           IconButton(
             onPressed: () {
               ///////////////////////////////////////////////////////
-              Navigator.pushAndRemoveUntil(
+              Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
@@ -58,7 +58,6 @@ class _CreateListingState extends State<CreateListing> {
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
-                (route) => false, // This removes all previous routes
               );
               ///////////////////////////////////////////////////////
             },
@@ -190,7 +189,7 @@ class _CreateListingState extends State<CreateListing> {
                   if (_formKey.currentState!.validate()) {
 
                     ///////////////////////////////////////////////////////
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.pushReplacement(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (_, __, ___) => const ConfirmAndPostScreen(),
@@ -202,7 +201,6 @@ class _CreateListingState extends State<CreateListing> {
                         },
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
-                      (route) => false, // This removes all previous routes
                     );
                     ///////////////////////////////////////////////////////
                   }

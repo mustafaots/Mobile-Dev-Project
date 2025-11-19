@@ -244,7 +244,7 @@ class BookingsScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: ()=>{
                 ///////////////////////////////////////////////////////
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => const HomeScreen(),
@@ -256,7 +256,6 @@ class BookingsScreen extends StatelessWidget {
                     },
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
-                  (route) => false, // This removes all previous routes
                 )
                 ///////////////////////////////////////////////////////
               },

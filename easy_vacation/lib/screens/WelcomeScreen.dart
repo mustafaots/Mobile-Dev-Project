@@ -90,9 +90,10 @@ class WelcomeScreen extends StatelessWidget {
                 width: 200, // <-- adjust this to make it smaller
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      (route) => false,
                     );
                   },
                   style: AppTheme.primaryButtonStyle.copyWith(

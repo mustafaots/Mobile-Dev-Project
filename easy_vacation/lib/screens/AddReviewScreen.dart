@@ -23,15 +23,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   final TextEditingController _reviewController = TextEditingController();
   bool _showPreview = false;
   bool _showCategories = false;
-  int _navIdx = 0;
-
-  List staticNavigation = [
-    const HomeScreen(),
-    const BookingsScreen(),
-    '',
-    const NotificationsScreen(),
-    const ProfileScreen()
-  ];
 
   final List<Map<String, dynamic>> _emojiReactions = [
     {'emoji': '😠', 'label': 'Terrible', 'value': 1},

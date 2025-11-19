@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ? FloatingActionButton(
               onPressed: () {
                 ///////////////////////////////////////////////////////
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => const CreateListing(),
@@ -62,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
-                  (route) => false, // This removes all previous routes
                 );
                 ///////////////////////////////////////////////////////
               },

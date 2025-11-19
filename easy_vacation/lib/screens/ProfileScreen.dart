@@ -133,7 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      ////////////////////////////////////////////////
+                      Navigator.pushAndRemoveUntil(
                         context,
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) => const LoginScreen(),
@@ -145,7 +146,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           transitionDuration: const Duration(milliseconds: 300),
                         ),
+                        (route) => false,
                       );
+                      ////////////////////////////////////////////////
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.failureColor.withOpacity(0.1),
