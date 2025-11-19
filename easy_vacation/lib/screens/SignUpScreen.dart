@@ -1,5 +1,5 @@
-import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
-import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
+import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/SecondaryStyles.dart';

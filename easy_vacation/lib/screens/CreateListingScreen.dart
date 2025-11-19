@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/MUS/ConfirmListingScreen.dart';
+import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/SecondaryStyles.dart';

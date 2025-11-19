@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/BookingsScreen.dart';
+import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 

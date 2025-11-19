@@ -1,12 +1,12 @@
-import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
-import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
-import 'package:easy_vacation/classes/MAS/BookingsScreen.dart';
-import 'package:easy_vacation/classes/MUS/CreateListingScreen.dart';
+import 'package:easy_vacation/screens/ProfileScreen.dart';
+import 'package:easy_vacation/screens/NotificationsScreen.dart';
+import 'package:easy_vacation/screens/BookingsScreen.dart';
+import 'package:easy_vacation/screens/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/SecondaryStyles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
-import 'Vehicles.dart';
+import 'VehiclesScreen.dart';
 import 'StaysScreen.dart';
 import 'ActivitiesScreen.dart';
 

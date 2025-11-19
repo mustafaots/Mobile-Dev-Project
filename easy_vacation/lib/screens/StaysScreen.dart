@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/MAS/PostDetailsScreen.dart';
+import 'package:easy_vacation/screens/PostDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 

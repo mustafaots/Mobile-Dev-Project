@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/SignUpScreen.dart';
+import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 

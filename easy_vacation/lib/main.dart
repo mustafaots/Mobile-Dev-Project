@@ -1,10 +1,10 @@
-import 'package:easy_vacation/classes/AYM/ProfileScreen.dart';
-import 'package:easy_vacation/classes/AYM/AddReviewScreen.dart';
-import 'package:easy_vacation/classes/AYM/NotificationsScreen.dart';
-import 'package:easy_vacation/classes/DAN/HomeScreen.dart';
-import 'package:easy_vacation/classes/DAN/Vehicles.dart';
-import 'package:easy_vacation/classes/MAS/WelcomeScreen.dart';
-import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
+import 'package:easy_vacation/screens/ProfileScreen.dart';
+import 'package:easy_vacation/screens/AddReviewScreen.dart';
+import 'package:easy_vacation/screens/NotificationsScreen.dart';
+import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/VehiclesScreen.dart';
+import 'package:easy_vacation/screens/WelcomeScreen.dart';
+import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 

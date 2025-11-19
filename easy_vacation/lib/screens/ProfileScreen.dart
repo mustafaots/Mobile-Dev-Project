@@ -1,4 +1,4 @@
-import 'package:easy_vacation/classes/MUS/LoginScreen.dart';
+import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
