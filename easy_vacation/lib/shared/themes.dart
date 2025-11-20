@@ -78,9 +78,7 @@ class AppTheme {
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     elevation: WidgetStateProperty.all(2),
-    padding: WidgetStateProperty.all(
-      const EdgeInsets.symmetric(vertical: 16),
-    ),
+    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 16)),
   );
 
   static ButtonStyle radioButtonStyle(bool isSelected) {
@@ -91,9 +89,7 @@ class AppTheme {
         color: isSelected ? primaryColor : const Color(0xFFD1D5DB),
         width: 2,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: isSelected ? 3 : 0,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
     );
@@ -112,8 +108,8 @@ class AppTheme {
     ],
   );
 
-  // App Bar Theme
-  static AppBarTheme appBarTheme = AppBarTheme(
+  // App Bar Theme helper
+  static final AppBarTheme staticAppBarTheme = AppBarTheme(
     backgroundColor: primaryColor,
     foregroundColor: white,
     titleTextStyle: appBarStyle,

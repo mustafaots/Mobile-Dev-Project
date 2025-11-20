@@ -20,7 +20,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
       appBar: AppBar(
         title: const Text("Confirm & Post"),
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: AppTheme.white,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -140,7 +140,9 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                                 child: child,
                               );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                         ///////////////////////////////////////////////////////
@@ -148,7 +150,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                 style: AppTheme.primaryButtonStyle,
                 child: const Text(
                   "Post Listing",
-                  style: TextStyle(fontSize: 18, color: AppTheme.white),
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
             ),
@@ -158,16 +160,18 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value,
-      {bool isBold = false, bool isColored = false}) {
+  Widget _buildSummaryRow(
+    String label,
+    String value, {
+    bool isBold = false,
+    bool isColored = false,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: isBold
-              ? const TextStyle(fontWeight: FontWeight.bold)
-              : null,
+          style: isBold ? const TextStyle(fontWeight: FontWeight.bold) : null,
         ),
         Text(
           value,

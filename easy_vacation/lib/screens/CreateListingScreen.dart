@@ -3,6 +3,7 @@ import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class CreateListing extends StatefulWidget {
@@ -30,17 +31,20 @@ class _CreateListingState extends State<CreateListing> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Listing Details',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -51,35 +55,29 @@ class _CreateListingState extends State<CreateListing> {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
               ///////////////////////////////////////////////////////
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
         ],
       ),
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             header2('Add Photos'),
             space(10),
             Center(
               child: InkWell(
-                onTap: () {
-
-                },
+                onTap: () {},
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
                   width: 120,
@@ -87,7 +85,9 @@ class _CreateListingState extends State<CreateListing> {
                   decoration: BoxDecoration(
                     color: AppTheme.lightGrey,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppTheme.grey.withOpacity(0.5)),
+                    border: Border.all(
+                      color: context.secondaryTextColor.withOpacity(0.5),
+                    ),
                   ),
                   child: const Icon(
                     Icons.photo_camera,
@@ -127,10 +127,9 @@ class _CreateListingState extends State<CreateListing> {
                   TextFormField(
                     controller: _titleController,
                     decoration: input_decor('Title', const Icon(Icons.title)),
-                    validator: (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'Please add a title'
-                            : null,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'Please add a title'
+                        : null,
                   ),
                   space(20),
 
@@ -141,10 +140,9 @@ class _CreateListingState extends State<CreateListing> {
                       'Description',
                       const Icon(Icons.description_outlined),
                     ),
-                    validator: (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'Please add a description'
-                            : null,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'Please add a description'
+                        : null,
                   ),
                   space(20),
 
@@ -155,10 +153,9 @@ class _CreateListingState extends State<CreateListing> {
                       'Price',
                       const Icon(Icons.attach_money_rounded),
                     ),
-                    validator: (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'Please add a price'
-                            : null,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'Please add a price'
+                        : null,
                   ),
                   space(20),
 
@@ -168,10 +165,9 @@ class _CreateListingState extends State<CreateListing> {
                       'Location',
                       const Icon(Icons.map_outlined),
                     ),
-                    validator: (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'Please pin a location'
-                            : null,
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? 'Please pin a location'
+                        : null,
                   ),
                   space(40),
                 ],
@@ -182,17 +178,16 @@ class _CreateListingState extends State<CreateListing> {
               width: double.infinity,
               child: ElevatedButton(
                 style: login_button_style.copyWith(
-                  minimumSize:
-                      WidgetStateProperty.all(const Size(0, 55)),
+                  minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-
                     ///////////////////////////////////////////////////////
                     Navigator.pushReplacement(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const ConfirmAndPostScreen(),
+                        pageBuilder: (_, __, ___) =>
+                            const ConfirmAndPostScreen(),
                         transitionsBuilder: (_, animation, __, child) {
                           return FadeTransition(
                             opacity: animation,
@@ -205,10 +200,7 @@ class _CreateListingState extends State<CreateListing> {
                     ///////////////////////////////////////////////////////
                   }
                 },
-                child: Text(
-                  'Continue To Payment',
-                  style: login_text_style,
-                ),
+                child: Text('Continue To Payment', style: login_text_style),
               ),
             ),
           ],

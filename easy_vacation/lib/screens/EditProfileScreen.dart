@@ -1,4 +1,5 @@
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -21,7 +22,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     // Pre-fill with current user data (in real app, this would come from your user model)
     _nameController.text = 'Mohamed Ali';
     _emailController.text = 'mohamed@easyvacation.com';
-    _bioController.text = 'Travel enthusiast exploring the world one destination at a time. Sharing my experiences and tips!';
+    _bioController.text =
+        'Travel enthusiast exploring the world one destination at a time. Sharing my experiences and tips!';
     _locationController.text = 'Casablanca, Morocco';
     _phoneController.text = '+213 123 456 789';
   }
@@ -50,9 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: AppTheme.successColor,
         content: const Text('Profile updated successfully!'),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
 
@@ -95,18 +95,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Edit Profile',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
         elevation: 0,
         actions: [
           TextButton(
@@ -196,6 +198,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Column(
                 children: [
                   _buildFormField(
+                    context: context,
                     controller: _nameController,
                     label: 'Full Name',
                     icon: Icons.person,
@@ -203,6 +206,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
+                    context: context,
                     controller: _emailController,
                     label: 'Email Address',
                     icon: Icons.email,
@@ -211,6 +215,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
+                    context: context,
                     controller: _phoneController,
                     label: 'Phone Number',
                     icon: Icons.phone,
@@ -218,12 +223,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
+                    context: context,
                     controller: _locationController,
                     label: 'Location',
                     icon: Icons.location_on,
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
+                    context: context,
                     controller: _bioController,
                     label: 'Bio',
                     icon: Icons.description,
@@ -237,11 +244,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               // Additional Options
               Container(
                 decoration: BoxDecoration(
-                  color: AppTheme.white,
+                  color: context.cardColor,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: AppTheme.black.withOpacity(0.1),
+                      color: context.textColor.withOpacity(0.1),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -250,6 +257,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Column(
                   children: [
                     _buildOptionTile(
+                      context: context,
                       icon: Icons.lock,
                       title: 'Change Password',
                       onTap: () {
@@ -257,6 +265,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                     ),
                     _buildOptionTile(
+                      context: context,
                       icon: Icons.notifications,
                       title: 'Notification Settings',
                       onTap: () {
@@ -264,6 +273,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       },
                     ),
                     _buildOptionTile(
+                      context: context,
                       icon: Icons.privacy_tip,
                       title: 'Privacy Settings',
                       onTap: () {
@@ -294,10 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   child: const Text(
                     'Delete Account',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -309,6 +316,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildFormField({
+    required BuildContext context,
     required TextEditingController controller,
     required String label,
     required IconData icon,
@@ -316,13 +324,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
   }) {
+    final cardColor = context.cardColor;
+    final textColor = context.textColor;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: textColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -340,7 +351,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: AppTheme.white,
+          fillColor: cardColor,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 16,
@@ -351,10 +362,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildOptionTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return ListTile(
       leading: Container(
         width: 40,
@@ -365,14 +380,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         child: Icon(icon, color: AppTheme.primaryColor, size: 20),
       ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16,
-          color: AppTheme.black,
-        ),
-      ),
-      trailing: Icon(Icons.chevron_right, color: AppTheme.grey),
+      title: Text(title, style: TextStyle(fontSize: 16, color: textColor)),
+      trailing: Icon(Icons.chevron_right, color: secondaryTextColor),
       onTap: onTap,
     );
   }
@@ -395,9 +404,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Navigator.pop(context);
               // Handle account deletion
             },
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.failureColor,
-            ),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
             child: const Text('Delete'),
           ),
         ],

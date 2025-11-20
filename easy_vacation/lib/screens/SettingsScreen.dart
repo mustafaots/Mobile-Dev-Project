@@ -5,6 +5,8 @@ import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/widgets/theme_toggle_button.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,32 +16,39 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   @override
   Widget build(BuildContext context) {
+    final textColor = context.textColor;
+    final backgroundColor = context.scaffoldBackgroundColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Settings',
           style: TextStyle(
-            color: AppTheme.black,
             fontWeight: FontWeight.bold,
             fontSize: 23,
+            color: textColor,
           ),
         ),
-        backgroundColor: AppTheme.white,
         elevation: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Row(
+                //position in right of the screen
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [ThemeToggleButton()],
+              ),
               // Profile Section
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
+                    const SizedBox(height: 16),
                     Container(
                       width: 128,
                       height: 128,
@@ -54,20 +63,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'Mohamed',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.black,
+                        color: textColor,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    const Text(
+                    Text(
                       'Mohamed@easyvacation.com',
                       style: TextStyle(
                         fontSize: 16,
-                        color: AppTheme.grey,
+                        color: context.secondaryTextColor,
                       ),
                     ),
                   ],
@@ -89,14 +98,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const EditProfileScreen(),
+                            pageBuilder: (_, __, ___) =>
+                                const EditProfileScreen(),
                             transitionsBuilder: (_, animation, __, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
                               );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                       },
@@ -109,14 +121,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const ListingsHistory(),
+                            pageBuilder: (_, __, ___) =>
+                                const ListingsHistory(),
                             transitionsBuilder: (_, animation, __, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
                               );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                       },
@@ -129,14 +144,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const BookingHistoryScreen(),
+                            pageBuilder: (_, __, ___) =>
+                                const BookingHistoryScreen(),
                             transitionsBuilder: (_, animation, __, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
                               );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                       },
@@ -149,14 +167,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const SubscriptionPlanScreen(),
+                            pageBuilder: (_, __, ___) =>
+                                const SubscriptionPlanScreen(),
                             transitionsBuilder: (_, animation, __, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
                               );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                       },
@@ -222,13 +243,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String title,
     required VoidCallback onTap,
   }) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final shadowColor = context.textColor;
+
     return Container(
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: shadowColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -251,25 +276,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: AppTheme.primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(
-                    icon,
-                    color: AppTheme.primaryColor,
-                    size: 24,
-                  ),
+                  child: Icon(icon, color: AppTheme.primaryColor, size: 24),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: AppTheme.black,
-                    ),
+                    style: TextStyle(fontSize: 16, color: textColor),
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.chevron_right,
-                  color: AppTheme.grey,
+                  color: context.secondaryTextColor,
                   size: 24,
                 ),
               ],
@@ -287,14 +305,18 @@ class SubscriptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final shadowColor = context.textColor;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: shadowColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -311,21 +333,18 @@ class SubscriptionCard extends StatelessWidget {
             ),
             child: const Icon(
               Icons.workspace_premium,
-              color: AppTheme.white,
+              color: Colors.white,
               size: 24,
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Text.rich(
               TextSpan(
                 children: [
                   TextSpan(
                     text: 'Subscription: ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppTheme.black,
-                    ),
+                    style: TextStyle(fontSize: 16, color: textColor),
                   ),
                   TextSpan(
                     text: 'Monthly',

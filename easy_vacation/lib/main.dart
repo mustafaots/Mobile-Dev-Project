@@ -1,7 +1,7 @@
 import 'package:easy_vacation/screens/WelcomeScreen.dart';
-import 'package:easy_vacation/screens/ProfileScreen.dart';
-import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,18 +12,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: AppTheme.primaryColor,
-        scaffoldBackgroundColor: Colors.white, // Force white background
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppTheme.primaryColor,
-          foregroundColor: AppTheme.white,
-          elevation: 0,
-        ),
+    return BlocProvider(
+      create: (_) => ThemeCubit(),
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        buildWhen: (previous, current) => true,
+        builder: (context, themeData) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Easy Vacation',
+            theme: themeData,
+            home: const WelcomeScreen(),
+          );
+        },
       ),
-      home: const WelcomeScreen()
     );
   }
 }
@@ -32,3 +33,6 @@ class MainApp extends StatelessWidget {
  //     followersCount: 128,
  //     followingCount: 56,
  //     isFollowing: false,), // Or your desired home screen
+
+
+ 

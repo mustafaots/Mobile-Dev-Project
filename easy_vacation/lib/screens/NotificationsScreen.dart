@@ -1,10 +1,10 @@
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
-
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -19,25 +19,29 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     const BookingsScreen(),
     '',
     const NotificationsScreen(),
-    const SettingsScreen()
+    const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final dpr = MediaQuery.of(context).devicePixelRatio;
     final imageCache = (64 * dpr).toInt();
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Notifications',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
       ),
       body: SafeArea(
@@ -95,7 +99,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         'Your booking is confirmed!',
@@ -109,7 +114,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         'You have successfully booked \'Vintage VW Camper\' for Aug 15-20.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: AppTheme.grey
+                                          color: AppTheme.grey,
                                         ),
                                       ),
                                       const SizedBox(height: 8),
@@ -157,7 +162,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         'Share your experience',
@@ -181,23 +187,31 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                           Navigator.pushReplacement(
                                             context,
                                             PageRouteBuilder(
-                                              pageBuilder: (_, __, ___) => const AddReviewScreen(),
-                                              transitionsBuilder: (_, animation, __, child) {
-                                                return FadeTransition(
-                                                  opacity: animation,
-                                                  child: child,
-                                                );
-                                              },
-                                              transitionDuration: const Duration(milliseconds: 300),
+                                              pageBuilder: (_, __, ___) =>
+                                                  const AddReviewScreen(),
+                                              transitionsBuilder:
+                                                  (_, animation, __, child) {
+                                                    return FadeTransition(
+                                                      opacity: animation,
+                                                      child: child,
+                                                    );
+                                                  },
+                                              transitionDuration:
+                                                  const Duration(
+                                                    milliseconds: 300,
+                                                  ),
                                             ),
                                           );
                                           ///////////////////////////////////////////////////////
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppTheme.primaryColor,
+                                          backgroundColor:
+                                              AppTheme.primaryColor,
                                           foregroundColor: AppTheme.white,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(24),
+                                            borderRadius: BorderRadius.circular(
+                                              24,
+                                            ),
                                           ),
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 16,
@@ -280,13 +294,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         'Your \'Fiat 500\' rental is starting in 3 days.',
-                                        style: TextStyle(
-                                          color: AppTheme.black,
-                                        ),
+                                        style: TextStyle(color: AppTheme.black),
                                       ),
                                       const SizedBox(height: 8),
                                       const Text(
@@ -321,7 +334,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         'New summer deals!',

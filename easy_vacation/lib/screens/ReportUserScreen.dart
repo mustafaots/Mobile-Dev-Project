@@ -1,6 +1,7 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ReportUserScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
     'Spam or scam',
     'Misleading information',
     'Safety concern',
-    'Other'
+    'Other',
   ];
 
   String? selectedOption;
@@ -24,12 +25,16 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
   bool _isSubmitting = false;
 
   void _showSuccessModal() {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: AppTheme.white,
+          backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -53,30 +58,30 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Title
                 Text(
                   'Report Submitted',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.black,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 12),
-                
+
                 // Message
                 Text(
                   'Thank you for your report. We will review it and take appropriate action if necessary.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.grey,
+                    color: secondaryTextColor,
                     height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Action Buttons
                 Row(
                   children: [
@@ -88,21 +93,24 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                           Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (_, __, ___) => const ProfileScreen(),
+                              pageBuilder: (_, __, ___) =>
+                                  const ProfileScreen(),
                               transitionsBuilder: (_, animation, __, child) {
                                 return FadeTransition(
                                   opacity: animation,
                                   child: child,
                                 );
                               },
-                              transitionDuration: const Duration(milliseconds: 300),
-                            )
+                              transitionDuration: const Duration(
+                                milliseconds: 300,
+                              ),
+                            ),
                           );
                           ///////////////////////////////////////////////////////
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.primaryColor,
-                          foregroundColor: AppTheme.white,
+                          foregroundColor: backgroundColor,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -165,18 +173,22 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Add a Review',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -187,17 +199,14 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
-                )
+                ),
               );
               ///////////////////////////////////////////////////////
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
         ],
@@ -212,7 +221,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                 "Tell us what's wrong",
                 style: AppTheme.header1.copyWith(
                   fontSize: 25,
-                  color: AppTheme.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 30),
@@ -223,11 +232,11 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: AppTheme.white,
+                        color: backgroundColor,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           width: 1,
-                          color: AppTheme.grey.withOpacity(0.3),
+                          color: secondaryTextColor.withOpacity(0.3),
                         ),
                       ),
                       child: Theme(
@@ -242,10 +251,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                           value: problem,
                           title: Text(
                             problem,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: AppTheme.black,
-                            ),
+                            style: TextStyle(fontSize: 16, color: textColor),
                           ),
                           groupValue: selectedOption,
                           onChanged: (value) {
@@ -262,7 +268,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: AppTheme.black,
+                      color: textColor,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -273,10 +279,9 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     },
                     maxLines: 6,
                     decoration: AppTheme.inputDecoration(
-                            'Provide more information', Icons.description)
-                        .copyWith(
-                      contentPadding: const EdgeInsets.all(16),
-                    ),
+                      'Provide more information',
+                      Icons.description,
+                    ).copyWith(contentPadding: const EdgeInsets.all(16)),
                   ),
                   const SizedBox(height: 50),
                   SizedBox(
@@ -284,7 +289,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.primaryColor,
-                        foregroundColor: AppTheme.white,
+                        foregroundColor: backgroundColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -299,7 +304,8 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppTheme.white),
+                                  backgroundColor,
+                                ),
                               ),
                             )
                           : const Text(
@@ -310,9 +316,9 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                               ),
                             ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

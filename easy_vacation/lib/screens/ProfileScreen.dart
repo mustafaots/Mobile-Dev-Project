@@ -3,6 +3,7 @@ import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ReportUserScreen.dart';
 import 'package:easy_vacation/screens/BlockedUserScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -20,7 +21,8 @@ class ProfileScreen extends StatelessWidget {
     super.key,
     this.userName = 'USERNAME',
     this.userEmail = 'EXAMPLE@EMAIL.COM',
-    this.userImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
+    this.userImage =
+        'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
     this.subscriptionType = 'Free',
     this.postsCount = 0,
     this.followersCount = 0,
@@ -31,18 +33,23 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Profile',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -52,16 +59,13 @@ class ProfileScreen extends StatelessWidget {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
-                )
+                ),
               );
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
           IconButton(
@@ -101,23 +105,31 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 20),
-                        
+
                         // Stats
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildStatColumn(postsCount, 'Posts'),
-                              _buildStatColumn(followersCount, 'Followers'),
-                              _buildStatColumn(followingCount, 'Following'),
+                              _buildStatColumn(postsCount, 'Posts', context),
+                              _buildStatColumn(
+                                followersCount,
+                                'Followers',
+                                context,
+                              ),
+                              _buildStatColumn(
+                                followingCount,
+                                'Following',
+                                context,
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // User Name and Bio
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +139,7 @@ class ProfileScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.black,
+                            color: textColor,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -135,22 +147,19 @@ class ProfileScreen extends StatelessWidget {
                           userEmail,
                           style: TextStyle(
                             fontSize: 16,
-                            color: AppTheme.grey,
+                            color: secondaryTextColor,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Travel enthusiast exploring the world one destination at a time. Sharing my experiences and tips!',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppTheme.black,
-                          ),
+                          style: TextStyle(fontSize: 14, color: textColor),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Action Buttons
                     Row(
                       children: [
@@ -160,25 +169,23 @@ class ProfileScreen extends StatelessWidget {
                               // Follow/Unfollow logic
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isFollowing 
-                                  ? AppTheme.white 
+                              backgroundColor: isFollowing
+                                  ? backgroundColor
                                   : AppTheme.primaryColor,
-                              foregroundColor: isFollowing 
-                                  ? AppTheme.primaryColor 
-                                  : AppTheme.white,
+                              foregroundColor: isFollowing
+                                  ? AppTheme.primaryColor
+                                  : backgroundColor,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                side: isFollowing 
+                                side: isFollowing
                                     ? BorderSide(color: AppTheme.primaryColor)
                                     : BorderSide.none,
                               ),
                             ),
                             child: Text(
                               isFollowing ? 'Following' : 'Follow',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
@@ -187,7 +194,9 @@ class ProfileScreen extends StatelessWidget {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
+                            border: Border.all(
+                              color: secondaryTextColor.withOpacity(0.3),
+                            ),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
@@ -196,7 +205,7 @@ class ProfileScreen extends StatelessWidget {
                             },
                             icon: Icon(
                               Icons.message,
-                              color: AppTheme.black,
+                              color: textColor,
                               size: 20,
                             ),
                           ),
@@ -206,7 +215,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Content Tabs
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -215,11 +224,11 @@ class ProfileScreen extends StatelessWidget {
                     // Tab Bar
                     Container(
                       decoration: BoxDecoration(
-                        color: AppTheme.white,
+                        color: cardColor,
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.black.withOpacity(0.1),
+                            color: textColor.withOpacity(0.1),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -231,7 +240,7 @@ class ProfileScreen extends StatelessWidget {
                           children: [
                             TabBar(
                               labelColor: AppTheme.primaryColor,
-                              unselectedLabelColor: AppTheme.grey,
+                              unselectedLabelColor: secondaryTextColor,
                               indicatorColor: AppTheme.primaryColor,
                               tabs: const [
                                 Tab(text: 'Posts'),
@@ -239,18 +248,27 @@ class ProfileScreen extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: 400, // Increased height for better content display
+                              height:
+                                  400, // Increased height for better content display
                               child: TabBarView(
                                 children: [
                                   // Posts Tab
-                                  postsCount == 0 
-                                    ? _buildContentTab('No posts yet', Icons.article) 
-                                    : _buildPostsGrid(),
-                                  
+                                  postsCount == 0
+                                      ? _buildContentTab(
+                                          'No posts yet',
+                                          Icons.article,
+                                          context,
+                                        )
+                                      : _buildPostsGrid(context),
+
                                   // Reviews Tab
-                                  reviewsCount == 0 
-                                    ? _buildContentTab('No reviews yet', Icons.star) 
-                                    : _buildReviewsList(),
+                                  reviewsCount == 0
+                                      ? _buildContentTab(
+                                          'No reviews yet',
+                                          Icons.star,
+                                          context,
+                                        )
+                                      : _buildReviewsList(context),
                                 ],
                               ),
                             ),
@@ -258,11 +276,11 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Additional Info Section
-                    _buildInfoSection(),
+                    _buildInfoSection(context),
                   ],
                 ),
               ),
@@ -273,7 +291,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatColumn(int count, String label) {
+  Widget _buildStatColumn(int count, String label, BuildContext context) {
     return Column(
       children: [
         Text(
@@ -281,21 +299,18 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppTheme.black,
+            color: context.textColor,
           ),
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 14,
-            color: AppTheme.grey,
-          ),
+          style: TextStyle(fontSize: 14, color: context.secondaryTextColor),
         ),
       ],
     );
   }
 
-  Widget _buildContentTab(String message, IconData icon) {
+  Widget _buildContentTab(String message, IconData icon, BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -303,30 +318,30 @@ class ProfileScreen extends StatelessWidget {
           Icon(
             icon,
             size: 48,
-            color: AppTheme.grey.withOpacity(0.5),
+            color: context.secondaryTextColor.withOpacity(0.5),
           ),
           const SizedBox(height: 8),
           Text(
             message,
-            style: TextStyle(
-              color: AppTheme.grey,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: context.secondaryTextColor, fontSize: 16),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoSection() {
+  Widget _buildInfoSection(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: textColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -340,21 +355,41 @@ class ProfileScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppTheme.black,
+              color: textColor,
             ),
           ),
           const SizedBox(height: 12),
-          _buildInfoRow(Icons.location_on, 'From', 'Casablanca, Morocco'),
+          _buildInfoRow(
+            Icons.location_on,
+            'From',
+            'Casablanca, Morocco',
+            context,
+          ),
           const SizedBox(height: 8),
-          _buildInfoRow(Icons.calendar_today, 'Member since', 'January 2024'),
+          _buildInfoRow(
+            Icons.calendar_today,
+            'Member since',
+            'January 2024',
+            context,
+          ),
           const SizedBox(height: 8),
-          _buildInfoRow(Icons.flag, 'Countries visited', '12 countries'),
+          _buildInfoRow(
+            Icons.flag,
+            'Countries visited',
+            '12 countries',
+            context,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String title, String value) {
+  Widget _buildInfoRow(
+    IconData icon,
+    String title,
+    String value,
+    BuildContext context,
+  ) {
     return Row(
       children: [
         Container(
@@ -364,11 +399,7 @@ class ProfileScreen extends StatelessWidget {
             color: AppTheme.primaryColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Icon(
-            icon,
-            color: AppTheme.primaryColor,
-            size: 18,
-          ),
+          child: Icon(icon, color: AppTheme.primaryColor, size: 18),
         ),
         const SizedBox(width: 12),
         Column(
@@ -376,16 +407,13 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
-                fontSize: 12,
-                color: AppTheme.grey,
-              ),
+              style: TextStyle(fontSize: 12, color: context.secondaryTextColor),
             ),
             Text(
               value,
               style: TextStyle(
                 fontSize: 14,
-                color: AppTheme.black,
+                color: context.textColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -396,7 +424,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   // Posts Grid
-  Widget _buildPostsGrid() {
+  Widget _buildPostsGrid(BuildContext context) {
     final List<Post> samplePosts = [
       Post(
         image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
@@ -446,6 +474,10 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildPostCard(Post post, BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return GestureDetector(
       onTap: () {
         _showPostDetail(context, post);
@@ -453,10 +485,10 @@ class ProfileScreen extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: AppTheme.white,
+          color: backgroundColor,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black.withOpacity(0.1),
+              color: textColor.withOpacity(0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -478,7 +510,7 @@ class ProfileScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            
+
             // Post Details
             Padding(
               padding: const EdgeInsets.all(8),
@@ -490,7 +522,7 @@ class ProfileScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.black,
+                      color: textColor,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -501,7 +533,7 @@ class ProfileScreen extends StatelessWidget {
                       Icon(
                         Icons.location_on,
                         size: 12,
-                        color: AppTheme.grey,
+                        color: secondaryTextColor,
                       ),
                       const SizedBox(width: 4),
                       Expanded(
@@ -509,7 +541,7 @@ class ProfileScreen extends StatelessWidget {
                           post.location,
                           style: TextStyle(
                             fontSize: 12,
-                            color: AppTheme.grey,
+                            color: secondaryTextColor,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -530,7 +562,7 @@ class ProfileScreen extends StatelessWidget {
                         '${post.likes}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppTheme.grey,
+                          color: secondaryTextColor,
                         ),
                       ),
                       const Spacer(),
@@ -538,7 +570,7 @@ class ProfileScreen extends StatelessWidget {
                         post.date,
                         style: TextStyle(
                           fontSize: 10,
-                          color: AppTheme.grey,
+                          color: secondaryTextColor,
                         ),
                       ),
                     ],
@@ -553,13 +585,14 @@ class ProfileScreen extends StatelessWidget {
   }
 
   // Reviews List
-  Widget _buildReviewsList() {
+  Widget _buildReviewsList(BuildContext context) {
     final List<Review> sampleReviews = [
       Review(
         placeName: 'Luxury Beach Resort',
         location: 'Maldives',
         rating: 5,
-        comment: 'Absolutely stunning resort with incredible service. The overwater bungalows were worth every penny!',
+        comment:
+            'Absolutely stunning resort with incredible service. The overwater bungalows were worth every penny!',
         date: '1 week ago',
         helpful: 12,
       ),
@@ -567,7 +600,8 @@ class ProfileScreen extends StatelessWidget {
         placeName: 'Mountain Lodge',
         location: 'Switzerland',
         rating: 4,
-        comment: 'Beautiful views and cozy rooms. The food was excellent but a bit pricey.',
+        comment:
+            'Beautiful views and cozy rooms. The food was excellent but a bit pricey.',
         date: '2 weeks ago',
         helpful: 8,
       ),
@@ -575,7 +609,8 @@ class ProfileScreen extends StatelessWidget {
         placeName: 'City Central Hotel',
         location: 'Tokyo, Japan',
         rating: 5,
-        comment: 'Perfect location for exploring the city. Staff was incredibly helpful and spoke excellent English.',
+        comment:
+            'Perfect location for exploring the city. Staff was incredibly helpful and spoke excellent English.',
         date: '1 month ago',
         helpful: 15,
       ),
@@ -591,14 +626,18 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildReviewCard(Review review, BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: textColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -617,7 +656,7 @@ class ProfileScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.black,
+                      color: textColor,
                     ),
                   ),
                 ),
@@ -627,61 +666,37 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                Icon(
-                  Icons.location_on,
-                  size: 14,
-                  color: AppTheme.grey,
-                ),
+                Icon(Icons.location_on, size: 14, color: secondaryTextColor),
                 const SizedBox(width: 4),
                 Text(
                   review.location,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.grey,
-                  ),
+                  style: TextStyle(fontSize: 14, color: secondaryTextColor),
                 ),
               ],
             ),
             const SizedBox(height: 8),
             Text(
               review.comment,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.black,
-                height: 1.4,
-              ),
+              style: TextStyle(fontSize: 14, color: textColor, height: 1.4),
             ),
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(
-                  Icons.thumb_up,
-                  size: 16,
-                  color: AppTheme.primaryColor,
-                ),
+                Icon(Icons.thumb_up, size: 16, color: AppTheme.primaryColor),
                 const SizedBox(width: 4),
                 Text(
                   '${review.helpful}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.grey,
-                  ),
+                  style: TextStyle(fontSize: 12, color: secondaryTextColor),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   'Helpful',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.grey,
-                  ),
+                  style: TextStyle(fontSize: 12, color: secondaryTextColor),
                 ),
                 const Spacer(),
                 Text(
                   review.date,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.grey,
-                  ),
+                  style: TextStyle(fontSize: 12, color: secondaryTextColor),
                 ),
               ],
             ),
@@ -707,13 +722,16 @@ class ProfileScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppTheme.white,
+      backgroundColor: context.scaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
+      builder: (dialogContext) {
+        final textColor = dialogContext.textColor;
+        final secondaryTextColor = dialogContext.secondaryTextColor;
+
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
+          height: MediaQuery.of(dialogContext).size.height * 0.8,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -728,7 +746,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 // Post Content
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -740,7 +758,7 @@ class ProfileScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.black,
+                          color: textColor,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -756,7 +774,7 @@ class ProfileScreen extends StatelessWidget {
                             post.location,
                             style: TextStyle(
                               fontSize: 16,
-                              color: AppTheme.grey,
+                              color: secondaryTextColor,
                             ),
                           ),
                         ],
@@ -766,24 +784,36 @@ class ProfileScreen extends StatelessWidget {
                         'This was an amazing experience! The views were breathtaking and the local culture was incredibly rich. Highly recommend visiting this place for anyone looking for an adventure.',
                         style: TextStyle(
                           fontSize: 16,
-                          color: AppTheme.black,
+                          color: textColor,
                           height: 1.5,
                         ),
                       ),
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          _buildActionButton(Icons.favorite, '${post.likes}'),
+                          _buildActionButton(
+                            Icons.favorite,
+                            '${post.likes}',
+                            dialogContext,
+                          ),
                           const SizedBox(width: 16),
-                          _buildActionButton(Icons.comment, '24'),
+                          _buildActionButton(
+                            Icons.comment,
+                            '24',
+                            dialogContext,
+                          ),
                           const SizedBox(width: 16),
-                          _buildActionButton(Icons.share, 'Share'),
+                          _buildActionButton(
+                            Icons.share,
+                            'Share',
+                            dialogContext,
+                          ),
                           const Spacer(),
                           Text(
                             post.date,
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppTheme.grey,
+                              color: secondaryTextColor,
                             ),
                           ),
                         ],
@@ -799,30 +829,30 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(IconData icon, String text) {
+  Widget _buildActionButton(IconData icon, String text, BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Column(
       children: [
         Icon(icon, color: AppTheme.primaryColor, size: 20),
         const SizedBox(height: 4),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            color: AppTheme.grey,
-          ),
-        ),
+        Text(text, style: TextStyle(fontSize: 12, color: secondaryTextColor)),
       ],
     );
   }
 
   void _showOptionsMenu(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (context) {
+      builder: (dialogContext) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -834,19 +864,16 @@ class ProfileScreen extends StatelessWidget {
                   style: TextStyle(color: AppTheme.failureColor),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(dialogContext);
                   Navigator.pushReplacement(
-                    context,
+                    dialogContext,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const ReportUserScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
-                    )
+                    ),
                   );
                 },
               ),
@@ -857,27 +884,25 @@ class ProfileScreen extends StatelessWidget {
                   style: TextStyle(color: AppTheme.failureColor),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(dialogContext);
                   Navigator.pushReplacement(
-                    context,
+                    dialogContext,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => BlockUserScreen(userName: userName),
+                      pageBuilder: (_, __, ___) =>
+                          BlockUserScreen(userName: userName),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
-                    )
+                    ),
                   );
                 },
               ),
               ListTile(
-                leading: Icon(Icons.share, color: AppTheme.black),
+                leading: Icon(Icons.share, color: textColor),
                 title: Text('Share Profile'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(dialogContext);
                   // Handle share profile
                 },
               ),
@@ -888,8 +913,9 @@ class ProfileScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.grey.withOpacity(0.1),
-                    foregroundColor: AppTheme.black, // Changed to black for better visibility
+                    backgroundColor: secondaryTextColor.withOpacity(0.1),
+                    foregroundColor: AppTheme
+                        .black, // Changed to black for better visibility
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

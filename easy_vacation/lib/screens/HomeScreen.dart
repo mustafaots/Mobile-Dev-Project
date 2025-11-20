@@ -4,6 +4,7 @@ import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:easy_vacation/screens/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'VehiclesScreen.dart';
@@ -23,30 +24,32 @@ class _HomeScreenState extends State<HomeScreen> {
     const BookingsScreen(),
     const SizedBox.shrink(), // Empty middle
     const NotificationsScreen(),
-    const SettingsScreen()
+    const SettingsScreen(),
   ];
 
   int _navIdx = 0;
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
     return Scaffold(
-      appBar: _navIdx == 0 
+      appBar: _navIdx == 0
           ? AppBar(
               title: Text(
                 'Home',
                 style: TextStyle(
-                  color: AppTheme.black,
+                  color: textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 23,
                 ),
               ),
-              backgroundColor: AppTheme.white,
               elevation: 0,
             )
           : null,
       body: _bottomNavScreens[_navIdx],
-      floatingActionButton: _navIdx == 0 
+      floatingActionButton: _navIdx == 0
           ? FloatingActionButton(
               onPressed: () {
                 ///////////////////////////////////////////////////////
@@ -55,10 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => const CreateListing(),
                     transitionsBuilder: (_, animation, __, child) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
+                      return FadeTransition(opacity: animation, child: child);
                     },
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: AppTheme.white,
+        backgroundColor: backgroundColor,
         elevation: 8,
         selectedItemColor: AppTheme.primaryColor,
         unselectedItemColor: AppTheme.grey,
@@ -86,11 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.book_online_outlined), label: 'Bookings'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book_online_outlined),
+            label: 'Bookings',
+          ),
           BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), label: 'Settings'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_outlined),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          ),
         ],
       ),
     );
@@ -109,12 +121,12 @@ class __HomeContentState extends State<_HomeContent> {
   final List<String> searchContent = const ['Type', 'Wilaya', 'Price', 'Date'];
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
-  
+
   int selectedIndex = 0;
   final List<Widget> screens = const [
     StaysScreen(),
     VehiclesScreen(),
-    ActivitiesScreen()
+    ActivitiesScreen(),
   ];
 
   @override
@@ -123,11 +135,9 @@ class __HomeContentState extends State<_HomeContent> {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusScope.of(context).unfocus();
-      }, 
+      },
       child: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.white,
-        ),
+        decoration: BoxDecoration(color: AppTheme.white),
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -140,7 +150,10 @@ class __HomeContentState extends State<_HomeContent> {
                   focusNode: _searchFocusNode,
                   controller: _searchController,
                   cursorColor: AppTheme.primaryColor,
-                  decoration: input_decor('Search...', const Icon(Icons.search)),
+                  decoration: input_decor(
+                    'Search...',
+                    const Icon(Icons.search),
+                  ),
                 ),
               ),
               Container(
@@ -150,7 +163,7 @@ class __HomeContentState extends State<_HomeContent> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      for(var i = 0; i < searchContent.length; i++)
+                      for (var i = 0; i < searchContent.length; i++)
                         Container(
                           margin: EdgeInsets.only(
                             left: i == 0 ? 20 : 8,
@@ -158,11 +171,16 @@ class __HomeContentState extends State<_HomeContent> {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              FocusScope.of(context).requestFocus(_searchFocusNode);
+                              FocusScope.of(
+                                context,
+                              ).requestFocus(_searchFocusNode);
                               _searchController.text = '';
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.primaryColor.withOpacity(0.1),
                                 border: Border.all(
@@ -172,7 +190,7 @@ class __HomeContentState extends State<_HomeContent> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                searchContent[i], 
+                                searchContent[i],
                                 style: TextStyle(
                                   color: AppTheme.primaryColor,
                                   fontSize: 14,
@@ -181,7 +199,7 @@ class __HomeContentState extends State<_HomeContent> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                     ],
                   ),
                 ),
@@ -199,7 +217,10 @@ class __HomeContentState extends State<_HomeContent> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 0,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -207,8 +228,12 @@ class __HomeContentState extends State<_HomeContent> {
                             tabs[index],
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              color: isSelected ? AppTheme.black : AppTheme.grey,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? AppTheme.black
+                                  : AppTheme.grey,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -216,7 +241,9 @@ class __HomeContentState extends State<_HomeContent> {
                             height: 3,
                             width: 50,
                             decoration: BoxDecoration(
-                              color: isSelected ? AppTheme.primaryColor : Colors.transparent,
+                              color: isSelected
+                                  ? AppTheme.primaryColor
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),

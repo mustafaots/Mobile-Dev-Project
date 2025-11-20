@@ -3,6 +3,7 @@ import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -23,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // destructor to avoid memory leaks
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
 
     _passwordController.dispose();
@@ -35,13 +36,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
             space(40),
-            
+
             // Header Section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +95,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Expanded(
                         child: TextFormField(
                           controller: _nameController,
-                          decoration: input_decor('Full Name', const Icon(Icons.account_circle_outlined)),
+                          decoration: input_decor(
+                            'Full Name',
+                            const Icon(Icons.account_circle_outlined),
+                          ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Please enter your full name';
@@ -111,7 +117,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Expanded(
                         child: TextFormField(
                           controller: _emailController,
-                          decoration: input_decor('Email', const Icon(Icons.mail)),
+                          decoration: input_decor(
+                            'Email',
+                            const Icon(Icons.mail),
+                          ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Please enter your email';
@@ -130,7 +139,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Expanded(
                         child: TextFormField(
                           controller: _phoneController,
-                          decoration: input_decor('Phone Number', const Icon(Icons.phone)),
+                          decoration: input_decor(
+                            'Phone Number',
+                            const Icon(Icons.phone),
+                          ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Please enter your phone number';
@@ -161,7 +173,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextFormField(
                     obscureText: true,
                     controller: _password_2_Controller,
-                    decoration: input_decor('Confirm Password', const Icon(Icons.lock)),
+                    decoration: input_decor(
+                      'Confirm Password',
+                      const Icon(Icons.lock),
+                    ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Passwords do not match';
@@ -183,29 +198,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () => {
-
-                ///////////////////////////////////////////////////////
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const HomeScreen(),
-                    transitionsBuilder: (_, animation, __, child) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(milliseconds: 300),
+                  ///////////////////////////////////////////////////////
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false, // This removes all previous routes
                   ),
-                  (route) => false, // This removes all previous routes
-                )
-                ///////////////////////////////////////////////////////
 
+                  ///////////////////////////////////////////////////////
                 },
-                child: Text(
-                  'Sign Up',
-                  style: login_text_style,
-                ),
+                child: Text('Sign Up', style: login_text_style),
               ),
             ),
 
@@ -224,10 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const LoginScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
@@ -251,26 +256,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Row(
               children: [
                 Expanded(
-                  child: Divider(
-                    color: AppTheme.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: secondaryTextColor, thickness: 1),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     "Or Continue With",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.grey,
-                    ),
+                    style: TextStyle(fontSize: 12, color: secondaryTextColor),
                   ),
                 ),
                 Expanded(
-                  child: Divider(
-                    color: AppTheme.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: secondaryTextColor, thickness: 1),
                 ),
               ],
             ),
@@ -284,19 +280,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
+                    border: Border.all(
+                      color: secondaryTextColor.withOpacity(0.3),
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.google, color: AppTheme.grey, size: 20),
+                  child: Icon(
+                    FontAwesomeIcons.google,
+                    color: secondaryTextColor,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 20),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
+                    border: Border.all(
+                      color: secondaryTextColor.withOpacity(0.3),
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.facebook, color: AppTheme.grey, size: 20),
+                  child: Icon(
+                    FontAwesomeIcons.facebook,
+                    color: secondaryTextColor,
+                    size: 20,
+                  ),
                 ),
               ],
             ),
