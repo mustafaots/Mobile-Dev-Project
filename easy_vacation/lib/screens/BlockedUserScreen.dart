@@ -1,15 +1,13 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class BlockUserScreen extends StatefulWidget {
   final String userName;
-  
-  const BlockUserScreen({
-    super.key,
-    required this.userName,
-  });
+
+  const BlockUserScreen({super.key, required this.userName});
 
   @override
   State<BlockUserScreen> createState() => _BlockUserScreenState();
@@ -22,9 +20,12 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
+        final backgroundColor = dialogContext.scaffoldBackgroundColor;
+        final textColor = dialogContext.textColor;
+
         return Dialog(
-          backgroundColor: AppTheme.white,
+          backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -48,18 +49,18 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Title
                 Text(
                   'User Blocked',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.black,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 12),
-                
+
                 // Message
                 Text(
                   'You have successfully blocked ${widget.userName}. '
@@ -67,12 +68,12 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme.grey,
+                    color: dialogContext.secondaryTextColor,
                     height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Action Button
                 SizedBox(
                   width: double.infinity,
@@ -134,19 +135,24 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Block User',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -156,10 +162,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
@@ -257,7 +260,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: AppTheme.black,
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 8),
@@ -266,7 +269,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                 'Blocking is reversible and does not notify the other user.',
                 style: TextStyle(
                   fontSize: 14,
-                  color: AppTheme.grey,
+                  color: secondaryTextColor,
                   height: 1.5,
                 ),
               ),
@@ -294,7 +297,8 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                AppTheme.white),
+                              AppTheme.white,
+                            ),
                           ),
                         )
                       : const Text(
@@ -326,7 +330,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                           );
                         },
                         transitionDuration: const Duration(milliseconds: 300),
-                      )
+                      ),
                     );
                     ///////////////////////////////////////////////////////
                   },
@@ -340,10 +344,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                   ),
                   child: const Text(
                     'Cancel',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
@@ -365,21 +366,13 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
             color: AppTheme.failureColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Icon(
-            icon,
-            color: AppTheme.failureColor,
-            size: 18,
-          ),
+          child: Icon(icon, color: AppTheme.failureColor, size: 18),
         ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.black,
-              height: 1.4,
-            ),
+            style: TextStyle(fontSize: 14, color: AppTheme.black, height: 1.4),
           ),
         ),
       ],

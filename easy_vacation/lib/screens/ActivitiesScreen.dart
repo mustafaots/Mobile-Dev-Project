@@ -16,11 +16,9 @@ class ActivitiesScreen extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Activities',
-            style: TextStyle(
-              fontSize: 23,
-              fontWeight: FontWeight.w900
-            ),
+          child: Text(
+            'Featured Activities',
+            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900),
           ),
         ),
         const SizedBox(height: 20),
@@ -38,10 +36,7 @@ class ActivitiesScreen extends StatelessWidget {
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
@@ -67,15 +62,26 @@ class ActivitiesScreen extends StatelessWidget {
                       const ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('Skiing', style: TextStyle(fontWeight: FontWeight.bold),),
+                        title: Text(
+                          'Skiing',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         subtitle: Text('Chrea'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.star_border_outlined,
-                                color: AppTheme.neutralColor),
+                            Icon(
+                              Icons.star_border_outlined,
+                              color: AppTheme.neutralColor,
+                            ),
                             SizedBox(width: 4),
-                            Text('4.5', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            Text(
+                              '4.5',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -92,11 +98,9 @@ class ActivitiesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Recommended for You',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900
-                ),
+              const Text(
+                'Recommended for You',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 20),
               ListView.builder(
@@ -109,7 +113,8 @@ class ActivitiesScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                          pageBuilder: (_, __, ___) =>
+                              const PostDetailsScreen(),
                           transitionsBuilder: (_, animation, __, child) {
                             return FadeTransition(
                               opacity: animation,
@@ -134,15 +139,26 @@ class ActivitiesScreen extends StatelessWidget {
                           ),
                         ),
                         const ListTile(
-                          title: Text('Quad riding', style: TextStyle(fontWeight: FontWeight.bold),),
+                          title: Text(
+                            'Quad riding',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           subtitle: Text('Sahara'),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.star_border_outlined,
-                                  color: AppTheme.neutralColor),
+                              Icon(
+                                Icons.star_border_outlined,
+                                color: AppTheme.neutralColor,
+                              ),
                               SizedBox(width: 4),
-                              Text('4.7', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                              Text(
+                                '4.7',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -151,10 +167,10 @@ class ActivitiesScreen extends StatelessWidget {
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

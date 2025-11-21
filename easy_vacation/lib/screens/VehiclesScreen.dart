@@ -1,5 +1,6 @@
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class VehiclesScreen extends StatelessWidget {
@@ -7,6 +8,8 @@ class VehiclesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     final dpr = MediaQuery.of(context).devicePixelRatio;
     final cardCacheW = (260 * dpr).toInt();
     final cardCacheH = (200 * dpr).toInt();
@@ -16,11 +19,12 @@ class VehiclesScreen extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Vehicles',
+          child: Text(
+            'Featured Vehicles',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: AppTheme.black, // Added AppTheme color
+              color: textColor,
             ),
           ),
         ),
@@ -39,10 +43,7 @@ class VehiclesScreen extends StatelessWidget {
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
@@ -57,44 +58,42 @@ class VehiclesScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                            'assets/images/mercedes.jpg',
-                            width: 260,
-                            height: 170,
-                            fit: BoxFit.cover,
-                            cacheWidth: cardCacheW,
-                            cacheHeight: cardCacheH,
-                          ),
+                          'assets/images/mercedes.jpg',
+                          width: 260,
+                          height: 170,
+                          fit: BoxFit.cover,
+                          cacheWidth: cardCacheW,
+                          cacheHeight: cardCacheH,
+                        ),
                       ),
                       ListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          'Mercedes suv', 
+                          'Mercedes suv',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.black, // Added AppTheme color
+                            color: textColor,
                           ),
                         ),
                         subtitle: Text(
                           '\$100/day',
-                          style: TextStyle(
-                            color: AppTheme.grey, // Added AppTheme color
-                          ),
+                          style: TextStyle(color: secondaryTextColor),
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               Icons.star_border_outlined,
-                              color: AppTheme.neutralColor, // Using neutralColor for stars
+                              color: AppTheme.neutralColor,
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '4.4', 
+                              '4.4',
                               style: TextStyle(
-                                fontSize: 16, 
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: AppTheme.black, // Added AppTheme color
+                                color: textColor,
                               ),
                             ),
                           ],
@@ -113,11 +112,12 @@ class VehiclesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Recommended for You',
+              Text(
+                'Recommended for You',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
-                  color: AppTheme.black, // Added AppTheme color
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 20),
@@ -131,7 +131,8 @@ class VehiclesScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                          pageBuilder: (_, __, ___) =>
+                              const PostDetailsScreen(),
                           transitionsBuilder: (_, animation, __, child) {
                             return FadeTransition(
                               opacity: animation,
@@ -157,32 +158,30 @@ class VehiclesScreen extends StatelessWidget {
                         ),
                         ListTile(
                           title: Text(
-                            'Mercedes suv', 
+                            'Mercedes suv',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.black, // Added AppTheme color
+                              color: textColor,
                             ),
                           ),
                           subtitle: Text(
                             '\$135/day',
-                            style: TextStyle(
-                              color: AppTheme.grey, // Added AppTheme color
-                            ),
+                            style: TextStyle(color: secondaryTextColor),
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 Icons.star_border_outlined,
-                                color: AppTheme.neutralColor, // Using neutralColor for stars
+                                color: AppTheme.neutralColor,
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '4.7', 
+                                '4.7',
                                 style: TextStyle(
-                                  fontSize: 16, 
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: AppTheme.black, // Added AppTheme color
+                                  color: textColor,
                                 ),
                               ),
                             ],
@@ -193,10 +192,10 @@ class VehiclesScreen extends StatelessWidget {
                     ),
                   );
                 },
-              )       
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

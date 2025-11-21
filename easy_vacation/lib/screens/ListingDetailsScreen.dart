@@ -3,6 +3,7 @@ import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 
 class PostDetailsScreen extends StatelessWidget {
   const PostDetailsScreen({super.key});
@@ -16,21 +17,33 @@ class PostDetailsScreen extends StatelessWidget {
     ['26', '27', '28', '29', '30', '31', '1'],
   ];
 
-  static const List<String> _weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  static const List<String> _weekDays = [
+    'Su',
+    'Mo',
+    'Tu',
+    'We',
+    'Th',
+    'Fr',
+    'Sa',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Listing Details',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -40,21 +53,18 @@ class PostDetailsScreen extends StatelessWidget {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
         ],
       ),
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -63,10 +73,10 @@ class PostDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildImageGallery(),
-                  _buildTitleSection(),
+                  _buildTitleSection(context),
                   _buildHostInfo(context),
                   _buildReviewsSection(context),
-                  _buildAvailabilitySection(),
+                  _buildAvailabilitySection(context),
                   const SizedBox(height: 112),
                 ],
               ),
@@ -78,27 +88,28 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
     return Row(
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.bookmark_border, color: AppTheme.white, size: 24),
-            style: IconButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              padding: const EdgeInsets.all(12),
-            ),
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.bookmark_border, color: backgroundColor, size: 24),
+          style: IconButton.styleFrom(
+            backgroundColor: AppTheme.primaryColor,
+            padding: const EdgeInsets.all(12),
           ),
-          const SizedBox(width: 16),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.share, color: AppTheme.white, size: 24),
-            style: IconButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              padding: const EdgeInsets.all(12),
-            ),
+        ),
+        const SizedBox(width: 16),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.share, color: backgroundColor, size: 24),
+          style: IconButton.styleFrom(
+            backgroundColor: AppTheme.primaryColor,
+            padding: const EdgeInsets.all(12),
           ),
-        ],
+        ),
+      ],
     );
   }
 
@@ -111,9 +122,18 @@ class PostDetailsScreen extends StatelessWidget {
         itemCount: 3,
         itemBuilder: (context, index) {
           final images = const [
-            {'path': 'assets/images/beachfront_cottage.jpg', 'alt': 'A beautiful beachfront cottage with a porch'},
-            {'path': 'assets/images/living_room.jpg', 'alt': 'The cozy living room of the cottage with a fireplace'},
-            {'path': 'assets/images/bedroom_ocean_view.jpg', 'alt': 'A bedroom with a view of the ocean'},
+            {
+              'path': 'assets/images/beachfront_cottage.jpg',
+              'alt': 'A beautiful beachfront cottage with a porch',
+            },
+            {
+              'path': 'assets/images/living_room.jpg',
+              'alt': 'The cozy living room of the cottage with a fireplace',
+            },
+            {
+              'path': 'assets/images/bedroom_ocean_view.jpg',
+              'alt': 'A bedroom with a view of the ocean',
+            },
           ];
           return Container(
             width: 300,
@@ -131,7 +151,9 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTitleSection() {
+  Widget _buildTitleSection(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
@@ -142,7 +164,7 @@ class PostDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
-              color: AppTheme.black,
+              color: textColor,
               height: 1.2,
             ),
           ),
@@ -152,18 +174,22 @@ class PostDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: AppTheme.grey,
+              color: secondaryTextColor,
               height: 1.5,
             ),
           ),
           const SizedBox(height: 16),
-          _buildHeader(),
+          _buildHeader(context),
         ],
       ),
     );
   }
 
   Widget _buildHostInfo(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -186,10 +212,7 @@ class PostDetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(.5), // This creates the ring space
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.primaryColor,
-                  width: 2,
-                ),
+                border: Border.all(color: AppTheme.primaryColor, width: 2),
               ),
               child: Container(
                 width: 52, // Reduced to account for padding
@@ -200,10 +223,7 @@ class PostDetailsScreen extends StatelessWidget {
                     image: AssetImage('assets/images/host_Ali.jpg'),
                     fit: BoxFit.cover,
                   ),
-                  border: Border.all(
-                    color: AppTheme.white,
-                    width: 2,
-                  ),
+                  border: Border.all(color: backgroundColor, width: 2),
                 ),
               ),
             ),
@@ -218,17 +238,13 @@ class PostDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppTheme.black,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Icon(
-                      Icons.star,
-                      color: AppTheme.neutralColor,
-                      size: 16,
-                    ),
+                    Icon(Icons.star, color: AppTheme.neutralColor, size: 16),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
@@ -236,7 +252,7 @@ class PostDetailsScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
-                          color: AppTheme.grey,
+                          color: secondaryTextColor,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -251,7 +267,7 @@ class PostDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: AppTheme.black,
+              color: textColor,
             ),
           ),
         ],
@@ -260,6 +276,8 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildReviewsSection(BuildContext context) {
+    final textColor = context.textColor;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -271,7 +289,7 @@ class PostDetailsScreen extends StatelessWidget {
               'Reviews',
               style: AppTheme.header2.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppTheme.black,
+                color: textColor,
               ),
             ),
           ),
@@ -304,15 +322,19 @@ class PostDetailsScreen extends StatelessWidget {
 
   Widget _buildReviewItem(
     BuildContext context,
-    String avatarPath, 
-    String name, 
-    double rating, 
+    String avatarPath,
+    String name,
+    double rating,
     String comment, {
     int postsCount = 0,
     int followersCount = 0,
     int followingCount = 0,
     int reviewsCount = 0,
   }) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
@@ -324,7 +346,8 @@ class PostDetailsScreen extends StatelessWidget {
               _navigateToProfile(
                 context,
                 userName: name,
-                userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
+                userEmail:
+                    '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
                 userImage: avatarPath,
                 postsCount: postsCount,
                 followersCount: followersCount,
@@ -336,10 +359,7 @@ class PostDetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(.5), // Ring space
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.primaryColor,
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppTheme.primaryColor, width: 1.5),
               ),
               child: Container(
                 width: 37, // Reduced to account for padding
@@ -350,10 +370,7 @@ class PostDetailsScreen extends StatelessWidget {
                     image: AssetImage(avatarPath),
                     fit: BoxFit.cover,
                   ),
-                  border: Border.all(
-                    color: AppTheme.white,
-                    width: 1.5,
-                  ),
+                  border: Border.all(color: backgroundColor, width: 1.5),
                 ),
               ),
             ),
@@ -368,7 +385,7 @@ class PostDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppTheme.black,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -379,7 +396,7 @@ class PostDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
-                    color: AppTheme.grey,
+                    color: secondaryTextColor,
                     height: 1.4,
                   ),
                 ),
@@ -396,7 +413,9 @@ class PostDetailsScreen extends StatelessWidget {
       children: [
         for (int i = 1; i <= 5; i++)
           Icon(
-            i <= rating ? Icons.star : (i - 0.5 <= rating ? Icons.star_half : Icons.star_border),
+            i <= rating
+                ? Icons.star
+                : (i - 0.5 <= rating ? Icons.star_half : Icons.star_border),
             color: AppTheme.neutralColor,
             size: 16,
           ),
@@ -404,7 +423,9 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAvailabilitySection() {
+  Widget _buildAvailabilitySection(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -416,7 +437,7 @@ class PostDetailsScreen extends StatelessWidget {
               'Availability',
               style: AppTheme.header2.copyWith(
                 fontWeight: FontWeight.bold,
-                color: AppTheme.black,
+                color: textColor,
               ),
             ),
           ),
@@ -428,20 +449,20 @@ class PostDetailsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.chevron_left, color: AppTheme.grey),
+                    Icon(Icons.chevron_left, color: secondaryTextColor),
                     Text(
                       'May 2024',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppTheme.black,
+                        color: textColor,
                       ),
                     ),
-                    Icon(Icons.chevron_right, color: AppTheme.grey),
+                    Icon(Icons.chevron_right, color: secondaryTextColor),
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildCalendarGrid(),
+                _buildCalendarGrid(context),
               ],
             ),
           ),
@@ -450,24 +471,27 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCalendarGrid() {
+  Widget _buildCalendarGrid(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     return Column(
       children: [
         // Week days header
         Row(
-          children: _weekDays.map((day) => Expanded(
-            child: Text(
-              day,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.grey,
-              ),
-            ),
-          )).toList(),
+          children: _weekDays
+              .map(
+                (day) => Expanded(
+                  child: Text(
+                    day,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: secondaryTextColor),
+                  ),
+                ),
+              )
+              .toList(),
         ),
         const SizedBox(height: 8),
-        
+
         // Calendar days
         for (int row = 0; row < _calendarDays.length; row++)
           Padding(
@@ -477,12 +501,14 @@ class PostDetailsScreen extends StatelessWidget {
                 String day = entry.value;
                 bool isAvailable = !['13', '14', '23', '24'].contains(day);
                 bool isSelected = ['7', '8', '9', '10'].contains(day);
-                
+
                 return Expanded(
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppTheme.primaryColor.withOpacity(0.2) : Colors.transparent,
+                      color: isSelected
+                          ? AppTheme.primaryColor.withOpacity(0.2)
+                          : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -490,10 +516,12 @@ class PostDetailsScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
-                        color: isAvailable 
-                            ? (isSelected ? AppTheme.primaryColor : AppTheme.black)
-                            : AppTheme.grey,
-                        decoration: !isAvailable ? TextDecoration.lineThrough : null,
+                        color: isAvailable
+                            ? (isSelected ? AppTheme.primaryColor : textColor)
+                            : secondaryTextColor,
+                        decoration: !isAvailable
+                            ? TextDecoration.lineThrough
+                            : null,
                       ),
                     ),
                   ),
@@ -506,6 +534,10 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildBottomActions(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Positioned(
       bottom: 0,
       left: 0,
@@ -516,7 +548,7 @@ class PostDetailsScreen extends StatelessWidget {
           color: AppTheme.lightGrey,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black.withOpacity(0.1),
+              color: textColor.withOpacity(0.1),
               blurRadius: 8,
               offset: const Offset(0, -2),
             ),
@@ -533,13 +565,16 @@ class PostDetailsScreen extends StatelessWidget {
                       pageBuilder: (_, __, ___) => const BookingsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
                         return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(1.0, 0.0),
-                            end: Offset.zero,
-                          ).animate(CurvedAnimation(
-                            parent: animation,
-                            curve: Curves.fastOutSlowIn,
-                          )),
+                          position:
+                              Tween<Offset>(
+                                begin: const Offset(1.0, 0.0),
+                                end: Offset.zero,
+                              ).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.fastOutSlowIn,
+                                ),
+                              ),
                           child: child,
                         );
                       },
@@ -553,7 +588,7 @@ class PostDetailsScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: AppTheme.white,
+                    color: backgroundColor,
                   ),
                 ),
               ),
@@ -564,8 +599,8 @@ class PostDetailsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.white,
-                  foregroundColor: AppTheme.grey,
+                  backgroundColor: backgroundColor,
+                  foregroundColor: secondaryTextColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -574,14 +609,14 @@ class PostDetailsScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.edit, size: 20, color: AppTheme.grey),
+                    Icon(Icons.edit, size: 20, color: secondaryTextColor),
                     const SizedBox(width: 4),
                     Text(
                       'Edit',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.grey,
+                        color: secondaryTextColor,
                       ),
                     ),
                   ],
@@ -618,13 +653,16 @@ class PostDetailsScreen extends StatelessWidget {
         ),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(CurvedAnimation(
-              parent: animation,
-              curve: Curves.fastOutSlowIn,
-            )),
+            position:
+                Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+                ),
             child: child,
           );
         },

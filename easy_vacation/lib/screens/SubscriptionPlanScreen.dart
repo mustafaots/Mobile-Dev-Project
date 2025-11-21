@@ -1,5 +1,6 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
@@ -15,39 +16,40 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       'type': 'Free',
       'icon': Icons.person_outline,
       'cost': '0.00',
-      'details': [
-        'Pay-per-cost',
-        'Limited photo uploads'
-      ],
-      'is_selected': true
+      'details': ['Pay-per-cost', 'Limited photo uploads'],
+      'is_selected': true,
     },
     {
       'type': 'Monthly',
       'icon': Icons.calendar_month_outlined,
       'cost': '19.99',
-      'details': [
-        'Unlimited listings',
-        'Increased visibility'
-      ],
-      'is_selected': false
+      'details': ['Unlimited listings', 'Increased visibility'],
+      'is_selected': false,
     },
     {
       'type': 'Yearly',
       'icon': Icons.star_outline,
       'cost': '199.99',
-      'details': [
-        'All Monthly benefits',
-        'Top placement',
-        'Special badges'
-      ],
-      'is_selected': false
-    }
+      'details': ['All Monthly benefits', 'Top placement', 'Special badges'],
+      'is_selected': false,
+    },
   ];
 
-  Widget plan(String tp, IconData icon, String price, List details, bool selected, int idx) {
+  Widget plan(
+    String tp,
+    IconData icon,
+    String price,
+    List details,
+    bool selected,
+    int idx,
+    BuildContext context,
+  ) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     return GestureDetector(
       onTap: () {
-        for(var sub in subscriptions) {
+        for (var sub in subscriptions) {
           sub['is_selected'] = false;
         }
         subscriptions[idx]['is_selected'] = true;
@@ -56,15 +58,17 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-          color: AppTheme.white,
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             width: selected ? 2 : 1,
-            color: selected ? AppTheme.primaryColor : AppTheme.grey.withOpacity(0.3),
+            color: selected
+                ? AppTheme.primaryColor
+                : secondaryTextColor.withOpacity(0.3),
           ),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.black.withOpacity(selected ? 0.1 : 0.05),
+              color: textColor.withOpacity(selected ? 0.1 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -84,21 +88,24 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.black, // Added AppTheme color
+                      color: textColor,
                     ),
                   ),
                 ),
-                if (tp == 'Yearly') 
+                if (tp == 'Yearly')
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 12,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: AppTheme.neutralColor, // Using neutralColor for recommended badge
+                      color: AppTheme.neutralColor,
                     ),
                     child: Text(
-                      'Recommended', 
+                      'Recommended',
                       style: TextStyle(
-                        color: AppTheme.white, 
+                        color: backgroundColor,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -112,7 +119,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
               style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.w900,
-                color: AppTheme.black, // Added AppTheme color
+                color: textColor,
               ),
             ),
             const SizedBox(height: 16),
@@ -125,15 +132,16 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.check, color: AppTheme.primaryColor, size: 20),
+                        Icon(
+                          Icons.check,
+                          color: AppTheme.primaryColor,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             detail,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: AppTheme.black, // Added AppTheme color
-                            ),
+                            style: TextStyle(fontSize: 15, color: textColor),
                           ),
                         ),
                       ],
@@ -147,8 +155,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
               height: 48,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: selected ? AppTheme.primaryColor : AppTheme.primaryColor.withOpacity(0.1),
-                  foregroundColor: AppTheme.white,
+                  backgroundColor: selected
+                      ? AppTheme.primaryColor
+                      : AppTheme.primaryColor.withOpacity(0.1),
+                  foregroundColor: backgroundColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -156,16 +166,13 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                 onPressed: () {},
                 child: Text(
                   selected ? 'Current Plan' : 'Select Plan',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -176,12 +183,12 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         title: Text(
           'Choose Your Plan',
           style: TextStyle(
-            color: AppTheme.black,
+            color: context.textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: context.scaffoldBackgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -192,17 +199,14 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
-                )
+                ),
               );
               ///////////////////////////////////////////////////////
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
         ],
@@ -221,10 +225,11 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                   subscriptions[i]['details'],
                   subscriptions[i]['is_selected'],
                   i,
-                )
+                  context,
+                ),
             ],
           ),
-        )
+        ),
       ),
     );
   }

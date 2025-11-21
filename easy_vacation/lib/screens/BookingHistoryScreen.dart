@@ -1,24 +1,29 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 
 class BookingHistoryScreen extends StatelessWidget {
   const BookingHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'Booking History',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         actions: [
           IconButton(
@@ -28,16 +33,13 @@ class BookingHistoryScreen extends StatelessWidget {
                 PageRouteBuilder(
                   pageBuilder: (_, __, ___) => const HomeScreen(),
                   transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
+                    return FadeTransition(opacity: animation, child: child);
                   },
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
             },
-            icon: Icon(Icons.home_filled, size: 40, ),
+            icon: Icon(Icons.home_filled, size: 40),
             color: AppTheme.primaryColor,
           ),
         ],
@@ -53,14 +55,16 @@ class BookingHistoryScreen extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: ['All', 'Upcoming', 'Completed', 'Cancelled']
-                      .map((filter) => Container(
-                            margin: const EdgeInsets.only(right: 8),
-                            child: FilterChip(
-                              label: Text(filter),
-                              selected: filter == 'All',
-                              onSelected: (_) {},
-                            ),
-                          ))
+                      .map(
+                        (filter) => Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          child: FilterChip(
+                            label: Text(filter),
+                            selected: filter == 'All',
+                            onSelected: (_) {},
+                          ),
+                        ),
+                      )
                       .toList(),
                 ),
               ),
@@ -70,6 +74,7 @@ class BookingHistoryScreen extends StatelessWidget {
                 child: ListView(
                   children: [
                     _buildBookingCard(
+                      context,
                       'Beachfront Villa',
                       'May 15 - 20, 2024',
                       'Completed',
@@ -77,6 +82,7 @@ class BookingHistoryScreen extends StatelessWidget {
                       'assets/images/beachfront_cottage.jpg',
                     ),
                     _buildBookingCard(
+                      context,
                       'Mountain Cabin',
                       'June 1 - 5, 2024',
                       'Upcoming',
@@ -84,6 +90,7 @@ class BookingHistoryScreen extends StatelessWidget {
                       'assets/images/living_room.jpg',
                     ),
                     _buildBookingCard(
+                      context,
                       'City Apartment',
                       'April 10 - 12, 2024',
                       'Completed',
@@ -101,20 +108,25 @@ class BookingHistoryScreen extends StatelessWidget {
   }
 
   Widget _buildBookingCard(
+    BuildContext context,
     String title,
     String dates,
     String status,
     String price,
     String imagePath,
   ) {
+    final cardColor = context.cardColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: textColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -150,16 +162,13 @@ class BookingHistoryScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.black,
+                      color: textColor,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     dates,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: secondaryTextColor),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -175,9 +184,9 @@ class BookingHistoryScreen extends StatelessWidget {
                         ),
                         child: Text(
                           status,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
-                            color: AppTheme.white,
+                            color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

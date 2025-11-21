@@ -2,25 +2,29 @@ import 'dart:math';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
-  _getRandomImage(){
+  _getRandomImage() {
     const base_path = 'assets/images/';
     final random = Random();
     final images = [
-      base_path+'beach.jpg',
-      base_path+'desert.jpg',
-      base_path+'ruins.jpg',
+      base_path + 'beach.jpg',
+      base_path + 'desert.jpg',
+      base_path + 'ruins.jpg',
     ];
     return images[random.nextInt(images.length)];
   }
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.lightGrey,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -71,14 +75,13 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
 
-
               // Welcome Text
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
                   'Welcome, Traveler.',
                   style: AppTheme.header1.copyWith(
-                    color: AppTheme.black,
+                    color: textColor,
                     height: 1.2,
                   ),
                   textAlign: TextAlign.center,
@@ -97,14 +100,18 @@ class WelcomeScreen extends StatelessWidget {
                     );
                   },
                   style: AppTheme.primaryButtonStyle.copyWith(
-                    minimumSize: MaterialStateProperty.all(const Size.fromHeight(55)),
+                    minimumSize: MaterialStateProperty.all(
+                      const Size.fromHeight(55),
+                    ),
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                     elevation: MaterialStateProperty.all(6),
-                    shadowColor: MaterialStateProperty.all(AppTheme.black.withOpacity(0.3)),
+                    shadowColor: MaterialStateProperty.all(
+                      AppTheme.black.withOpacity(0.3),
+                    ),
                   ),
                   child: Text(
                     'Explore Now',
@@ -117,8 +124,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-
 
               const SizedBox(height: 16),
             ],

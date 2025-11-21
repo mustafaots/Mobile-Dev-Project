@@ -2,6 +2,7 @@ import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // destructor to avoid memory leaks
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
 
     _passwordController.dispose();
@@ -28,13 +29,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
             const SizedBox(height: 40),
-            
+
             // Logo Section
             Column(
               children: [
@@ -75,7 +78,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   TextFormField(
                     controller: _useridController,
-                    decoration: input_decor('Phone Or Email', const Icon(Icons.account_circle_outlined)),
+                    decoration: input_decor(
+                      'Phone Or Email',
+                      const Icon(Icons.account_circle_outlined),
+                    ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your phone/email';
@@ -98,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ],
-              )
+              ),
             ),
 
             const SizedBox(height: 25),
@@ -111,29 +117,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () => {
-
                   ///////////////////////////////////////////////////////
                   Navigator.pushAndRemoveUntil(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const HomeScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
                     (route) => false, // This removes all previous routes
-                  )
-                  ///////////////////////////////////////////////////////
+                  ),
 
+                  ///////////////////////////////////////////////////////
                 },
-                child: Text(
-                  'Login', 
-                  style: login_text_style
-                )
+                child: Text('Login', style: login_text_style),
               ),
             ),
 
@@ -195,31 +194,20 @@ class _LoginScreenState extends State<LoginScreen> {
             // Divider with "Or Continue With"
             Row(
               children: [
-                Expanded(
-                  child: Divider(
-                    color: AppTheme.grey,
-                    thickness: 1,
-                  ),
-                ),
+                Expanded(child: Divider(color: AppTheme.grey, thickness: 1)),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     "Or Continue With",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.grey,
-                    ),
+                    style: TextStyle(fontSize: 12, color: secondaryTextColor),
                   ),
                 ),
                 Expanded(
-                  child: Divider(
-                    color: AppTheme.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: secondaryTextColor, thickness: 1),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 20),
 
             // Social Icons
@@ -229,19 +217,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
+                    border: Border.all(
+                      color: secondaryTextColor.withOpacity(0.3),
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.google, color: AppTheme.grey, size: 20),
+                  child: Icon(
+                    FontAwesomeIcons.google,
+                    color: secondaryTextColor,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 20),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppTheme.grey.withOpacity(0.3)),
+                    border: Border.all(
+                      color: secondaryTextColor.withOpacity(0.3),
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(FontAwesomeIcons.facebook, color: AppTheme.grey, size: 20),
+                  child: Icon(
+                    FontAwesomeIcons.facebook,
+                    color: secondaryTextColor,
+                    size: 20,
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:easy_vacation/screens/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ListingsHistory extends StatefulWidget {
@@ -16,7 +17,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
       title: 'Beautiful Beach Day in Bali',
       location: 'Bali, Indonesia',
-      description: 'Spent an amazing week in this beautiful beachfront villa. The sunsets were absolutely breathtaking!',
+      description:
+          'Spent an amazing week in this beautiful beachfront villa. The sunsets were absolutely breathtaking!',
       likes: 42,
       comments: 8,
       date: '2 days ago',
@@ -27,7 +29,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
       title: 'Mountain Adventure in Swiss Alps',
       location: 'Swiss Alps',
-      description: 'Hiking through the Swiss Alps was an unforgettable experience. The crisp mountain air and stunning views made every step worth it.',
+      description:
+          'Hiking through the Swiss Alps was an unforgettable experience. The crisp mountain air and stunning views made every step worth it.',
       likes: 89,
       comments: 15,
       date: '1 week ago',
@@ -38,7 +41,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       image: 'https://images.unsplash.com/photo-1549294413-26f195200c16',
       title: 'City Exploration - Tokyo',
       location: 'Tokyo, Japan',
-      description: 'Tokyo never fails to amaze me. From ancient temples to futuristic technology, this city has it all.',
+      description:
+          'Tokyo never fails to amaze me. From ancient temples to futuristic technology, this city has it all.',
       likes: 156,
       comments: 23,
       date: '2 weeks ago',
@@ -49,7 +53,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
       title: 'Desert Safari Experience',
       location: 'Dubai, UAE',
-      description: 'An incredible desert safari experience with traditional Bedouin culture and amazing dune bashing.',
+      description:
+          'An incredible desert safari experience with traditional Bedouin culture and amazing dune bashing.',
       likes: 67,
       comments: 12,
       date: '3 weeks ago',
@@ -61,35 +66,38 @@ class _ListingsHistoryState extends State<ListingsHistory> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPosts = _currentFilter == 'all' 
-      ? _userPosts 
-      : _userPosts.where((post) => post.status == _currentFilter).toList();
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+
+    final filteredPosts = _currentFilter == 'all'
+        ? _userPosts
+        : _userPosts.where((post) => post.status == _currentFilter).toList();
 
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
           'My Posts',
           style: TextStyle(
-            color: AppTheme.black,
+            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: AppTheme.white,
+        backgroundColor: backgroundColor,
         elevation: 0,
       ),
       body: SafeArea(
         child: Column(
           children: [
             // Filter Chips
-            _buildFilterSection(),
-            
+            _buildFilterSection(context),
+
             // Posts List
             Expanded(
               child: filteredPosts.isEmpty
-                  ? _buildEmptyState()
-                  : _buildPostsList(filteredPosts),
+                  ? _buildEmptyState(context)
+                  : _buildPostsList(filteredPosts, context),
             ),
           ],
         ),
@@ -97,28 +105,31 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     );
   }
 
-  Widget _buildFilterSection() {
+  Widget _buildFilterSection(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildFilterChip('All', 'all'),
+            _buildFilterChip('All', 'all', context),
             const SizedBox(width: 8),
-            _buildFilterChip('Active', 'active'),
+            _buildFilterChip('Active', 'active', context),
             const SizedBox(width: 8),
-            _buildFilterChip('Drafts', 'draft'),
+            _buildFilterChip('Drafts', 'draft', context),
             const SizedBox(width: 8),
-            _buildFilterChip('Archived', 'archived'),
+            _buildFilterChip('Archived', 'archived', context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFilterChip(String label, String value) {
+  Widget _buildFilterChip(String label, String value, BuildContext context) {
     final isSelected = _currentFilter == value;
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return FilterChip(
       label: Text(label),
       selected: isSelected,
@@ -127,23 +138,27 @@ class _ListingsHistoryState extends State<ListingsHistory> {
           _currentFilter = value;
         });
       },
-      backgroundColor: AppTheme.white,
+      backgroundColor: backgroundColor,
       selectedColor: AppTheme.primaryColor.withOpacity(0.2),
       checkmarkColor: AppTheme.primaryColor,
       labelStyle: TextStyle(
-        color: isSelected ? AppTheme.primaryColor : AppTheme.grey,
+        color: isSelected ? AppTheme.primaryColor : secondaryTextColor,
         fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: isSelected ? AppTheme.primaryColor : AppTheme.grey.withOpacity(0.3),
+          color: isSelected
+              ? AppTheme.primaryColor
+              : secondaryTextColor.withOpacity(0.3),
         ),
       ),
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +166,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
           Icon(
             Icons.article,
             size: 80,
-            color: AppTheme.grey.withOpacity(0.5),
+            color: secondaryTextColor.withOpacity(0.5),
           ),
           const SizedBox(height: 16),
           Text(
@@ -159,18 +174,15 @@ class _ListingsHistoryState extends State<ListingsHistory> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppTheme.grey,
+              color: secondaryTextColor,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            _currentFilter == 'all' 
+            _currentFilter == 'all'
                 ? 'You haven\'t created any posts yet.'
                 : 'No ${_currentFilter} posts found.',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppTheme.grey,
-            ),
+            style: TextStyle(fontSize: 16, color: secondaryTextColor),
             textAlign: TextAlign.center,
           ),
         ],
@@ -178,25 +190,29 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     );
   }
 
-  Widget _buildPostsList(List<Post> posts) {
+  Widget _buildPostsList(List<Post> posts, BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        return _buildPostCard(posts[index]);
+        return _buildPostCard(posts[index], context);
       },
     );
   }
 
-  Widget _buildPostCard(Post post) {
+  Widget _buildPostCard(Post post, BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.black.withOpacity(0.1),
+            color: textColor.withOpacity(0.1),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -220,22 +236,25 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                   fit: BoxFit.cover,
                 ),
               ),
-              
+
               // Status Badge
               Positioned(
                 top: 12,
                 left: 12,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(post.status),
+                    color: _getStatusColor(post.status, context),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
                     _getStatusText(post.status),
                     style: TextStyle(
                       fontSize: 12,
-                      color: AppTheme.white,
+                      color: backgroundColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -259,14 +278,14 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: AppTheme.black,
+                          color: textColor,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     PopupMenuButton<String>(
-                      icon: Icon(Icons.more_vert, color: AppTheme.grey),
+                      icon: Icon(Icons.more_vert, color: secondaryTextColor),
                       onSelected: (value) => _handlePostAction(value, post),
                       itemBuilder: (context) => [
                         const PopupMenuItem(
@@ -300,15 +319,12 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                     Icon(
                       Icons.location_on,
                       size: 14,
-                      color: AppTheme.grey,
+                      color: secondaryTextColor,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       post.location,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppTheme.grey,
-                      ),
+                      style: TextStyle(fontSize: 14, color: secondaryTextColor),
                     ),
                   ],
                 ),
@@ -318,11 +334,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                 // Description
                 Text(
                   post.description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.black,
-                    height: 1.4,
-                  ),
+                  style: TextStyle(fontSize: 14, color: textColor, height: 1.4),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -333,21 +345,18 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                 Row(
                   children: [
                     // Likes
-                    _buildStatItem(Icons.favorite, '${post.likes}'),
+                    _buildStatItem(Icons.favorite, '${post.likes}', context),
                     const SizedBox(width: 16),
-                    
+
                     // Comments
-                    _buildStatItem(Icons.comment, '${post.comments}'),
-                    
+                    _buildStatItem(Icons.comment, '${post.comments}', context),
+
                     const Spacer(),
-                    
+
                     // Date
                     Text(
                       post.date,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.grey,
-                      ),
+                      style: TextStyle(fontSize: 12, color: secondaryTextColor),
                     ),
                   ],
                 ),
@@ -359,32 +368,30 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     );
   }
 
-  Widget _buildStatItem(IconData icon, String count) {
+  Widget _buildStatItem(IconData icon, String count, BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppTheme.grey),
+        Icon(icon, size: 16, color: secondaryTextColor),
         const SizedBox(width: 4),
-        Text(
-          count,
-          style: TextStyle(
-            fontSize: 14,
-            color: AppTheme.grey,
-          ),
-        ),
+        Text(count, style: TextStyle(fontSize: 14, color: secondaryTextColor)),
       ],
     );
   }
 
-  Color _getStatusColor(String status) {
+  Color _getStatusColor(String status, BuildContext context) {
+    final secondaryTextColor = context.secondaryTextColor;
+
     switch (status) {
       case 'active':
         return AppTheme.successColor;
       case 'draft':
         return AppTheme.neutralColor;
       case 'archived':
-        return AppTheme.grey;
+        return secondaryTextColor;
       default:
-        return AppTheme.grey;
+        return secondaryTextColor;
     }
   }
 
@@ -433,7 +440,9 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Post'),
-        content: Text('Are you sure you want to delete "${post.title}"? This action cannot be undone.'),
+        content: Text(
+          'Are you sure you want to delete "${post.title}"? This action cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -452,9 +461,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                 ),
               );
             },
-            style: TextButton.styleFrom(
-              foregroundColor: AppTheme.failureColor,
-            ),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
             child: const Text('Delete'),
           ),
         ],
@@ -516,9 +523,7 @@ class Post {
     required this.status,
   });
 
-  Post copyWith({
-    String? status,
-  }) {
+  Post copyWith({String? status}) {
     return Post(
       id: id,
       image: image,

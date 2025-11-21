@@ -1,5 +1,6 @@
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class StaysScreen extends StatelessWidget {
@@ -7,6 +8,8 @@ class StaysScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
     final dpr = MediaQuery.of(context).devicePixelRatio;
     final cardCacheW = (260 * dpr).toInt();
     final cardCacheH = (200 * dpr).toInt();
@@ -16,11 +19,12 @@ class StaysScreen extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text('Featured Listings',
+          child: Text(
+            'Featured Listings',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
-              color: AppTheme.black, // Added AppTheme color
+              color: textColor,
             ),
           ),
         ),
@@ -33,16 +37,13 @@ class StaysScreen extends StatelessWidget {
             itemCount: 5,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
+                        return FadeTransition(opacity: animation, child: child);
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
@@ -70,32 +71,30 @@ class StaysScreen extends StatelessWidget {
                         dense: true,
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          'BeachFront villa', 
+                          'BeachFront villa',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.black, // Added AppTheme color
+                            color: textColor,
                           ),
                         ),
                         subtitle: Text(
                           '\$300/night',
-                          style: TextStyle(
-                            color: AppTheme.grey, // Added AppTheme color
-                          ),
+                          style: TextStyle(color: secondaryTextColor),
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
                               Icons.star_border_outlined,
-                              color: AppTheme.neutralColor, // Using neutralColor for stars
+                              color: AppTheme.neutralColor,
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '4.5', 
+                              '4.5',
                               style: TextStyle(
-                                fontSize: 16, 
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: AppTheme.black, // Added AppTheme color
+                                color: textColor,
                               ),
                             ),
                           ],
@@ -114,11 +113,12 @@ class StaysScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Recommended for You',
+              Text(
+                'Recommended for You',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
-                  color: AppTheme.black, // Added AppTheme color
+                  color: textColor,
                 ),
               ),
               const SizedBox(height: 20),
@@ -128,11 +128,12 @@ class StaysScreen extends StatelessWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                          pageBuilder: (_, __, ___) =>
+                              const PostDetailsScreen(),
                           transitionsBuilder: (_, animation, __, child) {
                             return FadeTransition(
                               opacity: animation,
@@ -158,32 +159,30 @@ class StaysScreen extends StatelessWidget {
                         ),
                         ListTile(
                           title: Text(
-                            'BeachFront villa', 
+                            'BeachFront villa',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.black, // Added AppTheme color
+                              color: textColor,
                             ),
                           ),
                           subtitle: Text(
                             '\$400/night',
-                            style: TextStyle(
-                              color: AppTheme.grey, // Added AppTheme color
-                            ),
+                            style: TextStyle(color: secondaryTextColor),
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 Icons.star_border_outlined,
-                                color: AppTheme.neutralColor, // Using neutralColor for stars
+                                color: AppTheme.neutralColor,
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '4.7', 
+                                '4.7',
                                 style: TextStyle(
-                                  fontSize: 16, 
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: AppTheme.black, // Added AppTheme color
+                                  color: textColor,
                                 ),
                               ),
                             ],
@@ -194,10 +193,10 @@ class StaysScreen extends StatelessWidget {
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
