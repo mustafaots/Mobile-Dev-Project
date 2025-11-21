@@ -1,4 +1,5 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -9,22 +10,10 @@ class BookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Bookings',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: backgroundColor,
-        elevation: 0,
-      ),
+      appBar: App_Bar(context,'Bookings'),
       body: SafeArea(
         child: Column(
           children: [
@@ -128,11 +117,21 @@ class BookingsScreen extends StatelessWidget {
   }) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final backgroundColor = context.scaffoldBackgroundColor;
+    final cardColor = context.cardColor; // Add this
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: AppTheme.cardDecoration,
+      decoration: BoxDecoration( // Replace AppTheme.cardDecoration
+        color: cardColor, // Use theme card color
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           // Image
@@ -212,7 +211,7 @@ class BookingsScreen extends StatelessWidget {
                           'View Details',
                           style: TextStyle(
                             fontSize: 14,
-                            color: backgroundColor,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -228,14 +227,24 @@ class BookingsScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor; // Add this
 
     return Container(
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.all(48),
-      decoration: AppTheme.cardDecoration,
+      decoration: BoxDecoration( // Replace AppTheme.cardDecoration
+        color: cardColor, // Use theme card color
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         children: [
           Icon(Icons.luggage, size: 64, color: secondaryTextColor),
@@ -258,7 +267,6 @@ class BookingsScreen extends StatelessWidget {
             width: 150,
             child: ElevatedButton(
               onPressed: () => {
-                ///////////////////////////////////////////////////////
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -269,12 +277,11 @@ class BookingsScreen extends StatelessWidget {
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
                 ),
-                ///////////////////////////////////////////////////////
               },
               style: AppTheme.primaryButtonStyle,
               child: Text(
                 'Explore Stays',
-                style: TextStyle(color: backgroundColor),
+                style: TextStyle(color: Colors.white), // Fixed button text color
               ),
             ),
           ),

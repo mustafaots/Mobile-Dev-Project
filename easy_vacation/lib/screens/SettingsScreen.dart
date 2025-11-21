@@ -1,8 +1,10 @@
+import 'package:easy_vacation/screens/BlookedUserListScreen.dart';
 import 'package:easy_vacation/screens/BookingHistoryScreen.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/ListingHistory.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -20,80 +22,223 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final textColor = context.textColor;
     final backgroundColor = context.scaffoldBackgroundColor;
+    final cardColor = context.cardColor;
+    final secondaryTextColor = context.secondaryTextColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-            color: textColor,
-          ),
-        ),
-        elevation: 0,
-      ),
+      appBar: App_Bar(context, 'Settings'),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                //position in right of the screen
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const [ThemeToggleButton()],
+        child: Column(
+          children: [
+            // Theme Toggle at top
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: const ThemeToggleButton(),
+            ),
+
+            // Profile Section
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              // Profile Section
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 16),
-                    Container(
-                      width: 128,
-                      height: 128,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
-                          ),
-                          fit: BoxFit.cover,
+              child: Row(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: const DecorationImage(
+                        image: NetworkImage(
+                          'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
                         ),
+                        fit: BoxFit.cover,
+                      ),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.3),
+                        width: 2,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Mohamed',
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Mohamed',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Mohamed@easyvacation.com',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: secondaryTextColor,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            'Premium Member',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.verified,
+                    color: AppTheme.primaryColor,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Subscription Card
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppTheme.neutralColor.withOpacity(0.1),
+                    AppTheme.primaryColor.withOpacity(0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: AppTheme.neutralColor.withOpacity(0.2),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppTheme.neutralColor,
+                          AppTheme.neutralColor.withOpacity(0.8),
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.workspace_premium,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Premium Subscription',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Monthly plan - Active',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: secondaryTextColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.successColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      'Active',
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 12,
+                        color: AppTheme.successColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Settings Menu
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: ListView(
+                  padding: const EdgeInsets.all(20),
+                  children: [
+                    Text(
+                      'Account Settings',
+                      style: TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: textColor,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Mohamed@easyvacation.com',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: context.secondaryTextColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // ... rest of your existing profile content
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: SubscriptionCard(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
+                    const SizedBox(height: 16),
+
                     _buildMenuItem(
-                      icon: Icons.edit,
-                      title: 'Edit profile',
+                      icon: Icons.person_outline,
+                      title: 'Edit Profile',
+                      subtitle: 'Update your personal information',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -113,10 +258,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
+
                     _buildMenuItem(
-                      icon: Icons.article,
-                      title: 'View listings created',
+                      icon: Icons.article_outlined,
+                      title: 'My Listings',
+                      subtitle: 'View and manage your listings',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -136,10 +283,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
+
                     _buildMenuItem(
-                      icon: Icons.history,
-                      title: 'View booking history',
+                      icon: Icons.history_outlined,
+                      title: 'Booking History',
+                      subtitle: 'View your past and upcoming bookings',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -159,10 +308,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       },
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
+
                     _buildMenuItem(
-                      icon: Icons.subscriptions,
-                      title: 'Manage sub',
+                      icon: Icons.subscriptions_outlined,
+                      title: 'Subscription',
+                      subtitle: 'Manage your subscription plan',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -182,57 +333,120 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       },
                     ),
+                    const SizedBox(height: 12),
+
+                    _buildMenuItem(
+                      icon: Icons.block_outlined,
+                      title: 'Blocked Users',
+                      subtitle: 'See who you blocked and want to unblock',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) =>
+                                const BlockedUsersListScreen(),
+                            transitionsBuilder: (_, animation, __, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Logout Button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppTheme.failureColor.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppTheme.failureColor.withOpacity(0.2),
+                        ),
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) => const LoginScreen(),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration:
+                                    const Duration(milliseconds: 300),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.failureColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Icon(
+                                    Icons.logout,
+                                    color: AppTheme.failureColor,
+                                    size: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Log Out',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppTheme.failureColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Sign out of your account',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppTheme.failureColor.withOpacity(0.7),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: AppTheme.failureColor.withOpacity(0.5),
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      ////////////////////////////////////////////////
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (_, __, ___) => const LoginScreen(),
-                          transitionsBuilder: (_, animation, __, child) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(milliseconds: 300),
-                        ),
-                        (route) => false,
-                      );
-                      ////////////////////////////////////////////////
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.failureColor.withOpacity(0.1),
-                      foregroundColor: AppTheme.failureColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
-                    ),
-                    icon: const Icon(Icons.logout, size: 20),
-                    label: const Text(
-                      'Log out',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -241,23 +455,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildMenuItem({
     required IconData icon,
     required String title,
+    required String subtitle,
     required VoidCallback onTap,
   }) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
-    final shadowColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
 
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(
+          color: secondaryTextColor.withOpacity(0.1),
+        ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -266,99 +476,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
           borderRadius: BorderRadius.circular(12),
           child: Container(
             padding: const EdgeInsets.all(16),
-            height: 56,
             child: Row(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(icon, color: AppTheme.primaryColor, size: 24),
+                  child: Icon(
+                    icon,
+                    color: AppTheme.primaryColor,
+                    size: 24,
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 16, color: textColor),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: textColor,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: secondaryTextColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Icon(
-                  Icons.chevron_right,
-                  color: context.secondaryTextColor,
-                  size: 24,
+                  Icons.chevron_right_rounded,
+                  color: secondaryTextColor,
+                  size: 20,
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Extract subscription card to separate widget
-class SubscriptionCard extends StatelessWidget {
-  const SubscriptionCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
-    final shadowColor = context.textColor;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: shadowColor.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppTheme.neutralColor,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-            ),
-            child: const Icon(
-              Icons.workspace_premium,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Subscription: ',
-                    style: TextStyle(fontSize: 16, color: textColor),
-                  ),
-                  TextSpan(
-                    text: 'Monthly',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.neutralColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

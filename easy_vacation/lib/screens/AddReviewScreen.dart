@@ -2,6 +2,7 @@
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class AddReviewScreen extends StatefulWidget {
@@ -13,30 +14,14 @@ class AddReviewScreen extends StatefulWidget {
 
 class _AddReviewScreenState extends State<AddReviewScreen> {
   int _rating = 0;
-  int _cleanlinessRating = 0;
-  int _serviceRating = 0;
-  int _locationRating = 0;
-  int _valueRating = 0;
-  String _selectedEmoji = '';
   final TextEditingController _reviewController = TextEditingController();
-  bool _showPreview = false;
-  bool _showCategories = false;
 
-  final List<Map<String, dynamic>> _emojiReactions = [
-    {'emoji': '😠', 'label': 'Terrible', 'value': 1},
-    {'emoji': '😕', 'label': 'Poor', 'value': 2},
-    {'emoji': '😐', 'label': 'Average', 'value': 3},
-    {'emoji': '😊', 'label': 'Good', 'value': 4},
-    {'emoji': '🤩', 'label': 'Excellent', 'value': 5},
-  ];
-
-  final List<String> _suggestions = [
-    'Great service!',
-    'Very clean and tidy',
-    'Amazing location',
-    'Good value for money',
-    'Comfortable stay',
-    'Would recommend',
+  final List<String> _quickReactions = [
+    '😠 Terrible',
+    '😕 Poor', 
+    '😐 Average',
+    '😊 Good',
+    '🤩 Excellent',
   ];
 
   @override
@@ -45,42 +30,28 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
     super.dispose();
   }
 
-  bool _canSubmit() {
-    return _rating > 0 && _reviewController.text.trim().isNotEmpty;
-  }
-
-  double _getProgressValue() {
-    double ratingProgress = _rating / 5 * 0.4;
-    double reviewProgress = (_reviewController.text.length / 300).clamp(
-      0.0,
-      0.4,
-    );
-    double categoryProgress = (_showCategories
-        ? (_cleanlinessRating +
-                  _serviceRating +
-                  _locationRating +
-                  _valueRating) /
-              20 *
-              0.2
-        : 0.0);
-    return ratingProgress + reviewProgress + categoryProgress;
-  }
-
   void _submitReview() {
-    if (_canSubmit()) {
+    if (_rating > 0 && _reviewController.text.trim().isNotEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text(
+          backgroundColor: context.cardColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
             'Review Submitted!',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: context.textColor,
+            ),
           ),
-          content: const Text('Thank you for your feedback!'),
+          content: Text(
+            'Thank you for your feedback!',
+            style: TextStyle(color: context.secondaryTextColor),
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                ///////////////////////////////////////////////////////
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -91,31 +62,15 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     transitionDuration: const Duration(milliseconds: 300),
                   ),
                 );
-                ///////////////////////////////////////////////////////
               },
-              child: const Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(color: AppTheme.primaryColor),
+              ),
             ),
           ],
         ),
       );
-    }
-  }
-
-  List<Color> _getBackgroundColors() {
-    if (_rating == 0) return [const Color(0xFFF2F2F7), const Color(0xFFF2F2F7)];
-    switch (_rating) {
-      case 1:
-        return [const Color(0xFFFFE5E5), const Color(0xFFFFF5F5)];
-      case 2:
-        return [const Color(0xFFFFF0E5), const Color(0xFFFFF9F5)];
-      case 3:
-        return [const Color(0xFFFFFFE5), const Color(0xFFFFFFF5)];
-      case 4:
-        return [const Color(0xFFF0FFE5), const Color(0xFFF9FFF5)];
-      case 5:
-        return [const Color(0xFFE5FFEE), const Color(0xFFF5FFFA)];
-      default:
-        return [const Color(0xFFF2F2F7), const Color(0xFFF2F2F7)];
     }
   }
 
@@ -124,423 +79,218 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Add a Review',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              ///////////////////////////////////////////////////////
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-              ///////////////////////////////////////////////////////
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-        ],
-      ),
+      appBar: App_Bar(context, 'Add Review'),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: _getBackgroundColors(),
+            // Progress indicator
+            LinearProgressIndicator(
+              value: _rating > 0 && _reviewController.text.isNotEmpty 
+                  ? 1.0 
+                  : (_rating > 0 || _reviewController.text.isNotEmpty ? 0.5 : 0.0),
+              backgroundColor: secondaryTextColor.withOpacity(0.2),
+              color: AppTheme.primaryColor,
+              minHeight: 3,
+            ),
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Text(
+                      'How was your stay?',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Share your experience to help others',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: secondaryTextColor,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Star Rating
+                    Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Overall Rating',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(5, (index) {
+                              bool isSelected = index < _rating;
+                              return GestureDetector(
+                                onTap: () => setState(() => _rating = index + 1),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6),
+                                  child: Icon(
+                                    isSelected ? Icons.star : Icons.star_border,
+                                    color: isSelected ? AppTheme.neutralColor : secondaryTextColor,
+                                    size: 36,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _rating == 0 ? 'Tap to rate' : '$_rating/5 Stars',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: secondaryTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Quick Reactions
+                    Text(
+                      'Quick Reaction',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: _quickReactions.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final reaction = entry.value;
+                        final isSelected = _rating == index + 1;
+                        
+                        return ChoiceChip(
+                          label: Text(reaction),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() => _rating = selected ? index + 1 : 0);
+                          },
+                          selectedColor: AppTheme.primaryColor.withOpacity(0.2),
+                          backgroundColor: cardColor,
+                          labelStyle: TextStyle(
+                            color: isSelected ? AppTheme.primaryColor : textColor,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                          side: BorderSide(
+                            color: isSelected ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.3),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Review Text
+                    Text(
+                      'Your Review',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: secondaryTextColor.withOpacity(0.3),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _reviewController,
+                        maxLines: 6,
+                        decoration: InputDecoration(
+                          hintText: 'Tell us about your experience...',
+                          hintStyle: TextStyle(color: secondaryTextColor),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.all(16),
+                        ),
+                        style: TextStyle(color: textColor),
+                        onChanged: (value) => setState(() {}),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${_reviewController.text.length}/300 characters',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: secondaryTextColor,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+
+                    const SizedBox(height: 40),
+                  ],
                 ),
               ),
             ),
-            Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Rate Your Experience',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
 
-                        // Star rating
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(5, (index) {
-                            bool isSelected = index < _rating;
-                            return GestureDetector(
-                              onTap: () => setState(() => _rating = index + 1),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Icon(
-                                  isSelected ? Icons.star : Icons.star_border,
-                                  color: isSelected
-                                      ? AppTheme.neutralColor
-                                      : secondaryTextColor,
-                                  size: 40,
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '$_rating/5 Stars',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: secondaryTextColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        // Emoji reaction
-                        Text(
-                          'How was your experience?',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: secondaryTextColor,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: _emojiReactions.map((reaction) {
-                            return GestureDetector(
-                              onTap: () => setState(() {
-                                _selectedEmoji = reaction['emoji'];
-                                _rating = reaction['value'];
-                              }),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: _selectedEmoji == reaction['emoji']
-                                          ? AppTheme.primaryColor
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      reaction['emoji'],
-                                      style: const TextStyle(fontSize: 28),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    reaction['label'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: secondaryTextColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        // Category ratings
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Detailed Ratings',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: secondaryTextColor,
-                              ),
-                            ),
-                            Switch(
-                              value: _showCategories,
-                              onChanged: (value) =>
-                                  setState(() => _showCategories = value),
-                              activeColor: AppTheme.primaryColor,
-                            ),
-                          ],
-                        ),
-
-                        if (_showCategories) ...[
-                          const SizedBox(height: 16),
-                          _buildCategoryRating(
-                            'Cleanliness',
-                            _cleanlinessRating,
-                            (v) => _cleanlinessRating = v,
-                          ),
-                          _buildCategoryRating(
-                            'Service',
-                            _serviceRating,
-                            (v) => _serviceRating = v,
-                          ),
-                          _buildCategoryRating(
-                            'Location',
-                            _locationRating,
-                            (v) => _locationRating = v,
-                          ),
-                          _buildCategoryRating(
-                            'Value',
-                            _valueRating,
-                            (v) => _valueRating = v,
-                          ),
-                        ],
-
-                        const SizedBox(height: 24),
-
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Share Your Thoughts',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: secondaryTextColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Suggestions
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: _suggestions.map((suggestion) {
-                            return InputChip(
-                              label: Text(
-                                suggestion,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.primaryColor,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // Review text
-                        TextField(
-                          controller: _reviewController,
-                          maxLines: 6,
-                          decoration: InputDecoration(
-                            hintText: 'Tell us about your stay...',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: backgroundColor),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                color: AppTheme.primaryColor,
-                              ),
-                            ),
-                            filled: true,
-                            fillColor: backgroundColor,
-                            contentPadding: const EdgeInsets.all(16),
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        // Preview toggle
-                        Row(
-                          children: [
-                            Switch(
-                              value: _showPreview,
-                              onChanged: (value) =>
-                                  setState(() => _showPreview = value),
-                              activeThumbColor: AppTheme.primaryColor,
-                            ),
-                            Text(
-                              'Preview Review',
-                              style: TextStyle(
-                                color: secondaryTextColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        if (_showPreview)
-                          Card(
-                            margin: EdgeInsets.zero,
-                            elevation: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: List.generate(5, (index) {
-                                      return Icon(
-                                        index < _rating
-                                            ? Icons.star
-                                            : Icons.star_border,
-                                        size: 16,
-                                        color: AppTheme.neutralColor,
-                                      );
-                                    }),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    _reviewController.text.isEmpty
-                                        ? 'Your review will appear here...'
-                                        : _reviewController.text,
-                                  ),
-                                  if (_selectedEmoji.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: Text(
-                                        'Mood: $_selectedEmoji',
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+            // Submit Button
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: cardColor,
+                border: Border(
+                  top: BorderSide(
+                    color: secondaryTextColor.withOpacity(0.2),
+                    width: 1,
                   ),
                 ),
-
-                // Submit button
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
+              ),
+              child: ElevatedButton(
+                onPressed: _rating > 0 && _reviewController.text.trim().isNotEmpty 
+                    ? _submitReview 
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _rating > 0 && _reviewController.text.trim().isNotEmpty
+                      ? AppTheme.primaryColor
+                      : secondaryTextColor.withOpacity(0.3),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 56),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      LinearProgressIndicator(
-                        value: _getProgressValue(),
-                        backgroundColor: secondaryTextColor.withOpacity(0.2),
-                        color: AppTheme.primaryColor,
-                        minHeight: 4,
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: _canSubmit() ? _submitReview : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _canSubmit()
-                              ? AppTheme.primaryColor
-                              : AppTheme.grey,
-                          foregroundColor: AppTheme.white,
-                          minimumSize: const Size(double.infinity, 56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 2,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.rate_review, size: 20),
-                            SizedBox(width: 8),
-                            Text(
-                              'Submit Review',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  elevation: 2,
+                ),
+                child: const Text(
+                  'Submit Review',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildCategoryRating(
-    String category,
-    int rating,
-    Function(int) onRatingChanged,
-  ) {
-    final secondaryTextColor = context.secondaryTextColor;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              category,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: secondaryTextColor,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(5, (index) {
-                bool isSelected = index < rating;
-                return GestureDetector(
-                  onTap: () => setState(() => onRatingChanged(index + 1)),
-                  child: Icon(
-                    isSelected ? Icons.star : Icons.star_border,
-                    size: 20,
-                    color: isSelected
-                        ? AppTheme.neutralColor
-                        : secondaryTextColor,
-                  ),
-                );
-              }),
-            ),
-          ),
-        ],
       ),
     );
   }

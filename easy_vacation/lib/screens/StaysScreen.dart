@@ -38,7 +38,7 @@ class StaysScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -47,7 +47,6 @@ class StaysScreen extends StatelessWidget {
                       },
                       transitionDuration: const Duration(milliseconds: 300),
                     ),
-                    (route) => false,
                   );
                 },
                 child: Container(
@@ -129,7 +128,7 @@ class StaysScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) =>

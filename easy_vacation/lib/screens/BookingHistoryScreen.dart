@@ -1,5 +1,5 @@
-import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 
@@ -9,41 +9,10 @@ class BookingHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Booking History',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-        ],
-      ),
+      appBar: App_Bar(context,'Booking History'),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

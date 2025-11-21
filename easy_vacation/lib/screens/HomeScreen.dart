@@ -5,6 +5,7 @@ import 'package:easy_vacation/screens/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 import 'VehiclesScreen.dart';
@@ -32,28 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
 
     return Scaffold(
-      appBar: _navIdx == 0
-          ? AppBar(
-              title: Text(
-                'Home',
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23,
-                ),
-              ),
-              elevation: 0,
-            )
-          : null,
+      appBar: _navIdx == 0 ? App_Bar(context,'Home') : null,
       body: _bottomNavScreens[_navIdx],
       floatingActionButton: _navIdx == 0
           ? FloatingActionButton(
               onPressed: () {
                 ///////////////////////////////////////////////////////
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (_, __, ___) => const CreateListing(),
@@ -131,13 +119,16 @@ class __HomeContentState extends State<_HomeContent> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor; // Get theme background color
+    final textColor = context.textColor; // Get theme text color
+
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Container(
-        decoration: BoxDecoration(color: AppTheme.white),
+        decoration: BoxDecoration(color: backgroundColor), // Use theme background
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -232,7 +223,7 @@ class __HomeContentState extends State<_HomeContent> {
                                   ? FontWeight.bold
                                   : FontWeight.normal,
                               color: isSelected
-                                  ? AppTheme.black
+                                  ? textColor // Use theme text color
                                   : AppTheme.grey,
                             ),
                           ),

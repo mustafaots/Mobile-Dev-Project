@@ -2,6 +2,7 @@ import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class BlockUserScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
       builder: (BuildContext dialogContext) {
         final backgroundColor = dialogContext.scaffoldBackgroundColor;
         final textColor = dialogContext.textColor;
+        final secondaryTextColor = dialogContext.secondaryTextColor;
 
         return Dialog(
           backgroundColor: backgroundColor,
@@ -68,7 +70,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: dialogContext.secondaryTextColor,
+                    color: secondaryTextColor,
                     height: 1.5,
                   ),
                 ),
@@ -96,7 +98,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryColor,
-                      foregroundColor: AppTheme.white,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -135,7 +137,6 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
@@ -143,36 +144,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Block User',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-        ],
-      ),
+      appBar: App_Bar(context, 'Block User'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -214,9 +186,10 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
 
               Text(
                 "What happens when you block ${widget.userName}?",
-                style: AppTheme.header1.copyWith(
+                style: TextStyle(
                   fontSize: 25,
-                  color: AppTheme.black,
+                  fontWeight: FontWeight.bold,
+                  color: textColor, // Use theme color
                 ),
               ),
               const SizedBox(height: 20),
@@ -228,26 +201,31 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                   _buildConsequenceItem(
                     Icons.visibility_off,
                     'They won\'t be able to see your profile, posts, or stories',
+                    context,
                   ),
                   const SizedBox(height: 12),
                   _buildConsequenceItem(
                     Icons.chat_bubble_outline,
                     'They can\'t send you comments',
+                    context,
                   ),
                   const SizedBox(height: 12),
                   _buildConsequenceItem(
                     Icons.person_remove,
                     'They won\'t be able to follow you or see your updates',
+                    context,
                   ),
                   const SizedBox(height: 12),
                   _buildConsequenceItem(
                     Icons.notifications_off,
                     'You won\'t receive any notifications from them',
+                    context,
                   ),
                   const SizedBox(height: 12),
                   _buildConsequenceItem(
                     Icons.search_off,
                     'They won\'t appear in your search results',
+                    context,
                   ),
                 ],
               ),
@@ -282,7 +260,7 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.failureColor,
-                    foregroundColor: AppTheme.white,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -296,8 +274,8 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppTheme.white,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.white,
                             ),
                           ),
                         )
@@ -318,7 +296,6 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    ///////////////////////////////////////////////////////
                     Navigator.pushReplacement(
                       context,
                       PageRouteBuilder(
@@ -332,19 +309,22 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                     );
-                    ///////////////////////////////////////////////////////
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppTheme.grey,
-                    side: BorderSide(color: AppTheme.grey.withOpacity(0.5)),
+                    foregroundColor: textColor, // Use theme color
+                    side: BorderSide(color: secondaryTextColor.withOpacity(0.3)), // Use theme color
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Cancel',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 17, 
+                      fontWeight: FontWeight.w500,
+                      color: textColor, // Use theme color
+                    ),
                   ),
                 ),
               ),
@@ -355,7 +335,9 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
     );
   }
 
-  Widget _buildConsequenceItem(IconData icon, String text) {
+  Widget _buildConsequenceItem(IconData icon, String text, BuildContext context) {
+    final textColor = context.textColor;
+    
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -372,7 +354,11 @@ class _BlockUserScreenState extends State<BlockUserScreen> {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(fontSize: 14, color: AppTheme.black, height: 1.4),
+            style: TextStyle(
+              fontSize: 14, 
+              color: textColor, // Use theme color
+              height: 1.4
+            ),
           ),
         ),
       ],

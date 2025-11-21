@@ -1,6 +1,6 @@
-import 'package:easy_vacation/screens/CreateListingScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class ListingsHistory extends StatefulWidget {
@@ -67,7 +67,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
 
     final filteredPosts = _currentFilter == 'all'
         ? _userPosts
@@ -75,18 +74,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'My Posts',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: backgroundColor,
-        elevation: 0,
-      ),
+      appBar: App_Bar(context,'My Listings'),
       body: SafeArea(
         child: Column(
           children: [

@@ -1,6 +1,6 @@
-import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
@@ -44,9 +44,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     int idx,
     BuildContext context,
   ) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor; // Add card color
+
     return GestureDetector(
       onTap: () {
         for (var sub in subscriptions) {
@@ -58,7 +59,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: cardColor, // Use card color instead of background color
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             width: selected ? 2 : 1,
@@ -105,7 +106,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                     child: Text(
                       'Recommended',
                       style: TextStyle(
-                        color: backgroundColor,
+                        color: Colors.white, // Use white for better contrast
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -157,8 +158,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: selected
                       ? AppTheme.primaryColor
-                      : AppTheme.primaryColor.withOpacity(0.1),
-                  foregroundColor: backgroundColor,
+                      : secondaryTextColor.withOpacity(0.2), // Use theme color
+                  foregroundColor: selected ? Colors.white : textColor, // Use theme colors
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -178,39 +179,11 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Choose Your Plan',
-          style: TextStyle(
-            color: context.textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: context.scaffoldBackgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              ///////////////////////////////////////////////////////
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-              ///////////////////////////////////////////////////////
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-        ],
-      ),
+      backgroundColor: backgroundColor,
+      appBar: App_Bar(context, 'Subscriptions'),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(

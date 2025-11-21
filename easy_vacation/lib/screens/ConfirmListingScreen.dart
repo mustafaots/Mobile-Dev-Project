@@ -1,6 +1,8 @@
 // ConfirmListingScreen.dart
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmAndPostScreen extends StatefulWidget {
@@ -13,174 +15,427 @@ class ConfirmAndPostScreen extends StatefulWidget {
 class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   bool agreedCheck = false;
 
+  void _postListing() {
+    if (agreedCheck) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Listing posted successfully!"),
+          backgroundColor: AppTheme.successColor,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      );
+      
+      // Navigate to home after a brief delay
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const HomeScreen(),
+            transitionsBuilder: (_, animation, __, child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+          ),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = context.scaffoldBackgroundColor;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
+
     return Scaffold(
-      backgroundColor: AppTheme.lightGrey,
-      appBar: AppBar(
-        title: const Text("Confirm & Post"),
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: AppTheme.cardDecoration,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Summary & Plan",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+      backgroundColor: backgroundColor,
+      appBar: App_Bar(context, 'Confirm & Post'),
+      body: Column(
+        children: [
+          // Progress indicator
+          LinearProgressIndicator(
+            value: agreedCheck ? 1.0 : 0.5,
+            backgroundColor: secondaryTextColor.withOpacity(0.2),
+            color: AppTheme.primaryColor,
+            minHeight: 3,
+          ),
+          
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Success Icon
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.1),
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(height: 10),
-                    _buildSummaryRow("Base Price", "\$50"),
-                    const SizedBox(height: 6),
-                    _buildSummaryRow("Service Fee", "\$5"),
-                    const Divider(height: 20, thickness: 1),
-                    _buildSummaryRow(
-                      "Total",
-                      "\$55",
-                      isBold: true,
-                      isColored: true,
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      color: AppTheme.primaryColor,
+                      size: 40,
                     ),
-                    const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  Text(
+                    "Ready to Post!",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Review your listing details before publishing",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: secondaryTextColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Pricing Card
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: secondaryTextColor.withOpacity(0.1),
                       ),
-                      child: const Row(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.star, color: AppTheme.primaryColor),
-                          SizedBox(width: 8),
-                          Text("Subscription: \n Premium Plan (30 days)"),
+                          Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(
+                                  Icons.attach_money,
+                                  color: AppTheme.primaryColor,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                "Pricing Summary",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          
+                          _buildPricingRow("Base Price", "\$50", context),
+                          _buildPricingRow("Service Fee", "\$5", context),
+                          
+                          const SizedBox(height: 12),
+                          Divider(color: secondaryTextColor.withOpacity(0.3)),
+                          const SizedBox(height: 12),
+                          
+                          _buildPricingRow(
+                            "Total Amount",
+                            "\$55",
+                            context,
+                            isTotal: true,
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              decoration: AppTheme.cardDecoration,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Suggestions",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Subscription Card
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.2),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      "✔️ Add more photos to attract attention.\n"
-                      "✔️ Highlight special offers.\n"
-                      "✔️ Include contact information for faster bookings.",
-                      style: TextStyle(height: 1.5),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Checkbox(
-                  value: agreedCheck,
-                  onChanged: (val) {
-                    setState(() => agreedCheck = val!);
-                  },
-                  activeColor: AppTheme.primaryColor,
-                ),
-                const Expanded(
-                  child: Text(
-                    "I agree to the Terms of Service and confirm all details are correct.",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: agreedCheck
-                    ? () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Listing posted successfully!"),
-                            backgroundColor: AppTheme.successColor,
-                          ),
-                        );
-                      }
-                    : () {
-                        ///////////////////////////////////////////////////////
-                        Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const HomeScreen(),
-                            transitionsBuilder: (_, animation, __, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.star,
+                              color: Colors.white,
+                              size: 20,
                             ),
                           ),
-                        );
-                        ///////////////////////////////////////////////////////
-                      },
-                style: AppTheme.primaryButtonStyle,
-                child: const Text(
-                  "Post Listing",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Premium Plan",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor,
+                                  ),
+                                ),
+                                Text(
+                                  "30 days subscription",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: secondaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Tips Card
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: secondaryTextColor.withOpacity(0.1),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.neutralColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(
+                                  Icons.lightbulb_outline,
+                                  color: AppTheme.neutralColor,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                "Pro Tips",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: textColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          
+                          _buildTipItem("Add high-quality photos"),
+                          _buildTipItem("Highlight special offers"),
+                          _buildTipItem("Include contact information"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Agreement Checkbox
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cardColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: secondaryTextColor.withOpacity(0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: agreedCheck ? AppTheme.primaryColor : Colors.transparent,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: agreedCheck ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.5),
+                              width: 2,
+                            ),
+                          ),
+                          child: agreedCheck
+                              ? Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 16,
+                                )
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() => agreedCheck = !agreedCheck);
+                            },
+                            child: Text(
+                              "I agree to the Terms of Service and confirm all details are correct.",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: textColor,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+          ),
+
+          // Submit Button
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: cardColor,
+              border: Border(
+                top: BorderSide(
+                  color: secondaryTextColor.withOpacity(0.1),
                 ),
               ),
             ),
-          ],
-        ),
+            child: ElevatedButton(
+              onPressed: agreedCheck ? _postListing : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: agreedCheck ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.3),
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 56),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+                shadowColor: AppTheme.primaryColor.withOpacity(0.3),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.rocket_launch,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "Post Listing",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildSummaryRow(
-    String label,
-    String value, {
-    bool isBold = false,
-    bool isColored = false,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: isBold ? const TextStyle(fontWeight: FontWeight.bold) : null,
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-            color: isColored ? AppTheme.primaryColor : null,
+  Widget _buildPricingRow(String label, String value, BuildContext context, {bool isTotal = false}) {
+    final textColor = context.textColor;
+    
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: isTotal ? 16 : 14,
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+              color: textColor,
+            ),
           ),
-        ),
-      ],
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: isTotal ? 18 : 14,
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+              color: isTotal ? AppTheme.primaryColor : textColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTipItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.check_circle,
+            color: AppTheme.successColor,
+            size: 16,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 14,
+                color: context.textColor,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

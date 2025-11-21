@@ -38,7 +38,7 @@ class VehiclesScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -128,7 +128,7 @@ class VehiclesScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) =>

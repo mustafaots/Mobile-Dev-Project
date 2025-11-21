@@ -35,7 +35,7 @@ class ThemeCubit extends Cubit<ThemeData> {
       canvasColor: Colors.grey[850]!,
       cardColor: Colors.grey[900],
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xFF1A1A1A),
+        backgroundColor: Color.fromARGB(255, 36, 36, 36),
         foregroundColor: Colors.white,
         elevation: 0,
       ),

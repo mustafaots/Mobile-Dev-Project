@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
-import 'package:easy_vacation/shared/widgets/themed_widgets.dart';
+import 'package:easy_vacation/shared/layout_widgets/themed_widgets.dart';
 
 class NotificationItem extends StatelessWidget {
   final IconData icon;

@@ -18,4 +18,5 @@ extension ThemeHelper on BuildContext {
 
   Color get secondaryTextColor =>
       isDarkTheme ? Colors.grey : const Color(0xFF6B7280);
+
 }

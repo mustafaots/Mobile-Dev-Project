@@ -3,6 +3,7 @@ import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -76,12 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(
+                  buildFormField(
+                    context,
                     controller: _useridController,
-                    decoration: input_decor(
-                      'Phone Or Email',
-                      const Icon(Icons.account_circle_outlined),
-                    ),
+                    label: 'Phone Or Email',
+                    icon: Icons.account_circle_outlined,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your phone/email';
@@ -92,10 +92,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   const SizedBox(height: 16),
 
-                  TextFormField(
-                    obscureText: true,
+                  buildFormField(
+                    context,
                     controller: _passwordController,
-                    decoration: input_decor('Password', const Icon(Icons.lock)),
+                    label: 'Password',
+                    icon: Icons.lock,
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your password';
@@ -117,20 +119,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () => {
-                  ///////////////////////////////////////////////////////
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const HomeScreen(),
-                      transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                    (route) => false, // This removes all previous routes
-                  ),
 
-                  ///////////////////////////////////////////////////////
+                  if (_formKey.currentState!.validate()){
+
+                    ///////////////////////////////////////////////////////
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const HomeScreen(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                      (route) => false, // This removes all previous routes
+                    ),
+                    ///////////////////////////////////////////////////////
+                  }
+                  
+
                 },
                 child: Text('Login', style: login_text_style),
               ),

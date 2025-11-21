@@ -18,7 +18,7 @@ class ActivitiesScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             'Featured Activities',
-            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w900),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
           ),
         ),
         const SizedBox(height: 20),
@@ -31,7 +31,7 @@ class ActivitiesScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const PostDetailsScreen(),
@@ -110,7 +110,7 @@ class ActivitiesScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) =>

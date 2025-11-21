@@ -1,5 +1,6 @@
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -40,11 +41,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _saveProfile() {
     // Handle save logic here
-    final newName = _nameController.text;
-    final newEmail = _emailController.text;
-    final newBio = _bioController.text;
-    final newLocation = _locationController.text;
-    final newPhone = _phoneController.text;
+    //final newName = _nameController.text;
+    //final newEmail = _emailController.text;
+    //final newBio = _bioController.text;
+    //final newLocation = _locationController.text;
+    //final newPhone = _phoneController.text;
 
     // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
@@ -96,34 +97,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Edit Profile',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        elevation: 0,
-        actions: [
-          TextButton(
-            onPressed: _saveProfile,
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: AppTheme.primaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: App_Bar(context,'Edit Profile'),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

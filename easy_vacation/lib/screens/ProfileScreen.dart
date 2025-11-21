@@ -1,5 +1,3 @@
-import 'package:easy_vacation/repositories/report_repository.dart';
-import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ReportUserScreen.dart';
 import 'package:easy_vacation/screens/BlockedUserScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -44,38 +42,21 @@ class ProfileScreen extends StatelessWidget {
         title: Text(
           'Profile',
           style: TextStyle(
-            color: textColor,
             fontWeight: FontWeight.bold,
             fontSize: 23,
           ),
         ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0,
+
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert, color: AppTheme.primaryColor),
+            icon: Icon(Icons.more_vert, color: AppTheme.white),
             onPressed: () {
               _showOptionsMenu(context);
             },
           ),
         ],
       ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -865,7 +846,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(dialogContext);
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     dialogContext,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) => const ReportUserScreen(),
@@ -885,7 +866,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.pop(dialogContext);
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     dialogContext,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) =>

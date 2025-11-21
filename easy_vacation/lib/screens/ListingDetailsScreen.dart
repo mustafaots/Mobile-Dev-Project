@@ -1,6 +1,6 @@
 import 'package:easy_vacation/screens/BookingsScreen.dart';
-import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -30,40 +30,9 @@ class PostDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Listing Details',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                  transitionDuration: const Duration(milliseconds: 300),
-                ),
-              );
-            },
-            icon: Icon(Icons.home_filled, size: 40),
-            color: AppTheme.primaryColor,
-          ),
-        ],
-      ),
+      appBar: App_Bar(context, 'Listing Details'),
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Stack(
@@ -189,9 +158,22 @@ class PostDetailsScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
         children: [
           // Host Profile Picture with Blue Ring and Gesture Detector
@@ -209,21 +191,17 @@ class PostDetailsScreen extends StatelessWidget {
               );
             },
             child: Container(
-              padding: const EdgeInsets.all(.5), // This creates the ring space
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.primaryColor, width: 2),
-              ),
-              child: Container(
-                width: 52, // Reduced to account for padding
-                height: 52,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/host_Ali.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                  border: Border.all(color: backgroundColor, width: 2),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/host_Ali.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                border: Border.all(
+                  color: AppTheme.primaryColor.withOpacity(0.3),
+                  width: 2,
                 ),
               ),
             ),
@@ -236,8 +214,8 @@ class PostDetailsScreen extends StatelessWidget {
                 Text(
                   'Hosted by Ali',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                     color: textColor,
                   ),
                 ),
@@ -246,29 +224,57 @@ class PostDetailsScreen extends StatelessWidget {
                   children: [
                     Icon(Icons.star, color: AppTheme.neutralColor, size: 16),
                     const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        '4.9 (127 reviews)',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: secondaryTextColor,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                    Text(
+                      '4.9 (127 reviews)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                        color: secondaryTextColor,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'Super Host',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          Text(
-            '6000 DZD/night',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '6000 DZD',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+              Text(
+                'per night',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: secondaryTextColor,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -277,22 +283,40 @@ class PostDetailsScreen extends StatelessWidget {
 
   Widget _buildReviewsSection(BuildContext context) {
     final textColor = context.textColor;
+    final cardColor = context.cardColor;
     
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 8),
-            child: Text(
-              'Reviews',
-              style: AppTheme.header2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: textColor,
+          Row(
+            children: [
+              Icon(Icons.star, color: AppTheme.neutralColor, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'Reviews',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
               ),
-            ),
+            ],
           ),
+          const SizedBox(height: 16),
           _buildReviewItem(
             context,
             'assets/images/reviewer_alex.jpg',
@@ -304,6 +328,7 @@ class PostDetailsScreen extends StatelessWidget {
             followingCount: 45,
             reviewsCount: 23,
           ),
+          const SizedBox(height: 16),
           _buildReviewItem(
             context,
             'assets/images/reviewer_maria.jpg',
@@ -331,79 +356,93 @@ class PostDetailsScreen extends StatelessWidget {
     int followingCount = 0,
     int reviewsCount = 0,
   }) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Reviewer Profile Picture with Blue Ring and Gesture Detector
-          GestureDetector(
-            onTap: () {
-              _navigateToProfile(
-                context,
-                userName: name,
-                userEmail:
-                    '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
-                userImage: avatarPath,
-                postsCount: postsCount,
-                followersCount: followersCount,
-                followingCount: followingCount,
-                reviewsCount: reviewsCount,
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.all(.5), // Ring space
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.primaryColor, width: 1.5),
-              ),
-              child: Container(
-                width: 37, // Reduced to account for padding
-                height: 37,
+    return GestureDetector(
+      onTap: () {
+        _navigateToProfile(
+          context,
+          userName: name,
+          userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
+          userImage: avatarPath,
+          postsCount: postsCount,
+          followersCount: followersCount,
+          followingCount: followingCount,
+          reviewsCount: reviewsCount,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: secondaryTextColor.withOpacity(0.1),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Reviewer Profile Picture
+              Container(
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image: AssetImage(avatarPath),
                     fit: BoxFit.cover,
                   ),
-                  border: Border.all(color: backgroundColor, width: 1.5),
+                  border: Border.all(
+                    color: AppTheme.primaryColor.withOpacity(0.3),
+                    width: 1.5,
+                  ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: textColor,
-                  ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: textColor,
+                          ),
+                        ),
+                        _buildStarRating(rating),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      comment,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: secondaryTextColor,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '2 days ago',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: secondaryTextColor.withOpacity(0.7),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                _buildStarRating(rating),
-                const SizedBox(height: 8),
-                Text(
-                  comment,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: secondaryTextColor,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -419,53 +458,56 @@ class PostDetailsScreen extends StatelessWidget {
             color: AppTheme.neutralColor,
             size: 16,
           ),
+        const SizedBox(width: 4),
+        Text(
+          rating.toString(),
+          style: TextStyle(
+            fontSize: 14,
+            color: AppTheme.neutralColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildAvailabilitySection(BuildContext context) {
     final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    final cardColor = context.cardColor;
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 8),
-            child: Text(
-              'Availability',
-              style: AppTheme.header2.copyWith(
-                fontWeight: FontWeight.bold,
-                color: textColor,
-              ),
-            ),
-          ),
-          Container(
-            decoration: AppTheme.cardDecoration,
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.chevron_left, color: secondaryTextColor),
-                    Text(
-                      'May 2024',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: textColor,
-                      ),
-                    ),
-                    Icon(Icons.chevron_right, color: secondaryTextColor),
-                  ],
+          Row(
+            children: [
+              Icon(Icons.calendar_today, color: AppTheme.primaryColor, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                'Availability',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
-                const SizedBox(height: 16),
-                _buildCalendarGrid(context),
-              ],
-            ),
+              ),
+            ],
           ),
+          const SizedBox(height: 16),
+          _buildCalendarGrid(context),
         ],
       ),
     );
@@ -474,8 +516,34 @@ class PostDetailsScreen extends StatelessWidget {
   Widget _buildCalendarGrid(BuildContext context) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    
     return Column(
       children: [
+        // Month selector
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppTheme.primaryColor.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(Icons.chevron_left, color: secondaryTextColor),
+              Text(
+                'May 2024',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
+              Icon(Icons.chevron_right, color: secondaryTextColor),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        
         // Week days header
         Row(
           children: _weekDays
@@ -484,18 +552,22 @@ class PostDetailsScreen extends StatelessWidget {
                   child: Text(
                     day,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: secondaryTextColor),
+                    style: TextStyle(
+                      fontSize: 14, 
+                      color: secondaryTextColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               )
               .toList(),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
 
         // Calendar days
         for (int row = 0; row < _calendarDays.length; row++)
           Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Row(
               children: _calendarDays[row].asMap().entries.map((entry) {
                 String day = entry.value;
@@ -504,24 +576,30 @@ class PostDetailsScreen extends StatelessWidget {
 
                 return Expanded(
                   child: Container(
+                    height: 36,
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppTheme.primaryColor.withOpacity(0.2)
                           : Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(8),
+                      border: isSelected
+                          ? Border.all(color: AppTheme.primaryColor, width: 1.5)
+                          : null,
                     ),
-                    child: Text(
-                      day,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: isAvailable
-                            ? (isSelected ? AppTheme.primaryColor : textColor)
-                            : secondaryTextColor,
-                        decoration: !isAvailable
-                            ? TextDecoration.lineThrough
-                            : null,
+                    child: Center(
+                      child: Text(
+                        day,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isAvailable
+                              ? (isSelected ? AppTheme.primaryColor : textColor)
+                              : secondaryTextColor,
+                          decoration: !isAvailable
+                              ? TextDecoration.lineThrough
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -534,9 +612,9 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildBottomActions(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
 
     return Positioned(
       bottom: 0,
@@ -545,12 +623,12 @@ class PostDetailsScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.lightGrey,
+          color: cardColor,
           boxShadow: [
             BoxShadow(
-              color: textColor.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
             ),
           ],
         ),
@@ -565,16 +643,15 @@ class PostDetailsScreen extends StatelessWidget {
                       pageBuilder: (_, __, ___) => const BookingsScreen(),
                       transitionsBuilder: (_, animation, __, child) {
                         return SlideTransition(
-                          position:
-                              Tween<Offset>(
-                                begin: const Offset(1.0, 0.0),
-                                end: Offset.zero,
-                              ).animate(
-                                CurvedAnimation(
-                                  parent: animation,
-                                  curve: Curves.fastOutSlowIn,
-                                ),
-                              ),
+                          position: Tween<Offset>(
+                            begin: const Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.fastOutSlowIn,
+                            ),
+                          ),
                           child: child,
                         );
                       },
@@ -582,45 +659,42 @@ class PostDetailsScreen extends StatelessWidget {
                     ),
                   );
                 },
-                style: AppTheme.primaryButtonStyle,
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(0, 56),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
+                ),
+                child: const Text(
                   'Reserve Now',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: backgroundColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             SizedBox(
-              width: 112,
-              child: ElevatedButton(
+              width: 60,
+              child: IconButton(
                 onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: backgroundColor,
-                  foregroundColor: secondaryTextColor,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                style: IconButton.styleFrom(
+                  backgroundColor: cardColor,
+                  foregroundColor: textColor,
+                  minimumSize: const Size(0, 56),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: secondaryTextColor.withOpacity(0.3),
+                      width: 1,
+                    ),
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.edit, size: 20, color: secondaryTextColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Edit',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: secondaryTextColor,
-                      ),
-                    ),
-                  ],
-                ),
+                icon: const Icon(Icons.edit, size: 20),
               ),
             ),
           ],
@@ -653,16 +727,15 @@ class PostDetailsScreen extends StatelessWidget {
         ),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
-            position:
-                Tween<Offset>(
-                  begin: const Offset(1.0, 0.0),
-                  end: Offset.zero,
-                ).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.fastOutSlowIn,
-                  ),
-                ),
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.fastOutSlowIn,
+              ),
+            ),
             child: child,
           );
         },

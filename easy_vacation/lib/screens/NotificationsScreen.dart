@@ -2,6 +2,7 @@ import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
@@ -29,21 +30,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor; // Add this
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Notifications',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-        ),
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-        elevation: 0,
-      ),
+      appBar: App_Bar(context,'Notifications'),
       body: SafeArea(
         child: Column(
           children: [
@@ -54,8 +45,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 child: Column(
                   children: [
                     // New Notifications Section
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 8),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: Row(
                         children: [
                           Text(
@@ -63,7 +54,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.black,
+                              color: textColor, // Changed to theme color
                             ),
                           ),
                         ],
@@ -72,7 +63,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     // New Notifications Card
                     Card(
                       elevation: 2,
-                      color: AppTheme.white,
+                      color: cardColor, // Changed to theme color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -87,12 +78,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.primaryColor,
+                                    color: AppTheme.primaryColor.withOpacity(0.1), // Lighter background
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.calendar_today,
-                                    color: AppTheme.primaryColor,
+                                    color: AppTheme.primaryColor, // Keep primary color for icon
                                     size: 20,
                                   ),
                                 ),
@@ -102,27 +93,27 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'Your booking is confirmed!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: AppTheme.black,
+                                          color: textColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 4),
-                                      const Text(
+                                      Text(
                                         'You have successfully booked \'Vintage VW Camper\' for Aug 15-20.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
+                                      Text(
                                         '2 hours ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                     ],
@@ -142,7 +133,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 ),
                               ],
                             ),
-                            const Divider(),
+                            Divider(color: secondaryTextColor.withOpacity(0.3)), // Changed to theme color
                             // Review Request Notification
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,12 +141,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.neutralColor,
+                                    color: AppTheme.neutralColor.withOpacity(0.1), // Lighter background
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.star,
-                                    color: AppTheme.neutralColor,
+                                    color: AppTheme.neutralColor, // Keep neutral color for icon
                                     size: 20,
                                   ),
                                 ),
@@ -165,26 +156,25 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'Share your experience',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: AppTheme.black,
+                                          color: textColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 4),
-                                      const Text(
+                                      Text(
                                         'Your stay at \'Lakeside Cabin Retreat\' ended yesterday. How was it?',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 12),
                                       ElevatedButton(
                                         onPressed: () {
-                                          ///////////////////////////////////////////////////////
-                                          Navigator.pushReplacement(
+                                          Navigator.push(
                                             context,
                                             PageRouteBuilder(
                                               pageBuilder: (_, __, ___) =>
@@ -202,7 +192,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                   ),
                                             ),
                                           );
-                                          ///////////////////////////////////////////////////////
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor:
@@ -249,8 +238,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     ),
                     const SizedBox(height: 24),
                     // Earlier Notifications Section
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 8),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: Row(
                         children: [
                           Text(
@@ -258,7 +247,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.black,
+                              color: textColor, // Changed to theme color
                             ),
                           ),
                         ],
@@ -267,7 +256,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     // Earlier Notifications Card
                     Card(
                       elevation: 2,
-                      color: AppTheme.white,
+                      color: cardColor, // Changed to theme color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -281,14 +270,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    color: AppTheme.lightGrey,
+                                  decoration: BoxDecoration(
+                                    color: secondaryTextColor.withOpacity(0.1), // Lighter background using theme
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.directions_car,
                                     size: 20,
-                                    color: AppTheme.grey,
+                                    color: secondaryTextColor, // Changed to theme color
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -297,16 +286,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'Your \'Fiat 500\' rental is starting in 3 days.',
-                                        style: TextStyle(color: AppTheme.black),
+                                        style: TextStyle(color: textColor), // Changed to theme color
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
+                                      Text(
                                         '3 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                     ],
@@ -314,21 +303,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 ),
                               ],
                             ),
-                            const Divider(),
+                            Divider(color: secondaryTextColor.withOpacity(0.3)), // Changed to theme color
                             // Promotional Notification
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    color: AppTheme.lightGrey,
+                                  decoration: BoxDecoration(
+                                    color: secondaryTextColor.withOpacity(0.1), // Lighter background using theme
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.campaign,
                                     size: 20,
-                                    color: AppTheme.grey,
+                                    color: secondaryTextColor, // Changed to theme color
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -337,27 +326,27 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
+                                      Text(
                                         'New summer deals!',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          color: AppTheme.black,
+                                          color: textColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 4),
-                                      const Text(
+                                      Text(
                                         'Check out our new listings with up to 20% off.',
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      const Text(
+                                      Text(
                                         '5 days ago',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: AppTheme.grey,
+                                          color: secondaryTextColor, // Changed to theme color
                                         ),
                                       ),
                                     ],

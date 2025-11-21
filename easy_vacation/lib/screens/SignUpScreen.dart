@@ -4,6 +4,7 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -90,76 +91,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _nameController,
-                          decoration: input_decor(
-                            'Full Name',
-                            const Icon(Icons.account_circle_outlined),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your full name';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+                  buildFormField(
+                    context,
+                    controller: _nameController,
+                    label: 'Full Name',
+                    icon: Icons.account_circle_outlined,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your full name';
+                      }
+                      return null;
+                    },
                   ),
 
                   space(12),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: input_decor(
-                            'Email',
-                            const Icon(Icons.mail),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+                  buildFormField(
+                    context,
+                    controller: _emailController,
+                    label: 'Email',
+                    icon: Icons.mail,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
                   ),
 
                   space(12),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _phoneController,
-                          decoration: input_decor(
-                            'Phone Number',
-                            const Icon(Icons.phone),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+                  buildFormField(
+                    context,
+                    controller: _phoneController,
+                    label: 'Phone Number',
+                    icon: Icons.phone,
+                    keyboardType: TextInputType.phone,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your phone number';
+                      }
+                      return null;
+                    },
                   ),
 
                   space(20),
 
-                  TextFormField(
-                    obscureText: true,
+                  buildFormField(
+                    context,
                     controller: _passwordController,
-                    decoration: input_decor('Password', const Icon(Icons.lock)),
+                    label: 'Password',
+                    icon: Icons.lock,
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your password';
@@ -170,13 +153,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   space(12),
 
-                  TextFormField(
-                    obscureText: true,
+                  buildFormField(
+                    context,
                     controller: _password_2_Controller,
-                    decoration: input_decor(
-                      'Confirm Password',
-                      const Icon(Icons.lock),
-                    ),
+                    label: 'Confirm Password',
+                    icon: Icons.lock,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Passwords do not match';
@@ -198,20 +179,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
                 onPressed: () => {
-                  ///////////////////////////////////////////////////////
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const HomeScreen(),
-                      transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                    (route) => false, // This removes all previous routes
-                  ),
+                  if (_formKey.currentState!.validate()){
 
-                  ///////////////////////////////////////////////////////
+                    ///////////////////////////////////////////////////////
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const HomeScreen(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                      (route) => false, // This removes all previous routes
+                    ),
+                    ///////////////////////////////////////////////////////
+                  }
                 },
                 child: Text('Sign Up', style: login_text_style),
               ),
