@@ -155,7 +155,6 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildHostInfo(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
