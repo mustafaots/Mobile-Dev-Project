@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
@@ -31,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text('EasyVacation', style: header_2),
+                Text(loc.appTitle, style: header_2),
               ],
             ),
 
@@ -64,9 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
             // Welcome Section
             Column(
               children: [
-                Text('Welcome Back', style: header_1),
+                Text(loc.welcomeBack, style: header_1),
                 const SizedBox(height: 8),
-                Text('Login to your account', style: small_grey_text),
+                Text(loc.loginToAccount, style: small_grey_text),
               ],
             ),
 
@@ -80,11 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   buildFormField(
                     context,
                     controller: _useridController,
-                    label: 'Phone Or Email',
+                    label: loc.phoneOrEmail,
                     icon: Icons.account_circle_outlined,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your phone/email';
+                        return loc.pleaseEnterPhoneOrEmail;
                       }
                       return null;
                     },
@@ -95,12 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   buildFormField(
                     context,
                     controller: _passwordController,
-                    label: 'Password',
+                    label: loc.password,
                     icon: Icons.lock,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your password';
+                        return loc.pleaseEnterPassword;
                       }
                       return null;
                     },
@@ -139,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   
 
                 },
-                child: Text('Login', style: login_text_style),
+                child: Text(loc.login, style: login_text_style),
               ),
             ),
 
@@ -153,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Add forgot password functionality
                   },
                   child: Text(
-                    'Forgot Password?',
+                    loc.forgotPassword,
                     style: small_grey_text.copyWith(
                       color: AppTheme.primaryColor,
                       fontWeight: FontWeight.w500,
@@ -185,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ///////////////////////////////////////////////////////
                     },
                     child: Text(
-                      "Don't have an account? Sign Up",
+                      loc.dontHaveAccount,
                       style: small_grey_text.copyWith(
                         color: AppTheme.primaryColor,
                         fontWeight: FontWeight.w500,
@@ -205,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
-                    "Or Continue With",
+                    loc.orContinueWith,
                     style: TextStyle(fontSize: 12, color: secondaryTextColor),
                   ),
                 ),
