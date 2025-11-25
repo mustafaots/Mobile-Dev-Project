@@ -84,4 +84,145 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dontHaveAccount => 'Vous n\'avez pas de compte ? S\'inscrire';
+
+  @override
+  String get home => 'Accueil';
+
+  @override
+  String get search => 'Rechercher...';
+
+  @override
+  String get filterWilaya => 'Wilaya';
+
+  @override
+  String get filterPrice => 'Prix';
+
+  @override
+  String get filterDate => 'Date';
+
+  @override
+  String get tabStays => 'Hébergements';
+
+  @override
+  String get tabVehicles => 'Véhicules';
+
+  @override
+  String get tabActivities => 'Activités';
+
+  @override
+  String get settings => 'Paramètres';
+
+  @override
+  String get accountSettings => 'Paramètres du compte';
+
+  @override
+  String get premiumMember => 'Membre Premium';
+
+  @override
+  String get premiumSubscription => 'Abonnement Premium';
+
+  @override
+  String get monthlyPlanActive => 'Forfait mensuel - Actif';
+
+  @override
+  String get active => 'Actif';
+
+  @override
+  String get editProfile => 'Modifier le profil';
+
+  @override
+  String get editProfileSubtitle =>
+      'Mettez à jour vos informations personnelles';
+
+  @override
+  String get myListings => 'Mes annonces';
+
+  @override
+  String get myListingsSubtitle => 'Voir et gérer vos annonces';
+
+  @override
+  String get bookingHistory => 'Historique des réservations';
+
+  @override
+  String get bookingHistorySubtitle =>
+      'Consultez vos réservations passées et à venir';
+
+  @override
+  String get subscription => 'Abonnement';
+
+  @override
+  String get subscriptionSubtitle => 'Gérez votre plan d’abonnement';
+
+  @override
+  String get blockedUsers => 'Utilisateurs bloqués';
+
+  @override
+  String get blockedUsersSubtitle =>
+      'Voir qui vous avez bloqué et souhaitez débloquer';
+
+  @override
+  String get signOut => 'Déconnexion';
+
+  @override
+  String get signOutSubtitle => 'Déconnectez-vous de votre compte';
+
+  @override
+  String get vehicles_featured_title => 'Véhicules en vedette';
+
+  @override
+  String get recommended_title => 'Recommandé pour vous';
+
+  @override
+  String get day => 'jour';
+
+  @override
+  String get stays_featured_title => 'Hébergements en vedette';
+
+  @override
+  String get night => 'nuit';
+
+  @override
+  String get activities_featured_title => 'Activités en vedette';
+
+  @override
+  String get subscriptions_title => 'Abonnements';
+
+  @override
+  String get plan_recommended_label => 'Recommandé';
+
+  @override
+  String get plan_current_button => 'Plan actuel';
+
+  @override
+  String get plan_select_button => 'Choisir le plan';
+
+  @override
+  String get plan_free => 'Gratuit';
+
+  @override
+  String get plan_monthly => 'Mensuel';
+
+  @override
+  String get plan_yearly => 'Annuel';
+
+  @override
+  String get plan_detail_pay_per_cost => 'Paiement par coût';
+
+  @override
+  String get plan_detail_limited_uploads => 'Téléversements limités';
+
+  @override
+  String get plan_detail_unlimited_listings => 'Annonces illimitées';
+
+  @override
+  String get plan_detail_increased_visibility => 'Visibilité accrue';
+
+  @override
+  String get plan_detail_monthly_benefits => 'Tous les avantages mensuels';
+
+  @override
+  String get plan_detail_top_placement => 'Placement en tête';
+
+  @override
+  String get plan_detail_special_badges => 'Badges spéciaux';
 }

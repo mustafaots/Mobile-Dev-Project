@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -14,13 +15,15 @@ class StaysScreen extends StatelessWidget {
     final cardCacheW = (260 * dpr).toInt();
     final cardCacheH = (200 * dpr).toInt();
     final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
+    final loc = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'Featured Listings',
+            loc.stays_featured_title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
@@ -77,7 +80,7 @@ class StaysScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          '\$300/night',
+                          '\$300/${loc.night}',
                           style: TextStyle(color: secondaryTextColor),
                         ),
                         trailing: Row(
@@ -113,7 +116,7 @@ class StaysScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Recommended for You',
+                loc.recommended_title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
@@ -165,7 +168,7 @@ class StaysScreen extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text(
-                            '\$400/night',
+                            '\$400/${loc.night}',
                             style: TextStyle(color: secondaryTextColor),
                           ),
                           trailing: Row(

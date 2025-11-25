@@ -9,8 +9,26 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MainAppState? state = context.findAncestorStateOfType<_MainAppState>();
+    state?.setLocale(newLocale);
+  }
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  Locale _locale = const Locale('en'); // default
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +38,18 @@ class MainApp extends StatelessWidget {
         buildWhen: (previous, current) => true,
         builder: (context, themeData) {
           return MaterialApp(
-            localizationsDelegates: [
+            localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: [
+            supportedLocales: const [
               Locale('en'),
               Locale('fr'),
-              Locale('ar')
+              Locale('ar'),
             ],
-            locale: Locale('en'),
+            locale: _locale, // dynamic locale
             debugShowCheckedModeBanner: false,
             title: 'Easy Vacation',
             theme: themeData,
