@@ -2,8 +2,13 @@ import 'package:easy_vacation/screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
+import 'package:easy_vacation/repositories/repo_factory.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize all repositories
+  await RepoFactory.createAllRepos();
+  
   runApp(const MainApp());
 }
 
