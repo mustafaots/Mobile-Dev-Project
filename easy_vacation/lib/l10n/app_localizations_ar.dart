@@ -221,4 +221,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get plan_detail_special_badges => 'شارات خاصة';
+
+  @override
+  String get languageTitle => 'اللغة';
+
+  @override
+  String get appBar_createListing => 'إنشاء إعلان';
+
+  @override
+  String get header_createNewListing => 'إنشاء إعلان جديد';
+
+  @override
+  String get header_fillDetails => 'املأ التفاصيل للبدء';
+
+  @override
+  String get photo_addPhotos => 'إضافة صور';
+
+  @override
+  String get photo_addPhotosDescription => 'أضف حتى 10 صور لعرض إعلانك';
+
+  @override
+  String get photo_addPhotosButton => 'إضافة صور';
+
+  @override
+  String get listingType_title => 'نوع الإعلان';
+
+  @override
+  String get listingType_stay => 'إقامة';
+
+  @override
+  String get listingType_activity => 'نشاط';
+
+  @override
+  String get listingType_vehicle => 'مركبة';
+
+  @override
+  String get form_listingDetails => 'تفاصيل الإعلان';
+
+  @override
+  String get field_title => 'العنوان';
+
+  @override
+  String get field_title_error => 'يرجى إضافة عنوان';
+
+  @override
+  String get field_description => 'الوصف';
+
+  @override
+  String get field_description_error => 'يرجى إضافة وصف';
+
+  @override
+  String get field_price => 'السعر';
+
+  @override
+  String get field_price_error => 'يرجى إضافة سعر';
+
+  @override
+  String get field_location => 'الموقع';
+
+  @override
+  String get field_location_error => 'يرجى تحديد موقع';
+
+  @override
+  String get button_continueToPayment => 'المتابعة للدفع';
 }

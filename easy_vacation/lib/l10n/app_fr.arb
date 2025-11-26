@@ -70,5 +70,27 @@
   "plan_detail_increased_visibility": "Visibilité accrue",
   "plan_detail_monthly_benefits": "Tous les avantages mensuels",
   "plan_detail_top_placement": "Placement en tête",
-  "plan_detail_special_badges": "Badges spéciaux"
+  "plan_detail_special_badges": "Badges spéciaux",
+  "languageTitle": "Langue",
+
+  "appBar_createListing": "Créer une annonce",
+  "header_createNewListing": "Créer une nouvelle annonce",
+  "header_fillDetails": "Remplissez les informations pour commencer",
+  "photo_addPhotos": "Ajouter des photos",
+  "photo_addPhotosDescription": "Ajoutez jusqu'à 10 photos pour présenter votre annonce",
+  "photo_addPhotosButton": "Ajouter des photos",
+  "listingType_title": "Type d'annonce",
+  "listingType_stay": "Séjour",
+  "listingType_activity": "Activité",
+  "listingType_vehicle": "Véhicule",
+  "form_listingDetails": "Détails de l'annonce",
+  "field_title": "Titre",
+  "field_title_error": "Veuillez ajouter un titre",
+  "field_description": "Description",
+  "field_description_error": "Veuillez ajouter une description",
+  "field_price": "Prix",
+  "field_price_error": "Veuillez ajouter un prix",
+  "field_location": "Emplacement",
+  "field_location_error": "Veuillez sélectionner un emplacement",
+  "button_continueToPayment": "Continuer vers le paiement"
 }

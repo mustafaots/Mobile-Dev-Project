@@ -220,4 +220,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get plan_detail_special_badges => 'Special badges';
+
+  @override
+  String get languageTitle => 'Language';
+
+  @override
+  String get appBar_createListing => 'Create Listing';
+
+  @override
+  String get header_createNewListing => 'Create New Listing';
+
+  @override
+  String get header_fillDetails => 'Fill in the details to get started';
+
+  @override
+  String get photo_addPhotos => 'Add Photos';
+
+  @override
+  String get photo_addPhotosDescription =>
+      'Add up to 10 photos to showcase your listing';
+
+  @override
+  String get photo_addPhotosButton => 'Add Photos';
+
+  @override
+  String get listingType_title => 'Listing Type';
+
+  @override
+  String get listingType_stay => 'Stay';
+
+  @override
+  String get listingType_activity => 'Activity';
+
+  @override
+  String get listingType_vehicle => 'Vehicle';
+
+  @override
+  String get form_listingDetails => 'Listing Details';
+
+  @override
+  String get field_title => 'Title';
+
+  @override
+  String get field_title_error => 'Please add a title';
+
+  @override
+  String get field_description => 'Description';
+
+  @override
+  String get field_description_error => 'Please add a description';
+
+  @override
+  String get field_price => 'Price';
+
+  @override
+  String get field_price_error => 'Please add a price';
+
+  @override
+  String get field_location => 'Location';
+
+  @override
+  String get field_location_error => 'Please pin a location';
+
+  @override
+  String get button_continueToPayment => 'Continue To Payment';
 }

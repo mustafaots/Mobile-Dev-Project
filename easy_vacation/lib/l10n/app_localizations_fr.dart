@@ -225,4 +225,68 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get plan_detail_special_badges => 'Badges spéciaux';
+
+  @override
+  String get languageTitle => 'Langue';
+
+  @override
+  String get appBar_createListing => 'Créer une annonce';
+
+  @override
+  String get header_createNewListing => 'Créer une nouvelle annonce';
+
+  @override
+  String get header_fillDetails => 'Remplissez les informations pour commencer';
+
+  @override
+  String get photo_addPhotos => 'Ajouter des photos';
+
+  @override
+  String get photo_addPhotosDescription =>
+      'Ajoutez jusqu\'à 10 photos pour présenter votre annonce';
+
+  @override
+  String get photo_addPhotosButton => 'Ajouter des photos';
+
+  @override
+  String get listingType_title => 'Type d\'annonce';
+
+  @override
+  String get listingType_stay => 'Séjour';
+
+  @override
+  String get listingType_activity => 'Activité';
+
+  @override
+  String get listingType_vehicle => 'Véhicule';
+
+  @override
+  String get form_listingDetails => 'Détails de l\'annonce';
+
+  @override
+  String get field_title => 'Titre';
+
+  @override
+  String get field_title_error => 'Veuillez ajouter un titre';
+
+  @override
+  String get field_description => 'Description';
+
+  @override
+  String get field_description_error => 'Veuillez ajouter une description';
+
+  @override
+  String get field_price => 'Prix';
+
+  @override
+  String get field_price_error => 'Veuillez ajouter un prix';
+
+  @override
+  String get field_location => 'Emplacement';
+
+  @override
+  String get field_location_error => 'Veuillez sélectionner un emplacement';
+
+  @override
+  String get button_continueToPayment => 'Continuer vers le paiement';
 }

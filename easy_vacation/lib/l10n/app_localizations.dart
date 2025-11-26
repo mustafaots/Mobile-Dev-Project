@@ -525,6 +525,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Special badges'**
   String get plan_detail_special_badges;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageTitle;
+
+  /// No description provided for @appBar_createListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Listing'**
+  String get appBar_createListing;
+
+  /// No description provided for @header_createNewListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Listing'**
+  String get header_createNewListing;
+
+  /// No description provided for @header_fillDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the details to get started'**
+  String get header_fillDetails;
+
+  /// No description provided for @photo_addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos'**
+  String get photo_addPhotos;
+
+  /// No description provided for @photo_addPhotosDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add up to 10 photos to showcase your listing'**
+  String get photo_addPhotosDescription;
+
+  /// No description provided for @photo_addPhotosButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos'**
+  String get photo_addPhotosButton;
+
+  /// No description provided for @listingType_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Type'**
+  String get listingType_title;
+
+  /// No description provided for @listingType_stay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get listingType_stay;
+
+  /// No description provided for @listingType_activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get listingType_activity;
+
+  /// No description provided for @listingType_vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get listingType_vehicle;
+
+  /// No description provided for @form_listingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Details'**
+  String get form_listingDetails;
+
+  /// No description provided for @field_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get field_title;
+
+  /// No description provided for @field_title_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add a title'**
+  String get field_title_error;
+
+  /// No description provided for @field_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get field_description;
+
+  /// No description provided for @field_description_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add a description'**
+  String get field_description_error;
+
+  /// No description provided for @field_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get field_price;
+
+  /// No description provided for @field_price_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add a price'**
+  String get field_price_error;
+
+  /// No description provided for @field_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get field_location;
+
+  /// No description provided for @field_location_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please pin a location'**
+  String get field_location_error;
+
+  /// No description provided for @button_continueToPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue To Payment'**
+  String get button_continueToPayment;
 }
 
 class _AppLocalizationsDelegate

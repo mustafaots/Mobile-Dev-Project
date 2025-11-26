@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -14,16 +15,26 @@ class _LanguageSelectorState extends State<LanguageSelector> {
   String selectedLang = 'en';
 
   final Map<String, Widget> languages = {
-  'en': Image.asset('assets/images/gb.png', height: 30,),
-  'fr': Image.asset('assets/images/fr.png', height: 30,),
-  'ar': Image.asset('assets/images/dz.png', height: 30,),
-};
+    'en': Image.asset('assets/images/gb.png', height: 28,),
+    'fr': Image.asset('assets/images/fr.png', height: 28,),
+    'ar': Image.asset('assets/images/dz.png', height: 28,),
+  };
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final localeCode = Localizations.localeOf(context).languageCode;
+    if (localeCode != selectedLang) {
+      setState(() => selectedLang = localeCode);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
     final cardColor = context.cardColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -37,7 +48,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Language',
+            loc.languageTitle,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,

@@ -70,5 +70,28 @@
     "plan_detail_increased_visibility": "Increased visibility",
     "plan_detail_monthly_benefits": "All Monthly benefits",
     "plan_detail_top_placement": "Top placement",
-    "plan_detail_special_badges": "Special badges"
+    "plan_detail_special_badges": "Special badges",
+    "languageTitle": "Language",
+
+
+    "appBar_createListing": "Create Listing",
+    "header_createNewListing": "Create New Listing",
+    "header_fillDetails": "Fill in the details to get started",
+    "photo_addPhotos": "Add Photos",
+    "photo_addPhotosDescription": "Add up to 10 photos to showcase your listing",
+    "photo_addPhotosButton": "Add Photos",
+    "listingType_title": "Listing Type",
+    "listingType_stay": "Stay",
+    "listingType_activity": "Activity",
+    "listingType_vehicle": "Vehicle",
+    "form_listingDetails": "Listing Details",
+    "field_title": "Title",
+    "field_title_error": "Please add a title",
+    "field_description": "Description",
+    "field_description_error": "Please add a description",
+    "field_price": "Price",
+    "field_price_error": "Please add a price",
+    "field_location": "Location",
+    "field_location_error": "Please pin a location",
+    "button_continueToPayment": "Continue To Payment"
 }

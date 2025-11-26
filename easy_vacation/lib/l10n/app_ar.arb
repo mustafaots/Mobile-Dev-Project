@@ -70,5 +70,27 @@
   "plan_detail_increased_visibility": "زيادة الظهور",
   "plan_detail_monthly_benefits": "كل مزايا الشهري",
   "plan_detail_top_placement": "أعلى ترتيب",
-  "plan_detail_special_badges": "شارات خاصة"
+  "plan_detail_special_badges": "شارات خاصة",
+  "languageTitle": "اللغة",
+
+  "appBar_createListing": "إنشاء إعلان",
+  "header_createNewListing": "إنشاء إعلان جديد",
+  "header_fillDetails": "املأ التفاصيل للبدء",
+  "photo_addPhotos": "إضافة صور",
+  "photo_addPhotosDescription": "أضف حتى 10 صور لعرض إعلانك",
+  "photo_addPhotosButton": "إضافة صور",
+  "listingType_title": "نوع الإعلان",
+  "listingType_stay": "إقامة",
+  "listingType_activity": "نشاط",
+  "listingType_vehicle": "مركبة",
+  "form_listingDetails": "تفاصيل الإعلان",
+  "field_title": "العنوان",
+  "field_title_error": "يرجى إضافة عنوان",
+  "field_description": "الوصف",
+  "field_description_error": "يرجى إضافة وصف",
+  "field_price": "السعر",
+  "field_price_error": "يرجى إضافة سعر",
+  "field_location": "الموقع",
+  "field_location_error": "يرجى تحديد موقع",
+  "button_continueToPayment": "المتابعة للدفع"
 }
