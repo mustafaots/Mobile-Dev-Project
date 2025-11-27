@@ -1,7 +1,11 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing review data
-class ReviewRepository extends BaseRepository {
+class ReviewRepository {
+  final Database db;
+
+  ReviewRepository(this.db);
+
   /// Insert a new review
   Future<int> insertReview({
     required int postId,

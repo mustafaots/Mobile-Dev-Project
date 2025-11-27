@@ -1,7 +1,11 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing user data
-class UserRepository extends BaseRepository {
+class UserRepository {
+  final Database db;
+
+  UserRepository(this.db);
+
   /// Insert a new user
   Future<int> insertUser({
     required String username,
@@ -10,8 +14,9 @@ class UserRepository extends BaseRepository {
     String? firstName,
     String? lastName,
     bool isVerified = false,
-    String? profilePicture,
-    String? status,
+    String? profilePictureUrl,
+    String? userType,
+    bool isSuspended = false,
   }) async {
     return await db.insert('users', {
       'username': username,
@@ -19,10 +24,10 @@ class UserRepository extends BaseRepository {
       'phone_number': phoneNumber,
       'first_name': firstName,
       'last_name': lastName,
-      'created_at': DateTime.now().toIso8601String(),
       'is_verified': isVerified ? 1 : 0,
-      'profile_picture': profilePicture,
-      'status': status,
+      'profile_picture_url': profilePictureUrl,
+      'user_type': userType,
+      'is_suspended': isSuspended ? 1 : 0,
     });
   }
 
@@ -42,6 +47,16 @@ class UserRepository extends BaseRepository {
     return result.isNotEmpty ? result.first : null;
   }
 
+  /// Get user by username
+  Future<Map<String, dynamic>?> getUserByUsername(String username) async {
+    final result = await db.query(
+      'users',
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
   /// Get all users
   Future<List<Map<String, dynamic>>> getAllUsers() async {
     return await db.query('users');
@@ -49,7 +64,6 @@ class UserRepository extends BaseRepository {
 
   /// Update user
   Future<int> updateUser(int id, Map<String, dynamic> values) async {
-    values['updated_at'] = DateTime.now().toIso8601String();
     return await db.update('users', values, where: 'id = ?', whereArgs: [id]);
   }
 

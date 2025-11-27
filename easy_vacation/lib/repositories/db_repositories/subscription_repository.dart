@@ -1,20 +1,20 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing subscription data
-class SubscriptionRepository extends BaseRepository {
+class SubscriptionRepository {
+  final Database db;
+
+  SubscriptionRepository(this.db);
+
   /// Insert a new subscription
   Future<int> insertSubscription({
-    required int subscriber,
-    required String plan,
-    required DateTime expiresAt,
-    bool isActive = true,
+    required int subscriberId,
+    required int hostId,
   }) async {
     return await db.insert('subscriptions', {
-      'subscriber': subscriber,
-      'plan': plan,
+      'subscriber_id': subscriberId,
+      'host_id': hostId,
       'created_at': DateTime.now().toIso8601String(),
-      'expires_at': expiresAt.toIso8601String(),
-      'is_active': isActive ? 1 : 0,
     });
   }
 
@@ -35,22 +35,32 @@ class SubscriptionRepository extends BaseRepository {
 
   /// Get subscriptions by subscriber
   Future<List<Map<String, dynamic>>> getSubscriptionsBySubscriber(
-    int subscriber,
+    int subscriberId,
   ) async {
     return await db.query(
       'subscriptions',
-      where: 'subscriber = ?',
-      whereArgs: [subscriber],
+      where: 'subscriber_id = ?',
+      whereArgs: [subscriberId],
     );
   }
 
-  /// Get all active subscriptions
-  Future<List<Map<String, dynamic>>> getActiveSubscriptions() async {
+  /// Get subscriptions by host
+  Future<List<Map<String, dynamic>>> getSubscriptionsByHost(int hostId) async {
     return await db.query(
       'subscriptions',
-      where: 'is_active = ?',
-      whereArgs: [1],
+      where: 'host_id = ?',
+      whereArgs: [hostId],
     );
+  }
+
+  /// Check if user is subscribed to host
+  Future<bool> isSubscribed(int subscriberId, int hostId) async {
+    final result = await db.query(
+      'subscriptions',
+      where: 'subscriber_id = ? AND host_id = ?',
+      whereArgs: [subscriberId, hostId],
+    );
+    return result.isNotEmpty;
   }
 
   /// Update subscription
@@ -66,5 +76,14 @@ class SubscriptionRepository extends BaseRepository {
   /// Delete subscription
   Future<int> deleteSubscription(int id) async {
     return await db.delete('subscriptions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// Delete subscription by subscriber and host
+  Future<int> deleteSubscriptionByUsers(int subscriberId, int hostId) async {
+    return await db.delete(
+      'subscriptions',
+      where: 'subscriber_id = ? AND host_id = ?',
+      whereArgs: [subscriberId, hostId],
+    );
   }
 }

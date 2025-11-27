@@ -1,7 +1,11 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing report data
-class ReportRepository extends BaseRepository {
+class ReportRepository {
+  final Database db;
+
+  ReportRepository(this.db);
+
   /// Insert a new report
   Future<int> insertReport({
     required int reporterId,
@@ -12,8 +16,8 @@ class ReportRepository extends BaseRepository {
   }) async {
     return await db.insert('reports', {
       'reporter_id': reporterId,
-      'reported_post': reportedPostId,
-      'reported_user': reportedUserId,
+      'reported_post_id': reportedPostId,
+      'reported_user_id': reportedUserId,
       'reason': reason,
       'status': status ?? 'pending',
       'created_at': DateTime.now().toIso8601String(),
@@ -51,7 +55,7 @@ class ReportRepository extends BaseRepository {
   Future<List<Map<String, dynamic>>> getReportsByPostId(int postId) async {
     return await db.query(
       'reports',
-      where: 'reported_post = ?',
+      where: 'reported_post_id = ?',
       whereArgs: [postId],
     );
   }
@@ -60,7 +64,7 @@ class ReportRepository extends BaseRepository {
   Future<List<Map<String, dynamic>>> getReportsByUserId(int userId) async {
     return await db.query(
       'reports',
-      where: 'reported_user = ?',
+      where: 'reported_user_id = ?',
       whereArgs: [userId],
     );
   }
