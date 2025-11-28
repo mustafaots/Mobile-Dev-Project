@@ -1,5 +1,4 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/BlookedUserListScreen.dart';
 import 'package:easy_vacation/screens/BookingHistoryScreen.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/ListingHistory.dart';
@@ -339,32 +338,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         context: context,
                       ),
                       const SizedBox(height: 12),
-                      _buildMenuItem(
-                        icon: Icons.block_outlined,
-                        title: loc.blockedUsers,
-                        subtitle: loc.blockedUsersSubtitle,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (_, __, ___) =>
-                                  const BlockedUsersListScreen(),
-                              transitionsBuilder: (_, animation, __, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                              transitionDuration: const Duration(
-                                milliseconds: 300,
-                              ),
-                            ),
-                          );
-                        },
-                        context: context,
-                      ),
-                      
-                    const SizedBox(height: 12),
 
                     // Logout Button
                     Container(
