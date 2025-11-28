@@ -1,18 +1,30 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing booking data
-class BookingRepository extends BaseRepository {
+class BookingRepository {
+  final Database db;
+
+  BookingRepository(this.db);
+
   /// Insert a new booking
   Future<int> insertBooking({
     required int postId,
     required int clientId,
     String? status,
+    DateTime? startDate,
+    DateTime? endDate,
+    double? totalPrice,
+    int? guestCount,
   }) async {
     return await db.insert('bookings', {
       'post_id': postId,
       'client_id': clientId,
       'status': status ?? 'pending',
       'booked_at': DateTime.now().toIso8601String(),
+      'start_date': startDate?.toIso8601String(),
+      'end_date': endDate?.toIso8601String(),
+      'total_price': totalPrice,
+      'guest_count': guestCount ?? 1,
     });
   }
 

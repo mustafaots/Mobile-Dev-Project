@@ -4,8 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
+import 'package:easy_vacation/repositories/repo_factory.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize all repositories
+  await RepoFactory.createAllRepos();
+  
   runApp(const MainApp());
 }
 

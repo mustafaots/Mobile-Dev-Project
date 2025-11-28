@@ -1,7 +1,11 @@
-import 'base_repository.dart';
+import 'package:sqflite/sqflite.dart';
 
 /// Repository for managing location data
-class LocationRepository extends BaseRepository {
+class LocationRepository {
+  final Database db;
+
+  LocationRepository(this.db);
+
   /// Insert a new location
   Future<int> insertLocation({
     required String wilaya,
@@ -41,6 +45,11 @@ class LocationRepository extends BaseRepository {
       where: 'wilaya = ?',
       whereArgs: [wilaya],
     );
+  }
+
+  /// Get locations by city
+  Future<List<Map<String, dynamic>>> getLocationsByCity(String city) async {
+    return await db.query('locations', where: 'city = ?', whereArgs: [city]);
   }
 
   /// Update location
