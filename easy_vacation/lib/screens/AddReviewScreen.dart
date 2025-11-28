@@ -1,4 +1,5 @@
 // addReviewPage.dart
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -16,14 +17,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   int _rating = 0;
   final TextEditingController _reviewController = TextEditingController();
 
-  final List<String> _quickReactions = [
-    '😠 Terrible',
-    '😕 Poor', 
-    '😐 Average',
-    '😊 Good',
-    '🤩 Excellent',
-  ];
-
   @override
   void dispose() {
     _reviewController.dispose();
@@ -38,14 +31,14 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           backgroundColor: context.cardColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text(
-            'Review Submitted!',
+            AppLocalizations.of(context)!.addReview_submitted,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: context.textColor,
             ),
           ),
           content: Text(
-            'Thank you for your feedback!',
+            AppLocalizations.of(context)!.addReview_thankYouFeedback,
             style: TextStyle(color: context.secondaryTextColor),
           ),
           actions: [
@@ -64,7 +57,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 );
               },
               child: Text(
-                'OK',
+                AppLocalizations.of(context)!.addReview_ok,
                 style: TextStyle(color: AppTheme.primaryColor),
               ),
             ),
@@ -80,10 +73,19 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
+
+    final List<String> _quickReactions = [
+      '😠 ${loc.addReview_terrible}',
+      '😕 ${loc.addReview_poor}', 
+      '😐 ${loc.addReview_average}',
+      '😊 ${loc.addReview_good}',
+      '🤩 ${loc.addReview_excellent}',
+    ];
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context, 'Add Review'),
+      appBar: App_Bar(context, loc.addReview_title),
       body: SafeArea(
         child: Column(
           children: [
@@ -105,7 +107,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                   children: [
                     // Header
                     Text(
-                      'How was your stay?',
+                      loc.addReview_howWasStay,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -114,7 +116,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Share your experience to help others',
+                      loc.addReview_shareExperience,
                       style: TextStyle(
                         fontSize: 16,
                         color: secondaryTextColor,
@@ -127,7 +129,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Overall Rating',
+                            loc.addReview_overallRating,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -154,7 +156,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _rating == 0 ? 'Tap to rate' : '$_rating/5 Stars',
+                            _rating == 0 ? loc.addReview_tapToRate : loc.addReview_stars(_rating),
                             style: TextStyle(
                               fontSize: 16,
                               color: secondaryTextColor,
@@ -169,7 +171,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
 
                     // Quick Reactions
                     Text(
-                      'Quick Reaction',
+                      loc.addReview_quickReaction,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -208,7 +210,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
 
                     // Review Text
                     Text(
-                      'Your Review',
+                      loc.addReview_yourReview,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -228,7 +230,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                         controller: _reviewController,
                         maxLines: 6,
                         decoration: InputDecoration(
-                          hintText: 'Tell us about your experience...',
+                          hintText: loc.addReview_tellUsExperience,
                           hintStyle: TextStyle(color: secondaryTextColor),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.all(16),
@@ -239,7 +241,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${_reviewController.text.length}/300 characters',
+                      loc.addReview_charactersCount(_reviewController.text.length),
                       style: TextStyle(
                         fontSize: 12,
                         color: secondaryTextColor,
@@ -280,8 +282,8 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                   ),
                   elevation: 2,
                 ),
-                child: const Text(
-                  'Submit Review',
+                child: Text(
+                  loc.addReview_submitReview,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

@@ -284,4 +284,564 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get button_continueToPayment => 'المتابعة للدفع';
+
+  @override
+  String get bottomNav_home => 'الرئيسية';
+
+  @override
+  String get bottomNav_bookings => 'الحجوزات';
+
+  @override
+  String get bottomNav_notifications => 'الإشعارات';
+
+  @override
+  String get bottomNav_settings => 'الإعدادات';
+
+  @override
+  String get profile_title => 'الملف الشخصي';
+
+  @override
+  String get profile_posts => 'المشاركات';
+
+  @override
+  String get profile_followers => 'المتابعون';
+
+  @override
+  String get profile_following => 'متابَع';
+
+  @override
+  String get profile_reviews => 'التقييمات';
+
+  @override
+  String get profile_noPostsYet => 'لا توجد مشاركات بعد';
+
+  @override
+  String get profile_noReviewsYet => 'لا توجد تقييمات بعد';
+
+  @override
+  String get profile_follow => 'متابعة';
+
+  @override
+  String get profile_about => 'حول';
+
+  @override
+  String get profile_from => 'من';
+
+  @override
+  String get profile_memberSince => 'عضو منذ';
+
+  @override
+  String get profile_countriesVisited => 'الدول التي تم زيارتها';
+
+  @override
+  String get profile_reportUser => 'الإبلاغ عن المستخدم';
+
+  @override
+  String get profile_blockUser => 'حظر المستخدم';
+
+  @override
+  String get profile_shareProfile => 'مشاركة الملف الشخصي';
+
+  @override
+  String get profile_cancel => 'إلغاء';
+
+  @override
+  String get profile_helpful => 'مفيد';
+
+  @override
+  String get bookings_title => 'الحجوزات';
+
+  @override
+  String get bookings_all => 'الكل';
+
+  @override
+  String get bookings_pending => 'قيد الانتظار';
+
+  @override
+  String get bookings_confirmed => 'تم التأكيد';
+
+  @override
+  String get bookings_canceled => 'تم الإلغاء';
+
+  @override
+  String get bookings_viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get bookings_noBookingsYet => 'لا توجد حجوزات بعد';
+
+  @override
+  String get bookings_emptyMessage =>
+      'ليس لديك أي حجوزات قادمة أو سابقة. حان الوقت لتخطيط مغامرتك القادمة!';
+
+  @override
+  String get bookings_exploreStays => 'استكشف أماكن الإقامة';
+
+  @override
+  String get listingDetails_title => 'تفاصيل القائمة';
+
+  @override
+  String get listingDetails_perNight => 'لليلة الواحدة';
+
+  @override
+  String get listingDetails_hostedBy => 'مستضيف بواسطة';
+
+  @override
+  String get listingDetails_superHost => 'مضيف متميز';
+
+  @override
+  String get listingDetails_reviews => 'التقييمات';
+
+  @override
+  String get listingDetails_availability => 'التوفر';
+
+  @override
+  String get listingDetails_reserveNow => 'احجز الآن';
+
+  @override
+  String listingDetails_daysAgo(int count) {
+    return 'قبل $count يوم';
+  }
+
+  @override
+  String listingDetails_daysAgo_other(Object count) {
+    return 'قبل $count يوم';
+  }
+
+  @override
+  String get editProfile_title => 'تعديل الملف الشخصي';
+
+  @override
+  String get editProfile_changePhoto => 'تغيير الصورة';
+
+  @override
+  String get editProfile_fullName => 'الاسم الكامل';
+
+  @override
+  String get editProfile_emailAddress => 'البريد الإلكتروني';
+
+  @override
+  String get editProfile_phoneNumber => 'رقم الهاتف';
+
+  @override
+  String get editProfile_location => 'الموقع';
+
+  @override
+  String get editProfile_bio => 'السيرة الذاتية';
+
+  @override
+  String get editProfile_changePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get editProfile_notificationSettings => 'إعدادات الإشعارات';
+
+  @override
+  String get editProfile_privacySettings => 'إعدادات الخصوصية';
+
+  @override
+  String get editProfile_deleteAccount => 'حذف الحساب';
+
+  @override
+  String get editProfile_profileUpdated => 'تم تحديث الملف الشخصي بنجاح!';
+
+  @override
+  String get editProfile_changeProfilePicture => 'تغيير صورة الملف الشخصي';
+
+  @override
+  String get editProfile_chooseOption => 'اختر خيارًا';
+
+  @override
+  String get editProfile_camera => 'الكاميرا';
+
+  @override
+  String get editProfile_gallery => 'المعرض';
+
+  @override
+  String get editProfile_deleteAccountTitle => 'حذف الحساب';
+
+  @override
+  String get editProfile_deleteAccountMessage =>
+      'هل أنت متأكد من أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء وستفقد جميع بياناتك بشكل دائم.';
+
+  @override
+  String get bookingHistory_title => 'سجل الحجوزات';
+
+  @override
+  String get bookingHistory_all => 'الكل';
+
+  @override
+  String get bookingHistory_upcoming => 'القادمة';
+
+  @override
+  String get bookingHistory_completed => 'المكتملة';
+
+  @override
+  String get bookingHistory_cancelled => 'الملغاة';
+
+  @override
+  String get notifications_title => 'الإشعارات';
+
+  @override
+  String get notifications_new => 'جديدة';
+
+  @override
+  String get notifications_earlier => 'سابقة';
+
+  @override
+  String get notifications_bookingConfirmed => 'تم تأكيد حجزك!';
+
+  @override
+  String notifications_bookingConfirmedMessage(String listing, String dates) {
+    return 'لقد حجزت \'$listing\' بنجاح للفترة $dates.';
+  }
+
+  @override
+  String get notifications_shareExperience => 'شارك تجربتك';
+
+  @override
+  String notifications_reviewRequest(String listing) {
+    return 'أنهيت إقامتك في \'$listing\' بالأمس. كيف كانت؟';
+  }
+
+  @override
+  String get notifications_addReviewNow => 'أضف تقييمًا الآن';
+
+  @override
+  String notifications_hoursAgo(int count) {
+    return 'قبل $count ساعة';
+  }
+
+  @override
+  String notifications_hoursAgo_other(Object count) {
+    return 'قبل $count ساعة';
+  }
+
+  @override
+  String notifications_daysAgo(int count) {
+    return 'قبل $count يوم';
+  }
+
+  @override
+  String notifications_daysAgo_other(Object count) {
+    return 'قبل $count يوم';
+  }
+
+  @override
+  String notifications_rentalReminder(String vehicle, int days) {
+    return 'تبدأ تأجير \'$vehicle\' بعد $days يوم.';
+  }
+
+  @override
+  String get notifications_newSummerDeals => 'عروض الصيف الجديدة!';
+
+  @override
+  String get notifications_promotionalMessage =>
+      'اطلع على قوائمنا الجديدة بخصم يصل إلى 20%.';
+
+  @override
+  String get addReview_title => 'إضافة تقييم';
+
+  @override
+  String get addReview_howWasStay => 'كيف كانت إقامتك؟';
+
+  @override
+  String get addReview_shareExperience => 'شارك تجربتك لمساعدة الآخرين';
+
+  @override
+  String get addReview_overallRating => 'التقييم العام';
+
+  @override
+  String get addReview_tapToRate => 'انقر للتقييم';
+
+  @override
+  String addReview_stars(int rating) {
+    return '$rating/5 نجوم';
+  }
+
+  @override
+  String get addReview_quickReaction => 'رد فعل سريع';
+
+  @override
+  String get addReview_terrible => 'سيء';
+
+  @override
+  String get addReview_poor => 'ضعيف';
+
+  @override
+  String get addReview_average => 'متوسط';
+
+  @override
+  String get addReview_good => 'جيد';
+
+  @override
+  String get addReview_excellent => 'ممتاز';
+
+  @override
+  String get addReview_yourReview => 'تقييمك';
+
+  @override
+  String get addReview_tellUsExperience => 'أخبرنا عن تجربتك...';
+
+  @override
+  String addReview_charactersCount(int count) {
+    return '$count/300 حرف';
+  }
+
+  @override
+  String get addReview_submitReview => 'إرسال التقييم';
+
+  @override
+  String get addReview_submitted => 'تم إرسال التقييم!';
+
+  @override
+  String get addReview_thankYouFeedback => 'شكرًا لك على ملاحظاتك!';
+
+  @override
+  String get addReview_ok => 'موافق';
+
+  @override
+  String get confirmListing_title => 'تأكيد ونشر';
+
+  @override
+  String get confirmListing_readyToPost => 'جاهز للنشر!';
+
+  @override
+  String get confirmListing_reviewDetails => 'راجع تفاصيل قائمتك قبل النشر';
+
+  @override
+  String get confirmListing_pricingSummary => 'ملخص الأسعار';
+
+  @override
+  String get confirmListing_basePrice => 'السعر الأساسي';
+
+  @override
+  String get confirmListing_serviceFee => 'رسوم الخدمة';
+
+  @override
+  String get confirmListing_totalAmount => 'المبلغ الإجمالي';
+
+  @override
+  String get confirmListing_premiumPlan => 'الخطة المميزة';
+
+  @override
+  String get confirmListing_subscriptionDays => 'اشتراك 30 يوم';
+
+  @override
+  String get confirmListing_proTips => 'نصائح احترافية';
+
+  @override
+  String get confirmListing_tip1 => 'أضف صور عالية الجودة';
+
+  @override
+  String get confirmListing_tip2 => 'سلط الضوء على العروض الخاصة';
+
+  @override
+  String get confirmListing_tip3 => 'أضف معلومات الاتصال';
+
+  @override
+  String get confirmListing_agreement =>
+      'أوافق على شروط الخدمة وأؤكد أن جميع التفاصيل صحيحة.';
+
+  @override
+  String get confirmListing_postListing => 'نشر القائمة';
+
+  @override
+  String get confirmListing_listingPosted => 'تم نشر القائمة بنجاح!';
+
+  @override
+  String get blockUser_title => 'حظر المستخدم';
+
+  @override
+  String get blockUser_blockingSerious => 'الحظر إجراء جاد';
+
+  @override
+  String blockUser_whatHappens(String userName) {
+    return 'ماذا يحدث عندما تحظر $userName؟';
+  }
+
+  @override
+  String get blockUser_consequence1 =>
+      'لن يتمكن من رؤية ملفك الشخصي أو مشاركاتك أو قصصك';
+
+  @override
+  String get blockUser_consequence2 => 'لا يمكنه إرسال تعليقات لك';
+
+  @override
+  String get blockUser_consequence3 => 'لن يتمكن من متابعتك أو رؤية تحديثاتك';
+
+  @override
+  String get blockUser_consequence4 => 'لن تتلقى أي إشعارات منه';
+
+  @override
+  String get blockUser_consequence5 => 'لن يظهر في نتائج البحث الخاصة بك';
+
+  @override
+  String get blockUser_note => 'ملاحظة:';
+
+  @override
+  String get blockUser_noteMessage =>
+      'إذا غيرت رأيك، يمكنك إلغاء حظر هذا المستخدم في أي وقت من إعداداتك. الحظر قابل للعكس ولا يتم إخطار المستخدم الآخر.';
+
+  @override
+  String get blockUser_blockUser => 'حظر المستخدم';
+
+  @override
+  String get blockUser_userBlocked => 'تم حظر المستخدم';
+
+  @override
+  String blockUser_blockedSuccessfully(String userName) {
+    return 'لقد حظرت $userName بنجاح. لن يتمكن هذا المستخدم من التفاعل معك أو عرض ملفك الشخصي.';
+  }
+
+  @override
+  String get blockUser_returnToHome => 'العودة إلى الرئيسية';
+
+  @override
+  String get blockedUsers_title => 'المستخدمون المحظورون';
+
+  @override
+  String get blockedUsers_info =>
+      'لا يمكن للمستخدمين المحظورين عرض ملفك الشخصي أو الاتصال بك.';
+
+  @override
+  String get blockedUsers_unblockUser => 'إلغاء حظر المستخدم؟';
+
+  @override
+  String blockedUsers_unblockConfirm(String userName) {
+    return 'هل أنت متأكد من أنك تريد إلغاء حظر $userName؟ سيكون قادرًا على التفاعل معك وعرض ملفك الشخصي مرة أخرى.';
+  }
+
+  @override
+  String get blockedUsers_unblock => 'إلغاء الحظر';
+
+  @override
+  String blockedUsers_unblocked(String userName) {
+    return 'تم إلغاء حظر $userName';
+  }
+
+  @override
+  String blockedUsers_blocked(String date) {
+    return 'تم الحظر: $date';
+  }
+
+  @override
+  String get blockedUsers_noBlockedUsers => 'لا يوجد مستخدمون محظورون';
+
+  @override
+  String get blockedUsers_emptyMessage =>
+      'سيظهر المستخدمون الذين تحظرهم هنا. يمكنك إلغاء حظرهم في أي وقت إذا غيرت رأيك.';
+
+  @override
+  String get listingHistory_title => 'قوائمي';
+
+  @override
+  String get listingHistory_all => 'الكل';
+
+  @override
+  String get listingHistory_active => 'نشطة';
+
+  @override
+  String get listingHistory_drafts => 'مسودات';
+
+  @override
+  String get listingHistory_archived => 'أرشيف';
+
+  @override
+  String get listingHistory_noPostsFound => 'لم يتم العثور على مشاركات';
+
+  @override
+  String get listingHistory_noPostsYet => 'لم تقم بإنشاء أي مشاركات بعد.';
+
+  @override
+  String listingHistory_noFilterPosts(String filter) {
+    return 'لم يتم العثور على مشاركات $filter.';
+  }
+
+  @override
+  String get listingHistory_published => 'منشورة';
+
+  @override
+  String get listingHistory_draft => 'مسودة';
+
+  @override
+  String get listingHistory_editPost => 'تعديل المشاركة';
+
+  @override
+  String get listingHistory_deletePost => 'حذف المشاركة';
+
+  @override
+  String get listingHistory_publish => 'نشر';
+
+  @override
+  String get listingHistory_archive => 'أرشفة';
+
+  @override
+  String get listingHistory_deletePostTitle => 'حذف المشاركة';
+
+  @override
+  String get listingHistory_editing => 'جارٍ التعديل';
+
+  @override
+  String listingHistory_deletePostConfirm(String title) {
+    return 'هل أنت متأكد من أنك تريد حذف \"$title\"؟ لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String listingHistory_deleting(String title) {
+    return 'جاري الحذف: $title';
+  }
+
+  @override
+  String get listingHistory_postDeleted => 'تم حذف المشاركة بنجاح';
+
+  @override
+  String get listingHistory_postPublished => 'تم نشر المشاركة بنجاح';
+
+  @override
+  String get listingHistory_postArchived => 'تم أرشفة المشاركة';
+
+  @override
+  String get reportUser_title => 'الإبلاغ';
+
+  @override
+  String get reportUser_tellUsWrong => 'أخبرنا ما الخطأ';
+
+  @override
+  String get reportUser_inappropriateContent => 'محتوى غير لائق';
+
+  @override
+  String get reportUser_spamOrScam => 'بريد عشوائي أو احتيال';
+
+  @override
+  String get reportUser_misleadingInfo => 'معلومات مضللة';
+
+  @override
+  String get reportUser_safetyConcern => 'مخاوف أمنية';
+
+  @override
+  String get reportUser_other => 'أخرى';
+
+  @override
+  String get reportUser_additionalDetails => 'تفاصيل إضافية (اختياري)';
+
+  @override
+  String get reportUser_provideMoreInfo => 'تقديم المزيد من المعلومات';
+
+  @override
+  String get reportUser_submitReport => 'إرسال التقرير';
+
+  @override
+  String get reportUser_selectReason => 'الرجاء تحديد سبب الإبلاغ';
+
+  @override
+  String get reportUser_reportSubmitted => 'تم إرسال التقرير';
+
+  @override
+  String get reportUser_thankYouReport =>
+      'شكرًا لك على تقريرك. سنقوم بمراجعته واتخاذ الإجراء المناسب إذا لزم الأمر.';
+
+  @override
+  String get reportUser_done => 'تم';
+
+  @override
+  String get delete => 'حذف';
 }

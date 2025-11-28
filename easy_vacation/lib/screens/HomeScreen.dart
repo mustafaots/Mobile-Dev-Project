@@ -75,23 +75,23 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            label: loc.bottomNav_home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book_online_outlined),
-            label: 'Bookings',
+            label: loc.bottomNav_bookings,
           ),
           BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_outlined),
-            label: 'Notifications',
+            label: loc.bottomNav_notifications,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
-            label: 'Settings',
+            label: loc.bottomNav_settings,
           ),
         ],
       ),

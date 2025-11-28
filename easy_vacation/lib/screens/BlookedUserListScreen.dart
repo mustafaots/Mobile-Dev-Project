@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -52,7 +53,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$userName has been unblocked'),
+        content: Text(AppLocalizations.of(context)!.blockedUsers_unblocked(userName)),
         backgroundColor: AppTheme.successColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -66,6 +67,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Dialog(
       backgroundColor: backgroundColor,
@@ -93,7 +95,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
 
             // Title
             Text(
-              'Unblock User?',
+              loc.blockedUsers_unblockUser,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -104,8 +106,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
 
             // Message
             Text(
-              'Are you sure you want to unblock $userName? '
-              'They will be able to interact with you and view your profile again.',
+              loc.blockedUsers_unblockConfirm(userName),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -129,7 +130,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Cancel'),
+                    child: Text(loc.profile_cancel),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -144,7 +145,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Unblock'),
+                    child: Text(loc.blockedUsers_unblock),
                   ),
                 ),
               ],
@@ -161,10 +162,11 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context, 'Blocked Users'),
+      appBar: App_Bar(context, loc.blockedUsers_title),
       body: _blockedUsers.isEmpty
           ? _buildEmptyState()
           : Column(
@@ -190,7 +192,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Blocked users cannot view your profile or contact you.',
+                          loc.blockedUsers_info,
                           style: TextStyle(
                             fontSize: 14,
                             color: secondaryTextColor,
@@ -286,7 +288,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      'Blocked: ${user['blockedDate']}',
+                      AppLocalizations.of(context)!.blockedUsers_blocked(user['blockedDate']),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppTheme.failureColor,
@@ -346,7 +348,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'No Blocked Users',
+              AppLocalizations.of(context)!.blockedUsers_noBlockedUsers,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -355,8 +357,7 @@ class _BlockedUsersListScreenState extends State<BlockedUsersListScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Users you block will appear here. '
-              'You can unblock them anytime if you change your mind.',
+              AppLocalizations.of(context)!.blockedUsers_emptyMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,

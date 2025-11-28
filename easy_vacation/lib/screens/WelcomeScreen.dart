@@ -42,7 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   SizedBox(width: 8),
                   Text(
-                    loc.appTitle,
+                    "Easy Vacation",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,

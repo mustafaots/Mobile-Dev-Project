@@ -93,5 +93,308 @@
     "field_price_error": "Please add a price",
     "field_location": "Location",
     "field_location_error": "Please pin a location",
-    "button_continueToPayment": "Continue To Payment"
+    "button_continueToPayment": "Continue To Payment",
+
+    "bottomNav_home": "Home",
+    "bottomNav_bookings": "Bookings",
+    "bottomNav_notifications": "Notifications",
+    "bottomNav_settings": "Settings",
+    
+    "profile_title": "Profile",
+    "profile_posts": "Posts",
+    "profile_followers": "Followers",
+    "profile_following": "Following",
+    "profile_reviews": "Reviews",
+    "profile_noPostsYet": "No posts yet",
+    "profile_noReviewsYet": "No reviews yet",
+    "profile_follow": "Follow",
+    "profile_about": "About",
+    "profile_from": "From",
+    "profile_memberSince": "Member since",
+    "profile_countriesVisited": "Countries visited",
+    "profile_reportUser": "Report User",
+    "profile_blockUser": "Block User",
+    "profile_shareProfile": "Share Profile",
+    "profile_cancel": "Cancel",
+    "profile_helpful": "Helpful",
+    
+    "bookings_title": "Bookings",
+    "bookings_all": "All",
+    "bookings_pending": "Pending",
+    "bookings_confirmed": "Confirmed",
+    "bookings_canceled": "Canceled",
+    "bookings_viewDetails": "View Details",
+    "bookings_noBookingsYet": "No Bookings Yet",
+    "bookings_emptyMessage": "You have no upcoming or past bookings. Time to plan your next adventure!",
+    "bookings_exploreStays": "Explore Stays",
+    
+    "listingDetails_title": "Listing Details",
+    "listingDetails_perNight": "per night",
+    "listingDetails_hostedBy": "Hosted by",
+    "listingDetails_superHost": "Super Host",
+    "listingDetails_reviews": "Reviews",
+    "listingDetails_availability": "Availability",
+    "listingDetails_reserveNow": "Reserve Now",
+    "listingDetails_daysAgo": "{count} days ago",
+    "listingDetails_daysAgo_other": "{count} days ago",
+    "@listingDetails_daysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    
+    "editProfile_title": "Edit Profile",
+    "editProfile_changePhoto": "Change Photo",
+    "editProfile_fullName": "Full Name",
+    "editProfile_emailAddress": "Email Address",
+    "editProfile_phoneNumber": "Profile Phone Number",
+    "editProfile_location": "Location",
+    "editProfile_bio": "Bio",
+    "editProfile_changePassword": "Change Password",
+    "editProfile_notificationSettings": "Notification Settings",
+    "editProfile_privacySettings": "Privacy Settings",
+    "editProfile_deleteAccount": "Delete Account",
+    "editProfile_profileUpdated": "Profile updated successfully!",
+    "editProfile_changeProfilePicture": "Change Profile Picture",
+    "editProfile_chooseOption": "Choose an option",
+    "editProfile_camera": "Camera",
+    "editProfile_gallery": "Gallery",
+    "editProfile_deleteAccountTitle": "Delete Account",
+    "editProfile_deleteAccountMessage": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.",
+    
+    "bookingHistory_title": "Booking History",
+    "bookingHistory_all": "All",
+    "bookingHistory_upcoming": "Upcoming",
+    "bookingHistory_completed": "Completed",
+    "bookingHistory_cancelled": "Cancelled",
+    
+    "notifications_title": "Notifications",
+    "notifications_new": "New",
+    "notifications_earlier": "Earlier",
+    "notifications_bookingConfirmed": "Your booking is confirmed!",
+    "notifications_bookingConfirmedMessage": "You have successfully booked '{listing}' for {dates}.",
+    "@notifications_bookingConfirmedMessage": {
+        "placeholders": {
+            "listing": {
+                "type": "String"
+            },
+            "dates": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_shareExperience": "Share your experience",
+    "notifications_reviewRequest": "Your stay at '{listing}' ended yesterday. How was it?",
+    "@notifications_reviewRequest": {
+        "placeholders": {
+            "listing": {
+                "type": "String"
+            }
+        }
+    },
+    "notifications_addReviewNow": "Add Review Now",
+    "notifications_hoursAgo": "{count} hours ago",
+    "notifications_hoursAgo_other": "{count} hours ago",
+    "@notifications_hoursAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "notifications_daysAgo": "{count} days ago",
+    "notifications_daysAgo_other": "{count} days ago",
+    "@notifications_daysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "notifications_rentalReminder": "Your '{vehicle}' rental is starting in {days} days.",
+    "@notifications_rentalReminder": {
+        "placeholders": {
+            "vehicle": {
+                "type": "String"
+            },
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "notifications_newSummerDeals": "New summer deals!",
+    "notifications_promotionalMessage": "Check out our new listings with up to 20% off.",
+    
+    "addReview_title": "Add Review",
+    "addReview_howWasStay": "How was your stay?",
+    "addReview_shareExperience": "Share your experience to help others",
+    "addReview_overallRating": "Overall Rating",
+    "addReview_tapToRate": "Tap to rate",
+    "addReview_stars": "{rating}/5 Stars",
+    "@addReview_stars": {
+        "placeholders": {
+            "rating": {
+                "type": "int"
+            }
+        }
+    },
+    "addReview_quickReaction": "Quick Reaction",
+    "addReview_terrible": "Terrible",
+    "addReview_poor": "Poor",
+    "addReview_average": "Average",
+    "addReview_good": "Good",
+    "addReview_excellent": "Excellent",
+    "addReview_yourReview": "Your Review",
+    "addReview_tellUsExperience": "Tell us about your experience...",
+    "addReview_charactersCount": "{count}/300 characters",
+    "@addReview_charactersCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "addReview_submitReview": "Submit Review",
+    "addReview_submitted": "Review Submitted!",
+    "addReview_thankYouFeedback": "Thank you for your feedback!",
+    "addReview_ok": "OK",
+    
+    "confirmListing_title": "Confirm & Post",
+    "confirmListing_readyToPost": "Ready to Post!",
+    "confirmListing_reviewDetails": "Review your listing details before publishing",
+    "confirmListing_pricingSummary": "Pricing Summary",
+    "confirmListing_basePrice": "Base Price",
+    "confirmListing_serviceFee": "Service Fee",
+    "confirmListing_totalAmount": "Total Amount",
+    "confirmListing_premiumPlan": "Premium Plan",
+    "confirmListing_subscriptionDays": "30 days subscription",
+    "confirmListing_proTips": "Pro Tips",
+    "confirmListing_tip1": "Add high-quality photos",
+    "confirmListing_tip2": "Highlight special offers",
+    "confirmListing_tip3": "Include contact information",
+    "confirmListing_agreement": "I agree to the Terms of Service and confirm all details are correct.",
+    "confirmListing_postListing": "Post Listing",
+    "confirmListing_listingPosted": "Listing posted successfully!",
+    
+    "blockUser_title": "Block User",
+    "blockUser_blockingSerious": "Blocking is a serious action",
+    "blockUser_whatHappens": "What happens when you block {userName}?",
+    "@blockUser_whatHappens": {
+        "placeholders": {
+            "userName": {
+                "type": "String"
+            }
+        }
+    },
+    "blockUser_consequence1": "They won't be able to see your profile, posts, or stories",
+    "blockUser_consequence2": "They can't send you comments",
+    "blockUser_consequence3": "They won't be able to follow you or see your updates",
+    "blockUser_consequence4": "You won't receive any notifications from them",
+    "blockUser_consequence5": "They won't appear in your search results",
+    "blockUser_note": "Note:",
+    "blockUser_noteMessage": "If you change your mind, you can unblock this user anytime from your settings. Blocking is reversible and does not notify the other user.",
+    "blockUser_blockUser": "Block User",
+    "blockUser_userBlocked": "User Blocked",
+    "blockUser_blockedSuccessfully": "You have successfully blocked {userName}. This user will no longer be able to interact with you or view your profile.",
+    "@blockUser_blockedSuccessfully": {
+        "placeholders": {
+            "userName": {
+                "type": "String"
+            }
+        }
+    },
+    "blockUser_returnToHome": "Return to Home",
+    
+    "blockedUsers_title": "Blocked Users",
+    "blockedUsers_info": "Blocked users cannot view your profile or contact you.",
+    "blockedUsers_unblockUser": "Unblock User?",
+    "blockedUsers_unblockConfirm": "Are you sure you want to unblock {userName}? They will be able to interact with you and view your profile again.",
+    "@blockedUsers_unblockConfirm": {
+        "placeholders": {
+            "userName": {
+                "type": "String"
+            }
+        }
+    },
+    "blockedUsers_unblock": "Unblock",
+    "blockedUsers_unblocked": "{userName} has been unblocked",
+    "@blockedUsers_unblocked": {
+        "placeholders": {
+            "userName": {
+                "type": "String"
+            }
+        }
+    },
+    "blockedUsers_blocked": "Blocked: {date}",
+    "@blockedUsers_blocked": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "blockedUsers_noBlockedUsers": "No Blocked Users",
+    "blockedUsers_emptyMessage": "Users you block will appear here. You can unblock them anytime if you change your mind.",
+    
+    "listingHistory_title": "My Listings",
+    "listingHistory_all": "all",
+    "listingHistory_active": "active",
+    "listingHistory_drafts": "draft",
+    "listingHistory_archived": "archived",
+    "listingHistory_noPostsFound": "No Posts Found",
+    "listingHistory_noPostsYet": "You haven't created any posts yet.",
+    "listingHistory_noFilterPosts": "No {filter} posts found.",
+    "@listingHistory_noFilterPosts": {
+        "placeholders": {
+            "filter": {
+                "type": "String"
+            }
+        }
+    },
+    "listingHistory_published": "Published",
+    "listingHistory_draft": "Draft",
+    "listingHistory_editPost": "Edit Post",
+    "listingHistory_deletePost": "Delete Post",
+    "listingHistory_publish": "Publish",
+    "listingHistory_archive": "Archive",
+    "listingHistory_deletePostTitle": "Delete Post",
+    "listingHistory_editing": "Editing",
+    "listingHistory_deletePostConfirm": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+    "@listingHistory_deletePostConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "listingHistory_deleting": "Deleting: {title}",
+    "@listingHistory_deleting": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "listingHistory_postDeleted": "Post deleted successfully",
+    "listingHistory_postPublished": "Post published successfully",
+    "listingHistory_postArchived": "Post archived",
+    
+    "reportUser_title": "Report",
+    "reportUser_tellUsWrong": "Tell us what's wrong",
+    "reportUser_inappropriateContent": "Inappropriate content",
+    "reportUser_spamOrScam": "Spam or scam",
+    "reportUser_misleadingInfo": "Misleading information",
+    "reportUser_safetyConcern": "Safety concern",
+    "reportUser_other": "Other",
+    "reportUser_additionalDetails": "Additional Details (Optional)",
+    "reportUser_provideMoreInfo": "Provide more information",
+    "reportUser_submitReport": "Submit Report",
+    "reportUser_selectReason": "Please select a reason for reporting",
+    "reportUser_reportSubmitted": "Report Submitted",
+    "reportUser_thankYouReport": "Thank you for your report. We will review it and take appropriate action if necessary.",
+    "reportUser_done": "Done",
+
+    "delete": "Delete"
 }

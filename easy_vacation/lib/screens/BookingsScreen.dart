@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,11 @@ class BookingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context,'Bookings'),
+      appBar: App_Bar(context, loc.bookings_title),
       body: SafeArea(
         child: Column(
           children: [
@@ -29,7 +31,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       context: context,
                       imagePath: 'assets/images/cozy_cabin.jpg',
-                      status: 'Confirmed',
+                      status: loc.bookings_confirmed,
                       statusColor: AppTheme.successColor,
                       title: 'Cozy Cabin in the Woods',
                       price: '7000 DZD',
@@ -38,7 +40,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       context: context,
                       imagePath: 'assets/images/beachfront_villa.jpg',
-                      status: 'Pending',
+                      status: loc.bookings_pending,
                       statusColor: AppTheme.neutralColor,
                       title: 'Beachfront Villa',
                       price: '25000 DZD',
@@ -47,7 +49,7 @@ class BookingsScreen extends StatelessWidget {
                     _buildBookingCard(
                       context: context,
                       imagePath: 'assets/images/city_loft.jpg',
-                      status: 'Canceled',
+                      status: loc.bookings_canceled,
                       statusColor: AppTheme.failureColor,
                       title: 'City Loft',
                       price: '8000 DZD',
@@ -70,7 +72,13 @@ class BookingsScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final List<String> filters = ['All', 'Pending', 'Confirmed', 'Canceled'];
+    final loc = AppLocalizations.of(context)!;
+    final List<String> filters = [
+      loc.bookings_all,
+      loc.bookings_pending,
+      loc.bookings_confirmed,
+      loc.bookings_canceled
+    ];
 
     return SizedBox(
       height: 60,
@@ -208,7 +216,7 @@ class BookingsScreen extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          'View Details',
+                          AppLocalizations.of(context)!.bookings_viewDetails,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
@@ -230,6 +238,7 @@ class BookingsScreen extends StatelessWidget {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor; // Add this
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.only(top: 16),
@@ -250,7 +259,7 @@ class BookingsScreen extends StatelessWidget {
           Icon(Icons.luggage, size: 64, color: secondaryTextColor),
           const SizedBox(height: 16),
           Text(
-            'No Bookings Yet',
+            loc.bookings_noBookingsYet,
             style: AppTheme.header2.copyWith(
               fontWeight: FontWeight.bold,
               color: textColor,
@@ -258,7 +267,7 @@ class BookingsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'You have no upcoming or past bookings. Time to plan your next adventure!',
+            loc.bookings_emptyMessage,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16, color: secondaryTextColor),
           ),
@@ -280,7 +289,7 @@ class BookingsScreen extends StatelessWidget {
               },
               style: AppTheme.primaryButtonStyle,
               child: Text(
-                'Explore Stays',
+                loc.bookings_exploreStays,
                 style: TextStyle(color: Colors.white), // Fixed button text color
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -32,7 +33,7 @@ class PostDetailsScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
 
     return Scaffold(
-      appBar: App_Bar(context, 'Listing Details'),
+      appBar: App_Bar(context, AppLocalizations.of(context)!.listingDetails_title),
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Stack(
@@ -158,6 +159,7 @@ class PostDetailsScreen extends StatelessWidget {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -211,7 +213,7 @@ class PostDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hosted by Ali',
+                  '${loc.listingDetails_hostedBy} Ali',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -224,7 +226,7 @@ class PostDetailsScreen extends StatelessWidget {
                     Icon(Icons.star, color: AppTheme.neutralColor, size: 16),
                     const SizedBox(width: 4),
                     Text(
-                      '4.9 (127 reviews)',
+                      '4.9 (127 ${loc.listingDetails_reviews})',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -244,7 +246,7 @@ class PostDetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Super Host',
+                    loc.listingDetails_superHost,
                     style: TextStyle(
                       fontSize: 12,
                       color: AppTheme.primaryColor,
@@ -267,7 +269,7 @@ class PostDetailsScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'per night',
+                loc.listingDetails_perNight,
                 style: TextStyle(
                   fontSize: 12,
                   color: secondaryTextColor,
@@ -306,7 +308,7 @@ class PostDetailsScreen extends StatelessWidget {
               Icon(Icons.star, color: AppTheme.neutralColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Reviews',
+                AppLocalizations.of(context)!.listingDetails_reviews,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -357,6 +359,7 @@ class PostDetailsScreen extends StatelessWidget {
   }) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return GestureDetector(
       onTap: () {
@@ -430,7 +433,7 @@ class PostDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '2 days ago',
+                      loc.listingDetails_daysAgo(2),
                       style: TextStyle(
                         fontSize: 12,
                         color: secondaryTextColor.withOpacity(0.7),
@@ -496,7 +499,7 @@ class PostDetailsScreen extends StatelessWidget {
               Icon(Icons.calendar_today, color: AppTheme.primaryColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Availability',
+                AppLocalizations.of(context)!.listingDetails_availability,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -667,8 +670,8 @@ class PostDetailsScreen extends StatelessWidget {
                   ),
                   elevation: 2,
                 ),
-                child: const Text(
-                  'Reserve Now',
+                child: Text(
+                  AppLocalizations.of(context)!.listingDetails_reserveNow,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 // ConfirmListingScreen.dart
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -19,7 +20,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
     if (agreedCheck) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text("Listing posted successfully!"),
+          content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
           backgroundColor: AppTheme.successColor,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -48,10 +49,11 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context, 'Confirm & Post'),
+      appBar: App_Bar(context, loc.confirmListing_title),
       body: Column(
         children: [
           // Progress indicator
@@ -84,7 +86,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                   const SizedBox(height: 16),
                   
                   Text(
-                    "Ready to Post!",
+                    loc.confirmListing_readyToPost,
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -93,7 +95,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Review your listing details before publishing",
+                    loc.confirmListing_reviewDetails,
                     style: TextStyle(
                       fontSize: 16,
                       color: secondaryTextColor,
@@ -141,7 +143,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                "Pricing Summary",
+                                loc.confirmListing_pricingSummary,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -152,15 +154,15 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                           ),
                           const SizedBox(height: 20),
                           
-                          _buildPricingRow("Base Price", "\$50", context),
-                          _buildPricingRow("Service Fee", "\$5", context),
+                          _buildPricingRow(loc.confirmListing_basePrice, "\$50", context),
+                          _buildPricingRow(loc.confirmListing_serviceFee, "\$5", context),
                           
                           const SizedBox(height: 12),
                           Divider(color: secondaryTextColor.withOpacity(0.3)),
                           const SizedBox(height: 12),
                           
                           _buildPricingRow(
-                            "Total Amount",
+                            loc.confirmListing_totalAmount,
                             "\$55",
                             context,
                             isTotal: true,
@@ -204,7 +206,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Premium Plan",
+                                  loc.confirmListing_premiumPlan,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -212,7 +214,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "30 days subscription",
+                                  loc.confirmListing_subscriptionDays,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: secondaryTextColor,
@@ -259,7 +261,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                "Pro Tips",
+                                loc.confirmListing_proTips,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -270,9 +272,9 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                           ),
                           const SizedBox(height: 16),
                           
-                          _buildTipItem("Add high-quality photos"),
-                          _buildTipItem("Highlight special offers"),
-                          _buildTipItem("Include contact information"),
+                          _buildTipItem(loc.confirmListing_tip1),
+                          _buildTipItem(loc.confirmListing_tip2),
+                          _buildTipItem(loc.confirmListing_tip3),
                         ],
                       ),
                     ),
@@ -318,7 +320,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                               setState(() => agreedCheck = !agreedCheck);
                             },
                             child: Text(
-                              "I agree to the Terms of Service and confirm all details are correct.",
+                              loc.confirmListing_agreement,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: textColor,
@@ -368,7 +370,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    "Post Listing",
+                    loc.confirmListing_postListing,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

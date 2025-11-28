@@ -651,6 +651,1032 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue To Payment'**
   String get button_continueToPayment;
+
+  /// No description provided for @bottomNav_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get bottomNav_home;
+
+  /// No description provided for @bottomNav_bookings.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bottomNav_bookings;
+
+  /// No description provided for @bottomNav_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get bottomNav_notifications;
+
+  /// No description provided for @bottomNav_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get bottomNav_settings;
+
+  /// No description provided for @profile_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile_title;
+
+  /// No description provided for @profile_posts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get profile_posts;
+
+  /// No description provided for @profile_followers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get profile_followers;
+
+  /// No description provided for @profile_following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get profile_following;
+
+  /// No description provided for @profile_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get profile_reviews;
+
+  /// No description provided for @profile_noPostsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get profile_noPostsYet;
+
+  /// No description provided for @profile_noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get profile_noReviewsYet;
+
+  /// No description provided for @profile_follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get profile_follow;
+
+  /// No description provided for @profile_about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get profile_about;
+
+  /// No description provided for @profile_from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get profile_from;
+
+  /// No description provided for @profile_memberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since'**
+  String get profile_memberSince;
+
+  /// No description provided for @profile_countriesVisited.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries visited'**
+  String get profile_countriesVisited;
+
+  /// No description provided for @profile_reportUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Report User'**
+  String get profile_reportUser;
+
+  /// No description provided for @profile_blockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Block User'**
+  String get profile_blockUser;
+
+  /// No description provided for @profile_shareProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Profile'**
+  String get profile_shareProfile;
+
+  /// No description provided for @profile_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get profile_cancel;
+
+  /// No description provided for @profile_helpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get profile_helpful;
+
+  /// No description provided for @bookings_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings'**
+  String get bookings_title;
+
+  /// No description provided for @bookings_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get bookings_all;
+
+  /// No description provided for @bookings_pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get bookings_pending;
+
+  /// No description provided for @bookings_confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get bookings_confirmed;
+
+  /// No description provided for @bookings_canceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Canceled'**
+  String get bookings_canceled;
+
+  /// No description provided for @bookings_viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get bookings_viewDetails;
+
+  /// No description provided for @bookings_noBookingsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Bookings Yet'**
+  String get bookings_noBookingsYet;
+
+  /// No description provided for @bookings_emptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no upcoming or past bookings. Time to plan your next adventure!'**
+  String get bookings_emptyMessage;
+
+  /// No description provided for @bookings_exploreStays.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Stays'**
+  String get bookings_exploreStays;
+
+  /// No description provided for @listingDetails_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing Details'**
+  String get listingDetails_title;
+
+  /// No description provided for @listingDetails_perNight.
+  ///
+  /// In en, this message translates to:
+  /// **'per night'**
+  String get listingDetails_perNight;
+
+  /// No description provided for @listingDetails_hostedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted by'**
+  String get listingDetails_hostedBy;
+
+  /// No description provided for @listingDetails_superHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Super Host'**
+  String get listingDetails_superHost;
+
+  /// No description provided for @listingDetails_reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get listingDetails_reviews;
+
+  /// No description provided for @listingDetails_availability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get listingDetails_availability;
+
+  /// No description provided for @listingDetails_reserveNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve Now'**
+  String get listingDetails_reserveNow;
+
+  /// No description provided for @listingDetails_daysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String listingDetails_daysAgo(int count);
+
+  /// No description provided for @listingDetails_daysAgo_other.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String listingDetails_daysAgo_other(Object count);
+
+  /// No description provided for @editProfile_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile_title;
+
+  /// No description provided for @editProfile_changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Photo'**
+  String get editProfile_changePhoto;
+
+  /// No description provided for @editProfile_fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get editProfile_fullName;
+
+  /// No description provided for @editProfile_emailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get editProfile_emailAddress;
+
+  /// No description provided for @editProfile_phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile Phone Number'**
+  String get editProfile_phoneNumber;
+
+  /// No description provided for @editProfile_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get editProfile_location;
+
+  /// No description provided for @editProfile_bio.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio'**
+  String get editProfile_bio;
+
+  /// No description provided for @editProfile_changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get editProfile_changePassword;
+
+  /// No description provided for @editProfile_notificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get editProfile_notificationSettings;
+
+  /// No description provided for @editProfile_privacySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Settings'**
+  String get editProfile_privacySettings;
+
+  /// No description provided for @editProfile_deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get editProfile_deleteAccount;
+
+  /// No description provided for @editProfile_profileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully!'**
+  String get editProfile_profileUpdated;
+
+  /// No description provided for @editProfile_changeProfilePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Profile Picture'**
+  String get editProfile_changeProfilePicture;
+
+  /// No description provided for @editProfile_chooseOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an option'**
+  String get editProfile_chooseOption;
+
+  /// No description provided for @editProfile_camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get editProfile_camera;
+
+  /// No description provided for @editProfile_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get editProfile_gallery;
+
+  /// No description provided for @editProfile_deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get editProfile_deleteAccountTitle;
+
+  /// No description provided for @editProfile_deleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.'**
+  String get editProfile_deleteAccountMessage;
+
+  /// No description provided for @bookingHistory_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking History'**
+  String get bookingHistory_title;
+
+  /// No description provided for @bookingHistory_all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get bookingHistory_all;
+
+  /// No description provided for @bookingHistory_upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get bookingHistory_upcoming;
+
+  /// No description provided for @bookingHistory_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get bookingHistory_completed;
+
+  /// No description provided for @bookingHistory_cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get bookingHistory_cancelled;
+
+  /// No description provided for @notifications_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications_title;
+
+  /// No description provided for @notifications_new.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get notifications_new;
+
+  /// No description provided for @notifications_earlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get notifications_earlier;
+
+  /// No description provided for @notifications_bookingConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is confirmed!'**
+  String get notifications_bookingConfirmed;
+
+  /// No description provided for @notifications_bookingConfirmedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully booked \'{listing}\' for {dates}.'**
+  String notifications_bookingConfirmedMessage(String listing, String dates);
+
+  /// No description provided for @notifications_shareExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your experience'**
+  String get notifications_shareExperience;
+
+  /// No description provided for @notifications_reviewRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Your stay at \'{listing}\' ended yesterday. How was it?'**
+  String notifications_reviewRequest(String listing);
+
+  /// No description provided for @notifications_addReviewNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Review Now'**
+  String get notifications_addReviewNow;
+
+  /// No description provided for @notifications_hoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours ago'**
+  String notifications_hoursAgo(int count);
+
+  /// No description provided for @notifications_hoursAgo_other.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours ago'**
+  String notifications_hoursAgo_other(Object count);
+
+  /// No description provided for @notifications_daysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String notifications_daysAgo(int count);
+
+  /// No description provided for @notifications_daysAgo_other.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String notifications_daysAgo_other(Object count);
+
+  /// No description provided for @notifications_rentalReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Your \'{vehicle}\' rental is starting in {days} days.'**
+  String notifications_rentalReminder(String vehicle, int days);
+
+  /// No description provided for @notifications_newSummerDeals.
+  ///
+  /// In en, this message translates to:
+  /// **'New summer deals!'**
+  String get notifications_newSummerDeals;
+
+  /// No description provided for @notifications_promotionalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check out our new listings with up to 20% off.'**
+  String get notifications_promotionalMessage;
+
+  /// No description provided for @addReview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Review'**
+  String get addReview_title;
+
+  /// No description provided for @addReview_howWasStay.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your stay?'**
+  String get addReview_howWasStay;
+
+  /// No description provided for @addReview_shareExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your experience to help others'**
+  String get addReview_shareExperience;
+
+  /// No description provided for @addReview_overallRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Rating'**
+  String get addReview_overallRating;
+
+  /// No description provided for @addReview_tapToRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to rate'**
+  String get addReview_tapToRate;
+
+  /// No description provided for @addReview_stars.
+  ///
+  /// In en, this message translates to:
+  /// **'{rating}/5 Stars'**
+  String addReview_stars(int rating);
+
+  /// No description provided for @addReview_quickReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Reaction'**
+  String get addReview_quickReaction;
+
+  /// No description provided for @addReview_terrible.
+  ///
+  /// In en, this message translates to:
+  /// **'Terrible'**
+  String get addReview_terrible;
+
+  /// No description provided for @addReview_poor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get addReview_poor;
+
+  /// No description provided for @addReview_average.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get addReview_average;
+
+  /// No description provided for @addReview_good.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get addReview_good;
+
+  /// No description provided for @addReview_excellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get addReview_excellent;
+
+  /// No description provided for @addReview_yourReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Review'**
+  String get addReview_yourReview;
+
+  /// No description provided for @addReview_tellUsExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your experience...'**
+  String get addReview_tellUsExperience;
+
+  /// No description provided for @addReview_charactersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}/300 characters'**
+  String addReview_charactersCount(int count);
+
+  /// No description provided for @addReview_submitReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Review'**
+  String get addReview_submitReview;
+
+  /// No description provided for @addReview_submitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Submitted!'**
+  String get addReview_submitted;
+
+  /// No description provided for @addReview_thankYouFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get addReview_thankYouFeedback;
+
+  /// No description provided for @addReview_ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get addReview_ok;
+
+  /// No description provided for @confirmListing_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Post'**
+  String get confirmListing_title;
+
+  /// No description provided for @confirmListing_readyToPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Post!'**
+  String get confirmListing_readyToPost;
+
+  /// No description provided for @confirmListing_reviewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your listing details before publishing'**
+  String get confirmListing_reviewDetails;
+
+  /// No description provided for @confirmListing_pricingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing Summary'**
+  String get confirmListing_pricingSummary;
+
+  /// No description provided for @confirmListing_basePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Base Price'**
+  String get confirmListing_basePrice;
+
+  /// No description provided for @confirmListing_serviceFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Fee'**
+  String get confirmListing_serviceFee;
+
+  /// No description provided for @confirmListing_totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get confirmListing_totalAmount;
+
+  /// No description provided for @confirmListing_premiumPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Plan'**
+  String get confirmListing_premiumPlan;
+
+  /// No description provided for @confirmListing_subscriptionDays.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days subscription'**
+  String get confirmListing_subscriptionDays;
+
+  /// No description provided for @confirmListing_proTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro Tips'**
+  String get confirmListing_proTips;
+
+  /// No description provided for @confirmListing_tip1.
+  ///
+  /// In en, this message translates to:
+  /// **'Add high-quality photos'**
+  String get confirmListing_tip1;
+
+  /// No description provided for @confirmListing_tip2.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight special offers'**
+  String get confirmListing_tip2;
+
+  /// No description provided for @confirmListing_tip3.
+  ///
+  /// In en, this message translates to:
+  /// **'Include contact information'**
+  String get confirmListing_tip3;
+
+  /// No description provided for @confirmListing_agreement.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the Terms of Service and confirm all details are correct.'**
+  String get confirmListing_agreement;
+
+  /// No description provided for @confirmListing_postListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Listing'**
+  String get confirmListing_postListing;
+
+  /// No description provided for @confirmListing_listingPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing posted successfully!'**
+  String get confirmListing_listingPosted;
+
+  /// No description provided for @blockUser_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Block User'**
+  String get blockUser_title;
+
+  /// No description provided for @blockUser_blockingSerious.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking is a serious action'**
+  String get blockUser_blockingSerious;
+
+  /// No description provided for @blockUser_whatHappens.
+  ///
+  /// In en, this message translates to:
+  /// **'What happens when you block {userName}?'**
+  String blockUser_whatHappens(String userName);
+
+  /// No description provided for @blockUser_consequence1.
+  ///
+  /// In en, this message translates to:
+  /// **'They won\'t be able to see your profile, posts, or stories'**
+  String get blockUser_consequence1;
+
+  /// No description provided for @blockUser_consequence2.
+  ///
+  /// In en, this message translates to:
+  /// **'They can\'t send you comments'**
+  String get blockUser_consequence2;
+
+  /// No description provided for @blockUser_consequence3.
+  ///
+  /// In en, this message translates to:
+  /// **'They won\'t be able to follow you or see your updates'**
+  String get blockUser_consequence3;
+
+  /// No description provided for @blockUser_consequence4.
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t receive any notifications from them'**
+  String get blockUser_consequence4;
+
+  /// No description provided for @blockUser_consequence5.
+  ///
+  /// In en, this message translates to:
+  /// **'They won\'t appear in your search results'**
+  String get blockUser_consequence5;
+
+  /// No description provided for @blockUser_note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note:'**
+  String get blockUser_note;
+
+  /// No description provided for @blockUser_noteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If you change your mind, you can unblock this user anytime from your settings. Blocking is reversible and does not notify the other user.'**
+  String get blockUser_noteMessage;
+
+  /// No description provided for @blockUser_blockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Block User'**
+  String get blockUser_blockUser;
+
+  /// No description provided for @blockUser_userBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'User Blocked'**
+  String get blockUser_userBlocked;
+
+  /// No description provided for @blockUser_blockedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'You have successfully blocked {userName}. This user will no longer be able to interact with you or view your profile.'**
+  String blockUser_blockedSuccessfully(String userName);
+
+  /// No description provided for @blockUser_returnToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Home'**
+  String get blockUser_returnToHome;
+
+  /// No description provided for @blockedUsers_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked Users'**
+  String get blockedUsers_title;
+
+  /// No description provided for @blockedUsers_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked users cannot view your profile or contact you.'**
+  String get blockedUsers_info;
+
+  /// No description provided for @blockedUsers_unblockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock User?'**
+  String get blockedUsers_unblockUser;
+
+  /// No description provided for @blockedUsers_unblockConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to unblock {userName}? They will be able to interact with you and view your profile again.'**
+  String blockedUsers_unblockConfirm(String userName);
+
+  /// No description provided for @blockedUsers_unblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get blockedUsers_unblock;
+
+  /// No description provided for @blockedUsers_unblocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{userName} has been unblocked'**
+  String blockedUsers_unblocked(String userName);
+
+  /// No description provided for @blockedUsers_blocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked: {date}'**
+  String blockedUsers_blocked(String date);
+
+  /// No description provided for @blockedUsers_noBlockedUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'No Blocked Users'**
+  String get blockedUsers_noBlockedUsers;
+
+  /// No description provided for @blockedUsers_emptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Users you block will appear here. You can unblock them anytime if you change your mind.'**
+  String get blockedUsers_emptyMessage;
+
+  /// No description provided for @listingHistory_title.
+  ///
+  /// In en, this message translates to:
+  /// **'My Listings'**
+  String get listingHistory_title;
+
+  /// No description provided for @listingHistory_all.
+  ///
+  /// In en, this message translates to:
+  /// **'all'**
+  String get listingHistory_all;
+
+  /// No description provided for @listingHistory_active.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get listingHistory_active;
+
+  /// No description provided for @listingHistory_drafts.
+  ///
+  /// In en, this message translates to:
+  /// **'draft'**
+  String get listingHistory_drafts;
+
+  /// No description provided for @listingHistory_archived.
+  ///
+  /// In en, this message translates to:
+  /// **'archived'**
+  String get listingHistory_archived;
+
+  /// No description provided for @listingHistory_noPostsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Posts Found'**
+  String get listingHistory_noPostsFound;
+
+  /// No description provided for @listingHistory_noPostsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t created any posts yet.'**
+  String get listingHistory_noPostsYet;
+
+  /// No description provided for @listingHistory_noFilterPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'No {filter} posts found.'**
+  String listingHistory_noFilterPosts(String filter);
+
+  /// No description provided for @listingHistory_published.
+  ///
+  /// In en, this message translates to:
+  /// **'Published'**
+  String get listingHistory_published;
+
+  /// No description provided for @listingHistory_draft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get listingHistory_draft;
+
+  /// No description provided for @listingHistory_editPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Post'**
+  String get listingHistory_editPost;
+
+  /// No description provided for @listingHistory_deletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Post'**
+  String get listingHistory_deletePost;
+
+  /// No description provided for @listingHistory_publish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get listingHistory_publish;
+
+  /// No description provided for @listingHistory_archive.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get listingHistory_archive;
+
+  /// No description provided for @listingHistory_deletePostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Post'**
+  String get listingHistory_deletePostTitle;
+
+  /// No description provided for @listingHistory_editing.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing'**
+  String get listingHistory_editing;
+
+  /// No description provided for @listingHistory_deletePostConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{title}\"? This action cannot be undone.'**
+  String listingHistory_deletePostConfirm(String title);
+
+  /// No description provided for @listingHistory_deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting: {title}'**
+  String listingHistory_deleting(String title);
+
+  /// No description provided for @listingHistory_postDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Post deleted successfully'**
+  String get listingHistory_postDeleted;
+
+  /// No description provided for @listingHistory_postPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Post published successfully'**
+  String get listingHistory_postPublished;
+
+  /// No description provided for @listingHistory_postArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Post archived'**
+  String get listingHistory_postArchived;
+
+  /// No description provided for @reportUser_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get reportUser_title;
+
+  /// No description provided for @reportUser_tellUsWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what\'s wrong'**
+  String get reportUser_tellUsWrong;
+
+  /// No description provided for @reportUser_inappropriateContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Inappropriate content'**
+  String get reportUser_inappropriateContent;
+
+  /// No description provided for @reportUser_spamOrScam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam or scam'**
+  String get reportUser_spamOrScam;
+
+  /// No description provided for @reportUser_misleadingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Misleading information'**
+  String get reportUser_misleadingInfo;
+
+  /// No description provided for @reportUser_safetyConcern.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety concern'**
+  String get reportUser_safetyConcern;
+
+  /// No description provided for @reportUser_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reportUser_other;
+
+  /// No description provided for @reportUser_additionalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Details (Optional)'**
+  String get reportUser_additionalDetails;
+
+  /// No description provided for @reportUser_provideMoreInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide more information'**
+  String get reportUser_provideMoreInfo;
+
+  /// No description provided for @reportUser_submitReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Report'**
+  String get reportUser_submitReport;
+
+  /// No description provided for @reportUser_selectReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a reason for reporting'**
+  String get reportUser_selectReason;
+
+  /// No description provided for @reportUser_reportSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Submitted'**
+  String get reportUser_reportSubmitted;
+
+  /// No description provided for @reportUser_thankYouReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your report. We will review it and take appropriate action if necessary.'**
+  String get reportUser_thankYouReport;
+
+  /// No description provided for @reportUser_done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get reportUser_done;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
 }
 
 class _AppLocalizationsDelegate
