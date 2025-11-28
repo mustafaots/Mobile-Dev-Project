@@ -22,6 +22,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.3
 
 flutter:
   uses-material-design: true
@@ -30,3 +32,17 @@ flutter:
     - assets/images/
 
   generate: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/ev_icon.png"
+
+flutter_native_splash:
+  color: "#62C3ED"
+  android: true
+  ios: true
+  web: false
+  # Remove image-related lines completely if you don't have a logo
+  android_12:
+    color: "#62C3ED"
