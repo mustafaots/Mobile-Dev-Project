@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -71,10 +72,12 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     final filteredPosts = _currentFilter == 'all'
         ? _userPosts
         : _userPosts.where((post) => post.status == _currentFilter).toList();
+    
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context,'My Listings'),
+      appBar: App_Bar(context, loc.listingHistory_title),
       body: SafeArea(
         child: Column(
           children: [
@@ -94,19 +97,20 @@ class _ListingsHistoryState extends State<ListingsHistory> {
   }
 
   Widget _buildFilterSection(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildFilterChip('All', 'all', context),
+            _buildFilterChip(loc.listingHistory_all, loc.listingHistory_all, context),
             const SizedBox(width: 8),
-            _buildFilterChip('Active', 'active', context),
+            _buildFilterChip(loc.listingHistory_active, loc.listingHistory_active, context),
             const SizedBox(width: 8),
-            _buildFilterChip('Drafts', 'draft', context),
+            _buildFilterChip(loc.listingHistory_drafts, loc.listingHistory_drafts, context),
             const SizedBox(width: 8),
-            _buildFilterChip('Archived', 'archived', context),
+            _buildFilterChip(loc.listingHistory_archived, loc.listingHistory_archived, context),
           ],
         ),
       ),
@@ -146,6 +150,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
 
   Widget _buildEmptyState(BuildContext context) {
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Center(
       child: Column(
@@ -158,7 +163,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No Posts Found',
+            loc.listingHistory_noPostsFound,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -168,8 +173,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
           const SizedBox(height: 8),
           Text(
             _currentFilter == 'all'
-                ? 'You haven\'t created any posts yet.'
-                : 'No ${_currentFilter} posts found.',
+                ? loc.listingHistory_noPostsYet
+                : loc.listingHistory_noFilterPosts(_currentFilter),
             style: TextStyle(fontSize: 16, color: secondaryTextColor),
             textAlign: TextAlign.center,
           ),
@@ -192,6 +197,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -239,7 +245,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    _getStatusText(post.status),
+                    _getStatusText(post.status, context),
                     style: TextStyle(
                       fontSize: 12,
                       color: backgroundColor,
@@ -276,23 +282,23 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                       icon: Icon(Icons.more_vert, color: secondaryTextColor),
                       onSelected: (value) => _handlePostAction(value, post),
                       itemBuilder: (context) => [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
-                          child: Text('Edit Post'),
+                          child: Text(loc.listingHistory_editPost),
                         ),
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'delete',
-                          child: Text('Delete Post'),
+                          child: Text(loc.listingHistory_deletePost),
                         ),
                         if (post.status == 'draft')
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: 'publish',
-                            child: Text('Publish'),
+                            child: Text(loc.listingHistory_publish),
                           ),
                         if (post.status == 'active')
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: 'archive',
-                            child: Text('Archive'),
+                            child: Text(loc.listingHistory_archive),
                           ),
                       ],
                     ),
@@ -383,14 +389,15 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     }
   }
 
-  String _getStatusText(String status) {
+  String _getStatusText(String status, BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     switch (status) {
       case 'active':
-        return 'Published';
+        return loc.listingHistory_published;
       case 'draft':
-        return 'Draft';
+        return loc.listingHistory_draft;
       case 'archived':
-        return 'Archived';
+        return loc.listingHistory_archived;
       default:
         return status;
     }
@@ -417,7 +424,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     // Navigate to edit post screen
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Editing: ${post.title}'),
+        content: Text('${AppLocalizations.of(context)!.listingHistory_editing} ${post.title}'),
         backgroundColor: AppTheme.primaryColor,
       ),
     );
@@ -427,14 +434,14 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Post'),
+        title: Text(AppLocalizations.of(context)!.listingHistory_deletePost),
         content: Text(
-          'Are you sure you want to delete "${post.title}"? This action cannot be undone.',
+          AppLocalizations.of(context)!.listingHistory_deletePostConfirm(post.title),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.profile_cancel),
           ),
           TextButton(
             onPressed: () {
@@ -444,13 +451,13 @@ class _ListingsHistoryState extends State<ListingsHistory> {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('Post deleted successfully'),
+                  content: Text(AppLocalizations.of(context)!.listingHistory_postDeleted),
                   backgroundColor: AppTheme.successColor,
                 ),
               );
             },
             style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -466,7 +473,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Post published successfully'),
+        content: Text(AppLocalizations.of(context)!.listingHistory_postPublished),
         backgroundColor: AppTheme.successColor,
       ),
     );
@@ -481,7 +488,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Post archived'),
+        content: Text(AppLocalizations.of(context)!.listingHistory_postArchived),
         backgroundColor: AppTheme.neutralColor,
       ),
     );

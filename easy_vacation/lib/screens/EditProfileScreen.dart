@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -51,7 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: AppTheme.successColor,
-        content: const Text('Profile updated successfully!'),
+        content: Text(AppLocalizations.of(context)!.editProfile_profileUpdated),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -68,26 +69,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Change Profile Picture'),
-        content: const Text('Choose an option'),
+        title: Text(AppLocalizations.of(context)!.editProfile_changeProfilePicture),
+        content: Text(AppLocalizations.of(context)!.editProfile_chooseOption),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               // Handle camera
             },
-            child: const Text('Camera'),
+            child: Text(AppLocalizations.of(context)!.editProfile_camera),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               // Handle gallery
             },
-            child: const Text('Gallery'),
+            child: Text(AppLocalizations.of(context)!.editProfile_gallery),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -97,10 +98,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context,'Edit Profile'),
+      appBar: App_Bar(context, loc.editProfile_title),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -158,7 +160,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   TextButton(
                     onPressed: _changeProfilePicture,
                     child: Text(
-                      'Change Photo',
+                      loc.editProfile_changePhoto,
                       style: TextStyle(
                         color: AppTheme.primaryColor,
                         fontSize: 14,
@@ -177,7 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildFormField(
                     context: context,
                     controller: _nameController,
-                    label: 'Full Name',
+                    label: loc.editProfile_fullName,
                     icon: Icons.person,
                     isRequired: true,
                   ),
@@ -185,7 +187,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildFormField(
                     context: context,
                     controller: _emailController,
-                    label: 'Email Address',
+                    label: loc.editProfile_emailAddress,
                     icon: Icons.email,
                     isRequired: true,
                     keyboardType: TextInputType.emailAddress,
@@ -194,7 +196,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildFormField(
                     context: context,
                     controller: _phoneController,
-                    label: 'Phone Number',
+                    label: loc.editProfile_phoneNumber,
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
@@ -202,14 +204,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _buildFormField(
                     context: context,
                     controller: _locationController,
-                    label: 'Location',
+                    label: loc.editProfile_location,
                     icon: Icons.location_on,
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
                     context: context,
                     controller: _bioController,
-                    label: 'Bio',
+                    label: loc.editProfile_bio,
                     icon: Icons.description,
                     maxLines: 3,
                   ),
@@ -236,7 +238,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     _buildOptionTile(
                       context: context,
                       icon: Icons.lock,
-                      title: 'Change Password',
+                      title: loc.editProfile_changePassword,
                       onTap: () {
                         // Navigate to change password screen
                       },
@@ -244,7 +246,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     _buildOptionTile(
                       context: context,
                       icon: Icons.notifications,
-                      title: 'Notification Settings',
+                      title: loc.editProfile_notificationSettings,
                       onTap: () {
                         // Navigate to notification settings
                       },
@@ -252,7 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     _buildOptionTile(
                       context: context,
                       icon: Icons.privacy_tip,
-                      title: 'Privacy Settings',
+                      title: loc.editProfile_privacySettings,
                       onTap: () {
                         // Navigate to privacy settings
                       },
@@ -279,8 +281,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Delete Account',
+                  child: Text(
+                    loc.editProfile_deleteAccount,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
@@ -367,14 +369,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost.',
+        title: Text(AppLocalizations.of(context)!.editProfile_deleteAccountTitle),
+        content: Text(
+          AppLocalizations.of(context)!.editProfile_deleteAccountMessage,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.profile_cancel),
           ),
           TextButton(
             onPressed: () {
@@ -382,7 +384,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               // Handle account deletion
             },
             style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),

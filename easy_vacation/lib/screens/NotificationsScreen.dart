@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -31,10 +32,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor; // Add this
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context,'Notifications'),
+      appBar: App_Bar(context, loc.notifications_title),
       body: SafeArea(
         child: Column(
           children: [
@@ -50,7 +52,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'New',
+                            loc.notifications_new,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -94,7 +96,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Your booking is confirmed!',
+                                        loc.notifications_bookingConfirmed,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: textColor, // Changed to theme color
@@ -102,7 +104,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'You have successfully booked \'Vintage VW Camper\' for Aug 15-20.',
+                                        loc.notifications_bookingConfirmedMessage("Vintage VW Camper", "Aug 15-20"),
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: secondaryTextColor, // Changed to theme color
@@ -110,7 +112,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        '2 hours ago',
+                                        loc.notifications_hoursAgo(2),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: secondaryTextColor, // Changed to theme color
@@ -157,7 +159,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Share your experience',
+                                        loc.notifications_shareExperience,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: textColor, // Changed to theme color
@@ -165,7 +167,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Your stay at \'Lakeside Cabin Retreat\' ended yesterday. How was it?',
+                                        loc.notifications_reviewRequest("Lakeside Cabin Retreat"),
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: secondaryTextColor, // Changed to theme color
@@ -207,8 +209,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             vertical: 8,
                                           ),
                                         ),
-                                        child: const Text(
-                                          'Add Review Now',
+                                        child: Text(
+                                          loc.notifications_addReviewNow,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
@@ -243,7 +245,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       child: Row(
                         children: [
                           Text(
-                            'Earlier',
+                            loc.notifications_earlier,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -287,12 +289,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Your \'Fiat 500\' rental is starting in 3 days.',
+                                        loc.notifications_rentalReminder("Fiat 500", 3),
                                         style: TextStyle(color: textColor), // Changed to theme color
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        '3 days ago',
+                                        loc.notifications_daysAgo(3),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: secondaryTextColor, // Changed to theme color
@@ -327,7 +329,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'New summer deals!',
+                                        loc.notifications_newSummerDeals,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: textColor, // Changed to theme color
@@ -335,7 +337,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Check out our new listings with up to 20% off.',
+                                        loc.notifications_promotionalMessage,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: secondaryTextColor, // Changed to theme color
@@ -343,7 +345,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        '5 days ago',
+                                        loc.notifications_daysAgo(5),
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: secondaryTextColor, // Changed to theme color

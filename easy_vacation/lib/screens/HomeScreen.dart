@@ -7,6 +7,7 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/l10n/app_localizations.dart';
 
 import 'VehiclesScreen.dart';
 import 'StaysScreen.dart';
@@ -33,9 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: _navIdx == 0 ? App_Bar(context,'Home') : null,
+      appBar: _navIdx == 0 ? App_Bar(context,loc.home) : null,
       body: _bottomNavScreens[_navIdx],
       floatingActionButton: _navIdx == 0
           ? FloatingActionButton(
@@ -73,23 +75,23 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           }
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            label: loc.bottomNav_home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book_online_outlined),
-            label: 'Bookings',
+            label: loc.bottomNav_bookings,
           ),
           BottomNavigationBarItem(icon: SizedBox.shrink(), label: ''),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications_outlined),
-            label: 'Notifications',
+            label: loc.bottomNav_notifications,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
-            label: 'Settings',
+            label: loc.bottomNav_settings,
           ),
         ],
       ),
@@ -106,7 +108,6 @@ class _HomeContent extends StatefulWidget {
 }
 
 class __HomeContentState extends State<_HomeContent> {
-  final List<String> searchContent = const ['Type', 'Wilaya', 'Price', 'Date'];
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _searchController = TextEditingController();
 
@@ -121,6 +122,8 @@ class __HomeContentState extends State<_HomeContent> {
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor; // Get theme background color
     final textColor = context.textColor; // Get theme text color
+    final loc = AppLocalizations.of(context)!;
+    final List<String> searchContent = [loc.filterWilaya, loc.filterPrice, loc.filterDate];
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -142,7 +145,7 @@ class __HomeContentState extends State<_HomeContent> {
                   controller: _searchController,
                   cursorColor: AppTheme.primaryColor,
                   decoration: input_decor(
-                    'Search...',
+                    loc.search,
                     const Icon(Icons.search),
                   ),
                 ),
@@ -199,7 +202,7 @@ class __HomeContentState extends State<_HomeContent> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(3, (index) {
-                  final tabs = const ['Stays', 'Vehicles', 'Activities'];
+                  final tabs = [loc.tabStays, loc.tabVehicles, loc.tabActivities];
                   final bool isSelected = index == selectedIndex;
                   return GestureDetector(
                     onTap: () {

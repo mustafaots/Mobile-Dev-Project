@@ -1,0 +1,400 @@
+{
+  "@@locale": "ar",
+  "appTitle": "عطلة سهلة",
+  "welcomeMessage": "مرحبًا، أيها المسافر",
+  "exploreMessage": "استكشف الآن",
+  "createAccountTitle": "إنشاء\nحسابك",
+  "joinMessage": "انضم إلى EasyVacation اليوم",
+  "fullName": "الاسم الكامل",
+  "email": "البريد الإلكتروني",
+  "phoneNumber": "رقم الهاتف",
+  "password": "كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "pleaseEnterFullName": "يرجى إدخال اسمك الكامل",
+  "pleaseEnterEmail": "يرجى إدخال بريدك الإلكتروني",
+  "pleaseEnterPhoneNumber": "يرجى إدخال رقم هاتفك",
+  "pleaseEnterPassword": "يرجى إدخال كلمة المرور",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "signUp": "إنشاء حساب",
+  "alreadyHaveAccount": "هل لديك حساب بالفعل؟ تسجيل الدخول",
+  "orContinueWith": "أو المتابعة عبر",
+  "welcomeBack": "مرحبًا بعودتك",
+  "loginToAccount": "تسجيل الدخول إلى حسابك",
+  "phoneOrEmail": "الهاتف أو البريد الإلكتروني",
+  "pleaseEnterPhoneOrEmail": "يرجى إدخال هاتفك/بريدك الإلكتروني",
+  "login": "تسجيل الدخول",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "dontHaveAccount": "ليس لديك حساب؟ إنشاء حساب",
+  "home": "الرئيسية",
+  "search": "ابحث...",
+  "filterWilaya": "الولاية",
+  "filterPrice": "السعر",
+  "filterDate": "التاريخ",
+  "tabStays": "الإقامات",
+  "tabVehicles": "المركبات",
+  "tabActivities": "الأنشطة",
+  "settings": "الإعدادات",
+  "accountSettings": "إعدادات الحساب",
+  "premiumMember": "عضو بريميوم",
+  "premiumSubscription": "الاشتراك البريميوم",
+  "monthlyPlanActive": "الخطة الشهرية - مفعّلة",
+  "active": "نشط",
+  "editProfile": "تعديل الملف الشخصي",
+  "editProfileSubtitle": "حدّث معلوماتك الشخصية",
+  "myListings": "إعلاناتي",
+  "myListingsSubtitle": "عرض وإدارة إعلاناتك",
+  "bookingHistory": "سجل الحجوزات",
+  "bookingHistorySubtitle": "عرض حجوزاتك السابقة والقادمة",
+  "subscription": "الاشتراك",
+  "subscriptionSubtitle": "إدارة خطة اشتراكك",
+  "blockedUsers": "المستخدمون المحجوبون",
+  "blockedUsersSubtitle": "عرض المستخدمين الذين قمت بحجبهم وإلغاء الحجب",
+  "signOut": "تسجيل الخروج",
+  "signOutSubtitle": "تسجيل الخروج من الحساب",
+  "vehicles_featured_title": "مركبات مميزة",
+  "recommended_title": "موصى بها لك",
+  "day": "يوم",
+  "stays_featured_title": "إقامات مميزة",
+  "night": "ليلة",
+  "activities_featured_title": "أنشطة مميزة",
+  "subscriptions_title": "الاشتراكات",
+  "plan_recommended_label": "موصى به",
+  "plan_current_button": "الخطة الحالية",
+  "plan_select_button": "اختر الخطة",
+  "plan_free": "مجاني",
+  "plan_monthly": "شهري",
+  "plan_yearly": "سنوي",
+  "plan_detail_pay_per_cost": "الدفع حسب التكلفة",
+  "plan_detail_limited_uploads": "تحميل صور محدود",
+  "plan_detail_unlimited_listings": "إعلانات غير محدودة",
+  "plan_detail_increased_visibility": "زيادة الظهور",
+  "plan_detail_monthly_benefits": "كل مزايا الشهري",
+  "plan_detail_top_placement": "أعلى ترتيب",
+  "plan_detail_special_badges": "شارات خاصة",
+  "languageTitle": "اللغة",
+
+  "appBar_createListing": "إنشاء إعلان",
+  "header_createNewListing": "إنشاء إعلان جديد",
+  "header_fillDetails": "املأ التفاصيل للبدء",
+  "photo_addPhotos": "إضافة صور",
+  "photo_addPhotosDescription": "أضف حتى 10 صور لعرض إعلانك",
+  "photo_addPhotosButton": "إضافة صور",
+  "listingType_title": "نوع الإعلان",
+  "listingType_stay": "إقامة",
+  "listingType_activity": "نشاط",
+  "listingType_vehicle": "مركبة",
+  "form_listingDetails": "تفاصيل الإعلان",
+  "field_title": "العنوان",
+  "field_title_error": "يرجى إضافة عنوان",
+  "field_description": "الوصف",
+  "field_description_error": "يرجى إضافة وصف",
+  "field_price": "السعر",
+  "field_price_error": "يرجى إضافة سعر",
+  "field_location": "الموقع",
+  "field_location_error": "يرجى تحديد موقع",
+  "button_continueToPayment": "المتابعة للدفع",
+
+  "bottomNav_home": "الرئيسية",
+  "bottomNav_bookings": "الحجوزات",
+  "bottomNav_notifications": "الإشعارات",
+  "bottomNav_settings": "الإعدادات",
+  
+  "profile_title": "الملف الشخصي",
+  "profile_posts": "المشاركات",
+  "profile_followers": "المتابعون",
+  "profile_reviews": "التقييمات",
+  "profile_noPostsYet": "لا توجد مشاركات بعد",
+  "profile_noReviewsYet": "لا توجد تقييمات بعد",
+  "profile_follow": "متابعة",
+  "profile_following": "متابَع",
+  "profile_about": "حول",
+  "profile_from": "من",
+  "profile_memberSince": "عضو منذ",
+  "profile_countriesVisited": "الدول التي تم زيارتها",
+  "profile_reportUser": "الإبلاغ عن المستخدم",
+  "profile_blockUser": "حظر المستخدم",
+  "profile_shareProfile": "مشاركة الملف الشخصي",
+  "profile_cancel": "إلغاء",
+  "profile_helpful": "مفيد",
+  
+  "bookings_title": "الحجوزات",
+  "bookings_all": "الكل",
+  "bookings_pending": "قيد الانتظار",
+  "bookings_confirmed": "تم التأكيد",
+  "bookings_canceled": "تم الإلغاء",
+  "bookings_viewDetails": "عرض التفاصيل",
+  "bookings_noBookingsYet": "لا توجد حجوزات بعد",
+  "bookings_emptyMessage": "ليس لديك أي حجوزات قادمة أو سابقة. حان الوقت لتخطيط مغامرتك القادمة!",
+  "bookings_exploreStays": "استكشف أماكن الإقامة",
+  
+  "listingDetails_title": "تفاصيل القائمة",
+  "listingDetails_perNight": "لليلة الواحدة",
+  "listingDetails_hostedBy": "مستضيف بواسطة",
+  "listingDetails_superHost": "مضيف متميز",
+  "listingDetails_reviews": "التقييمات",
+  "listingDetails_availability": "التوفر",
+  "listingDetails_reserveNow": "احجز الآن",
+  "listingDetails_daysAgo": "قبل {count} يوم",
+  "listingDetails_daysAgo_other": "قبل {count} يوم",
+  "@listingDetails_daysAgo": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  
+  "editProfile_title": "تعديل الملف الشخصي",
+  "editProfile_changePhoto": "تغيير الصورة",
+  "editProfile_fullName": "الاسم الكامل",
+  "editProfile_emailAddress": "البريد الإلكتروني",
+  "editProfile_phoneNumber": "رقم الهاتف",
+  "editProfile_location": "الموقع",
+  "editProfile_bio": "السيرة الذاتية",
+  "editProfile_changePassword": "تغيير كلمة المرور",
+  "editProfile_notificationSettings": "إعدادات الإشعارات",
+  "editProfile_privacySettings": "إعدادات الخصوصية",
+  "editProfile_deleteAccount": "حذف الحساب",
+  "editProfile_profileUpdated": "تم تحديث الملف الشخصي بنجاح!",
+  "editProfile_changeProfilePicture": "تغيير صورة الملف الشخصي",
+  "editProfile_chooseOption": "اختر خيارًا",
+  "editProfile_camera": "الكاميرا",
+  "editProfile_gallery": "المعرض",
+  "editProfile_deleteAccountTitle": "حذف الحساب",
+  "editProfile_deleteAccountMessage": "هل أنت متأكد من أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء وستفقد جميع بياناتك بشكل دائم.",
+  
+  "bookingHistory_title": "سجل الحجوزات",
+  "bookingHistory_all": "الكل",
+  "bookingHistory_upcoming": "القادمة",
+  "bookingHistory_completed": "المكتملة",
+  "bookingHistory_cancelled": "الملغاة",
+  
+  "notifications_title": "الإشعارات",
+  "notifications_new": "جديدة",
+  "notifications_earlier": "سابقة",
+  "notifications_bookingConfirmed": "تم تأكيد حجزك!",
+  "notifications_bookingConfirmedMessage": "لقد حجزت '{listing}' بنجاح للفترة {dates}.",
+  "@notifications_bookingConfirmedMessage": {
+      "placeholders": {
+          "listing": {
+              "type": "String"
+          },
+          "dates": {
+              "type": "String"
+          }
+      }
+  },
+  "notifications_shareExperience": "شارك تجربتك",
+  "notifications_reviewRequest": "أنهيت إقامتك في '{listing}' بالأمس. كيف كانت؟",
+  "@notifications_reviewRequest": {
+      "placeholders": {
+          "listing": {
+              "type": "String"
+          }
+      }
+  },
+  "notifications_addReviewNow": "أضف تقييمًا الآن",
+  "notifications_hoursAgo": "قبل {count} ساعة",
+  "notifications_hoursAgo_other": "قبل {count} ساعة",
+  "@notifications_hoursAgo": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "notifications_daysAgo": "قبل {count} يوم",
+  "notifications_daysAgo_other": "قبل {count} يوم",
+  "@notifications_daysAgo": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "notifications_rentalReminder": "تبدأ تأجير '{vehicle}' بعد {days} يوم.",
+  "notifications_rentalReminder_other": "تبدأ تأجير '{vehicle}' بعد {days} يوم.",
+  "@notifications_rentalReminder": {
+      "placeholders": {
+          "vehicle": {
+              "type": "String"
+          },
+          "days": {
+              "type": "int"
+          }
+      }
+  },
+  "notifications_newSummerDeals": "عروض الصيف الجديدة!",
+  "notifications_promotionalMessage": "اطلع على قوائمنا الجديدة بخصم يصل إلى 20%.",
+  
+  "addReview_title": "إضافة تقييم",
+  "addReview_howWasStay": "كيف كانت إقامتك؟",
+  "addReview_shareExperience": "شارك تجربتك لمساعدة الآخرين",
+  "addReview_overallRating": "التقييم العام",
+  "addReview_tapToRate": "انقر للتقييم",
+  "addReview_stars": "{rating}/5 نجوم",
+  "@addReview_stars": {
+      "placeholders": {
+          "rating": {
+              "type": "int"
+          }
+      }
+  },
+  "addReview_quickReaction": "رد فعل سريع",
+  "addReview_terrible": "سيء",
+  "addReview_poor": "ضعيف",
+  "addReview_average": "متوسط",
+  "addReview_good": "جيد",
+  "addReview_excellent": "ممتاز",
+  "addReview_yourReview": "تقييمك",
+  "addReview_tellUsExperience": "أخبرنا عن تجربتك...",
+  "addReview_charactersCount": "{count}/300 حرف",
+  "@addReview_charactersCount": {
+      "placeholders": {
+          "count": {
+              "type": "int"
+          }
+      }
+  },
+  "addReview_submitReview": "إرسال التقييم",
+  "addReview_submitted": "تم إرسال التقييم!",
+  "addReview_thankYouFeedback": "شكرًا لك على ملاحظاتك!",
+  "addReview_ok": "موافق",
+  
+  "confirmListing_title": "تأكيد ونشر",
+  "confirmListing_readyToPost": "جاهز للنشر!",
+  "confirmListing_reviewDetails": "راجع تفاصيل قائمتك قبل النشر",
+  "confirmListing_pricingSummary": "ملخص الأسعار",
+  "confirmListing_basePrice": "السعر الأساسي",
+  "confirmListing_serviceFee": "رسوم الخدمة",
+  "confirmListing_totalAmount": "المبلغ الإجمالي",
+  "confirmListing_premiumPlan": "الخطة المميزة",
+  "confirmListing_subscriptionDays": "اشتراك 30 يوم",
+  "confirmListing_proTips": "نصائح احترافية",
+  "confirmListing_tip1": "أضف صور عالية الجودة",
+  "confirmListing_tip2": "سلط الضوء على العروض الخاصة",
+  "confirmListing_tip3": "أضف معلومات الاتصال",
+  "confirmListing_agreement": "أوافق على شروط الخدمة وأؤكد أن جميع التفاصيل صحيحة.",
+  "confirmListing_postListing": "نشر القائمة",
+  "confirmListing_listingPosted": "تم نشر القائمة بنجاح!",
+  
+  "blockUser_title": "حظر المستخدم",
+  "blockUser_blockingSerious": "الحظر إجراء جاد",
+  "blockUser_whatHappens": "ماذا يحدث عندما تحظر {userName}؟",
+  "@blockUser_whatHappens": {
+      "placeholders": {
+          "userName": {
+              "type": "String"
+          }
+      }
+  },
+  "blockUser_consequence1": "لن يتمكن من رؤية ملفك الشخصي أو مشاركاتك أو قصصك",
+  "blockUser_consequence2": "لا يمكنه إرسال تعليقات لك",
+  "blockUser_consequence3": "لن يتمكن من متابعتك أو رؤية تحديثاتك",
+  "blockUser_consequence4": "لن تتلقى أي إشعارات منه",
+  "blockUser_consequence5": "لن يظهر في نتائج البحث الخاصة بك",
+  "blockUser_note": "ملاحظة:",
+  "blockUser_noteMessage": "إذا غيرت رأيك، يمكنك إلغاء حظر هذا المستخدم في أي وقت من إعداداتك. الحظر قابل للعكس ولا يتم إخطار المستخدم الآخر.",
+  "blockUser_blockUser": "حظر المستخدم",
+  "blockUser_userBlocked": "تم حظر المستخدم",
+  "blockUser_blockedSuccessfully": "لقد حظرت {userName} بنجاح. لن يتمكن هذا المستخدم من التفاعل معك أو عرض ملفك الشخصي.",
+  "@blockUser_blockedSuccessfully": {
+      "placeholders": {
+          "userName": {
+              "type": "String"
+          }
+      }
+  },
+  "blockUser_returnToHome": "العودة إلى الرئيسية",
+  
+  "blockedUsers_title": "المستخدمون المحظورون",
+  "blockedUsers_info": "لا يمكن للمستخدمين المحظورين عرض ملفك الشخصي أو الاتصال بك.",
+  "blockedUsers_unblockUser": "إلغاء حظر المستخدم؟",
+  "blockedUsers_unblockConfirm": "هل أنت متأكد من أنك تريد إلغاء حظر {userName}؟ سيكون قادرًا على التفاعل معك وعرض ملفك الشخصي مرة أخرى.",
+  "@blockedUsers_unblockConfirm": {
+      "placeholders": {
+          "userName": {
+              "type": "String"
+          }
+      }
+  },
+  "blockedUsers_unblock": "إلغاء الحظر",
+  "blockedUsers_unblocked": "تم إلغاء حظر {userName}",
+  "@blockedUsers_unblocked": {
+      "placeholders": {
+          "userName": {
+              "type": "String"
+          }
+      }
+  },
+  "blockedUsers_blocked": "تم الحظر: {date}",
+  "@blockedUsers_blocked": {
+      "placeholders": {
+          "date": {
+              "type": "String"
+          }
+      }
+  },
+  "blockedUsers_noBlockedUsers": "لا يوجد مستخدمون محظورون",
+  "blockedUsers_emptyMessage": "سيظهر المستخدمون الذين تحظرهم هنا. يمكنك إلغاء حظرهم في أي وقت إذا غيرت رأيك.",
+  
+  "listingHistory_title": "قوائمي",
+  "listingHistory_all": "الكل",
+  "listingHistory_active": "نشطة",
+  "listingHistory_drafts": "مسودات",
+  "listingHistory_archived": "أرشيف",
+  "listingHistory_noPostsFound": "لم يتم العثور على مشاركات",
+  "listingHistory_noPostsYet": "لم تقم بإنشاء أي مشاركات بعد.",
+  "listingHistory_noFilterPosts": "لم يتم العثور على مشاركات {filter}.",
+  "@listingHistory_noFilterPosts": {
+      "placeholders": {
+          "filter": {
+              "type": "String"
+          }
+      }
+  },
+  "listingHistory_published": "منشورة",
+  "listingHistory_draft": "مسودة",
+  "listingHistory_editPost": "تعديل المشاركة",
+  "listingHistory_deletePost": "حذف المشاركة",
+  "listingHistory_publish": "نشر",
+  "listingHistory_archive": "أرشفة",
+  "listingHistory_editing": "جارٍ التعديل",
+  "listingHistory_deletePostTitle": "حذف المشاركة",
+  "listingHistory_deletePostConfirm": "هل أنت متأكد من أنك تريد حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@listingHistory_deletePostConfirm": {
+      "placeholders": {
+          "title": {
+              "type": "String"
+          }
+      }
+  },
+  "listingHistory_deleting": "جاري الحذف: {title}",
+  "@listingHistory_deleting": {
+      "placeholders": {
+          "title": {
+              "type": "String"
+          }
+      }
+  },
+  "listingHistory_postDeleted": "تم حذف المشاركة بنجاح",
+  "listingHistory_postPublished": "تم نشر المشاركة بنجاح",
+  "listingHistory_postArchived": "تم أرشفة المشاركة",
+  
+  "reportUser_title": "الإبلاغ",
+  "reportUser_tellUsWrong": "أخبرنا ما الخطأ",
+  "reportUser_inappropriateContent": "محتوى غير لائق",
+  "reportUser_spamOrScam": "بريد عشوائي أو احتيال",
+  "reportUser_misleadingInfo": "معلومات مضللة",
+  "reportUser_safetyConcern": "مخاوف أمنية",
+  "reportUser_other": "أخرى",
+  "reportUser_additionalDetails": "تفاصيل إضافية (اختياري)",
+  "reportUser_provideMoreInfo": "تقديم المزيد من المعلومات",
+  "reportUser_submitReport": "إرسال التقرير",
+  "reportUser_selectReason": "الرجاء تحديد سبب الإبلاغ",
+  "reportUser_reportSubmitted": "تم إرسال التقرير",
+  "reportUser_thankYouReport": "شكرًا لك على تقريرك. سنقوم بمراجعته واتخاذ الإجراء المناسب إذا لزم الأمر.",
+  "reportUser_done": "تم",
+
+    "delete": "حذف"
+}

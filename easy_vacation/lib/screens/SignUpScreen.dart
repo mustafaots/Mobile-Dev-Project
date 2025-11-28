@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -38,6 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -56,11 +58,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Create\nYour Account',
+                        loc.createAccountTitle,
                         style: header_1.copyWith(fontSize: 28),
                       ),
                       space(8),
-                      Text('Join EasyVacation today', style: small_grey_text),
+                      Text(loc.joinMessage, style: small_grey_text),
                     ],
                   ),
                 ),
@@ -94,11 +96,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildFormField(
                     context,
                     controller: _nameController,
-                    label: 'Full Name',
+                    label: loc.fullName,
                     icon: Icons.account_circle_outlined,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your full name';
+                        return loc.pleaseEnterFullName;
                       }
                       return null;
                     },
@@ -109,11 +111,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildFormField(
                     context,
                     controller: _emailController,
-                    label: 'Email',
+                    label: loc.email,
                     icon: Icons.mail,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your email';
+                        return loc.pleaseEnterEmail;
                       }
                       return null;
                     },
@@ -124,12 +126,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildFormField(
                     context,
                     controller: _phoneController,
-                    label: 'Phone Number',
+                    label: loc.phoneNumber,
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your phone number';
+                        return loc.pleaseEnterPhoneNumber;
                       }
                       return null;
                     },
@@ -140,12 +142,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildFormField(
                     context,
                     controller: _passwordController,
-                    label: 'Password',
+                    label: loc.password,
                     icon: Icons.lock,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your password';
+                        return loc.pleaseEnterPassword;
                       }
                       return null;
                     },
@@ -156,11 +158,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   buildFormField(
                     context,
                     controller: _password_2_Controller,
-                    label: 'Confirm Password',
+                    label: loc.confirmPassword,
                     icon: Icons.lock,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Passwords do not match';
+                        return loc.passwordsDoNotMatch;
                       }
                       return null;
                     },
@@ -196,7 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ///////////////////////////////////////////////////////
                   }
                 },
-                child: Text('Sign Up', style: login_text_style),
+                child: Text(loc.signUp, style: login_text_style),
               ),
             ),
 
@@ -224,7 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ///////////////////////////////////////////////////////
                 },
                 child: Text(
-                  "Already have an account? Login",
+                  loc.alreadyHaveAccount,
                   style: small_grey_text.copyWith(
                     color: AppTheme.primaryColor,
                     fontWeight: FontWeight.w500,
@@ -244,7 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
-                    "Or Continue With",
+                    loc.orContinueWith,
                     style: TextStyle(fontSize: 12, color: secondaryTextColor),
                   ),
                 ),

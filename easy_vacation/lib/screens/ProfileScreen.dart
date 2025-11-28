@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ReportUserScreen.dart';
 import 'package:easy_vacation/screens/BlockedUserScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -35,12 +36,14 @@ class ProfileScreen extends StatelessWidget {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Profile',
+          loc.profile_title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 23,
@@ -92,15 +95,15 @@ class ProfileScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildStatColumn(postsCount, 'Posts', context),
+                              _buildStatColumn(postsCount, loc.profile_posts, context),
                               _buildStatColumn(
                                 followersCount,
-                                'Followers',
+                                loc.profile_followers,
                                 context,
                               ),
                               _buildStatColumn(
                                 followingCount,
-                                'Following',
+                                loc.profile_following,
                                 context,
                               ),
                             ],
@@ -165,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              isFollowing ? 'Following' : 'Follow',
+                              isFollowing ? loc.profile_following : loc.profile_follow,
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -223,9 +226,9 @@ class ProfileScreen extends StatelessWidget {
                               labelColor: AppTheme.primaryColor,
                               unselectedLabelColor: secondaryTextColor,
                               indicatorColor: AppTheme.primaryColor,
-                              tabs: const [
-                                Tab(text: 'Posts'),
-                                Tab(text: 'Reviews'),
+                              tabs: [
+                                Tab(text: loc.profile_posts),
+                                Tab(text: loc.profile_reviews),
                               ],
                             ),
                             SizedBox(
@@ -236,7 +239,7 @@ class ProfileScreen extends StatelessWidget {
                                   // Posts Tab
                                   postsCount == 0
                                       ? _buildContentTab(
-                                          'No posts yet',
+                                          loc.profile_noPostsYet,
                                           Icons.article,
                                           context,
                                         )
@@ -245,7 +248,7 @@ class ProfileScreen extends StatelessWidget {
                                   // Reviews Tab
                                   reviewsCount == 0
                                       ? _buildContentTab(
-                                          'No reviews yet',
+                                          loc.profile_noReviewsYet,
                                           Icons.star,
                                           context,
                                         )
@@ -314,6 +317,7 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildInfoSection(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -332,7 +336,7 @@ class ProfileScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'About',
+            loc.profile_about,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -342,21 +346,21 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _buildInfoRow(
             Icons.location_on,
-            'From',
+            loc.profile_from,
             'Casablanca, Morocco',
             context,
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             Icons.calendar_today,
-            'Member since',
+            loc.profile_memberSince,
             'January 2024',
             context,
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             Icons.flag,
-            'Countries visited',
+            loc.profile_countriesVisited,
             '12 countries',
             context,
           ),
@@ -610,6 +614,7 @@ class ProfileScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -671,7 +676,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Helpful',
+                  loc.profile_helpful,
                   style: TextStyle(fontSize: 12, color: secondaryTextColor),
                 ),
                 const Spacer(),
@@ -700,6 +705,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _showPostDetail(BuildContext context, Post post) {
+    final loc = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -786,7 +792,7 @@ class ProfileScreen extends StatelessWidget {
                           const SizedBox(width: 16),
                           _buildActionButton(
                             Icons.share,
-                            'Share',
+                            'share',
                             dialogContext,
                           ),
                           const Spacer(),
@@ -826,6 +832,7 @@ class ProfileScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     showModalBottomSheet(
       context: context,
@@ -841,7 +848,7 @@ class ProfileScreen extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.report, color: AppTheme.failureColor),
                 title: Text(
-                  'Report User',
+                  loc.profile_shareProfile,
                   style: TextStyle(color: AppTheme.failureColor),
                 ),
                 onTap: () {
@@ -861,7 +868,7 @@ class ProfileScreen extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.block, color: AppTheme.failureColor),
                 title: Text(
-                  'Block User',
+                  loc.profile_blockUser,
                   style: TextStyle(color: AppTheme.failureColor),
                 ),
                 onTap: () {
@@ -881,7 +888,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(Icons.share, color: textColor),
-                title: Text('Share Profile'),
+                title: Text(loc.profile_shareProfile),
                 onTap: () {
                   Navigator.pop(dialogContext);
                   // Handle share profile
@@ -901,7 +908,7 @@ class ProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Cancel'),
+                  child: Text(loc.profile_cancel),
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/BlookedUserListScreen.dart';
 import 'package:easy_vacation/screens/BookingHistoryScreen.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
@@ -5,6 +6,7 @@ import 'package:easy_vacation/screens/ListingHistory.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/widgets/change_language.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -24,10 +26,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final backgroundColor = context.scaffoldBackgroundColor;
     final cardColor = context.cardColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context, 'Settings'),
+      appBar: App_Bar(context, loc.settings),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -99,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            'Premium Member',
+                            loc.premiumMember,
                             style: TextStyle(
                               fontSize: 12,
                             color: AppTheme.primaryColor,
@@ -165,7 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                          'Premium Subscription',
+                                loc.premiumSubscription,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -174,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                          'Monthly plan - Active',
+                                loc.monthlyPlanActive,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: secondaryTextColor,
@@ -193,7 +196,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            'Active',
+                            loc.active,
                             style: TextStyle(
                               fontSize: 12,
                               color: AppTheme.successColor,
@@ -205,9 +208,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  LanguageSelector(),
+                  SizedBox(height: 24,)
                 ],
               ),
-            ),
+            ), 
+
             // Settings Menu
             SliverList(
               delegate: SliverChildBuilderDelegate((context, index) {
@@ -225,7 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Text(
-                          'Account Settings',
+                          loc.accountSettings,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -235,8 +241,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       _buildMenuItem(
                         icon: Icons.person_outline,
-                        title: 'Edit Profile',
-                        subtitle: 'Update your personal information',
+                        title: loc.editProfile,
+                        subtitle: loc.editProfileSubtitle,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -260,8 +266,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 12),
                       _buildMenuItem(
                         icon: Icons.article_outlined,
-                        title: 'My Listings',
-                        subtitle: 'View and manage your listings',
+                        title: loc.myListings,
+                        subtitle: loc.myListingsSubtitle,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -285,8 +291,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 12),
                       _buildMenuItem(
                         icon: Icons.history_outlined,
-                        title: 'Booking History',
-                        subtitle: 'View your past and upcoming bookings',
+                        title: loc.bookingHistory,
+                        subtitle: loc.bookingHistorySubtitle,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -310,8 +316,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 12),
                       _buildMenuItem(
                         icon: Icons.subscriptions_outlined,
-                        title: 'Subscription',
-                        subtitle: 'Manage your subscription plan',
+                        title: loc.subscription,
+                        subtitle: loc.subscriptionSubtitle,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -335,8 +341,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 12),
                       _buildMenuItem(
                         icon: Icons.block_outlined,
-                        title: 'Blocked Users',
-                        subtitle: 'See who you blocked and want to unblock',
+                        title: loc.blockedUsers,
+                        subtitle: loc.blockedUsersSubtitle,
                         onTap: () {
                           Navigator.push(
                             context,
@@ -413,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Sign Out',
+                                      loc.signOut,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -422,7 +428,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      'Sign out of your account',
+                                      loc.signOutSubtitle,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: AppTheme.failureColor

@@ -2,6 +2,8 @@ import 'package:easy_vacation/screens/WelcomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
 
 void main() async {
@@ -12,8 +14,26 @@ void main() async {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MainAppState? state = context.findAncestorStateOfType<_MainAppState>();
+    state?.setLocale(newLocale);
+  }
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  Locale _locale = const Locale('en'); // default
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +43,18 @@ class MainApp extends StatelessWidget {
         buildWhen: (previous, current) => true,
         builder: (context, themeData) {
           return MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('fr'),
+              Locale('ar'),
+            ],
+            locale: _locale, // dynamic locale
             debugShowCheckedModeBanner: false,
             title: 'Easy Vacation',
             theme: themeData,
@@ -38,6 +70,3 @@ class MainApp extends StatelessWidget {
  //     followersCount: 128,
  //     followingCount: 56,
  //     isFollowing: false,), // Or your desired home screen
-
-
- 

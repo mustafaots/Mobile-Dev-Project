@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -19,59 +20,53 @@ class _CreateListingState extends State<CreateListing> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
-  final List<Map<String, dynamic>> listingTypes = [
-    {
-      'type': 'Stay',
-      'icon': Icons.house_outlined,
-      'color': AppTheme.primaryColor,
-    },
-    {
-      'type': 'Activity',
-      'icon': Icons.hiking_outlined,
-      'color': AppTheme.successColor,
-    },
-    {
-      'type': 'Vehicle',
-      'icon': Icons.directions_car_outlined,
-      'color': AppTheme.neutralColor,
-    },
-  ];
-  
   String? selectedOption = 'Stay';
-
-  void _selectOption(String? val) {
-    setState(() {
-      selectedOption = val!;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
+    final List<Map<String, dynamic>> listingTypes = [
+      {
+        'type': t.listingType_stay,
+        'icon': Icons.house_outlined,
+        'color': AppTheme.primaryColor,
+      },
+      {
+        'type': t.listingType_activity,
+        'icon': Icons.hiking_outlined,
+        'color': AppTheme.successColor,
+      },
+      {
+        'type': t.listingType_vehicle,
+        'icon': Icons.directions_car_outlined,
+        'color': AppTheme.neutralColor,
+      },
+    ];
+
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
 
     return Scaffold(
-      appBar: App_Bar(context, 'Create Listing'),
+      appBar: App_Bar(context, t.appBar_createListing),
       backgroundColor: backgroundColor,
       body: Column(
         children: [
-          // Progress indicator
           LinearProgressIndicator(
             value: 0.3,
             backgroundColor: secondaryTextColor.withOpacity(0.2),
             color: AppTheme.primaryColor,
             minHeight: 3,
           ),
-          
+
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
                   Center(
                     child: Column(
                       children: [
@@ -90,7 +85,7 @@ class _CreateListingState extends State<CreateListing> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Create New Listing',
+                          t.header_createNewListing,
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -99,7 +94,7 @@ class _CreateListingState extends State<CreateListing> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Fill in the details to get started',
+                          t.header_fillDetails,
                           style: TextStyle(
                             fontSize: 16,
                             color: secondaryTextColor,
@@ -111,7 +106,7 @@ class _CreateListingState extends State<CreateListing> {
 
                   const SizedBox(height: 32),
 
-                  // Photo Upload Section
+                  // PHOTO SECTION
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
@@ -127,14 +122,11 @@ class _CreateListingState extends State<CreateListing> {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.photo_library_outlined,
-                              color: AppTheme.primaryColor,
-                              size: 20,
-                            ),
+                            Icon(Icons.photo_library_outlined,
+                                color: AppTheme.primaryColor, size: 20),
                             const SizedBox(width: 8),
                             Text(
-                              'Add Photos',
+                              t.photo_addPhotos,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -145,7 +137,7 @@ class _CreateListingState extends State<CreateListing> {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Add up to 10 photos to showcase your listing',
+                          t.photo_addPhotosDescription,
                           style: TextStyle(
                             fontSize: 14,
                             color: secondaryTextColor,
@@ -162,23 +154,15 @@ class _CreateListingState extends State<CreateListing> {
                               decoration: BoxDecoration(
                                 color: AppTheme.primaryColor.withOpacity(0.05),
                                 borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: AppTheme.primaryColor.withOpacity(0.3),
-                                  width: 2,
-                                  style: BorderStyle.none,
-                                ),
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.add_a_photo,
-                                    color: AppTheme.primaryColor,
-                                    size: 32,
-                                  ),
+                                  Icon(Icons.add_a_photo,
+                                      color: AppTheme.primaryColor, size: 32),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Add Photos',
+                                    t.photo_addPhotosButton,
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: AppTheme.primaryColor,
@@ -196,30 +180,26 @@ class _CreateListingState extends State<CreateListing> {
 
                   const SizedBox(height: 24),
 
-                  // Listing Type Section
+                  // LISTING TYPE SECTION
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: cardColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: secondaryTextColor.withOpacity(0.2),
-                      ),
+                      border:
+                          Border.all(color: secondaryTextColor.withOpacity(0.2)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.category_outlined,
-                              color: AppTheme.primaryColor,
-                              size: 20,
-                            ),
+                            Icon(Icons.category_outlined,
+                                color: AppTheme.primaryColor, size: 20),
                             const SizedBox(width: 8),
                             Text(
-                              'Listing Type',
+                              t.listingType_title,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -232,14 +212,18 @@ class _CreateListingState extends State<CreateListing> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: listingTypes.map((type) {
-                            final isSelected = selectedOption == type['type'];
+                            final isSelected =
+                                selectedOption == type['type'];
+
                             return GestureDetector(
-                              onTap: () => _selectOption(type['type']),
+                              onTap: () =>
+                                  setState(() => selectedOption = type['type']),
                               child: Container(
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? (type['color'] as Color).withOpacity(0.1)
+                                      ? (type['color'] as Color)
+                                          .withOpacity(0.1)
                                       : cardColor,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
@@ -251,13 +235,11 @@ class _CreateListingState extends State<CreateListing> {
                                 ),
                                 child: Column(
                                   children: [
-                                    Icon(
-                                      type['icon'] as IconData,
-                                      color: isSelected
-                                          ? type['color'] as Color
-                                          : secondaryTextColor,
-                                      size: 24,
-                                    ),
+                                    Icon(type['icon'] as IconData,
+                                        color: isSelected
+                                            ? type['color'] as Color
+                                            : secondaryTextColor,
+                                        size: 24),
                                     const SizedBox(height: 8),
                                     Text(
                                       type['type'] as String,
@@ -281,16 +263,15 @@ class _CreateListingState extends State<CreateListing> {
 
                   const SizedBox(height: 24),
 
-                  // Form Section
+                  // FORM SECTION
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: cardColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: secondaryTextColor.withOpacity(0.2),
-                      ),
+                      border:
+                          Border.all(color: secondaryTextColor.withOpacity(0.2)),
                     ),
                     child: Form(
                       key: _formKey,
@@ -299,14 +280,11 @@ class _CreateListingState extends State<CreateListing> {
                         children: [
                           Row(
                             children: [
-                              Icon(
-                                Icons.description_outlined,
-                                color: AppTheme.primaryColor,
-                                size: 20,
-                              ),
+                              Icon(Icons.description_outlined,
+                                  color: AppTheme.primaryColor, size: 20),
                               const SizedBox(width: 8),
                               Text(
-                                'Listing Details',
+                                t.form_listingDetails,
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -315,15 +293,17 @@ class _CreateListingState extends State<CreateListing> {
                               ),
                             ],
                           ),
+
                           const SizedBox(height: 20),
 
                           buildFormField(
                             context,
                             controller: _titleController,
-                            label: 'Title',
+                            label: t.field_title,
                             icon: Icons.title_outlined,
-                            validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please add a title'
+                            validator: (value) => value == null ||
+                                    value.trim().isEmpty
+                                ? t.field_title_error
                                 : null,
                           ),
                           const SizedBox(height: 16),
@@ -331,11 +311,12 @@ class _CreateListingState extends State<CreateListing> {
                           buildFormField(
                             context,
                             controller: _descriptionController,
-                            label: 'Description',
+                            label: t.field_description,
                             icon: Icons.description_outlined,
                             maxLines: 3,
-                            validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please add a description'
+                            validator: (value) => value == null ||
+                                    value.trim().isEmpty
+                                ? t.field_description_error
                                 : null,
                           ),
                           const SizedBox(height: 16),
@@ -343,11 +324,12 @@ class _CreateListingState extends State<CreateListing> {
                           buildFormField(
                             context,
                             controller: _priceController,
-                            label: 'Price',
+                            label: t.field_price,
                             icon: Icons.attach_money_rounded,
                             keyboardType: TextInputType.number,
-                            validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please add a price'
+                            validator: (value) => value == null ||
+                                    value.trim().isEmpty
+                                ? t.field_price_error
                                 : null,
                           ),
                           const SizedBox(height: 16),
@@ -355,10 +337,11 @@ class _CreateListingState extends State<CreateListing> {
                           buildFormField(
                             context,
                             controller: _locationController,
-                            label: 'Location',
+                            label: t.field_location,
                             icon: Icons.location_on_outlined,
-                            validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please pin a location'
+                            validator: (value) => value == null ||
+                                    value.trim().isEmpty
+                                ? t.field_location_error
                                 : null,
                           ),
                         ],
@@ -368,7 +351,7 @@ class _CreateListingState extends State<CreateListing> {
 
                   const SizedBox(height: 32),
 
-                  // Continue Button
+                  // CONTINUE BUTTON
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -388,13 +371,10 @@ class _CreateListingState extends State<CreateListing> {
                             PageRouteBuilder(
                               pageBuilder: (_, __, ___) =>
                                   const ConfirmAndPostScreen(),
-                              transitionsBuilder: (_, animation, __, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                              transitionDuration: const Duration(milliseconds: 300),
+                              transitionsBuilder: (_, animation, __, child) =>
+                                  FadeTransition(opacity: animation, child: child),
+                              transitionDuration:
+                                  const Duration(milliseconds: 300),
                             ),
                           );
                         }
@@ -403,14 +383,14 @@ class _CreateListingState extends State<CreateListing> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Continue To Payment',
-                            style: TextStyle(
+                            t.button_continueToPayment,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Icon(Icons.arrow_forward_rounded, size: 20),
+                          const Icon(Icons.arrow_forward_rounded, size: 20),
                         ],
                       ),
                     ),

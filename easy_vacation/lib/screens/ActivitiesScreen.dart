@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -11,13 +12,15 @@ class ActivitiesScreen extends StatelessWidget {
     final cardCacheW = (260 * dpr).toInt();
     final cardCacheH = (200 * dpr).toInt();
     final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
+    final loc = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'Featured Activities',
+            loc.activities_featured_title,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
           ),
         ),
@@ -98,8 +101,8 @@ class ActivitiesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Recommended for You',
+              Text(
+                loc.recommended_title,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 20),

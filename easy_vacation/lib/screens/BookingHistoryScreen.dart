@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,11 @@ class BookingHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context,'Booking History'),
+      appBar: App_Bar(context, loc.bookingHistory_title),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -23,13 +25,18 @@ class BookingHistoryScreen extends StatelessWidget {
                 height: 50,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: ['All', 'Upcoming', 'Completed', 'Cancelled']
+                  children: [
+                    loc.bookingHistory_all, 
+                    loc.bookingHistory_upcoming, 
+                    loc.bookingHistory_completed, 
+                    loc.bookingHistory_cancelled
+                  ]
                       .map(
                         (filter) => Container(
                           margin: const EdgeInsets.only(right: 8),
                           child: FilterChip(
                             label: Text(filter),
-                            selected: filter == 'All',
+                            selected: filter == loc.bookingHistory_all,
                             onSelected: (_) {},
                           ),
                         ),

@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -12,14 +13,6 @@ class ReportUserScreen extends StatefulWidget {
 }
 
 class _ReportUserScreenState extends State<ReportUserScreen> {
-  List problems = [
-    'Inappropriate content',
-    'Spam or scam',
-    'Misleading information',
-    'Safety concern',
-    'Other',
-  ];
-
   String? selectedOption;
   final TextEditingController _detailsController = TextEditingController();
   bool _isSubmitting = false;
@@ -33,6 +26,8 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+        final loc = AppLocalizations.of(context)!;
+        
         return Dialog(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
@@ -61,7 +56,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
 
                 // Title
                 Text(
-                  'Report Submitted',
+                  loc.reportUser_reportSubmitted,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -72,7 +67,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
 
                 // Message
                 Text(
-                  'Thank you for your report. We will review it and take appropriate action if necessary.',
+                  loc.reportUser_thankYouReport,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -117,8 +112,8 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text(
-                          'Done',
+                        child: Text(
+                          loc.reportUser_done,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -142,7 +137,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: AppTheme.failureColor,
-          content: const Text('Please select a reason for reporting'),
+          content: Text(AppLocalizations.of(context)!.reportUser_selectReason),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -177,9 +172,19 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
 
+    final loc = AppLocalizations.of(context)!;
+
+    List problems = [
+      loc.reportUser_inappropriateContent,
+      loc.reportUser_spamOrScam,
+      loc.reportUser_misleadingInfo,
+      loc.reportUser_safetyConcern,
+      loc.reportUser_other,
+    ];
+
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: App_Bar(context, 'Report'),
+      appBar: App_Bar(context, loc.reportUser_title),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -187,7 +192,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Tell us what's wrong",
+                loc.reportUser_tellUsWrong,
                 style: AppTheme.header1.copyWith(
                   fontSize: 25,
                   color: textColor,
@@ -233,7 +238,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     ),
                   const SizedBox(height: 20),
                   Text(
-                    'Additional Details (Optional)',
+                    loc.reportUser_additionalDetails,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -248,7 +253,7 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     },
                     maxLines: 6,
                     decoration: AppTheme.inputDecoration(
-                      'Provide more information',
+                      loc.reportUser_provideMoreInfo,
                       Icons.description,
                     ).copyWith(contentPadding: const EdgeInsets.all(16)),
                   ),
@@ -277,8 +282,8 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              'Submit Report',
+                          : Text(
+                              loc.reportUser_submitReport,
                               style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w500,

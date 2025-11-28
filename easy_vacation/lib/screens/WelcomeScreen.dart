@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -22,6 +23,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -35,12 +37,12 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo and App Name
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 8),
                   Text(
-                    'EasyVacation',
+                    "Easy Vacation",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -79,7 +81,7 @@ class WelcomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Welcome, Traveler.',
+                  loc.welcomeMessage,
                   style: AppTheme.header1.copyWith(
                     color: textColor,
                     height: 1.2,
@@ -90,7 +92,7 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
 
               SizedBox(
-                width: 200, // <-- adjust this to make it smaller
+                width: 250, // <-- adjust this to make it smaller
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
@@ -114,7 +116,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Explore Now',
+                    loc.exploreMessage,
                     style: AppTheme.loginTextStyle.copyWith(
                       color: AppTheme.white,
                       fontSize: 22,
