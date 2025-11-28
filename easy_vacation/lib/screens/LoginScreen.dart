@@ -1,4 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/screens/ForgotPasswordScreen.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
@@ -152,7 +153,22 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Add forgot password functionality
+                    ///////////////////////////////////////////////////////
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => ForgotPasswordScreen(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 300),
+                      ),
+                      (route) => false, // This removes all previous routes
+                    );
+                    ///////////////////////////////////////////////////////
                   },
                   child: Text(
                     loc.forgotPassword,
