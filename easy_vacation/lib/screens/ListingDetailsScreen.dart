@@ -186,8 +186,6 @@ class PostDetailsScreen extends StatelessWidget {
                 userEmail: 'ali@example.com',
                 userImage: 'assets/images/host_Ali.jpg',
                 postsCount: 24,
-                followersCount: 128,
-                followingCount: 56,
                 reviewsCount: 127,
               );
             },
@@ -305,8 +303,6 @@ class PostDetailsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.star, color: AppTheme.neutralColor, size: 20),
-              const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context)!.listingDetails_reviews,
                 style: TextStyle(
@@ -325,8 +321,6 @@ class PostDetailsScreen extends StatelessWidget {
             4.5,
             'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
             postsCount: 18,
-            followersCount: 89,
-            followingCount: 45,
             reviewsCount: 23,
           ),
           const SizedBox(height: 16),
@@ -337,8 +331,6 @@ class PostDetailsScreen extends StatelessWidget {
             5.0,
             'A perfect getaway. The location is unbeatable. Highly recommended.',
             postsCount: 32,
-            followersCount: 156,
-            followingCount: 78,
             reviewsCount: 45,
           ),
         ],
@@ -353,8 +345,6 @@ class PostDetailsScreen extends StatelessWidget {
     double rating,
     String comment, {
     int postsCount = 0,
-    int followersCount = 0,
-    int followingCount = 0,
     int reviewsCount = 0,
   }) {
     final textColor = context.textColor;
@@ -369,8 +359,6 @@ class PostDetailsScreen extends StatelessWidget {
           userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
           userImage: avatarPath,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         );
       },
@@ -496,8 +484,6 @@ class PostDetailsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.calendar_today, color: AppTheme.primaryColor, size: 20),
-              const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context)!.listingDetails_availability,
                 style: TextStyle(
@@ -711,8 +697,6 @@ class PostDetailsScreen extends StatelessWidget {
     required String userEmail,
     required String userImage,
     required int postsCount,
-    required int followersCount,
-    required int followingCount,
     required int reviewsCount,
   }) {
     Navigator.push(
@@ -723,8 +707,6 @@ class PostDetailsScreen extends StatelessWidget {
           userEmail: userEmail,
           userImage: userImage,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         ),
         transitionsBuilder: (_, animation, __, child) {
