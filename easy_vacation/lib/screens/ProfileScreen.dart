@@ -1,6 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ReportUserScreen.dart';
-import 'package:easy_vacation/screens/BlockedUserScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,10 @@ class ProfileScreen extends StatelessWidget {
   final String userImage;
   final String subscriptionType;
   final int postsCount;
-  final int followersCount;
-  final int followingCount;
   final bool isFollowing;
   final int reviewsCount;
+  final double overallRating; // New field for overall rating
+  final int totalReviews; // New field for total number of reviews
 
   const ProfileScreen({
     super.key,
@@ -24,10 +23,10 @@ class ProfileScreen extends StatelessWidget {
         'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
     this.subscriptionType = 'Free',
     this.postsCount = 0,
-    this.followersCount = 0,
-    this.followingCount = 0,
     this.isFollowing = false,
     this.reviewsCount = 0,
+    this.overallRating = 4, // Default overall rating
+    this.totalReviews = 0, // Default total reviews
   });
 
   @override
@@ -37,13 +36,14 @@ class ProfileScreen extends StatelessWidget {
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
     
-    final loc = AppLocalizations.of(context)!;
+    // TODO: Add localization
+    // final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text(
-          loc.profile_title,
+          'Profile', // TODO: Add localization - loc.profile_title
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 23,
@@ -90,22 +90,14 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 20),
 
-                        // Stats
+                        // Stats - Now with 3 columns
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildStatColumn(postsCount, loc.profile_posts, context),
-                              _buildStatColumn(
-                                followersCount,
-                                loc.profile_followers,
-                                context,
-                              ),
-                              _buildStatColumn(
-                                followingCount,
-                                loc.profile_following,
-                                context,
-                              ),
+                              _buildStatColumn(postsCount, 'Posts', context), // TODO: Add localization - loc.profile_posts
+                              _buildRatingColumn(overallRating, 'Rating', context), // TODO: Add localization - loc.profile_rating
+                              _buildStatColumn(totalReviews, 'Reviews', context), // TODO: Add localization - loc.profile_totalReviews
                             ],
                           ),
                         ),
@@ -143,59 +135,6 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 16),
-
-                    // Action Buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Follow/Unfollow logic
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: isFollowing
-                                  ? backgroundColor
-                                  : AppTheme.primaryColor,
-                              foregroundColor: isFollowing
-                                  ? AppTheme.primaryColor
-                                  : backgroundColor,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                side: isFollowing
-                                    ? BorderSide(color: AppTheme.primaryColor)
-                                    : BorderSide.none,
-                              ),
-                            ),
-                            child: Text(
-                              isFollowing ? loc.profile_following : loc.profile_follow,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: secondaryTextColor.withOpacity(0.3),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              // Message logic
-                            },
-                            icon: Icon(
-                              Icons.message,
-                              color: textColor,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -227,8 +166,8 @@ class ProfileScreen extends StatelessWidget {
                               unselectedLabelColor: secondaryTextColor,
                               indicatorColor: AppTheme.primaryColor,
                               tabs: [
-                                Tab(text: loc.profile_posts),
-                                Tab(text: loc.profile_reviews),
+                                Tab(text: 'Posts'), // TODO: Add localization - loc.profile_posts
+                                Tab(text: 'Reviews'), // TODO: Add localization - loc.profile_reviews
                               ],
                             ),
                             SizedBox(
@@ -239,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
                                   // Posts Tab
                                   postsCount == 0
                                       ? _buildContentTab(
-                                          loc.profile_noPostsYet,
+                                          'No posts yet', // TODO: Add localization - loc.profile_noPostsYet
                                           Icons.article,
                                           context,
                                         )
@@ -248,7 +187,7 @@ class ProfileScreen extends StatelessWidget {
                                   // Reviews Tab
                                   reviewsCount == 0
                                       ? _buildContentTab(
-                                          loc.profile_noReviewsYet,
+                                          'No reviews yet', // TODO: Add localization - loc.profile_noReviewsYet
                                           Icons.star,
                                           context,
                                         )
@@ -294,6 +233,34 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // New method for rating column with stars
+  Widget _buildRatingColumn(double rating, String label, BuildContext context) {
+    return Column(
+      children: [
+        // Rating number with star icon
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              rating.toStringAsFixed(1),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: context.textColor,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(fontSize: 14, color: context.secondaryTextColor),
+        ),
+      ],
+    );
+  }
+
   Widget _buildContentTab(String message, IconData icon, BuildContext context) {
     return Center(
       child: Column(
@@ -317,7 +284,8 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildInfoSection(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
-    final loc = AppLocalizations.of(context)!;
+    // TODO: Add localization
+    // final loc = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -336,7 +304,7 @@ class ProfileScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            loc.profile_about,
+            'About', // TODO: Add localization - loc.profile_about
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -346,22 +314,30 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _buildInfoRow(
             Icons.location_on,
-            loc.profile_from,
+            'From', // TODO: Add localization - loc.profile_from
             'Casablanca, Morocco',
             context,
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             Icons.calendar_today,
-            loc.profile_memberSince,
+            'Member since', // TODO: Add localization - loc.profile_memberSince
             'January 2024',
             context,
           ),
           const SizedBox(height: 8),
           _buildInfoRow(
             Icons.flag,
-            loc.profile_countriesVisited,
+            'Countries visited', // TODO: Add localization - loc.profile_countriesVisited
             '12 countries',
+            context,
+          ),
+          const SizedBox(height: 8),
+          // New row for overall rating in the info section
+          _buildInfoRow(
+            Icons.star,
+            'Overall Rating', // TODO: Add localization - loc.profile_overallRating
+            '$overallRating/5.0 ($totalReviews reviews)', // TODO: Add localization for "reviews"
             context,
           ),
         ],
@@ -614,7 +590,8 @@ class ProfileScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final loc = AppLocalizations.of(context)!;
+    // TODO: Add localization
+    // final loc = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -676,7 +653,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  loc.profile_helpful,
+                  'helpful', // TODO: Add localization - loc.profile_helpful
                   style: TextStyle(fontSize: 12, color: secondaryTextColor),
                 ),
                 const Spacer(),
@@ -705,7 +682,8 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _showPostDetail(BuildContext context, Post post) {
-    final loc = AppLocalizations.of(context)!;
+    // TODO: Add localization
+    // final loc = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -792,7 +770,7 @@ class ProfileScreen extends StatelessWidget {
                           const SizedBox(width: 16),
                           _buildActionButton(
                             Icons.share,
-                            'share',
+                            'share', // TODO: Add localization
                             dialogContext,
                           ),
                           const Spacer(),
@@ -832,7 +810,8 @@ class ProfileScreen extends StatelessWidget {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final loc = AppLocalizations.of(context)!;
+    // TODO: Add localization
+    // final loc = AppLocalizations.of(context)!;
 
     showModalBottomSheet(
       context: context,
@@ -848,7 +827,7 @@ class ProfileScreen extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.report, color: AppTheme.failureColor),
                 title: Text(
-                  loc.profile_shareProfile,
+                  'Report User', // TODO: Add localization - loc.profile_reportUser
                   style: TextStyle(color: AppTheme.failureColor),
                 ),
                 onTap: () {
@@ -866,29 +845,8 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.block, color: AppTheme.failureColor),
-                title: Text(
-                  loc.profile_blockUser,
-                  style: TextStyle(color: AppTheme.failureColor),
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                  Navigator.push(
-                    dialogContext,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
-                          BlockUserScreen(userName: userName),
-                      transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
                 leading: Icon(Icons.share, color: textColor),
-                title: Text(loc.profile_shareProfile),
+                title: Text('Share Profile'), // TODO: Add localization - loc.profile_shareProfile
                 onTap: () {
                   Navigator.pop(dialogContext);
                   // Handle share profile
@@ -908,7 +866,7 @@ class ProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(loc.profile_cancel),
+                  child: Text('Cancel'), // TODO: Add localization - loc.profile_cancel
                 ),
               ),
             ],
