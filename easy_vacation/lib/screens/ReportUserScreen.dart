@@ -251,11 +251,12 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                     onTapOutside: (event) {
                       FocusScope.of(context).unfocus();
                     },
-                    maxLines: 6,
+                    maxLines: 5,
                     decoration: AppTheme.inputDecoration(
                       loc.reportUser_provideMoreInfo,
                       Icons.description,
-                    ).copyWith(contentPadding: const EdgeInsets.all(16)),
+                      context
+                    ).copyWith(contentPadding: const EdgeInsets.all(15)),
                   ),
                   const SizedBox(height: 50),
                   SizedBox(

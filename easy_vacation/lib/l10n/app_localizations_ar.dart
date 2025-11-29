@@ -844,4 +844,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get forgotPassword_title => 'نسيت كلمة المرور';
+
+  @override
+  String get forgotPassword_instructions =>
+      'أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPassword_helpText =>
+      'تحقق من مجلد الرسائل غير المرغوب فيها إذا لم تتلق البريد الإلكتروني خلال دقائق قليلة.';
+
+  @override
+  String get forgotPassword_iconText =>
+      'لا تقلق! فقط أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.';
+
+  @override
+  String get forgotPassword_emailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get forgotPassword_emailEmptyError => 'يرجى إدخال بريدك الإلكتروني';
+
+  @override
+  String get forgotPassword_emailInvalidError =>
+      'يرجى إدخال عنوان بريد إلكتروني صحيح';
+
+  @override
+  String get forgotPassword_resetLink =>
+      'تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني';
+
+  @override
+  String get forgotPassword_sendButton => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get forgotPassword_backToLogin => 'العودة إلى تسجيل الدخول';
 }

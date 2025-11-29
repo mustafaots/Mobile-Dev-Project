@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
@@ -16,8 +17,8 @@ class ForgotPasswordScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Reset link sent to your email'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.forgotPassword_resetLink),
           backgroundColor: Colors.green,
         ),
       );
@@ -42,6 +43,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -60,12 +62,12 @@ class ForgotPasswordScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Forgot Password',
+                        loc.forgotPassword_title,
                         style: header_1.copyWith(fontSize: 28),
                       ),
                       space(8),
                       Text(
-                        'Enter your email to reset your password',
+                        loc.forgotPassword_instructions,
                         style: small_grey_text,
                       ),
                     ],
@@ -112,7 +114,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
             // Instructions Text
             Text(
-              'Don\'t worry! Just enter your email and we\'ll send you a reset link.',
+              loc.forgotPassword_iconText,
               style: small_grey_text.copyWith(fontSize: 14),
               textAlign: TextAlign.center,
             ),
@@ -127,15 +129,15 @@ class ForgotPasswordScreen extends StatelessWidget {
                   buildFormField(
                     context,
                     controller: _emailController,
-                    label: 'Email',
+                    label: loc.forgotPassword_emailLabel,
                     icon: Icons.mail_outline,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your email';
+                        return loc.forgotPassword_emailEmptyError;
                       }
                       final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                       if (!emailRegex.hasMatch(value)) {
-                        return 'Please enter a valid email address';
+                        return loc.forgotPassword_emailInvalidError;
                       }
                       return null;
                     },
@@ -155,7 +157,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 ),
                 onPressed: () => _handlePasswordReset(context),
                 child: Text(
-                  'Send Reset Link',
+                  loc.forgotPassword_sendButton,
                   style: login_text_style,
                 ),
               ),
@@ -179,7 +181,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 );
               },
               child: Text(
-                'Back to Login',
+                loc.forgotPassword_backToLogin,
                 style: small_grey_text.copyWith(
                   color: AppTheme.primaryColor,
                   fontWeight: FontWeight.w500,
@@ -207,7 +209,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Check your spam folder if you don\'t receive the email within a few minutes.',
+                      loc.forgotPassword_helpText,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blue[700],

@@ -396,5 +396,17 @@
     "reportUser_thankYouReport": "Thank you for your report. We will review it and take appropriate action if necessary.",
     "reportUser_done": "Done",
 
-    "delete": "Delete"
+    "delete": "Delete",
+
+
+    "forgotPassword_title": "Forgot Password",
+    "forgotPassword_instructions": "Enter your email to reset your password",
+    "forgotPassword_helpText": "Check your spam folder if you don't receive the email within a few minutes.",
+    "forgotPassword_iconText": "Don't worry! Just enter your email and we'll send you a reset link.",
+    "forgotPassword_emailLabel": "Email",
+    "forgotPassword_emailEmptyError": "Please enter your email",
+    "forgotPassword_emailInvalidError": "Please enter a valid email address",
+    "forgotPassword_resetLink": "Reset link sent to your email",
+    "forgotPassword_sendButton": "Send Reset Link",
+    "forgotPassword_backToLogin": "Back to Login"
 }
