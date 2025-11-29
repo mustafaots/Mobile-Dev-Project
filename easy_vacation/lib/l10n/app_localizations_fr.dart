@@ -859,4 +859,39 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get delete => 'Supprimer';
+
+  @override
+  String get forgotPassword_title => 'Mot de passe oublié';
+
+  @override
+  String get forgotPassword_instructions =>
+      'Entrez votre email pour réinitialiser votre mot de passe';
+
+  @override
+  String get forgotPassword_helpText =>
+      'Vérifiez votre dossier spam si vous ne recevez pas l\'e-mail dans quelques minutes.';
+
+  @override
+  String get forgotPassword_iconText =>
+      'Ne vous inquiétez pas ! Entrez simplement votre email et nous vous enverrons un lien de réinitialisation.';
+
+  @override
+  String get forgotPassword_emailLabel => 'Email';
+
+  @override
+  String get forgotPassword_emailEmptyError => 'Veuillez entrer votre email';
+
+  @override
+  String get forgotPassword_emailInvalidError =>
+      'Veuillez entrer une adresse email valide';
+
+  @override
+  String get forgotPassword_resetLink =>
+      'Lien de réinitialisation envoyé à votre email';
+
+  @override
+  String get forgotPassword_sendButton => 'Envoyer le lien de réinitialisation';
+
+  @override
+  String get forgotPassword_backToLogin => 'Retour à la connexion';
 }

@@ -1677,6 +1677,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
+
+  /// No description provided for @forgotPassword_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPassword_title;
+
+  /// No description provided for @forgotPassword_instructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email to reset your password'**
+  String get forgotPassword_instructions;
+
+  /// No description provided for @forgotPassword_helpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your spam folder if you don\'t receive the email within a few minutes.'**
+  String get forgotPassword_helpText;
+
+  /// No description provided for @forgotPassword_iconText.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t worry! Just enter your email and we\'ll send you a reset link.'**
+  String get forgotPassword_iconText;
+
+  /// No description provided for @forgotPassword_emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get forgotPassword_emailLabel;
+
+  /// No description provided for @forgotPassword_emailEmptyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get forgotPassword_emailEmptyError;
+
+  /// No description provided for @forgotPassword_emailInvalidError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get forgotPassword_emailInvalidError;
+
+  /// No description provided for @forgotPassword_resetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset link sent to your email'**
+  String get forgotPassword_resetLink;
+
+  /// No description provided for @forgotPassword_sendButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get forgotPassword_sendButton;
+
+  /// No description provided for @forgotPassword_backToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get forgotPassword_backToLogin;
 }
 
 class _AppLocalizationsDelegate
