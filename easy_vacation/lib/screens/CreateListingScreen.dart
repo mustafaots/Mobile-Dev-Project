@@ -5,6 +5,8 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class CreateListing extends StatefulWidget {
   const CreateListing({super.key});
@@ -20,7 +22,167 @@ class _CreateListingState extends State<CreateListing> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
 
+  final ImagePicker _picker = ImagePicker();
+  List<XFile> _selectedImages = [];
+
   String? selectedOption = 'Stay';
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      if (source == ImageSource.gallery) {
+        final List<XFile> images = await _picker.pickMultiImage();
+        setState(() => _selectedImages.addAll(images));
+      } else {
+        final XFile? image = await _picker.pickImage(source: source);
+        if (image != null) {
+          setState(() => _selectedImages.add(image));
+        }
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+    }
+  }
+
+  void _removeImage(int index) {
+    setState(() => _selectedImages.removeAt(index));
+  }
+
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        final cardColor = context.cardColor;
+        final textColor = context.textColor;
+        
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: textColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ListTile(
+                  leading: Icon(Icons.photo_library, color: AppTheme.primaryColor),
+                  title: Text('Choose from Gallery', style: TextStyle(color: textColor)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.camera_alt, color: AppTheme.primaryColor),
+                  title: Text('Take a Photo', style: TextStyle(color: textColor)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImageGrid() {
+    final secondaryTextColor = context.secondaryTextColor;
+    
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: [
+        // Display selected images
+        ..._selectedImages.asMap().entries.map((entry) {
+          final index = entry.key;
+          final image = entry.value;
+          
+          return Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.file(
+                  File(image.path),
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: GestureDetector(
+                  onTap: () => _removeImage(index),
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }).toList(),
+        
+        // Add photo button
+        InkWell(
+          onTap: _showImageSourceDialog,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppTheme.primaryColor.withOpacity(0.3),
+                width: 2,
+                style: BorderStyle.solid,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_a_photo,
+                  color: AppTheme.primaryColor,
+                  size: 28,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Add',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +295,27 @@ class _CreateListingState extends State<CreateListing> {
                                 color: textColor,
                               ),
                             ),
+                            if (_selectedImages.isNotEmpty) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${_selectedImages.length}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                         const SizedBox(height: 12),
@@ -144,36 +327,7 @@ class _CreateListingState extends State<CreateListing> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Center(
-                          child: InkWell(
-                            onTap: () {},
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add_a_photo,
-                                      color: AppTheme.primaryColor, size: 32),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    t.photo_addPhotosButton,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppTheme.primaryColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        _buildImageGrid(),
                       ],
                     ),
                   ),
@@ -366,6 +520,9 @@ class _CreateListingState extends State<CreateListing> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          // TODO: Upload images to backend here
+                          // Example: await uploadImages(_selectedImages);
+                          
                           Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
@@ -406,3 +563,16 @@ class _CreateListingState extends State<CreateListing> {
     );
   }
 }
+
+// EXAMPLE: Backend integration function (add this outside the class)
+// Future<List<String>> uploadImages(List<XFile> images) async {
+//   List<String> imageUrls = [];
+//   
+//   for (var image in images) {
+//     // Upload to your backend/storage service
+//     // final url = await yourBackendService.uploadImage(File(image.path));
+//     // imageUrls.add(url);
+//   }
+//   
+//   return imageUrls;
+// }
