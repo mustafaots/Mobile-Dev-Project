@@ -9,11 +9,11 @@ class SubscriptionRepository {
   /// Insert a new subscription
   Future<int> insertSubscription({
     required int subscriberId,
-    required int hostId,
+    String? plan,
   }) async {
     return await db.insert('subscriptions', {
       'subscriber_id': subscriberId,
-      'host_id': hostId,
+      'plan': plan ?? 'free',
       'created_at': DateTime.now().toIso8601String(),
     });
   }
@@ -44,23 +44,13 @@ class SubscriptionRepository {
     );
   }
 
-  /// Get subscriptions by host
-  Future<List<Map<String, dynamic>>> getSubscriptionsByHost(int hostId) async {
+  /// Get subscriptions by plan
+  Future<List<Map<String, dynamic>>> getSubscriptionsByPlan(String plan) async {
     return await db.query(
       'subscriptions',
-      where: 'host_id = ?',
-      whereArgs: [hostId],
+      where: 'plan = ?',
+      whereArgs: [plan],
     );
-  }
-
-  /// Check if user is subscribed to host
-  Future<bool> isSubscribed(int subscriberId, int hostId) async {
-    final result = await db.query(
-      'subscriptions',
-      where: 'subscriber_id = ? AND host_id = ?',
-      whereArgs: [subscriberId, hostId],
-    );
-    return result.isNotEmpty;
   }
 
   /// Update subscription
@@ -76,14 +66,5 @@ class SubscriptionRepository {
   /// Delete subscription
   Future<int> deleteSubscription(int id) async {
     return await db.delete('subscriptions', where: 'id = ?', whereArgs: [id]);
-  }
-
-  /// Delete subscription by subscriber and host
-  Future<int> deleteSubscriptionByUsers(int subscriberId, int hostId) async {
-    return await db.delete(
-      'subscriptions',
-      where: 'subscriber_id = ? AND host_id = ?',
-      whereArgs: [subscriberId, hostId],
-    );
   }
 }

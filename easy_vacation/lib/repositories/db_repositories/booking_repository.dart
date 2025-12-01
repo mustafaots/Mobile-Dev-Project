@@ -11,20 +11,16 @@ class BookingRepository {
     required int postId,
     required int clientId,
     String? status,
-    DateTime? startDate,
-    DateTime? endDate,
-    double? totalPrice,
-    int? guestCount,
+    DateTime? startTime,
+    DateTime? endTime,
   }) async {
     return await db.insert('bookings', {
       'post_id': postId,
       'client_id': clientId,
       'status': status ?? 'pending',
       'booked_at': DateTime.now().toIso8601String(),
-      'start_date': startDate?.toIso8601String(),
-      'end_date': endDate?.toIso8601String(),
-      'total_price': totalPrice,
-      'guest_count': guestCount ?? 1,
+      'start_time': startTime?.toIso8601String(),
+      'end_time': endTime?.toIso8601String(),
     });
   }
 

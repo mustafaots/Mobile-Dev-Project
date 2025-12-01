@@ -23,7 +23,7 @@ class DBHelper {
             last_name TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             is_verified BOOLEAN DEFAULT 0,
-            profile_picture_url TEXT,
+            profile_picture BLOB,
             user_type TEXT,
             is_suspended BOOLEAN
           )
@@ -44,7 +44,7 @@ class DBHelper {
           CREATE TABLE posts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             owner_id INTEGER NOT NULL,
-            category TEXT NOT NULL,
+            category TEXT NOT NULL CHECK(category IN ('activity', 'vehicle', 'stay')),
             title TEXT NOT NULL,
             description TEXT,
             price REAL NOT NULL,
@@ -53,56 +53,51 @@ class DBHelper {
             is_paid BOOLEAN DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            status TEXT DEFAULT 'active',
+            status TEXT DEFAULT 'active' CHECK(status IN ('active', 'draft')),
+            availability TEXT,
             FOREIGN KEY (owner_id) REFERENCES users(id),
             FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE
           )
         ''');
 
         await db.execute('''
-          CREATE TABLE stays (
-            id INTEGER PRIMARY KEY,
+          CREATE TABLE post_images (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER NOT NULL UNIQUE,
+            image BLOB NOT NULL,
+            FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE stays (
+            post_id INTEGER PRIMARY KEY NOT NULL,
             stay_type TEXT,
+            area REAL,
             bedrooms INTEGER,
-            bathrooms INTEGER,
-            max_guests INTEGER,
-            amenities TEXT,
-            check_in_time TEXT,
-            check_out_time TEXT,
-            size_sqft INTEGER,
             FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
           )
         ''');
 
         await db.execute('''
           CREATE TABLE activities (
-            id INTEGER PRIMARY KEY,
-            post_id INTEGER NOT NULL UNIQUE,
+            post_id INTEGER PRIMARY KEY NOT NULL,
             activity_type TEXT,
-            duration_hours INTEGER,
-            difficulty_level TEXT,
-            min_age INTEGER,
-            included_items TEXT,
             requirements TEXT,
-            group_size_max INTEGER,
             FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
           )
         ''');
 
         await db.execute('''
           CREATE TABLE vehicles (
-            id INTEGER PRIMARY KEY,
-            post_id INTEGER NOT NULL UNIQUE,
+            post_id INTEGER PRIMARY KEY NOT NULL,
             vehicle_type TEXT,
-            make TEXT,
             model TEXT,
             year INTEGER,
             fuel_type TEXT,
-            transmission TEXT,
+            transmission BOOLEAN,
             seats INTEGER,
             features TEXT,
-            mileage_km INTEGER,
             FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
           )
         ''');
@@ -112,12 +107,10 @@ class DBHelper {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER NOT NULL,
             client_id INTEGER NOT NULL,
-            status TEXT DEFAULT 'pending',
+            status TEXT DEFAULT 'pending' CHECK(status IN ('confirmed', 'rejected', 'pending')),
             booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            start_date DATE,
-            end_date DATE,
-            total_price REAL,
-            guest_count INTEGER DEFAULT 1,
+            start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            end_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (post_id) REFERENCES posts(id),
             FOREIGN KEY (client_id) REFERENCES users(id)
           )
@@ -142,8 +135,7 @@ class DBHelper {
             reporter_id INTEGER NOT NULL,
             reported_post_id INTEGER,
             reported_user_id INTEGER,
-            reason TEXT NOT NULL,
-            status TEXT DEFAULT 'pending',
+            reason TEXT NOT NULL CHECK(reason IN ('inappropriate_content', 'scam_spam', 'misleading_info', 'safety_concerns', 'other')),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (reporter_id) REFERENCES users(id),
             FOREIGN KEY (reported_post_id) REFERENCES posts(id),
@@ -155,10 +147,9 @@ class DBHelper {
           CREATE TABLE subscriptions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             subscriber_id INTEGER NOT NULL,
-            host_id INTEGER NOT NULL,
+            plan TEXT DEFAULT 'free' CHECK(plan IN ('free', 'monthly', 'yearly')),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (subscriber_id) REFERENCES users(id),
-            FOREIGN KEY (host_id) REFERENCES users(id)
+            FOREIGN KEY (subscriber_id) REFERENCES users(id)
           )
         ''');
       },

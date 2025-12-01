@@ -14,7 +14,7 @@ class UserRepository {
     String? firstName,
     String? lastName,
     bool isVerified = false,
-    String? profilePictureUrl,
+    List<int>? profilePicture,
     String? userType,
     bool isSuspended = false,
   }) async {
@@ -25,7 +25,7 @@ class UserRepository {
       'first_name': firstName,
       'last_name': lastName,
       'is_verified': isVerified ? 1 : 0,
-      'profile_picture_url': profilePictureUrl,
+      'profile_picture': profilePicture,
       'user_type': userType,
       'is_suspended': isSuspended ? 1 : 0,
     });
