@@ -879,4 +879,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get forgotPassword_backToLogin => 'العودة إلى تسجيل الدخول';
+
+  @override
+  String get search_wilaya => 'ابحث عن الولاية';
+
+  @override
+  String get choose_wilaya => 'اختر الولاية';
+
+  @override
+  String get enter_price => 'أدخل السعر';
+
+  @override
+  String get enter_max_price => 'أدخل السعر الأقصى';
+
+  @override
+  String get no_wilaya_found => 'لا توجد ولايات';
+
+  @override
+  String get enter => 'أدخل';
 }

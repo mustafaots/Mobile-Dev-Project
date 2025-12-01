@@ -1737,6 +1737,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Login'**
   String get forgotPassword_backToLogin;
+
+  /// No description provided for @search_wilaya.
+  ///
+  /// In en, this message translates to:
+  /// **'Search wilaya'**
+  String get search_wilaya;
+
+  /// No description provided for @choose_wilaya.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose wilaya'**
+  String get choose_wilaya;
+
+  /// No description provided for @enter_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter price'**
+  String get enter_price;
+
+  /// No description provided for @enter_max_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter max price'**
+  String get enter_max_price;
+
+  /// No description provided for @no_wilaya_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No wilaya found'**
+  String get no_wilaya_found;
+
+  /// No description provided for @enter.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get enter;
 }
 
 class _AppLocalizationsDelegate

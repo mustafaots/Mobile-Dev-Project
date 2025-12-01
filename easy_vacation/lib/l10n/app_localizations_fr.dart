@@ -894,4 +894,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get forgotPassword_backToLogin => 'Retour à la connexion';
+
+  @override
+  String get search_wilaya => 'Rechercher une wilaya';
+
+  @override
+  String get choose_wilaya => 'Choisir une wilaya';
+
+  @override
+  String get enter_price => 'Entrer le prix';
+
+  @override
+  String get enter_max_price => 'Entrer le prix maximum';
+
+  @override
+  String get no_wilaya_found => 'Aucune wilaya trouvée';
+
+  @override
+  String get enter => 'Entrer';
 }
