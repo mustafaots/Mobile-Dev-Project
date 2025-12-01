@@ -42,4 +42,8 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+
+    <!--this is for the image picker perms, CREATE LISTING SCREEN-->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

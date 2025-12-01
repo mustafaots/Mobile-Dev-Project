@@ -47,5 +47,11 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+
+        <!--this is for the image picker perms, CREATE LISTING SCREEN-->
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to your photo library</string>
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera</string>
 	</dict>
 </plist>
