@@ -408,5 +408,13 @@
     "forgotPassword_emailInvalidError": "Please enter a valid email address",
     "forgotPassword_resetLink": "Reset link sent to your email",
     "forgotPassword_sendButton": "Send Reset Link",
-    "forgotPassword_backToLogin": "Back to Login"
+    "forgotPassword_backToLogin": "Back to Login",
+
+    
+    "search_wilaya": "Search wilaya",
+    "choose_wilaya": "Choose wilaya",
+    "enter_price": "Enter price",
+    "enter_max_price": "Enter max price",
+    "no_wilaya_found": "No wilaya found",
+    "enter": "Enter"
 }
