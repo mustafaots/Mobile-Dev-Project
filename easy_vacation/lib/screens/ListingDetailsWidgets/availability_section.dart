@@ -1,50 +1,156 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'dart:convert';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 
 class AvailabilitySection extends StatefulWidget {
-  const AvailabilitySection({super.key});
+  final String? availabilityJson;
+  final Function(List<DateTime> selectedDates)? onDatesSelected;
+
+  const AvailabilitySection({
+    super.key,
+    this.availabilityJson,
+    this.onDatesSelected,
+  });
 
   @override
   State<AvailabilitySection> createState() => _AvailabilitySectionState();
 }
 
 class _AvailabilitySectionState extends State<AvailabilitySection> {
-  late DateTime _currentMonth;
-  late DateTime _selectedStartDate;
-  late DateTime _selectedEndDate;
-
-  // Define unavailable dates
-  static final List<DateTime> _unavailableDates = [
-    DateTime(2024, 5, 13),
-    DateTime(2024, 5, 14),
-    DateTime(2024, 5, 23),
-    DateTime(2024, 5, 24),
-  ];
-
-  static const List<String> _weekDays = [
-    'Su',
-    'Mo',
-    'Tu',
-    'We',
-    'Th',
-    'Fr',
-    'Sa',
-  ];
+  late DateTime _focusedDay;
+  Set<DateTime> _selectedDates = {};
+  String? _errorMessage;
+  List<DateInterval> _availableIntervals = [];
 
   @override
   void initState() {
     super.initState();
-    _currentMonth = DateTime(2024, 5, 1);
-    _selectedStartDate = DateTime(2024, 5, 7);
-    _selectedEndDate = DateTime(2024, 5, 10);
+    _focusedDay = DateTime.now();
+    _parseAvailabilityJson();
+  }
+
+  void _parseAvailabilityJson() {
+    if (widget.availabilityJson == null || widget.availabilityJson!.isEmpty) {
+      // Default: all dates are available
+      _availableIntervals = [
+        DateInterval(
+          DateTime.now(),
+          DateTime.now().add(const Duration(days: 4)),
+        ),
+      ];
+      return;
+    }
+
+    try {
+      final Map<String, dynamic> data = jsonDecode(widget.availabilityJson!);
+      final List<dynamic> intervals = data['intervals'] ?? [];
+
+      _availableIntervals = intervals.map((interval) {
+        final startDate = DateTime.parse(interval['start'] as String);
+        final endDate = DateTime.parse(interval['end'] as String);
+        return DateInterval(startDate, endDate);
+      }).toList();
+    } catch (e) {
+      debugPrint('Error parsing availability JSON: $e');
+      // Default fallback
+      _availableIntervals = [
+        DateInterval(
+          DateTime.now(),
+          DateTime.now().add(const Duration(days: 365)),
+        ),
+      ];
+    }
+  }
+
+  bool _isDateAvailable(DateTime date) {
+    final dateOnly = DateTime(date.year, date.month, date.day);
+    return _availableIntervals.any((interval) {
+      final start = DateTime(
+        interval.start.year,
+        interval.start.month,
+        interval.start.day,
+      );
+      final end = DateTime(
+        interval.end.year,
+        interval.end.month,
+        interval.end.day,
+      );
+      return !dateOnly.isBefore(start) && !dateOnly.isAfter(end);
+    });
+  }
+
+  bool _isDateInSelectedRange(DateTime date) {
+    final dateOnly = DateTime(date.year, date.month, date.day);
+    return _selectedDates.any((selectedDate) {
+      final selectedOnly = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+      );
+      return dateOnly == selectedOnly;
+    });
+  }
+
+  bool _isRangeFullyAvailable(DateTime start, DateTime end) {
+    final startOnly = DateTime(start.year, start.month, start.day);
+    final endOnly = DateTime(end.year, end.month, end.day);
+
+    for (var i = 0; i <= endOnly.difference(startOnly).inDays; i++) {
+      final checkDate = startOnly.add(Duration(days: i));
+      if (!_isDateAvailable(checkDate)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    setState(() {
+      _errorMessage = null;
+
+      // Only allow selection of available dates
+      if (!_isDateAvailable(selectedDay)) {
+        _errorMessage = 'This date is not available';
+        return;
+      }
+
+      final selectedDayOnly = DateTime(
+        selectedDay.year,
+        selectedDay.month,
+        selectedDay.day,
+      );
+
+      // Toggle selection: if date is already selected, remove it; otherwise add it
+      if (_selectedDates.any((date) => _isSameDay(date, selectedDayOnly))) {
+        _selectedDates.removeWhere((date) => _isSameDay(date, selectedDayOnly));
+      } else {
+        _selectedDates.add(selectedDayOnly);
+      }
+
+      _focusedDay = focusedDay;
+
+      // Notify parent widget if callback is provided
+      if (widget.onDatesSelected != null) {
+        widget.onDatesSelected!(_selectedDates.toList()..sort());
+      }
+    });
+  }
+
+  bool _isSameDay(DateTime? date1, DateTime? date2) {
+    if (date1 == null || date2 == null) return false;
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
     final cardColor = context.cardColor;
+    final secondaryTextColor = context.secondaryTextColor;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -82,256 +188,256 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
             ],
           ),
           const SizedBox(height: 16),
-          _buildCalendarGrid(context),
+          // Calendar widget
+          TableCalendar(
+            firstDay: DateTime.utc(2020, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => _isDateInSelectedRange(day),
+            onDaySelected: (selectedDay, focusedDay) {
+              // Only allow selection if the date is available
+              if (_isDateAvailable(selectedDay)) {
+                _onDaySelected(selectedDay, focusedDay);
+              } else {
+                // Show error for unavailable dates
+                setState(() {
+                  _errorMessage = 'This date is not available';
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+            calendarStyle: CalendarStyle(
+              // Available dates styling - highlight them
+              defaultTextStyle: TextStyle(color: textColor, fontSize: 14),
+              weekendTextStyle: TextStyle(color: textColor, fontSize: 14),
+              // Unavailable dates styling - greyed out and unclickable
+              disabledTextStyle: TextStyle(
+                color: secondaryTextColor.withOpacity(0.5),
+                fontSize: 14,
+                decoration: TextDecoration.lineThrough,
+              ),
+              disabledDecoration: BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+              // Highlight available dates with light background
+              defaultDecoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              weekendDecoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              // Selected day styling
+              selectedDecoration: BoxDecoration(
+                color: AppTheme.primaryColor,
+                shape: BoxShape.circle,
+              ),
+              selectedTextStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+              // Today styling
+              todayDecoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.3),
+                shape: BoxShape.circle,
+                border: Border.all(color: AppTheme.primaryColor, width: 1.5),
+              ),
+              todayTextStyle: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+              ),
+              // Outside month styling - not clickable
+              outsideTextStyle: TextStyle(
+                color: secondaryTextColor.withOpacity(0.3),
+                fontSize: 14,
+              ),
+              cellMargin: const EdgeInsets.all(6),
+              cellPadding: const EdgeInsets.all(8),
+              rowDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+              titleTextStyle: TextStyle(
+                color: textColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              leftChevronIcon: Icon(
+                Icons.chevron_left,
+                color: secondaryTextColor,
+              ),
+              rightChevronIcon: Icon(
+                Icons.chevron_right,
+                color: secondaryTextColor,
+              ),
+              headerPadding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: secondaryTextColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              weekendStyle: TextStyle(
+                color: secondaryTextColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, focusedDay) {
+                // Check if date is available
+                final isAvailable = _isDateAvailable(day);
+                final isSelected = _isDateInSelectedRange(day);
+
+                if (!isAvailable) {
+                  // Show unavailable dates as disabled
+                  return Container(
+                    margin: const EdgeInsets.all(6),
+                    child: Center(
+                      child: Text(
+                        day.day.toString(),
+                        style: TextStyle(
+                          color: secondaryTextColor.withOpacity(0.5),
+                          fontSize: 14,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                // For available dates, return null to use the default styling
+                return null;
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Error message display
+          if (_errorMessage != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.red.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.red, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _errorMessage!,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          // Selected dates display
+          if (_selectedDates.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Selected Dates (${_selectedDates.length})',
+                    style: TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _selectedDates.map((date) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              _formatDate(date),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedDates.removeWhere(
+                                    (d) => _isSameDay(d, date),
+                                  );
+                                  if (widget.onDatesSelected != null) {
+                                    widget.onDatesSelected!(
+                                      _selectedDates.toList()..sort(),
+                                    );
+                                  }
+                                });
+                              },
+                              child: const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildCalendarGrid(BuildContext context) {
-    final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
-
-    return Column(
-      children: [
-        // Month selector
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: _previousMonth,
-                icon: Icon(Icons.chevron_left, color: secondaryTextColor),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-              ),
-              Text(
-                _formatMonth(_currentMonth),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
-                ),
-              ),
-              IconButton(
-                onPressed: _nextMonth,
-                icon: Icon(Icons.chevron_right, color: secondaryTextColor),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Week days header
-        Row(
-          children: _weekDays
-              .map(
-                (day) => Expanded(
-                  child: Text(
-                    day,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: secondaryTextColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-        const SizedBox(height: 12),
-
-        // Calendar days
-        ..._buildCalendarDays(context, textColor, secondaryTextColor),
-      ],
-    );
-  }
-
-  List<Widget> _buildCalendarDays(
-    BuildContext context,
-    Color textColor,
-    Color secondaryTextColor,
-  ) {
-    final days = <DateTime>[];
-    final firstDay = DateTime(_currentMonth.year, _currentMonth.month, 1);
-    final lastDay = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
-    final previousMonth = DateTime(_currentMonth.year, _currentMonth.month, 0);
-
-    // Add previous month's days
-    for (int i = firstDay.weekday - 1; i > 0; i--) {
-      days.add(previousMonth.subtract(Duration(days: i - 1)));
-    }
-
-    // Add current month's days
-    for (int i = 1; i <= lastDay.day; i++) {
-      days.add(DateTime(_currentMonth.year, _currentMonth.month, i));
-    }
-
-    // Add next month's days
-    final remainingDays = 42 - days.length;
-    for (int i = 1; i <= remainingDays; i++) {
-      days.add(DateTime(_currentMonth.year, _currentMonth.month + 1, i));
-    }
-
-    // Split into weeks
-    final weeks = <List<DateTime>>[];
-    for (int i = 0; i < days.length; i += 7) {
-      weeks.add(days.sublist(i, i + 7));
-    }
-
-    return weeks
-        .map(
-          (week) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: week
-                  .map(
-                    (day) => _buildDayCell(
-                      context,
-                      day,
-                      textColor,
-                      secondaryTextColor,
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        )
-        .toList();
-  }
-
-  Widget _buildDayCell(
-    BuildContext context,
-    DateTime day,
-    Color textColor,
-    Color secondaryTextColor,
-  ) {
-    final isCurrentMonth = day.month == _currentMonth.month;
-    final isUnavailable = _unavailableDates.any(
-      (d) => d.year == day.year && d.month == day.month && d.day == day.day,
-    );
-    final isInRange = _isDateInRange(day);
-    final isStartDate = _isSameDay(day, _selectedStartDate);
-    final isEndDate = _isSameDay(day, _selectedEndDate);
-
-    return Expanded(
-      child: GestureDetector(
-        onTap: isCurrentMonth && !isUnavailable ? () => _selectDate(day) : null,
-        child: Container(
-          height: 36,
-          margin: const EdgeInsets.symmetric(horizontal: 2),
-          decoration: BoxDecoration(
-            color: isInRange && !isStartDate && !isEndDate
-                ? AppTheme.primaryColor.withOpacity(0.15)
-                : (isStartDate || isEndDate
-                      ? AppTheme.primaryColor
-                      : Colors.transparent),
-            borderRadius: BorderRadius.circular(8),
-            border: (isStartDate || isEndDate)
-                ? Border.all(color: AppTheme.primaryColor, width: 1.5)
-                : null,
-          ),
-          child: Center(
-            child: Text(
-              day.day.toString(),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: (isStartDate || isEndDate)
-                    ? FontWeight.bold
-                    : FontWeight.normal,
-                color: isUnavailable
-                    ? secondaryTextColor.withOpacity(0.5)
-                    : (isCurrentMonth
-                          ? textColor
-                          : secondaryTextColor.withOpacity(0.5)),
-                decoration: isUnavailable ? TextDecoration.lineThrough : null,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
-
-  bool _isDateInRange(DateTime date) {
-    if (_isSameDay(_selectedStartDate, _selectedEndDate)) {
-      return _isSameDay(date, _selectedStartDate);
-    }
-    return date.isAfter(_selectedStartDate) &&
-            date.isBefore(_selectedEndDate) ||
-        _isSameDay(date, _selectedStartDate) ||
-        _isSameDay(date, _selectedEndDate);
-  }
-
-  void _selectDate(DateTime date) {
-    setState(() {
-      // If clicking on same as start, clear selection
-      if (_isSameDay(date, _selectedStartDate) &&
-          _isSameDay(date, _selectedEndDate)) {
-        _selectedStartDate = date;
-        _selectedEndDate = date;
-        return;
-      }
-
-      // If date is before start date, set as new start
-      if (date.isBefore(_selectedStartDate)) {
-        _selectedStartDate = date;
-        return;
-      }
-
-      // If we have a range and click before end, replace start
-      if (!_isSameDay(_selectedStartDate, _selectedEndDate) &&
-          date.isBefore(_selectedEndDate)) {
-        _selectedStartDate = date;
-        return;
-      }
-
-      // Otherwise set as end date
-      _selectedEndDate = date;
-    });
-  }
-
-  void _previousMonth() {
-    setState(() {
-      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
-    });
-  }
-
-  void _nextMonth() {
-    setState(() {
-      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
-    });
-  }
-
-  String _formatMonth(DateTime date) {
+  String _formatDate(DateTime date) {
     final months = [
-      'January',
-      'February',
-      'March',
-      'April',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
       'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
-    return '${months[date.month - 1]} ${date.year}';
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
+}
+
+class DateInterval {
+  final DateTime start;
+  final DateTime end;
+
+  DateInterval(this.start, this.end);
 }
