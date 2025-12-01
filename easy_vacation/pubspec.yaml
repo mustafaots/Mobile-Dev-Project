@@ -19,6 +19,8 @@ dependencies:
   world_flags: ^2.9.1
   country_icons: ^3.0.0
 
+  image_picker: ^1.0.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
