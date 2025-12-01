@@ -396,5 +396,24 @@
   "reportUser_thankYouReport": "شكرًا لك على تقريرك. سنقوم بمراجعته واتخاذ الإجراء المناسب إذا لزم الأمر.",
   "reportUser_done": "تم",
 
-    "delete": "حذف"
+  "delete": "حذف",
+
+  "forgotPassword_title": "نسيت كلمة المرور",
+  "forgotPassword_instructions": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+  "forgotPassword_helpText": "تحقق من مجلد الرسائل غير المرغوب فيها إذا لم تتلق البريد الإلكتروني خلال دقائق قليلة.",
+  "forgotPassword_iconText": "لا تقلق! فقط أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+  "forgotPassword_emailLabel": "البريد الإلكتروني",
+  "forgotPassword_emailEmptyError": "يرجى إدخال بريدك الإلكتروني",
+  "forgotPassword_emailInvalidError": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "forgotPassword_resetLink": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني",
+  "forgotPassword_sendButton": "إرسال رابط إعادة التعيين",
+  "forgotPassword_backToLogin": "العودة إلى تسجيل الدخول",
+
+
+  "search_wilaya": "ابحث عن الولاية",
+  "choose_wilaya": "اختر الولاية",
+  "enter_price": "أدخل السعر",
+  "enter_max_price": "أدخل السعر الأقصى",
+  "no_wilaya_found": "لا توجد ولايات",
+  "enter": "أدخل"
 }

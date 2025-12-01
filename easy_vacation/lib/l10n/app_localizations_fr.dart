@@ -859,4 +859,57 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get delete => 'Supprimer';
+
+  @override
+  String get forgotPassword_title => 'Mot de passe oublié';
+
+  @override
+  String get forgotPassword_instructions =>
+      'Entrez votre email pour réinitialiser votre mot de passe';
+
+  @override
+  String get forgotPassword_helpText =>
+      'Vérifiez votre dossier spam si vous ne recevez pas l\'e-mail dans quelques minutes.';
+
+  @override
+  String get forgotPassword_iconText =>
+      'Ne vous inquiétez pas ! Entrez simplement votre email et nous vous enverrons un lien de réinitialisation.';
+
+  @override
+  String get forgotPassword_emailLabel => 'Email';
+
+  @override
+  String get forgotPassword_emailEmptyError => 'Veuillez entrer votre email';
+
+  @override
+  String get forgotPassword_emailInvalidError =>
+      'Veuillez entrer une adresse email valide';
+
+  @override
+  String get forgotPassword_resetLink =>
+      'Lien de réinitialisation envoyé à votre email';
+
+  @override
+  String get forgotPassword_sendButton => 'Envoyer le lien de réinitialisation';
+
+  @override
+  String get forgotPassword_backToLogin => 'Retour à la connexion';
+
+  @override
+  String get search_wilaya => 'Rechercher une wilaya';
+
+  @override
+  String get choose_wilaya => 'Choisir une wilaya';
+
+  @override
+  String get enter_price => 'Entrer le prix';
+
+  @override
+  String get enter_max_price => 'Entrer le prix maximum';
+
+  @override
+  String get no_wilaya_found => 'Aucune wilaya trouvée';
+
+  @override
+  String get enter => 'Entrer';
 }

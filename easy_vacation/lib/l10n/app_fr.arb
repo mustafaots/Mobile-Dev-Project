@@ -396,5 +396,25 @@
   "reportUser_thankYouReport": "Merci pour votre signalement. Nous l'examinerons et prendrons les mesures appropriées si nécessaire.",
   "reportUser_done": "Terminé",
 
-  "delete": "Supprimer"
+  "delete": "Supprimer",
+
+  "forgotPassword_title": "Mot de passe oublié",
+  "forgotPassword_instructions": "Entrez votre email pour réinitialiser votre mot de passe",
+  "forgotPassword_helpText": "Vérifiez votre dossier spam si vous ne recevez pas l'e-mail dans quelques minutes.",
+  "forgotPassword_iconText": "Ne vous inquiétez pas ! Entrez simplement votre email et nous vous enverrons un lien de réinitialisation.",
+  "forgotPassword_emailLabel": "Email",
+  "forgotPassword_emailEmptyError": "Veuillez entrer votre email",
+  "forgotPassword_emailInvalidError": "Veuillez entrer une adresse email valide",
+  "forgotPassword_resetLink": "Lien de réinitialisation envoyé à votre email",
+  "forgotPassword_sendButton": "Envoyer le lien de réinitialisation",
+  "forgotPassword_backToLogin": "Retour à la connexion",
+
+
+  "search_wilaya": "Rechercher une wilaya",
+  "choose_wilaya": "Choisir une wilaya",
+  "enter_price": "Entrer le prix",
+  "enter_max_price": "Entrer le prix maximum",  
+  "no_wilaya_found": "Aucune wilaya trouvée",
+  "enter": "Entrer"
+
 }

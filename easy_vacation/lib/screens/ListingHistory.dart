@@ -109,8 +109,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
             _buildFilterChip(loc.listingHistory_active, loc.listingHistory_active, context),
             const SizedBox(width: 8),
             _buildFilterChip(loc.listingHistory_drafts, loc.listingHistory_drafts, context),
-            const SizedBox(width: 8),
-            _buildFilterChip(loc.listingHistory_archived, loc.listingHistory_archived, context),
           ],
         ),
       ),

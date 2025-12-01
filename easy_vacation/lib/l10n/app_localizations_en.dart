@@ -849,4 +849,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get delete => 'Delete';
+
+  @override
+  String get forgotPassword_title => 'Forgot Password';
+
+  @override
+  String get forgotPassword_instructions =>
+      'Enter your email to reset your password';
+
+  @override
+  String get forgotPassword_helpText =>
+      'Check your spam folder if you don\'t receive the email within a few minutes.';
+
+  @override
+  String get forgotPassword_iconText =>
+      'Don\'t worry! Just enter your email and we\'ll send you a reset link.';
+
+  @override
+  String get forgotPassword_emailLabel => 'Email';
+
+  @override
+  String get forgotPassword_emailEmptyError => 'Please enter your email';
+
+  @override
+  String get forgotPassword_emailInvalidError =>
+      'Please enter a valid email address';
+
+  @override
+  String get forgotPassword_resetLink => 'Reset link sent to your email';
+
+  @override
+  String get forgotPassword_sendButton => 'Send Reset Link';
+
+  @override
+  String get forgotPassword_backToLogin => 'Back to Login';
+
+  @override
+  String get search_wilaya => 'Search wilaya';
+
+  @override
+  String get choose_wilaya => 'Choose wilaya';
+
+  @override
+  String get enter_price => 'Enter price';
+
+  @override
+  String get enter_max_price => 'Enter max price';
+
+  @override
+  String get no_wilaya_found => 'No wilaya found';
+
+  @override
+  String get enter => 'Enter';
 }

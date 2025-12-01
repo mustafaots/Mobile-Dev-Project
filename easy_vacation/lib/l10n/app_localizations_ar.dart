@@ -844,4 +844,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get delete => 'حذف';
+
+  @override
+  String get forgotPassword_title => 'نسيت كلمة المرور';
+
+  @override
+  String get forgotPassword_instructions =>
+      'أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPassword_helpText =>
+      'تحقق من مجلد الرسائل غير المرغوب فيها إذا لم تتلق البريد الإلكتروني خلال دقائق قليلة.';
+
+  @override
+  String get forgotPassword_iconText =>
+      'لا تقلق! فقط أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.';
+
+  @override
+  String get forgotPassword_emailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get forgotPassword_emailEmptyError => 'يرجى إدخال بريدك الإلكتروني';
+
+  @override
+  String get forgotPassword_emailInvalidError =>
+      'يرجى إدخال عنوان بريد إلكتروني صحيح';
+
+  @override
+  String get forgotPassword_resetLink =>
+      'تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني';
+
+  @override
+  String get forgotPassword_sendButton => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get forgotPassword_backToLogin => 'العودة إلى تسجيل الدخول';
+
+  @override
+  String get search_wilaya => 'ابحث عن الولاية';
+
+  @override
+  String get choose_wilaya => 'اختر الولاية';
+
+  @override
+  String get enter_price => 'أدخل السعر';
+
+  @override
+  String get enter_max_price => 'أدخل السعر الأقصى';
+
+  @override
+  String get no_wilaya_found => 'لا توجد ولايات';
+
+  @override
+  String get enter => 'أدخل';
 }

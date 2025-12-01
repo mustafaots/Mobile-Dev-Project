@@ -15,9 +15,9 @@ class _LanguageSelectorState extends State<LanguageSelector> {
   String selectedLang = 'en';
 
   final Map<String, Widget> languages = {
-    'en': Image.asset('assets/images/gb.png', height: 28,),
-    'fr': Image.asset('assets/images/fr.png', height: 28,),
-    'ar': Image.asset('assets/images/dz.png', height: 28,),
+    'en': Image.asset('assets/images/gb.png', height: 25,),
+    'fr': Image.asset('assets/images/fr.png', height: 25,),
+    'ar': Image.asset('assets/images/dz.png', height: 25,),
   };
 
   @override

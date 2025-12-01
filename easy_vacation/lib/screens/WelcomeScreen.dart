@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
+import 'package:easy_vacation/shared/widgets/change_language.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -248,6 +249,9 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
+                      SizedBox(height: 30),
+                      LanguageSelector(),
 
                       const SizedBox(height: 60),
                     ],

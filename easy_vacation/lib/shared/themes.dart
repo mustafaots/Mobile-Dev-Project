@@ -44,7 +44,14 @@ class AppTheme {
   );
 
   // Input Decoration
-  static InputDecoration inputDecoration(String label, IconData icon) {
+  static InputDecoration inputDecoration(
+    String label,
+    IconData icon, [
+    BuildContext? context,
+  ]) {
+    final isDark = context != null &&
+        Theme.of(context).brightness == Brightness.dark;
+
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Color(0xFF6B7280), fontSize: 16),
@@ -63,11 +70,12 @@ class AppTheme {
         borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
       ),
       filled: true,
-      fillColor: const Color(0xFFF9FAFB),
+      fillColor: isDark ? const Color.fromARGB(255, 31, 31, 31) : const Color(0xFFF9FAFB),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       prefixIcon: Icon(icon, color: const Color(0xFF6B7280)),
     );
   }
+
 
   // Button Styles
   static final ButtonStyle primaryButtonStyle = ButtonStyle(
