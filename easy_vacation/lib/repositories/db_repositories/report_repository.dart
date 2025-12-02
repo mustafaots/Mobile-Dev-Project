@@ -12,14 +12,12 @@ class ReportRepository {
     int? reportedPostId,
     int? reportedUserId,
     required String reason,
-    String? status,
   }) async {
     return await db.insert('reports', {
       'reporter_id': reporterId,
       'reported_post_id': reportedPostId,
       'reported_user_id': reportedUserId,
       'reason': reason,
-      'status': status ?? 'pending',
       'created_at': DateTime.now().toIso8601String(),
     });
   }
@@ -44,11 +42,6 @@ class ReportRepository {
       where: 'reporter_id = ?',
       whereArgs: [reporterId],
     );
-  }
-
-  /// Get reports by status
-  Future<List<Map<String, dynamic>>> getReportsByStatus(String status) async {
-    return await db.query('reports', where: 'status = ?', whereArgs: [status]);
   }
 
   /// Get reports for a specific post
