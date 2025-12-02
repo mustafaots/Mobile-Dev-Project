@@ -407,5 +407,14 @@
   "forgotPassword_emailInvalidError": "Veuillez entrer une adresse email valide",
   "forgotPassword_resetLink": "Lien de réinitialisation envoyé à votre email",
   "forgotPassword_sendButton": "Envoyer le lien de réinitialisation",
-  "forgotPassword_backToLogin": "Retour à la connexion"
+  "forgotPassword_backToLogin": "Retour à la connexion",
+
+
+  "search_wilaya": "Rechercher une wilaya",
+  "choose_wilaya": "Choisir une wilaya",
+  "enter_price": "Entrer le prix",
+  "enter_max_price": "Entrer le prix maximum",  
+  "no_wilaya_found": "Aucune wilaya trouvée",
+  "enter": "Entrer"
+
 }

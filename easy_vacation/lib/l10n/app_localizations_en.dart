@@ -883,4 +883,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPassword_backToLogin => 'Back to Login';
+
+  @override
+  String get search_wilaya => 'Search wilaya';
+
+  @override
+  String get choose_wilaya => 'Choose wilaya';
+
+  @override
+  String get enter_price => 'Enter price';
+
+  @override
+  String get enter_max_price => 'Enter max price';
+
+  @override
+  String get no_wilaya_found => 'No wilaya found';
+
+  @override
+  String get enter => 'Enter';
 }

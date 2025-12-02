@@ -407,5 +407,13 @@
   "forgotPassword_emailInvalidError": "يرجى إدخال عنوان بريد إلكتروني صحيح",
   "forgotPassword_resetLink": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني",
   "forgotPassword_sendButton": "إرسال رابط إعادة التعيين",
-  "forgotPassword_backToLogin": "العودة إلى تسجيل الدخول"
+  "forgotPassword_backToLogin": "العودة إلى تسجيل الدخول",
+
+
+  "search_wilaya": "ابحث عن الولاية",
+  "choose_wilaya": "اختر الولاية",
+  "enter_price": "أدخل السعر",
+  "enter_max_price": "أدخل السعر الأقصى",
+  "no_wilaya_found": "لا توجد ولايات",
+  "enter": "أدخل"
 }
