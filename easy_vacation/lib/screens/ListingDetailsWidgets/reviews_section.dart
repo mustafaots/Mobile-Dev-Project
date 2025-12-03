@@ -13,8 +13,6 @@ class ReviewsSection extends StatelessWidget {
     required String userEmail,
     required String userImage,
     required int postsCount,
-    required int followersCount,
-    required int followingCount,
     required int reviewsCount,
   }) {
     Navigator.push(
@@ -25,8 +23,6 @@ class ReviewsSection extends StatelessWidget {
           userEmail: userEmail,
           userImage: userImage,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         ),
         transitionsBuilder: (_, animation, __, child) {
@@ -56,8 +52,6 @@ class ReviewsSection extends StatelessWidget {
     double rating,
     String comment, {
     int postsCount = 0,
-    int followersCount = 0,
-    int followingCount = 0,
     int reviewsCount = 0,
   }) {
     final textColor = context.textColor;
@@ -72,8 +66,6 @@ class ReviewsSection extends StatelessWidget {
           userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
           userImage: avatarPath,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         );
       },
@@ -218,8 +210,6 @@ class ReviewsSection extends StatelessWidget {
             4.5,
             'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
             postsCount: 18,
-            followersCount: 89,
-            followingCount: 45,
             reviewsCount: 23,
           ),
           const SizedBox(height: 16),
@@ -230,8 +220,6 @@ class ReviewsSection extends StatelessWidget {
             5.0,
             'A perfect getaway. The location is unbeatable. Highly recommended.',
             postsCount: 32,
-            followersCount: 156,
-            followingCount: 78,
             reviewsCount: 45,
           ),
         ],
