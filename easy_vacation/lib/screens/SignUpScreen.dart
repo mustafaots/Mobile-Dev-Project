@@ -1,5 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
@@ -258,41 +258,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             space(15),
 
-            // Social Icons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: secondaryTextColor.withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+            // Single Google Sign In Button
+            InkWell(
+              onTap: () {
+
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: context.cardColor,
+                  border: Border.all(
+                    color: context.secondaryTextColor.withOpacity(0.3),
+                    width: 1,
                   ),
-                  child: Icon(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
                     FontAwesomeIcons.google,
-                    color: secondaryTextColor,
+                    color: context.secondaryTextColor,
                     size: 20,
-                  ),
                 ),
-                const SizedBox(width: 20),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: secondaryTextColor.withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    FontAwesomeIcons.facebook,
-                    color: secondaryTextColor,
-                    size: 20,
-                  ),
-                ),
-              ],
+              ),
             ),
+  
           ],
         ),
       ),
