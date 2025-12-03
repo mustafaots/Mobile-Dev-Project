@@ -1,5 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/BookedPostScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -275,7 +276,14 @@ class _BookingsScreenState extends State<BookingsScreen> {
                     SizedBox(
                       width: 100,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PostDetailsScreen(),
+                            ),
+                          );
+                        },
                         style: AppTheme.primaryButtonStyle.copyWith(
                           minimumSize: WidgetStateProperty.all(
                             const Size(0, 36),

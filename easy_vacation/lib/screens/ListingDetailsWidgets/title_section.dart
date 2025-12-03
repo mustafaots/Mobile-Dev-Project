@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
-import 'header.dart';
 
 class TitleSection extends StatelessWidget {
   const TitleSection({super.key});
@@ -34,8 +33,6 @@ class TitleSection extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 16),
-          const Header(),
         ],
       ),
     );

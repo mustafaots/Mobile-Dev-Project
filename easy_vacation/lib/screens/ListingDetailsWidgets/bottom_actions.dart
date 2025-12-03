@@ -75,26 +75,6 @@ class BottomActions extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
-            SizedBox(
-              width: 60,
-              child: IconButton(
-                onPressed: () {},
-                style: IconButton.styleFrom(
-                  backgroundColor: cardColor,
-                  foregroundColor: textColor,
-                  minimumSize: const Size(0, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      color: secondaryTextColor.withOpacity(0.3),
-                      width: 1,
-                    ),
-                  ),
-                ),
-                icon: const Icon(Icons.edit, size: 20),
-              ),
-            ),
           ],
         ),
       ),
