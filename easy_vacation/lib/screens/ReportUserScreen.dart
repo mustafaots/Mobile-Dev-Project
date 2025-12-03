@@ -1,4 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -6,7 +8,12 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class ReportUserScreen extends StatefulWidget {
-  const ReportUserScreen({super.key});
+  const ReportUserScreen({
+    super.key,
+    //this.reporterId
+    //this.reportedUserId,
+    //this.reportedPostId
+  });
 
   @override
   State<ReportUserScreen> createState() => _ReportUserScreenState();
@@ -152,10 +159,19 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
     });
 
     // Simulate API call delay
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
       setState(() {
         _isSubmitting = false;
       });
+
+      final reportRepo = appRepos['reportRepo'] as ReportRepository;
+      /*await reportRepo.insertReport(
+        reporterId: reporterId,
+        reportedUserId: reportedUserId ?? null,
+        reportedPostId: reportedPostId ?? null,
+        reason: selectedOption!,
+        additionalDetails: _detailsController.text
+      );*/
       _showSuccessModal();
     });
   }
@@ -175,11 +191,11 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
     final loc = AppLocalizations.of(context)!;
 
     List problems = [
-      loc.reportUser_inappropriateContent,
-      loc.reportUser_spamOrScam,
-      loc.reportUser_misleadingInfo,
-      loc.reportUser_safetyConcern,
-      loc.reportUser_other,
+      {"key": "inappropriate_content", "label": loc.reportUser_inappropriateContent},
+      {"key": "scam_spam", "label": loc.reportUser_spamOrScam},
+      {"key": "misleading_info", "label": loc.reportUser_misleadingInfo},
+      {"key": "safety_concerns", "label": loc.reportUser_safetyConcern},
+      {"key": "other", "label": loc.reportUser_other},
     ];
 
     return Scaffold(
@@ -222,9 +238,9 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                         child: RadioListTile(
                           activeColor: AppTheme.primaryColor,
                           dense: true,
-                          value: problem,
+                          value: problem['key'],
                           title: Text(
-                            problem,
+                            problem['label'],
                             style: TextStyle(fontSize: 16, color: textColor),
                           ),
                           groupValue: selectedOption,

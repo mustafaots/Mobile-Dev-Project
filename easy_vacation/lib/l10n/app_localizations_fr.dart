@@ -912,4 +912,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get enter => 'Entrer';
+
+  @override
+  String get dinars => 'DA';
+
+  @override
+  String get subscription_update_success =>
+      'Votre abonnement a été mis à jour avec succès';
 }

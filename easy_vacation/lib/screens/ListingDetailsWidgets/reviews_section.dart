@@ -25,8 +25,6 @@ class ReviewsSection extends StatelessWidget {
           userEmail: userEmail,
           userImage: userImage,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         ),
         transitionsBuilder: (_, animation, __, child) {

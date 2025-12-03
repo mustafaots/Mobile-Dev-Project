@@ -901,4 +901,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enter => 'Enter';
+
+  @override
+  String get dinars => 'DZD';
+
+  @override
+  String get subscription_update_success =>
+      'Your subscription has been updated successfully';
 }

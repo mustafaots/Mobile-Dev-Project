@@ -33,6 +33,20 @@ class SubscriptionRepository {
     return await db.query('subscriptions');
   }
 
+  /// Get latest subscription by subscriber
+  Future<Map<String, dynamic>?> getLatestSubscriptionBySubscriber(
+    int subscriberId,
+  ) async {
+    final result = await db.query(
+      'subscriptions',
+      where: 'subscriber_id = ?',
+      whereArgs: [subscriberId],
+      orderBy: 'created_at DESC',
+      limit: 1,
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
   /// Get subscriptions by subscriber
   Future<List<Map<String, dynamic>>> getSubscriptionsBySubscriber(
     int subscriberId,
