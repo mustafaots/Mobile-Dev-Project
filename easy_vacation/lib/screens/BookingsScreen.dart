@@ -1,5 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/HomeScreen.dart';
+import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/BookedPostScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
