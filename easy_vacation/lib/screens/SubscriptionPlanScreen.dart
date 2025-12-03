@@ -1,4 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -12,25 +14,35 @@ class SubscriptionPlanScreen extends StatefulWidget {
 }
 
 class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
+  late List<Map<String, dynamic>> subscriptions;
 
-    List<Map<String, dynamic>> subscriptions = [
+  Future<String> getUserSub() async {
+    final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
+    final p = await subRepo.getLatestSubscriptionBySubscriber(2);
+    return p!['plan'];
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final t = AppLocalizations.of(context)!;
+    subscriptions = [
       {
+        'key': "free",
         'type': t.plan_free,
         'icon': Icons.person_outline,
-        'cost': '0.00',
+        'cost': '0',
         'details': [
           t.plan_detail_pay_per_cost,
           t.plan_detail_limited_uploads
         ],
-        'is_selected': true,
+        'is_selected': false,
       },
       {
+        'key': "monthly",
         'type': t.plan_monthly,
         'icon': Icons.calendar_month_outlined,
-        'cost': '19.99',
+        'cost': '4000',
         'details': [
           t.plan_detail_unlimited_listings,
           t.plan_detail_increased_visibility
@@ -38,9 +50,10 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         'is_selected': false,
       },
       {
+        'key': "yearly",
         'type': t.plan_yearly,
         'icon': Icons.star_outline,
-        'cost': '199.99',
+        'cost': '40000',
         'details': [
           t.plan_detail_monthly_benefits,
           t.plan_detail_top_placement,
@@ -49,8 +62,60 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         'is_selected': false,
       },
     ];
+  }
 
+  Future<bool> changePlan(int idx) async {
+    await Future.delayed(const Duration(milliseconds: 1500));
+    final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
+    final p = await getUserSub();
+    if (subscriptions[idx]['key'] == p) {
+      setState(() {
+        loadingIndex = null;
+      });
+      return false;
+    }
+
+    await subRepo.insertSubscription(
+      subscriberId: 2,
+      plan: subscriptions[idx]['key']
+    );
+    return true;
+  }
+
+  int? loadingIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final backgroundColor = context.scaffoldBackgroundColor;
+
+    void showSuccessMsg() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: const Color.fromARGB(255, 2, 177, 14),
+          content: Row(
+            children: [
+              Icon(Icons.check_circle_outline, color: Colors.white),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppLocalizations.of(context)!.subscription_update_success,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500  
+                  ),
+                ),
+              ),
+            ],
+          ),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
+    }
 
     Widget plan(
       String tp,
@@ -66,13 +131,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       final cardColor = context.cardColor;
 
       return GestureDetector(
-        onTap: () {
-          for (var sub in subscriptions) {
-            sub['is_selected'] = false;
-          }
-          subscriptions[idx]['is_selected'] = true;
-          setState(() {});
-        },
+        onTap: () {},
         child: Container(
           margin: const EdgeInsets.only(bottom: 20),
           decoration: BoxDecoration(
@@ -96,7 +155,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// HEADER
               Row(
                 children: [
                   Icon(icon, color: AppTheme.primaryColor, size: 28),
@@ -111,8 +169,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                       ),
                     ),
                   ),
-
-                  /// LOCALIZED "Recommended"
                   if (tp == t.plan_yearly)
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -120,7 +176,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                         horizontal: 12,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         color: AppTheme.neutralColor,
                       ),
                       child: Text(
@@ -137,9 +193,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
               const SizedBox(height: 12),
 
-              /// PRICE
               Text(
-                '\$$price',
+                '$price ${t.dinars}',
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.w900,
@@ -149,7 +204,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
               const SizedBox(height: 16),
 
-              /// DETAILS (LOCALIZED)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -164,8 +218,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                           Expanded(
                             child: Text(
                               detail,
-                              style:
-                                  TextStyle(fontSize: 15, color: textColor),
+                              style: TextStyle(fontSize: 15, color: textColor),
                             ),
                           ),
                         ],
@@ -176,7 +229,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
               const SizedBox(height: 20),
 
-              /// BUTTONS LOCALIZED
               SizedBox(
                 width: double.infinity,
                 height: 48,
@@ -190,14 +242,32 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {},
-                  child: Text(
+                  onPressed: () async {
+                    if(subscriptions[idx]['is_selected']) return;
+                    setState(() {
+                      loadingIndex = idx;
+                    });
+                    final changed = await changePlan(idx);
+                    if(changed) {
+                      setState(() {
+                        loadingIndex = null;
+                      });
+                      showSuccessMsg();
+                    }
+                  },
+                  child: loadingIndex == idx ? 
+                    SizedBox(
+                      height: 22,
+                      width: 22,
+                      child: CircularProgressIndicator(color: const Color.fromARGB(255, 255, 255, 255),),
+                    )
+                  : Text(
                     selected
                         ? t.plan_current_button
                         : t.plan_select_button,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
+                  ) 
                 ),
               ),
             ],
@@ -212,20 +282,51 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < subscriptions.length; i++)
-                plan(
-                  subscriptions[i]['type'],
-                  subscriptions[i]['icon'],
-                  subscriptions[i]['cost'],
-                  subscriptions[i]['details'],
-                  subscriptions[i]['is_selected'],
-                  i,
-                  context,
-                ),
-            ],
+          child: FutureBuilder<String>(
+            future: getUserSub(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppTheme.primaryColor,
+                  ),
+                );
+              }
+
+              if (snapshot.hasData) {
+                final p = snapshot.data;
+
+                for(var sub in subscriptions) {
+                  sub['is_selected'] = false;
+                }
+
+                if(p == 'free') {
+                  subscriptions[0]['is_selected'] = true;
+                } else if(p == 'monthly') {
+                  subscriptions[1]['is_selected'] = true;
+                } else {
+                  subscriptions[2]['is_selected'] = true;
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < subscriptions.length; i++)
+                      plan(
+                        subscriptions[i]['type'],
+                        subscriptions[i]['icon'],
+                        subscriptions[i]['cost'],
+                        subscriptions[i]['details'],
+                        subscriptions[i]['is_selected'],
+                        i,
+                        context,
+                      ),
+                  ],
+                );
+              } else {
+                return const Text('Error in getting data!');
+              }
+            },
           ),
         ),
       ),
