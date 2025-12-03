@@ -13,8 +13,6 @@ class HostInfo extends StatelessWidget {
     required String userEmail,
     required String userImage,
     required int postsCount,
-    required int followersCount,
-    required int followingCount,
     required int reviewsCount,
   }) {
     Navigator.push(
@@ -25,8 +23,6 @@ class HostInfo extends StatelessWidget {
           userEmail: userEmail,
           userImage: userImage,
           postsCount: postsCount,
-          followersCount: followersCount,
-          followingCount: followingCount,
           reviewsCount: reviewsCount,
         ),
         transitionsBuilder: (_, animation, __, child) {
@@ -81,8 +77,6 @@ class HostInfo extends StatelessWidget {
                 userEmail: 'ali@example.com',
                 userImage: 'assets/images/host_Ali.jpg',
                 postsCount: 24,
-                followersCount: 128,
-                followingCount: 56,
                 reviewsCount: 127,
               );
             },
