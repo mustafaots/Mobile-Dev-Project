@@ -1,7 +1,7 @@
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/NotificationsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
-import 'package:easy_vacation/screens/CreateListingScreen.dart';
+import 'package:easy_vacation/screens/Create Listing Screen/CategorySelectionScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const CreateListing(),
+                    pageBuilder: (_, __, ___) => const CategorySelectionScreen(),
                     transitionsBuilder: (_, animation, __, child) {
                       return FadeTransition(opacity: animation, child: child);
                     },
