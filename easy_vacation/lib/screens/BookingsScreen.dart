@@ -280,7 +280,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PostDetailsScreen(),
+                              builder: (context) => const BookedPostScreen(),
                             ),
                           );
                         },

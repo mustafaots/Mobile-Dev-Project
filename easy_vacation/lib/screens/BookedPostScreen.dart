@@ -4,8 +4,8 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'ListingDetailsWidgets/index.dart';
 
-class PostDetailsScreen extends StatelessWidget {
-  const PostDetailsScreen({super.key});
+class BookedPostScreen extends StatelessWidget {
+  const BookedPostScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
