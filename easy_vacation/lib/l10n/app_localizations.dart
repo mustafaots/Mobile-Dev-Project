@@ -1773,6 +1773,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter'**
   String get enter;
+
+  /// No description provided for @dinars.
+  ///
+  /// In en, this message translates to:
+  /// **'DZD'**
+  String get dinars;
+
+  /// No description provided for @subscription_update_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has been updated successfully'**
+  String get subscription_update_success;
 }
 
 class _AppLocalizationsDelegate

@@ -12,6 +12,8 @@ class DBHelper {
     _database = await openDatabase(
       join(await getDatabasesPath(), _databaseName),
       onCreate: (db, version) async {
+        // we need to add this in order to enable foreign key contraints
+        await db.execute('PRAGMA foreign_keys = ON');
         // Create users table
         await db.execute('''
           CREATE TABLE users (
@@ -136,6 +138,7 @@ class DBHelper {
             reported_post_id INTEGER,
             reported_user_id INTEGER,
             reason TEXT NOT NULL CHECK(reason IN ('inappropriate_content', 'scam_spam', 'misleading_info', 'safety_concerns', 'other')),
+            additional_details TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (reporter_id) REFERENCES users(id),
             FOREIGN KEY (reported_post_id) REFERENCES posts(id),

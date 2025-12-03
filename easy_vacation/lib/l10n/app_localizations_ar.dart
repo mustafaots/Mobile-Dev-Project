@@ -897,4 +897,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enter => 'أدخل';
+
+  @override
+  String get dinars => 'دج';
+
+  @override
+  String get subscription_update_success => 'تم تحديث اشتراكك بنجاح';
 }

@@ -6,10 +6,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
 
+
+late Map<String, dynamic> appRepos;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize all repositories
-  await RepoFactory.createAllRepos();
+  appRepos = await RepoFactory.createAllRepos();
   
   runApp(const MainApp());
 }

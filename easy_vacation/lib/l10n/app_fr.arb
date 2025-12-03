@@ -415,6 +415,9 @@
   "enter_price": "Entrer le prix",
   "enter_max_price": "Entrer le prix maximum",  
   "no_wilaya_found": "Aucune wilaya trouvée",
-  "enter": "Entrer"
+  "enter": "Entrer",
 
+  "dinars": "DA",
+  
+  "subscription_update_success": "Votre abonnement a été mis à jour avec succès"
 }
