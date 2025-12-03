@@ -1,5 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -21,12 +22,40 @@ class _LanguageSelectorState extends State<LanguageSelector> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    _loadSavedLanguage();
+  }
+
+  void _loadSavedLanguage() {
+    // Load from SharedPreferences via service
+    final savedLanguage = SharedPrefsService.getLanguage();
+    if (savedLanguage.isNotEmpty) {
+      setState(() {
+        selectedLang = savedLanguage;
+      });
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final localeCode = Localizations.localeOf(context).languageCode;
     if (localeCode != selectedLang) {
       setState(() => selectedLang = localeCode);
     }
+  }
+
+  Future<void> _changeLanguage(String languageCode) async {
+    // Save to SharedPreferences via service
+    await SharedPrefsService.setLanguage(languageCode);
+    
+    setState(() {
+      selectedLang = languageCode;
+    });
+    
+    // Update app locale
+    MainApp.setLocale(context, Locale(languageCode));
   }
 
   @override
@@ -63,12 +92,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
               final bool isSelected = selectedLang == entry.key;
               return Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedLang = entry.key;
-                    });
-                    MainApp.setLocale(context, Locale(entry.key));
-                  },
+                  onTap: () => _changeLanguage(entry.key),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 6),
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -77,9 +101,9 @@ class _LanguageSelectorState extends State<LanguageSelector> {
                         ? [
                             BoxShadow(
                               color: AppTheme.primaryColor.withOpacity(0.4),
-                              blurRadius: 10, // how blurry the glow is
-                              spreadRadius: 1, // how much it spreads
-                              offset: const Offset(0, 0), // center the glow
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 0),
                             ),
                           ]
                         : [],
@@ -95,7 +119,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
                       ),
                     ),
                     alignment: Alignment.center,
-                    child: entry.value
+                    child: entry.value,
                   ),
                 ),
               );

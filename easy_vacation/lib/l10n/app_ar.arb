@@ -415,5 +415,9 @@
   "enter_price": "أدخل السعر",
   "enter_max_price": "أدخل السعر الأقصى",
   "no_wilaya_found": "لا توجد ولايات",
-  "enter": "أدخل"
+  "enter": "أدخل",
+
+  "dinars": "دج",
+
+    "subscription_update_success": "تم تحديث اشتراكك بنجاح"
 }

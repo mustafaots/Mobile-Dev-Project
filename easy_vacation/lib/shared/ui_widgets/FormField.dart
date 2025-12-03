@@ -9,7 +9,7 @@ Widget buildFormField( BuildContext context, {
     required String? Function(String?) validator,
     int maxLines = 1,
     TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false
+    bool obscureText = false,
   }) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;

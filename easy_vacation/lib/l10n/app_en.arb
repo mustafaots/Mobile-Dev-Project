@@ -416,5 +416,9 @@
     "enter_price": "Enter price",
     "enter_max_price": "Enter max price",
     "no_wilaya_found": "No wilaya found",
-    "enter": "Enter"
+    "enter": "Enter",
+
+    "dinars": "DZD",
+
+    "subscription_update_success": "Your subscription has been updated successfully"
 }

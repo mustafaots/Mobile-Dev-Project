@@ -12,12 +12,14 @@ class ReportRepository {
     int? reportedPostId,
     int? reportedUserId,
     required String reason,
+    String? additionalDetails
   }) async {
     return await db.insert('reports', {
       'reporter_id': reporterId,
       'reported_post_id': reportedPostId,
       'reported_user_id': reportedUserId,
       'reason': reason,
+      'additional_details': additionalDetails,
       'created_at': DateTime.now().toIso8601String(),
     });
   }
