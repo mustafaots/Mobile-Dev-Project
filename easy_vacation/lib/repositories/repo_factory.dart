@@ -41,6 +41,7 @@ class RepoFactory {
       'reviewRepo': ReviewRepository(db),
       'subscriptionRepo': SubscriptionRepository(db),
       'reportRepo': ReportRepository(db),
+      'imageRepo': ImagesRepository(db),
       'sharedprefsRepo': sharedPrefsRepo,
     };
   }
