@@ -10,12 +10,10 @@ class TitleSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
+  
 
     final title = post?.title ?? 'Serene Oceanfront Villa';
-    final description =
-        post?.description ??
-        'Escape to our charming beachfront villa, where you can relax and enjoy the sound of the waves. Perfect for a romantic getaway or a small family vacation.';
+    
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -32,15 +30,7 @@ class TitleSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            description,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: secondaryTextColor,
-              height: 1.5,
-            ),
-          ),
+         
         ],
       ),
     );
