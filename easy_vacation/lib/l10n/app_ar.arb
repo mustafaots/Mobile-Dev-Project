@@ -121,7 +121,7 @@
   "bookings_all": "الكل",
   "bookings_pending": "قيد الانتظار",
   "bookings_confirmed": "تم التأكيد",
-  "bookings_canceled": "تم الإلغاء",
+  "bookings_rejected": "مرفوضة",
   "bookings_viewDetails": "عرض التفاصيل",
   "bookings_yourBooking": "حجزك",
   "bookings_noBookingsYet": "لا توجد حجوزات بعد",

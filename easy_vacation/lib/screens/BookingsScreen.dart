@@ -197,8 +197,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
         return loc.bookings_confirmed;
       case 'pending':
         return loc.bookings_pending;
-      case 'canceled':
-        return loc.bookings_canceled;
+      case 'rejected':
+        return loc.bookings_rejected;
       default:
         return status;
     }
@@ -210,7 +210,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
         return AppTheme.successColor;
       case 'pending':
         return AppTheme.neutralColor;
-      case 'canceled':
+      case 'rejected':
         return AppTheme.failureColor;
       default:
         return AppTheme.neutralColor;
@@ -227,7 +227,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
       {'key': 'all', 'label': loc.bookings_all},
       {'key': 'pending', 'label': loc.bookings_pending},
       {'key': 'confirmed', 'label': loc.bookings_confirmed},
-      {'key': 'canceled', 'label': loc.bookings_canceled},
+      {'key': 'rejected', 'label': loc.bookings_rejected},
     ];
 
     return SizedBox(
@@ -368,8 +368,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  BookedPostScreen(postId: booking.postId),
+                              builder: (context) => BookedPostScreen(
+                                postId: booking.postId,
+                                onBookingCanceled: _loadBookings,
+                              ),
                             ),
                           );
                         },

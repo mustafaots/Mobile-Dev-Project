@@ -802,11 +802,11 @@ abstract class AppLocalizations {
   /// **'Confirmed'**
   String get bookings_confirmed;
 
-  /// No description provided for @bookings_canceled.
+  /// No description provided for @bookings_rejected.
   ///
   /// In en, this message translates to:
-  /// **'Canceled'**
-  String get bookings_canceled;
+  /// **'Rejected'**
+  String get bookings_rejected;
 
   /// No description provided for @bookings_viewDetails.
   ///

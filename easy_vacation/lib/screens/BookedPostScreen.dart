@@ -15,8 +15,13 @@ import 'ListingDetailsWidgets/index.dart';
 
 class BookedPostScreen extends StatefulWidget {
   final int postId;
+  final VoidCallback? onBookingCanceled;
 
-  const BookedPostScreen({super.key, required this.postId});
+  const BookedPostScreen({
+    super.key,
+    required this.postId,
+    this.onBookingCanceled,
+  });
 
   @override
   State<BookedPostScreen> createState() => _BookedPostScreenState();
@@ -90,6 +95,8 @@ class _BookedPostScreenState extends State<BookedPostScreen> {
   }
 
   void _handleBookingCanceled() {
+    // Call the parent's refresh callback to update BookingsScreen state
+    widget.onBookingCanceled?.call();
     // Navigate back to previous screen (BookingsScreen)
     Navigator.of(context).pop();
   }

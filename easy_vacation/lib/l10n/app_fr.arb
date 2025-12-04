@@ -121,7 +121,7 @@
   "bookings_all": "Toutes",
   "bookings_pending": "En attente",
   "bookings_confirmed": "Confirmées",
-  "bookings_canceled": "Annulées",
+  "bookings_rejected": "Rejetées",
   "bookings_viewDetails": "Voir les détails",
   "bookings_yourBooking": "Votre réservation",
   "bookings_noBookingsYet": "Aucune réservation pour l'instant",

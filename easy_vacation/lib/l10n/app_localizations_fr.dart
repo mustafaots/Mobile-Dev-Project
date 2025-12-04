@@ -366,7 +366,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bookings_confirmed => 'Confirmées';
 
   @override
-  String get bookings_canceled => 'Annulées';
+  String get bookings_rejected => 'Rejetées';
 
   @override
   String get bookings_viewDetails => 'Voir les détails';

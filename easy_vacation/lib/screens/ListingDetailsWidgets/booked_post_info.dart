@@ -71,7 +71,7 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
         return AppTheme.successColor;
       case 'pending':
         return AppTheme.neutralColor;
-      case 'canceled':
+      case 'rejected':
         return AppTheme.failureColor;
       default:
         return AppTheme.neutralColor;
@@ -85,8 +85,8 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
         return loc.bookings_confirmed;
       case 'pending':
         return loc.bookings_pending;
-      case 'canceled':
-        return loc.bookings_canceled;
+      case 'rejected':
+        return loc.bookings_rejected;
       default:
         return status ?? 'Unknown';
     }
@@ -135,10 +135,9 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
 
         if (mounted) {
           setState(() {
-            _bookingStatus = 'canceled';
+            _bookingStatus = 'rejected';
             _isCanceling = false;
           });
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -275,7 +274,7 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
                 ],
               ),
             ),
-            if (_bookingStatus != 'canceled')
+            if (_bookingStatus != 'rejected')
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: ElevatedButton.icon(

@@ -122,7 +122,7 @@
     "bookings_all": "All",
     "bookings_pending": "Pending",
     "bookings_confirmed": "Confirmed",
-    "bookings_canceled": "Canceled",
+    "bookings_rejected": "Rejected",
     "bookings_viewDetails": "View Details",
     "bookings_yourBooking": "Your Booking",
     "bookings_noBookingsYet": "No Bookings Yet",

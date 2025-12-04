@@ -361,7 +361,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookings_confirmed => 'تم التأكيد';
 
   @override
-  String get bookings_canceled => 'تم الإلغاء';
+  String get bookings_rejected => 'مرفوضة';
 
   @override
   String get bookings_viewDetails => 'عرض التفاصيل';
