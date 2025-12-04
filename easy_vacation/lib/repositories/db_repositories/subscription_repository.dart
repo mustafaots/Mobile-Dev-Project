@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/subscriptions.model.dart';
 
 /// Repository for managing subscription data
 class SubscriptionRepository {
@@ -7,34 +8,28 @@ class SubscriptionRepository {
   SubscriptionRepository(this.db);
 
   /// Insert a new subscription
-  Future<int> insertSubscription({
-    required int subscriberId,
-    String? plan,
-  }) async {
-    return await db.insert('subscriptions', {
-      'subscriber_id': subscriberId,
-      'plan': plan ?? 'free',
-      'created_at': DateTime.now().toIso8601String(),
-    });
+  Future<int> insertSubscription(Subscription subscription) async {
+    return await db.insert('subscriptions', subscription.toMap());
   }
 
   /// Get subscription by ID
-  Future<Map<String, dynamic>?> getSubscriptionById(int id) async {
+  Future<Subscription?> getSubscriptionById(int id) async {
     final result = await db.query(
       'subscriptions',
       where: 'id = ?',
       whereArgs: [id],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Subscription.fromMap(result.first) : null;
   }
 
   /// Get all subscriptions
-  Future<List<Map<String, dynamic>>> getAllSubscriptions() async {
-    return await db.query('subscriptions');
+  Future<List<Subscription>> getAllSubscriptions() async {
+    final results = await db.query('subscriptions');
+    return results.map((map) => Subscription.fromMap(map)).toList();
   }
 
   /// Get latest subscription by subscriber
-  Future<Map<String, dynamic>?> getLatestSubscriptionBySubscriber(
+  Future<Subscription?> getLatestSubscriptionBySubscriber(
     int subscriberId,
   ) async {
     final result = await db.query(
@@ -44,31 +39,35 @@ class SubscriptionRepository {
       orderBy: 'created_at DESC',
       limit: 1,
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Subscription.fromMap(result.first) : null;
   }
 
   /// Get subscriptions by subscriber
-  Future<List<Map<String, dynamic>>> getSubscriptionsBySubscriber(
+  Future<List<Subscription>> getSubscriptionsBySubscriber(
     int subscriberId,
   ) async {
-    return await db.query(
+    final results = await db.query(
       'subscriptions',
       where: 'subscriber_id = ?',
       whereArgs: [subscriberId],
     );
+    return results.map((map) => Subscription.fromMap(map)).toList();
   }
 
   /// Get subscriptions by plan
-  Future<List<Map<String, dynamic>>> getSubscriptionsByPlan(String plan) async {
-    return await db.query(
+  Future<List<Subscription>> getSubscriptionsByPlan(String plan) async {
+    final results = await db.query(
       'subscriptions',
       where: 'plan = ?',
       whereArgs: [plan],
     );
+    return results.map((map) => Subscription.fromMap(map)).toList();
   }
 
   /// Update subscription
-  Future<int> updateSubscription(int id, Map<String, dynamic> values) async {
+  Future<int> updateSubscription(int id, Subscription subscription) async {
+    final values = subscription.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update(
       'subscriptions',
       values,

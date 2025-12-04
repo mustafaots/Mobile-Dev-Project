@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
+import 'package:easy_vacation/models/subscriptions.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/subscription_repository.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -19,7 +20,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   Future<String> getUserSub() async {
     final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
     final p = await subRepo.getLatestSubscriptionBySubscriber(2);
-    return p!['plan'];
+    return p?.plan ?? 'free';
   }
 
   @override
@@ -32,10 +33,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         'type': t.plan_free,
         'icon': Icons.person_outline,
         'cost': '0',
-        'details': [
-          t.plan_detail_pay_per_cost,
-          t.plan_detail_limited_uploads
-        ],
+        'details': [t.plan_detail_pay_per_cost, t.plan_detail_limited_uploads],
         'is_selected': false,
       },
       {
@@ -45,7 +43,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         'cost': '4000',
         'details': [
           t.plan_detail_unlimited_listings,
-          t.plan_detail_increased_visibility
+          t.plan_detail_increased_visibility,
         ],
         'is_selected': false,
       },
@@ -57,7 +55,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
         'details': [
           t.plan_detail_monthly_benefits,
           t.plan_detail_top_placement,
-          t.plan_detail_special_badges
+          t.plan_detail_special_badges,
         ],
         'is_selected': false,
       },
@@ -75,10 +73,12 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
       return false;
     }
 
-    await subRepo.insertSubscription(
+    final newSubscription = Subscription(
       subscriberId: 2,
-      plan: subscriptions[idx]['key']
+      plan: subscriptions[idx]['key'],
+      createdAt: DateTime.now(),
     );
+    await subRepo.insertSubscription(newSubscription);
     return true;
   }
 
@@ -103,7 +103,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                   AppLocalizations.of(context)!.subscription_update_success,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w500  
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -212,8 +212,11 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       child: Row(
                         children: [
-                          Icon(Icons.check,
-                              color: AppTheme.primaryColor, size: 20),
+                          Icon(
+                            Icons.check,
+                            color: AppTheme.primaryColor,
+                            size: 20,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -243,31 +246,35 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                     ),
                   ),
                   onPressed: () async {
-                    if(subscriptions[idx]['is_selected']) return;
+                    if (subscriptions[idx]['is_selected']) return;
                     setState(() {
                       loadingIndex = idx;
                     });
                     final changed = await changePlan(idx);
-                    if(changed) {
+                    if (changed) {
                       setState(() {
                         loadingIndex = null;
                       });
                       showSuccessMsg();
                     }
                   },
-                  child: loadingIndex == idx ? 
-                    SizedBox(
-                      height: 22,
-                      width: 22,
-                      child: CircularProgressIndicator(color: const Color.fromARGB(255, 255, 255, 255),),
-                    )
-                  : Text(
-                    selected
-                        ? t.plan_current_button
-                        : t.plan_select_button,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ) 
+                  child: loadingIndex == idx
+                      ? SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                          ),
+                        )
+                      : Text(
+                          selected
+                              ? t.plan_current_button
+                              : t.plan_select_button,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
             ],
@@ -296,13 +303,13 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
               if (snapshot.hasData) {
                 final p = snapshot.data;
 
-                for(var sub in subscriptions) {
+                for (var sub in subscriptions) {
                   sub['is_selected'] = false;
                 }
 
-                if(p == 'free') {
+                if (p == 'free') {
                   subscriptions[0]['is_selected'] = true;
-                } else if(p == 'monthly') {
+                } else if (p == 'monthly') {
                   subscriptions[1]['is_selected'] = true;
                 } else {
                   subscriptions[2]['is_selected'] = true;

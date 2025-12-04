@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/reports.model.dart';
 
 /// Repository for managing report data
 class ReportRepository {
@@ -7,65 +8,56 @@ class ReportRepository {
   ReportRepository(this.db);
 
   /// Insert a new report
-  Future<int> insertReport({
-    required int reporterId,
-    int? reportedPostId,
-    int? reportedUserId,
-    required String reason,
-    String? additionalDetails
-  }) async {
-    return await db.insert('reports', {
-      'reporter_id': reporterId,
-      'reported_post_id': reportedPostId,
-      'reported_user_id': reportedUserId,
-      'reason': reason,
-      'additional_details': additionalDetails,
-      'created_at': DateTime.now().toIso8601String(),
-    });
+  Future<int> insertReport(Report report) async {
+    return await db.insert('reports', report.toMap());
   }
 
   /// Get report by ID
-  Future<Map<String, dynamic>?> getReportById(int id) async {
+  Future<Report?> getReportById(int id) async {
     final result = await db.query('reports', where: 'id = ?', whereArgs: [id]);
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Report.fromMap(result.first) : null;
   }
 
   /// Get all reports
-  Future<List<Map<String, dynamic>>> getAllReports() async {
-    return await db.query('reports');
+  Future<List<Report>> getAllReports() async {
+    final results = await db.query('reports');
+    return results.map((map) => Report.fromMap(map)).toList();
   }
 
   /// Get reports by reporter ID
-  Future<List<Map<String, dynamic>>> getReportsByReporterId(
-    int reporterId,
-  ) async {
-    return await db.query(
+  Future<List<Report>> getReportsByReporterId(int reporterId) async {
+    final results = await db.query(
       'reports',
       where: 'reporter_id = ?',
       whereArgs: [reporterId],
     );
+    return results.map((map) => Report.fromMap(map)).toList();
   }
 
   /// Get reports for a specific post
-  Future<List<Map<String, dynamic>>> getReportsByPostId(int postId) async {
-    return await db.query(
+  Future<List<Report>> getReportsByPostId(int postId) async {
+    final results = await db.query(
       'reports',
       where: 'reported_post_id = ?',
       whereArgs: [postId],
     );
+    return results.map((map) => Report.fromMap(map)).toList();
   }
 
   /// Get reports for a specific user
-  Future<List<Map<String, dynamic>>> getReportsByUserId(int userId) async {
-    return await db.query(
+  Future<List<Report>> getReportsByUserId(int userId) async {
+    final results = await db.query(
       'reports',
       where: 'reported_user_id = ?',
       whereArgs: [userId],
     );
+    return results.map((map) => Report.fromMap(map)).toList();
   }
 
   /// Update report
-  Future<int> updateReport(int id, Map<String, dynamic> values) async {
+  Future<int> updateReport(int id, Report report) async {
+    final values = report.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update('reports', values, where: 'id = ?', whereArgs: [id]);
   }
 

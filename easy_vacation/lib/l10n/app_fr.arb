@@ -123,6 +123,7 @@
   "bookings_confirmed": "Confirmées",
   "bookings_canceled": "Annulées",
   "bookings_viewDetails": "Voir les détails",
+  "bookings_yourBooking": "Votre réservation",
   "bookings_noBookingsYet": "Aucune réservation pour l'instant",
   "bookings_emptyMessage": "Vous n'avez aucune réservation à venir ou passée. Il est temps de planifier votre prochaine aventure !",
   "bookings_exploreStays": "Découvrir les hébergements",
@@ -134,6 +135,8 @@
   "listingDetails_reviews": "Avis",
   "listingDetails_availability": "Disponibilité",
   "listingDetails_reserveNow": "Réserver maintenant",
+  "listingDetails_selectDatesFirst": "Veuillez sélectionner les dates avant de réserver",
+  "listingDetails_bookingConfirmed": "Réservation confirmée ! Consultez vos réservations.",
   "listingDetails_daysAgo": "Il y a {count} jour",
   "listingDetails_daysAgo_other": "Il y a {count} jours",
   "@listingDetails_daysAgo": {
@@ -419,5 +422,14 @@
 
   "dinars": "DA",
   
-  "subscription_update_success": "Votre abonnement a été mis à jour avec succès"
+  "subscription_update_success": "Votre abonnement a été mis à jour avec succès",
+
+  "bookings_cancel": "Annuler",
+  "bookings_cancelBooking": "Annuler la réservation",
+  "bookings_cancelConfirmation": "Êtes-vous sûr de vouloir annuler cette réservation ? Cette action ne peut pas être annulée.",
+  "bookings_canceledSuccessfully": "Réservation annulée avec succès",
+  "bookings_cancelationError": "Impossible d'annuler la réservation. Veuillez réessayer.",
+  
+  "common_yes": "Oui",
+  "common_no": "Non"
 }

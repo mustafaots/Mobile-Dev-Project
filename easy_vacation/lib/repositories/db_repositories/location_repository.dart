@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/locations.model.dart';
 
 /// Repository for managing location data
 class LocationRepository {
@@ -7,53 +8,50 @@ class LocationRepository {
   LocationRepository(this.db);
 
   /// Insert a new location
-  Future<int> insertLocation({
-    required String wilaya,
-    required String city,
-    String? address,
-    double? latitude,
-    double? longitude,
-  }) async {
-    return await db.insert('locations', {
-      'wilaya': wilaya,
-      'city': city,
-      'address': address,
-      'latitude': latitude,
-      'longitude': longitude,
-    });
+  Future<int> insertLocation(Location location) async {
+    return await db.insert('locations', location.toMap());
   }
 
   /// Get location by ID
-  Future<Map<String, dynamic>?> getLocationById(int id) async {
+  Future<Location?> getLocationById(int id) async {
     final result = await db.query(
       'locations',
       where: 'id = ?',
       whereArgs: [id],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Location.fromMap(result.first) : null;
   }
 
   /// Get all locations
-  Future<List<Map<String, dynamic>>> getAllLocations() async {
-    return await db.query('locations');
+  Future<List<Location>> getAllLocations() async {
+    final results = await db.query('locations');
+    return results.map((map) => Location.fromMap(map)).toList();
   }
 
   /// Get locations by wilaya (province)
-  Future<List<Map<String, dynamic>>> getLocationsByWilaya(String wilaya) async {
-    return await db.query(
+  Future<List<Location>> getLocationsByWilaya(String wilaya) async {
+    final results = await db.query(
       'locations',
       where: 'wilaya = ?',
       whereArgs: [wilaya],
     );
+    return results.map((map) => Location.fromMap(map)).toList();
   }
 
   /// Get locations by city
-  Future<List<Map<String, dynamic>>> getLocationsByCity(String city) async {
-    return await db.query('locations', where: 'city = ?', whereArgs: [city]);
+  Future<List<Location>> getLocationsByCity(String city) async {
+    final results = await db.query(
+      'locations',
+      where: 'city = ?',
+      whereArgs: [city],
+    );
+    return results.map((map) => Location.fromMap(map)).toList();
   }
 
   /// Update location
-  Future<int> updateLocation(int id, Map<String, dynamic> values) async {
+  Future<int> updateLocation(int id, Location location) async {
+    final values = location.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update(
       'locations',
       values,

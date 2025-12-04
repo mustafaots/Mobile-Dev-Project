@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/models/posts.model.dart' as post_model;
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 
 class HostInfo extends StatelessWidget {
-  const HostInfo({super.key});
+  final User? host;
+  final post_model.Post? post;
+
+  const HostInfo({super.key, this.host, this.post});
 
   void _navigateToProfile(
     BuildContext context, {
@@ -52,6 +57,14 @@ class HostInfo extends StatelessWidget {
     final cardColor = context.cardColor;
     final loc = AppLocalizations.of(context)!;
 
+    // Use model data or defaults
+    final hostName = host?.username ?? 'Ali';
+    final hostEmail = host?.email ?? 'ali@example.com';
+    final hostImage = host?.profilePicture ?? 'assets/images/host_Ali.jpg';
+    final price = post?.price ?? 6000;
+    final rating = 4.9;
+    final reviewCount = 127;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
@@ -73,11 +86,11 @@ class HostInfo extends StatelessWidget {
             onTap: () {
               _navigateToProfile(
                 context,
-                userName: 'Ali',
-                userEmail: 'ali@example.com',
-                userImage: 'assets/images/host_Ali.jpg',
+                userName: hostName,
+                userEmail: hostEmail,
+                userImage: hostImage,
                 postsCount: 24,
-                reviewsCount: 127,
+                reviewsCount: reviewCount,
               );
             },
             child: Container(
@@ -85,8 +98,8 @@ class HostInfo extends StatelessWidget {
               height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/host_Ali.jpg'),
+                image: DecorationImage(
+                  image: AssetImage(hostImage),
                   fit: BoxFit.cover,
                 ),
                 border: Border.all(
@@ -102,7 +115,7 @@ class HostInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${loc.listingDetails_hostedBy} Ali',
+                  '${loc.listingDetails_hostedBy} $hostName',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -115,7 +128,7 @@ class HostInfo extends StatelessWidget {
                     Icon(Icons.star, color: AppTheme.neutralColor, size: 16),
                     const SizedBox(width: 4),
                     Text(
-                      '4.9 (127 ${loc.listingDetails_reviews})',
+                      '$rating ($reviewCount ${loc.listingDetails_reviews})',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
@@ -150,7 +163,7 @@ class HostInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '6000 DZD',
+                '$price DZD',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

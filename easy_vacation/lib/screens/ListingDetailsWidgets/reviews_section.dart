@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/reviews.model.dart' as review_model;
+import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 
 class ReviewsSection extends StatelessWidget {
-  const ReviewsSection({super.key});
+  final List<review_model.Review>? reviews;
+  final Map<int, User>? reviewers;
+
+  const ReviewsSection({super.key, this.reviews, this.reviewers});
 
   void _navigateToProfile(
     BuildContext context, {
@@ -171,6 +176,48 @@ class ReviewsSection extends StatelessWidget {
     final textColor = context.textColor;
     final cardColor = context.cardColor;
 
+    // Use provided reviews or show defaults
+    final reviewsList = reviews ?? [];
+
+    // Build the displayed reviews
+    late List<Widget> displayedReviews;
+
+    if (reviewsList.isEmpty) {
+      displayedReviews = [
+        _buildReviewItem(
+          context,
+          'assets/images/reviewer_alex.jpg',
+          'Alex Johnson',
+          4.5,
+          'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
+          postsCount: 18,
+          reviewsCount: 23,
+        ),
+        _buildReviewItem(
+          context,
+          'assets/images/reviewer_maria.jpg',
+          'Maria Garcia',
+          5.0,
+          'A perfect getaway. The location is unbeatable. Highly recommended.',
+          postsCount: 32,
+          reviewsCount: 45,
+        ),
+      ];
+    } else {
+      displayedReviews = reviewsList.take(2).map((review_model.Review review) {
+        final reviewer = reviewers?[review.reviewerId];
+        return _buildReviewItem(
+          context,
+          reviewer?.profilePicture ?? 'assets/images/placeholder.jpg',
+          reviewer?.username ?? 'Anonymous',
+          review.rating.toDouble(),
+          review.comment ?? 'Great experience!',
+          postsCount: 0,
+          reviewsCount: 0,
+        );
+      }).toList();
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
@@ -203,25 +250,13 @@ class ReviewsSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          _buildReviewItem(
-            context,
-            'assets/images/reviewer_alex.jpg',
-            'Alex Johnson',
-            4.5,
-            'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
-            postsCount: 18,
-            reviewsCount: 23,
-          ),
-          const SizedBox(height: 16),
-          _buildReviewItem(
-            context,
-            'assets/images/reviewer_maria.jpg',
-            'Maria Garcia',
-            5.0,
-            'A perfect getaway. The location is unbeatable. Highly recommended.',
-            postsCount: 32,
-            reviewsCount: 45,
-          ),
+          ...displayedReviews
+              .map(
+                (reviewWidget) => Column(
+                  children: [reviewWidget, const SizedBox(height: 16)],
+                ),
+              )
+              .toList(),
         ],
       ),
     );

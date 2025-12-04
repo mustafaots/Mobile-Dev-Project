@@ -1,10 +1,15 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/bookings.model.dart';
+import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/BookedPostScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/main.dart';
 
 class BookingsScreen extends StatefulWidget {
   const BookingsScreen({super.key});
@@ -15,56 +20,134 @@ class BookingsScreen extends StatefulWidget {
 
 class _BookingsScreenState extends State<BookingsScreen> {
   late String _selectedFilter;
-
-  // Sample booking data
-  late List<Map<String, dynamic>> _allBookings;
+  late BookingRepository _bookingRepository;
+  late PostRepository _postRepository;
+  late List<Booking> _allBookings;
+  late List<Post> _allPosts;
+  bool _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
     _selectedFilter = 'all';
-    _initializeBookings();
+    _allBookings = [];
+    _allPosts = [];
+    _initializeRepositories();
   }
 
-  void _initializeBookings() {
-    _allBookings = [
-      {
-        'imagePath': 'assets/images/cozy_cabin.jpg',
-        'status': 'confirmed',
-        'title': 'Cozy Cabin in the Woods',
-        'price': '7000 DZD',
-        'date': '12-15 May, 2024',
-      },
-      {
-        'imagePath': 'assets/images/beachfront_villa.jpg',
-        'status': 'pending',
-        'title': 'Beachfront Villa',
-        'price': '25000 DZD',
-        'date': '20-28 June, 2024',
-      },
-      {
-        'imagePath': 'assets/images/city_loft.jpg',
-        'status': 'canceled',
-        'title': 'City Loft',
-        'price': '8000 DZD',
-        'date': '5-7 August, 2024',
-      },
-    ];
+  void _initializeRepositories() {
+    try {
+      _bookingRepository = appRepos['bookingRepo'] as BookingRepository;
+      _postRepository = appRepos['postRepo'] as PostRepository;
+      _loadBookings();
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load bookings: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadBookings() async {
+    try {
+      final bookings = await _bookingRepository.getAllBookings();
+      final posts = await _postRepository.getAllPosts();
+
+      setState(() {
+        _allBookings = bookings;
+        _allPosts = posts;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load bookings: $e';
+        _isLoading = false;
+      });
+    }
   }
 
   List<Map<String, dynamic>> _getFilteredBookings() {
+    List<Booking> filtered;
+
     if (_selectedFilter == 'all') {
-      return _allBookings;
+      filtered = _allBookings;
+    } else {
+      filtered = _allBookings
+          .where((booking) => booking.status == _selectedFilter)
+          .toList();
     }
-    return _allBookings
-        .where((booking) => booking['status'] == _selectedFilter)
-        .toList();
+
+    return filtered.map((booking) {
+      // Find the corresponding post
+      final post = _allPosts.firstWhere(
+        (p) => p.id == booking.postId,
+        orElse: () => Post(
+          ownerId: 0,
+          category: 'unknown',
+          title: 'Unknown Post',
+          price: 0,
+          locationId: 0,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          availability: [],
+        ),
+      );
+
+      return {
+        'booking': booking,
+        'post': post,
+        'imagePath': post.contentUrl ?? 'assets/images/placeholder.jpg',
+        'status': booking.status,
+        'title': post.title,
+        'price': '${post.price} DZD',
+        'date':
+            '${booking.startTime.day}-${booking.endTime.day} ${_getMonthName(booking.startTime.month)}, ${booking.startTime.year}',
+      };
+    }).toList();
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[month - 1];
   }
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final loc = AppLocalizations.of(context)!;
+
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.bookings_title),
+        body: Center(
+          child: CircularProgressIndicator(color: AppTheme.primaryColor),
+        ),
+      );
+    }
+
+    if (_error != null) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.bookings_title),
+        body: Center(child: Text(_error!)),
+      );
+    }
+
     final filteredBookings = _getFilteredBookings();
 
     return Scaffold(
@@ -83,15 +166,19 @@ class _BookingsScreenState extends State<BookingsScreen> {
                   : SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
-                        children: filteredBookings.map((booking) {
+                        children: filteredBookings.map((bookingData) {
                           return _buildBookingCard(
                             context: context,
-                            imagePath: booking['imagePath'],
-                            status: _getStatusLabel(context, booking['status']),
-                            statusColor: _getStatusColor(booking['status']),
-                            title: booking['title'],
-                            price: booking['price'],
-                            date: booking['date'],
+                            imagePath: bookingData['imagePath'],
+                            booking: bookingData['booking'],
+                            status: _getStatusLabel(
+                              context,
+                              bookingData['status'],
+                            ),
+                            statusColor: _getStatusColor(bookingData['status']),
+                            title: bookingData['title'],
+                            price: bookingData['price'],
+                            date: bookingData['date'],
                           );
                         }).toList(),
                       ),
@@ -186,6 +273,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
   Widget _buildBookingCard({
     required BuildContext context,
     required String imagePath,
+    required Booking booking,
     required String status,
     required Color statusColor,
     required String title,
@@ -280,7 +368,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const BookedPostScreen(),
+                              builder: (context) =>
+                                  BookedPostScreen(postId: booking.postId),
                             ),
                           );
                         },

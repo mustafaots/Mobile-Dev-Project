@@ -124,6 +124,7 @@
     "bookings_confirmed": "Confirmed",
     "bookings_canceled": "Canceled",
     "bookings_viewDetails": "View Details",
+    "bookings_yourBooking": "Your Booking",
     "bookings_noBookingsYet": "No Bookings Yet",
     "bookings_emptyMessage": "You have no upcoming or past bookings. Time to plan your next adventure!",
     "bookings_exploreStays": "Explore Stays",
@@ -135,6 +136,8 @@
     "listingDetails_reviews": "Reviews",
     "listingDetails_availability": "Availability",
     "listingDetails_reserveNow": "Reserve Now",
+    "listingDetails_selectDatesFirst": "Please select dates before booking",
+    "listingDetails_bookingConfirmed": "Booking confirmed! Check your bookings.",
     "listingDetails_daysAgo": "{count} days ago",
     "listingDetails_daysAgo_other": "{count} days ago",
     "@listingDetails_daysAgo": {
@@ -420,5 +423,14 @@
 
     "dinars": "DZD",
 
-    "subscription_update_success": "Your subscription has been updated successfully"
+    "subscription_update_success": "Your subscription has been updated successfully",
+
+    "bookings_cancel": "Cancel",
+    "bookings_cancelBooking": "Cancel Booking",
+    "bookings_cancelConfirmation": "Are you sure you want to cancel this booking? This action cannot be undone.",
+    "bookings_canceledSuccessfully": "Booking canceled successfully",
+    "bookings_cancelationError": "Failed to cancel booking. Please try again.",
+    
+    "common_yes": "Yes",
+    "common_no": "No"
 }
