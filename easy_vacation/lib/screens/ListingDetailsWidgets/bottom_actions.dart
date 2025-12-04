@@ -71,7 +71,7 @@ class _BottomActionsState extends State<BottomActions> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context)!.listingDetails_bookingConfirmed,
+              AppLocalizations.of(context)!.listingDetails_bookingPending,
             ),
             backgroundColor: AppTheme.successColor,
           ),
