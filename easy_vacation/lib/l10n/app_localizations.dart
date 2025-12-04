@@ -280,6 +280,12 @@ abstract class AppLocalizations {
   /// **'Date'**
   String get filterDate;
 
+  /// No description provided for @filterType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get filterType;
+
   /// No description provided for @tabStays.
   ///
   /// In en, this message translates to:
