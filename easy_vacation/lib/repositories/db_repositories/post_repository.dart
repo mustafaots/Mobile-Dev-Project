@@ -1,4 +1,9 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/posts.model.dart';
+import '../../models/stays.model.dart';
+import '../../models/activities.model.dart';
+import '../../models/vehicles.model.dart';
+import '../../models/post_images.model.dart';
 
 /// Repository for managing posts and post-related data (stays, activities, vehicles)
 class PostRepository {
@@ -8,71 +13,56 @@ class PostRepository {
   // ============= POSTS OPERATIONS =============
 
   /// Insert a new post
-  Future<int> insertPost({
-    required int ownerId,
-    required String title,
-    required String description,
-    String? category,
-    int? locationId,
-    double? price,
-    String? contentUrl,
-    bool isPaid = false,
-    String? status,
-    String? availability,
-  }) async {
-    return await db.insert('posts', {
-      'owner_id': ownerId,
-      'title': title,
-      'description': description,
-      'category': category,
-      'location_id': locationId,
-      'price': price,
-      'content_url': contentUrl,
-      'created_at': DateTime.now().toIso8601String(),
-      'updated_at': DateTime.now().toIso8601String(),
-      'is_paid': isPaid ? 1 : 0,
-      'status': status ?? 'active',
-      'availability': availability,
-    });
+  Future<int> insertPost(Post post) async {
+    return await db.insert('posts', post.toMap());
   }
 
   /// Get post by ID
-  Future<Map<String, dynamic>?> getPostById(int id) async {
+  Future<Post?> getPostById(int id) async {
     final result = await db.query('posts', where: 'id = ?', whereArgs: [id]);
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Post.fromMap(result.first) : null;
   }
 
   /// Get all posts
-  Future<List<Map<String, dynamic>>> getAllPosts() async {
-    return await db.query('posts');
+  Future<List<Post>> getAllPosts() async {
+    final results = await db.query('posts');
+    return results.map((map) => Post.fromMap(map)).toList();
   }
 
   /// Get posts by owner
-  Future<List<Map<String, dynamic>>> getPostsByOwner(int ownerId) async {
-    return await db.query('posts', where: 'owner_id = ?', whereArgs: [ownerId]);
+  Future<List<Post>> getPostsByOwner(int ownerId) async {
+    final results = await db.query(
+      'posts',
+      where: 'owner_id = ?',
+      whereArgs: [ownerId],
+    );
+    return results.map((map) => Post.fromMap(map)).toList();
   }
 
   /// Get posts by category
-  Future<List<Map<String, dynamic>>> getPostsByCategory(String category) async {
-    return await db.query(
+  Future<List<Post>> getPostsByCategory(String category) async {
+    final results = await db.query(
       'posts',
       where: 'category = ?',
       whereArgs: [category],
     );
+    return results.map((map) => Post.fromMap(map)).toList();
   }
 
   /// Get posts by location
-  Future<List<Map<String, dynamic>>> getPostsByLocation(int locationId) async {
-    return await db.query(
+  Future<List<Post>> getPostsByLocation(int locationId) async {
+    final results = await db.query(
       'posts',
       where: 'location_id = ?',
       whereArgs: [locationId],
     );
+    return results.map((map) => Post.fromMap(map)).toList();
   }
 
   /// Update post
-  Future<int> updatePost(int id, Map<String, dynamic> values) async {
-    values['updated_at'] = DateTime.now().toIso8601String();
+  Future<int> updatePost(int id, Post post) async {
+    final values = post.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update('posts', values, where: 'id = ?', whereArgs: [id]);
   }
 
@@ -84,47 +74,39 @@ class PostRepository {
   // ============= STAYS OPERATIONS =============
 
   /// Insert a new stay
-  Future<int> insertStay({
-    required int postId,
-    String? stayType,
-    double? area,
-    int? bedrooms,
-  }) async {
-    return await db.insert('stays', {
-      'post_id': postId,
-      'stay_type': stayType,
-      'area': area,
-      'bedrooms': bedrooms,
-    });
+  Future<int> insertStay(Stay stay) async {
+    return await db.insert('stays', stay.toMap());
   }
 
   /// Get stay by ID
-  Future<Map<String, dynamic>?> getStayById(int postId) async {
+  Future<Stay?> getStayById(int postId) async {
     final result = await db.query(
       'stays',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Stay.fromMap(result.first) : null;
   }
 
   /// Get stay by post ID
-  Future<Map<String, dynamic>?> getStayByPostId(int postId) async {
+  Future<Stay?> getStayByPostId(int postId) async {
     final result = await db.query(
       'stays',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Stay.fromMap(result.first) : null;
   }
 
   /// Get all stays
-  Future<List<Map<String, dynamic>>> getAllStays() async {
-    return await db.query('stays');
+  Future<List<Stay>> getAllStays() async {
+    final results = await db.query('stays');
+    return results.map((map) => Stay.fromMap(map)).toList();
   }
 
   /// Update stay
-  Future<int> updateStay(int postId, Map<String, dynamic> values) async {
+  Future<int> updateStay(int postId, Stay stay) async {
+    final values = stay.toMap();
     return await db.update(
       'stays',
       values,
@@ -141,45 +123,39 @@ class PostRepository {
   // ============= ACTIVITIES OPERATIONS =============
 
   /// Insert a new activity
-  Future<int> insertActivity({
-    required int postId,
-    String? activityType,
-    String? requirements,
-  }) async {
-    return await db.insert('activities', {
-      'post_id': postId,
-      'activity_type': activityType,
-      'requirements': requirements,
-    });
+  Future<int> insertActivity(Activity activity) async {
+    return await db.insert('activities', activity.toMap());
   }
 
   /// Get activity by ID
-  Future<Map<String, dynamic>?> getActivityById(int postId) async {
+  Future<Activity?> getActivityById(int postId) async {
     final result = await db.query(
       'activities',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Activity.fromMap(result.first) : null;
   }
 
   /// Get activity by post ID
-  Future<Map<String, dynamic>?> getActivityByPostId(int postId) async {
+  Future<Activity?> getActivityByPostId(int postId) async {
     final result = await db.query(
       'activities',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Activity.fromMap(result.first) : null;
   }
 
   /// Get all activities
-  Future<List<Map<String, dynamic>>> getAllActivities() async {
-    return await db.query('activities');
+  Future<List<Activity>> getAllActivities() async {
+    final results = await db.query('activities');
+    return results.map((map) => Activity.fromMap(map)).toList();
   }
 
   /// Update activity
-  Future<int> updateActivity(int postId, Map<String, dynamic> values) async {
+  Future<int> updateActivity(int postId, Activity activity) async {
+    final values = activity.toMap();
     return await db.update(
       'activities',
       values,
@@ -200,55 +176,39 @@ class PostRepository {
   // ============= VEHICLES OPERATIONS =============
 
   /// Insert a new vehicle
-  Future<int> insertVehicle({
-    required int postId,
-    String? vehicleType,
-    String? model,
-    int? year,
-    String? fuelType,
-    bool? transmission,
-    int? seats,
-    String? features,
-  }) async {
-    return await db.insert('vehicles', {
-      'post_id': postId,
-      'vehicle_type': vehicleType,
-      'model': model,
-      'year': year,
-      'fuel_type': fuelType,
-      'transmission': transmission != null ? (transmission ? 1 : 0) : null,
-      'seats': seats,
-      'features': features,
-    });
+  Future<int> insertVehicle(Vehicle vehicle) async {
+    return await db.insert('vehicles', vehicle.toMap());
   }
 
   /// Get vehicle by ID
-  Future<Map<String, dynamic>?> getVehicleById(int postId) async {
+  Future<Vehicle?> getVehicleById(int postId) async {
     final result = await db.query(
       'vehicles',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Vehicle.fromMap(result.first) : null;
   }
 
   /// Get vehicle by post ID
-  Future<Map<String, dynamic>?> getVehicleByPostId(int postId) async {
+  Future<Vehicle?> getVehicleByPostId(int postId) async {
     final result = await db.query(
       'vehicles',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Vehicle.fromMap(result.first) : null;
   }
 
   /// Get all vehicles
-  Future<List<Map<String, dynamic>>> getAllVehicles() async {
-    return await db.query('vehicles');
+  Future<List<Vehicle>> getAllVehicles() async {
+    final results = await db.query('vehicles');
+    return results.map((map) => Vehicle.fromMap(map)).toList();
   }
 
   /// Update vehicle
-  Future<int> updateVehicle(int postId, Map<String, dynamic> values) async {
+  Future<int> updateVehicle(int postId, Vehicle vehicle) async {
+    final values = vehicle.toMap();
     return await db.update(
       'vehicles',
       values,
@@ -269,30 +229,29 @@ class PostRepository {
   // ============= POST_IMAGES OPERATIONS =============
 
   /// Insert a new post image
-  Future<int> insertPostImage({
-    required int postId,
-    required List<int> image,
-  }) async {
-    return await db.insert('post_images', {'post_id': postId, 'image': image});
+  Future<int> insertPostImage(PostImage postImage) async {
+    return await db.insert('post_images', postImage.toMap());
   }
 
   /// Get post image by post ID
-  Future<Map<String, dynamic>?> getPostImageByPostId(int postId) async {
+  Future<PostImage?> getPostImageByPostId(int postId) async {
     final result = await db.query(
       'post_images',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? PostImage.fromMap(result.first) : null;
   }
 
   /// Get all post images
-  Future<List<Map<String, dynamic>>> getAllPostImages() async {
-    return await db.query('post_images');
+  Future<List<PostImage>> getAllPostImages() async {
+    final results = await db.query('post_images');
+    return results.map((map) => PostImage.fromMap(map)).toList();
   }
 
   /// Update post image
-  Future<int> updatePostImage(int postId, Map<String, dynamic> values) async {
+  Future<int> updatePostImage(int postId, PostImage postImage) async {
+    final values = postImage.toMap();
     return await db.update(
       'post_images',
       values,

@@ -361,10 +361,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookings_confirmed => 'Confirmed';
 
   @override
-  String get bookings_canceled => 'Canceled';
+  String get bookings_rejected => 'Rejected';
 
   @override
   String get bookings_viewDetails => 'View Details';
+
+  @override
+  String get bookings_yourBooking => 'Your Booking';
 
   @override
   String get bookings_noBookingsYet => 'No Bookings Yet';
@@ -396,6 +399,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get listingDetails_reserveNow => 'Reserve Now';
+
+  @override
+  String get listingDetails_selectDatesFirst =>
+      'Please select dates before booking';
+
+  @override
+  String get listingDetails_bookingConfirmed =>
+      'Booking confirmed! Check your bookings.';
 
   @override
   String listingDetails_daysAgo(int count) {
@@ -908,4 +919,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get subscription_update_success =>
       'Your subscription has been updated successfully';
+
+  @override
+  String get bookings_cancel => 'Cancel';
+
+  @override
+  String get bookings_cancelBooking => 'Cancel Booking';
+
+  @override
+  String get bookings_cancelConfirmation =>
+      'Are you sure you want to cancel this booking? This action cannot be undone.';
+
+  @override
+  String get bookings_canceledSuccessfully => 'Booking canceled successfully';
+
+  @override
+  String get bookings_cancelationError =>
+      'Failed to cancel booking. Please try again.';
+
+  @override
+  String get common_yes => 'Yes';
+
+  @override
+  String get common_no => 'No';
 }

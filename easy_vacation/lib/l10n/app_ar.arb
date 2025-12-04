@@ -121,8 +121,9 @@
   "bookings_all": "الكل",
   "bookings_pending": "قيد الانتظار",
   "bookings_confirmed": "تم التأكيد",
-  "bookings_canceled": "تم الإلغاء",
+  "bookings_rejected": "مرفوضة",
   "bookings_viewDetails": "عرض التفاصيل",
+  "bookings_yourBooking": "حجزك",
   "bookings_noBookingsYet": "لا توجد حجوزات بعد",
   "bookings_emptyMessage": "ليس لديك أي حجوزات قادمة أو سابقة. حان الوقت لتخطيط مغامرتك القادمة!",
   "bookings_exploreStays": "استكشف أماكن الإقامة",
@@ -134,6 +135,8 @@
   "listingDetails_reviews": "التقييمات",
   "listingDetails_availability": "التوفر",
   "listingDetails_reserveNow": "احجز الآن",
+  "listingDetails_selectDatesFirst": "يرجى تحديد التواريخ قبل الحجز",
+  "listingDetails_bookingConfirmed": "تم تأكيد الحجز! تحقق من حجوزاتك.",
   "listingDetails_daysAgo": "قبل {count} يوم",
   "listingDetails_daysAgo_other": "قبل {count} يوم",
   "@listingDetails_daysAgo": {
@@ -419,5 +422,14 @@
 
   "dinars": "دج",
 
-    "subscription_update_success": "تم تحديث اشتراكك بنجاح"
+  "subscription_update_success": "تم تحديث اشتراكك بنجاح",
+
+  "bookings_cancel": "إلغاء",
+  "bookings_cancelBooking": "إلغاء الحجز",
+  "bookings_cancelConfirmation": "هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.",
+  "bookings_canceledSuccessfully": "تم إلغاء الحجز بنجاح",
+  "bookings_cancelationError": "فشل في إلغاء الحجز. يرجى المحاولة مرة أخرى.",
+  
+  "common_yes": "نعم",
+  "common_no": "لا"
 }

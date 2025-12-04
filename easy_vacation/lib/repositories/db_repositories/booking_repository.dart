@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/bookings.model.dart';
 
 /// Repository for managing booking data
 class BookingRepository {
@@ -7,59 +8,56 @@ class BookingRepository {
   BookingRepository(this.db);
 
   /// Insert a new booking
-  Future<int> insertBooking({
-    required int postId,
-    required int clientId,
-    String? status,
-    DateTime? startTime,
-    DateTime? endTime,
-  }) async {
-    return await db.insert('bookings', {
-      'post_id': postId,
-      'client_id': clientId,
-      'status': status ?? 'pending',
-      'booked_at': DateTime.now().toIso8601String(),
-      'start_time': startTime?.toIso8601String(),
-      'end_time': endTime?.toIso8601String(),
-    });
+  Future<int> insertBooking(Booking booking) async {
+    return await db.insert('bookings', booking.toMap());
   }
 
   /// Get booking by ID
-  Future<Map<String, dynamic>?> getBookingById(int id) async {
+  Future<Booking?> getBookingById(int id) async {
     final result = await db.query('bookings', where: 'id = ?', whereArgs: [id]);
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Booking.fromMap(result.first) : null;
   }
 
   /// Get all bookings
-  Future<List<Map<String, dynamic>>> getAllBookings() async {
-    return await db.query('bookings');
+  Future<List<Booking>> getAllBookings() async {
+    final results = await db.query('bookings');
+    return results.map((map) => Booking.fromMap(map)).toList();
   }
 
   /// Get bookings by post ID
-  Future<List<Map<String, dynamic>>> getBookingsByPostId(int postId) async {
-    return await db.query(
+  Future<List<Booking>> getBookingsByPostId(int postId) async {
+    final results = await db.query(
       'bookings',
       where: 'post_id = ?',
       whereArgs: [postId],
     );
+    return results.map((map) => Booking.fromMap(map)).toList();
   }
 
   /// Get bookings by client ID
-  Future<List<Map<String, dynamic>>> getBookingsByClientId(int clientId) async {
-    return await db.query(
+  Future<List<Booking>> getBookingsByClientId(int clientId) async {
+    final results = await db.query(
       'bookings',
       where: 'client_id = ?',
       whereArgs: [clientId],
     );
+    return results.map((map) => Booking.fromMap(map)).toList();
   }
 
   /// Get bookings by status
-  Future<List<Map<String, dynamic>>> getBookingsByStatus(String status) async {
-    return await db.query('bookings', where: 'status = ?', whereArgs: [status]);
+  Future<List<Booking>> getBookingsByStatus(String status) async {
+    final results = await db.query(
+      'bookings',
+      where: 'status = ?',
+      whereArgs: [status],
+    );
+    return results.map((map) => Booking.fromMap(map)).toList();
   }
 
   /// Update booking
-  Future<int> updateBooking(int id, Map<String, dynamic> values) async {
+  Future<int> updateBooking(int id, Booking booking) async {
+    final values = booking.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update(
       'bookings',
       values,

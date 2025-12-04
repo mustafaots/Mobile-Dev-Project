@@ -802,17 +802,23 @@ abstract class AppLocalizations {
   /// **'Confirmed'**
   String get bookings_confirmed;
 
-  /// No description provided for @bookings_canceled.
+  /// No description provided for @bookings_rejected.
   ///
   /// In en, this message translates to:
-  /// **'Canceled'**
-  String get bookings_canceled;
+  /// **'Rejected'**
+  String get bookings_rejected;
 
   /// No description provided for @bookings_viewDetails.
   ///
   /// In en, this message translates to:
   /// **'View Details'**
   String get bookings_viewDetails;
+
+  /// No description provided for @bookings_yourBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Booking'**
+  String get bookings_yourBooking;
 
   /// No description provided for @bookings_noBookingsYet.
   ///
@@ -873,6 +879,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reserve Now'**
   String get listingDetails_reserveNow;
+
+  /// No description provided for @listingDetails_selectDatesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select dates before booking'**
+  String get listingDetails_selectDatesFirst;
+
+  /// No description provided for @listingDetails_bookingConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking confirmed! Check your bookings.'**
+  String get listingDetails_bookingConfirmed;
 
   /// No description provided for @listingDetails_daysAgo.
   ///
@@ -1785,6 +1803,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your subscription has been updated successfully'**
   String get subscription_update_success;
+
+  /// No description provided for @bookings_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get bookings_cancel;
+
+  /// No description provided for @bookings_cancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Booking'**
+  String get bookings_cancelBooking;
+
+  /// No description provided for @bookings_cancelConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this booking? This action cannot be undone.'**
+  String get bookings_cancelConfirmation;
+
+  /// No description provided for @bookings_canceledSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking canceled successfully'**
+  String get bookings_canceledSuccessfully;
+
+  /// No description provided for @bookings_cancelationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to cancel booking. Please try again.'**
+  String get bookings_cancelationError;
+
+  /// No description provided for @common_yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get common_yes;
+
+  /// No description provided for @common_no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get common_no;
 }
 
 class _AppLocalizationsDelegate

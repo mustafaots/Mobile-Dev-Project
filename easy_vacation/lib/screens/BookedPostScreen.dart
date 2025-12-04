@@ -2,10 +2,10 @@ import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/reviews.model.dart';
 import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
-import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -13,16 +13,21 @@ import 'package:flutter/material.dart';
 import 'package:easy_vacation/main.dart';
 import 'ListingDetailsWidgets/index.dart';
 
-class PostDetailsScreen extends StatefulWidget {
-  final int? postId;
+class BookedPostScreen extends StatefulWidget {
+  final int postId;
+  final VoidCallback? onBookingCanceled;
 
-  const PostDetailsScreen({super.key, this.postId});
+  const BookedPostScreen({
+    super.key,
+    required this.postId,
+    this.onBookingCanceled,
+  });
 
   @override
-  State<PostDetailsScreen> createState() => _PostDetailsScreenState();
+  State<BookedPostScreen> createState() => _BookedPostScreenState();
 }
 
-class _PostDetailsScreenState extends State<PostDetailsScreen> {
+class _BookedPostScreenState extends State<BookedPostScreen> {
   late PostRepository _postRepository;
   late ReviewRepository _reviewRepository;
   late UserRepository _userRepository;
@@ -32,7 +37,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   User? _host;
   List<Review> _reviews = [];
   Map<int, User> _reviewers = {};
-  List<DateTime> _selectedDates = [];
   bool _isLoading = true;
   String? _error;
 
@@ -61,24 +65,20 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   Future<void> _loadPostDetails() async {
     try {
       // Load post
-      if (widget.postId != null) {
-        _post = await _postRepository.getPostById(widget.postId!);
+      _post = await _postRepository.getPostById(widget.postId);
 
-        if (_post != null) {
-          // Load host info
-          _host = await _userRepository.getUserById(_post!.ownerId);
+      if (_post != null) {
+        // Load host info
+        _host = await _userRepository.getUserById(_post!.ownerId);
 
-          // Load reviews
-          _reviews = await _reviewRepository.getReviewsByPostId(_post!.id!);
+        // Load reviews
+        _reviews = await _reviewRepository.getReviewsByPostId(_post!.id!);
 
-          // Load reviewer info for each review
-          for (var review in _reviews) {
-            final reviewer = await _userRepository.getUserById(
-              review.reviewerId,
-            );
-            if (reviewer != null) {
-              _reviewers[review.reviewerId] = reviewer;
-            }
+        // Load reviewer info for each review
+        for (var review in _reviews) {
+          final reviewer = await _userRepository.getUserById(review.reviewerId);
+          if (reviewer != null) {
+            _reviewers[review.reviewerId] = reviewer;
           }
         }
       }
@@ -92,6 +92,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void _handleBookingCanceled() {
+    // Call the parent's refresh callback to update BookingsScreen state
+    widget.onBookingCanceled?.call();
+    // Navigate back to previous screen (BookingsScreen)
+    Navigator.of(context).pop();
   }
 
   @override
@@ -139,26 +146,15 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                   TitleSection(post: _post),
                   HostInfo(host: _host, post: _post),
                   ReviewsSection(reviews: _reviews, reviewers: _reviewers),
-                  AvailabilitySection(
-                    availabilityJson: _post?.availability != null
-                        ? (_post!.availability is String
-                              ? _post!.availability as String
-                              : null)
-                        : null,
-                    onDatesSelected: (dates) {
-                      setState(() {
-                        _selectedDates = dates;
-                      });
-                    },
-                  ),
                   const SizedBox(height: 112),
                 ],
               ),
             ),
-            BottomActions(
-              postId: _post?.id ?? 0,
-              selectedDates: _selectedDates,
+            BookedPostBottomInfo(
+              post: _post,
+              postId: widget.postId,
               bookingRepository: _bookingRepository,
+              onBookingCanceled: _handleBookingCanceled,
             ),
           ],
         ),

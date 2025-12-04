@@ -361,10 +361,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookings_confirmed => 'تم التأكيد';
 
   @override
-  String get bookings_canceled => 'تم الإلغاء';
+  String get bookings_rejected => 'مرفوضة';
 
   @override
   String get bookings_viewDetails => 'عرض التفاصيل';
+
+  @override
+  String get bookings_yourBooking => 'حجزك';
 
   @override
   String get bookings_noBookingsYet => 'لا توجد حجوزات بعد';
@@ -396,6 +399,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get listingDetails_reserveNow => 'احجز الآن';
+
+  @override
+  String get listingDetails_selectDatesFirst => 'يرجى تحديد التواريخ قبل الحجز';
+
+  @override
+  String get listingDetails_bookingConfirmed =>
+      'تم تأكيد الحجز! تحقق من حجوزاتك.';
 
   @override
   String listingDetails_daysAgo(int count) {
@@ -903,4 +913,27 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get subscription_update_success => 'تم تحديث اشتراكك بنجاح';
+
+  @override
+  String get bookings_cancel => 'إلغاء';
+
+  @override
+  String get bookings_cancelBooking => 'إلغاء الحجز';
+
+  @override
+  String get bookings_cancelConfirmation =>
+      'هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get bookings_canceledSuccessfully => 'تم إلغاء الحجز بنجاح';
+
+  @override
+  String get bookings_cancelationError =>
+      'فشل في إلغاء الحجز. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get common_yes => 'نعم';
+
+  @override
+  String get common_no => 'لا';
 }

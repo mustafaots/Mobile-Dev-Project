@@ -1,17 +1,154 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/bookings.model.dart';
+import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
+import 'package:easy_vacation/screens/BookedPostScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/main.dart';
 
-class BookingsScreen extends StatelessWidget {
+class BookingsScreen extends StatefulWidget {
   const BookingsScreen({super.key});
+
+  @override
+  State<BookingsScreen> createState() => _BookingsScreenState();
+}
+
+class _BookingsScreenState extends State<BookingsScreen> {
+  late String _selectedFilter;
+  late BookingRepository _bookingRepository;
+  late PostRepository _postRepository;
+  late List<Booking> _allBookings;
+  late List<Post> _allPosts;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedFilter = 'all';
+    _allBookings = [];
+    _allPosts = [];
+    _initializeRepositories();
+  }
+
+  void _initializeRepositories() {
+    try {
+      _bookingRepository = appRepos['bookingRepo'] as BookingRepository;
+      _postRepository = appRepos['postRepo'] as PostRepository;
+      _loadBookings();
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load bookings: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadBookings() async {
+    try {
+      final bookings = await _bookingRepository.getAllBookings();
+      final posts = await _postRepository.getAllPosts();
+
+      setState(() {
+        _allBookings = bookings;
+        _allPosts = posts;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load bookings: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  List<Map<String, dynamic>> _getFilteredBookings() {
+    List<Booking> filtered;
+
+    if (_selectedFilter == 'all') {
+      filtered = _allBookings;
+    } else {
+      filtered = _allBookings
+          .where((booking) => booking.status == _selectedFilter)
+          .toList();
+    }
+
+    return filtered.map((booking) {
+      // Find the corresponding post
+      final post = _allPosts.firstWhere(
+        (p) => p.id == booking.postId,
+        orElse: () => Post(
+          ownerId: 0,
+          category: 'unknown',
+          title: 'Unknown Post',
+          price: 0,
+          locationId: 0,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          availability: [],
+        ),
+      );
+
+      return {
+        'booking': booking,
+        'post': post,
+        'imagePath': post.contentUrl ?? 'assets/images/placeholder.jpg',
+        'status': booking.status,
+        'title': post.title,
+        'price': '${post.price} DZD',
+        'date':
+            '${booking.startTime.day}-${booking.endTime.day} ${_getMonthName(booking.startTime.month)}, ${booking.startTime.year}',
+      };
+    }).toList();
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[month - 1];
+  }
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final loc = AppLocalizations.of(context)!;
+
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.bookings_title),
+        body: Center(
+          child: CircularProgressIndicator(color: AppTheme.primaryColor),
+        ),
+      );
+    }
+
+    if (_error != null) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.bookings_title),
+        body: Center(child: Text(_error!)),
+      );
+    }
+
+    final filteredBookings = _getFilteredBookings();
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -24,43 +161,28 @@ class BookingsScreen extends StatelessWidget {
 
             // Bookings list
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    _buildBookingCard(
-                      context: context,
-                      imagePath: 'assets/images/cozy_cabin.jpg',
-                      status: loc.bookings_confirmed,
-                      statusColor: AppTheme.successColor,
-                      title: 'Cozy Cabin in the Woods',
-                      price: '7000 DZD',
-                      date: '12-15 May, 2024',
+              child: filteredBookings.isEmpty
+                  ? _buildEmptyState(context)
+                  : SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: filteredBookings.map((bookingData) {
+                          return _buildBookingCard(
+                            context: context,
+                            imagePath: bookingData['imagePath'],
+                            booking: bookingData['booking'],
+                            status: _getStatusLabel(
+                              context,
+                              bookingData['status'],
+                            ),
+                            statusColor: _getStatusColor(bookingData['status']),
+                            title: bookingData['title'],
+                            price: bookingData['price'],
+                            date: bookingData['date'],
+                          );
+                        }).toList(),
+                      ),
                     ),
-                    _buildBookingCard(
-                      context: context,
-                      imagePath: 'assets/images/beachfront_villa.jpg',
-                      status: loc.bookings_pending,
-                      statusColor: AppTheme.neutralColor,
-                      title: 'Beachfront Villa',
-                      price: '25000 DZD',
-                      date: '20-28 June, 2024',
-                    ),
-                    _buildBookingCard(
-                      context: context,
-                      imagePath: 'assets/images/city_loft.jpg',
-                      status: loc.bookings_canceled,
-                      statusColor: AppTheme.failureColor,
-                      title: 'City Loft',
-                      price: '8000 DZD',
-                      date: '5-7 August, 2024',
-                    ),
-
-                    // Empty state
-                    _buildEmptyState(context),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
@@ -68,16 +190,44 @@ class BookingsScreen extends StatelessWidget {
     );
   }
 
+  String _getStatusLabel(BuildContext context, String status) {
+    final loc = AppLocalizations.of(context)!;
+    switch (status) {
+      case 'confirmed':
+        return loc.bookings_confirmed;
+      case 'pending':
+        return loc.bookings_pending;
+      case 'rejected':
+        return loc.bookings_rejected;
+      default:
+        return status;
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'confirmed':
+        return AppTheme.successColor;
+      case 'pending':
+        return AppTheme.neutralColor;
+      case 'rejected':
+        return AppTheme.failureColor;
+      default:
+        return AppTheme.neutralColor;
+    }
+  }
+
   Widget _buildFilterChips(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final loc = AppLocalizations.of(context)!;
-    final List<String> filters = [
-      loc.bookings_all,
-      loc.bookings_pending,
-      loc.bookings_confirmed,
-      loc.bookings_canceled
+
+    final filterOptions = [
+      {'key': 'all', 'label': loc.bookings_all},
+      {'key': 'pending', 'label': loc.bookings_pending},
+      {'key': 'confirmed', 'label': loc.bookings_confirmed},
+      {'key': 'rejected', 'label': loc.bookings_rejected},
     ];
 
     return SizedBox(
@@ -85,19 +235,25 @@ class BookingsScreen extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: filters.asMap().entries.map((entry) {
+        children: filterOptions.asMap().entries.map((entry) {
           final index = entry.key;
           final filter = entry.value;
-          final isSelected = index == 0; // First one selected by default
+          final isSelected = _selectedFilter == filter['key'];
 
           return Padding(
-            padding: EdgeInsets.only(right: index < filters.length - 1 ? 8 : 0),
+            padding: EdgeInsets.only(
+              right: index < filterOptions.length - 1 ? 8 : 0,
+            ),
             child: FilterChip(
-              label: Text(filter),
+              label: Text(filter['label']!),
               selected: isSelected,
               checkmarkColor: backgroundColor,
               selectedShadowColor: backgroundColor,
-              onSelected: (_) {},
+              onSelected: (_) {
+                setState(() {
+                  _selectedFilter = filter['key']!;
+                });
+              },
               backgroundColor: backgroundColor,
               selectedColor: AppTheme.primaryColor,
               labelStyle: TextStyle(
@@ -117,6 +273,7 @@ class BookingsScreen extends StatelessWidget {
   Widget _buildBookingCard({
     required BuildContext context,
     required String imagePath,
+    required Booking booking,
     required String status,
     required Color statusColor,
     required String title,
@@ -129,7 +286,8 @@ class BookingsScreen extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration( // Replace AppTheme.cardDecoration
+      decoration: BoxDecoration(
+        // Replace AppTheme.cardDecoration
         color: cardColor, // Use theme card color
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
@@ -206,7 +364,17 @@ class BookingsScreen extends StatelessWidget {
                     SizedBox(
                       width: 100,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookedPostScreen(
+                                postId: booking.postId,
+                                onBookingCanceled: _loadBookings,
+                              ),
+                            ),
+                          );
+                        },
                         style: AppTheme.primaryButtonStyle.copyWith(
                           minimumSize: WidgetStateProperty.all(
                             const Size(0, 36),
@@ -217,10 +385,7 @@ class BookingsScreen extends StatelessWidget {
                         ),
                         child: Text(
                           AppLocalizations.of(context)!.bookings_viewDetails,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
+                          style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                       ),
                     ),
@@ -237,64 +402,71 @@ class BookingsScreen extends StatelessWidget {
   Widget _buildEmptyState(BuildContext context) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final cardColor = context.cardColor; // Add this
+    final cardColor = context.cardColor;
     final loc = AppLocalizations.of(context)!;
 
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.all(48),
-      decoration: BoxDecoration( // Replace AppTheme.cardDecoration
-        color: cardColor, // Use theme card color
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(Icons.luggage, size: 64, color: secondaryTextColor),
-          const SizedBox(height: 16),
-          Text(
-            loc.bookings_noBookingsYet,
-            style: AppTheme.header2.copyWith(
-              fontWeight: FontWeight.bold,
-              color: textColor,
+    final message = _selectedFilter == 'all'
+        ? loc.bookings_emptyMessage
+        : 'No ${_selectedFilter} bookings yet';
+
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.only(top: 16),
+        padding: const EdgeInsets.all(48),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            loc.bookings_emptyMessage,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: secondaryTextColor),
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: 150,
-            child: ElevatedButton(
-              onPressed: () => {
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const HomeScreen(),
-                    transitionsBuilder: (_, animation, __, child) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    transitionDuration: const Duration(milliseconds: 300),
-                  ),
-                ),
-              },
-              style: AppTheme.primaryButtonStyle,
-              child: Text(
-                loc.bookings_exploreStays,
-                style: TextStyle(color: Colors.white), // Fixed button text color
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.luggage, size: 64, color: secondaryTextColor),
+            const SizedBox(height: 16),
+            Text(
+              loc.bookings_noBookingsYet,
+              style: AppTheme.header2.copyWith(
+                fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: secondaryTextColor),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: 150,
+              child: ElevatedButton(
+                onPressed: () => {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                  ),
+                },
+                style: AppTheme.primaryButtonStyle,
+                child: Text(
+                  loc.bookings_exploreStays,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

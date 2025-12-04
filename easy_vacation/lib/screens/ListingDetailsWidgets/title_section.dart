@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
-import 'header.dart';
 
 class TitleSection extends StatelessWidget {
-  const TitleSection({super.key});
+  final Post? post;
+
+  const TitleSection({super.key, this.post});
 
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+
+    final title = post?.title ?? 'Serene Oceanfront Villa';
+    final description =
+        post?.description ??
+        'Escape to our charming beachfront villa, where you can relax and enjoy the sound of the waves. Perfect for a romantic getaway or a small family vacation.';
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Serene Oceanfront Villa',
+            title,
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -26,7 +33,7 @@ class TitleSection extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Escape to our charming beachfront villa, where you can relax and enjoy the sound of the waves. Perfect for a romantic getaway or a small family vacation.',
+            description,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -34,8 +41,6 @@ class TitleSection extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          const SizedBox(height: 16),
-          const Header(),
         ],
       ),
     );
