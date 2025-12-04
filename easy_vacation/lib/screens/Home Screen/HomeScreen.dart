@@ -127,6 +127,7 @@ class __HomeContentState extends State<_HomeContent> {
     final loc = AppLocalizations.of(context)!;
 
     final List<String> searchContent = [
+      loc.filterType,
       loc.filterWilaya,
       loc.filterDate,
       loc.filterPrice,
@@ -158,9 +159,9 @@ class __HomeContentState extends State<_HomeContent> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            if (i == 0) _selectWilaya();
-                            if (i == 1) _selectDate();
-                            if (i == 2) _enterPrice();
+                            if(i == 1) _selectWilaya();
+                            if(i == 2) _selectDate();
+                            if(i == 3) _enterPrice();
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -190,7 +191,6 @@ class __HomeContentState extends State<_HomeContent> {
               ),
 
               const SizedBox(height: 20),
-
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -271,14 +271,47 @@ class __HomeContentState extends State<_HomeContent> {
 
     TextEditingController searchCtrl = TextEditingController();
     List<String> filteredWilayas = List.from(wilayas);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final softDarkSurface = const Color(0xFF1F1F1F);
 
     final result = await showDialog(
       context: context,
-      builder: (_) {
-        return StatefulBuilder(
+      builder: (_) => Theme(
+        data: Theme.of(context).copyWith(
+          dialogBackgroundColor: isDark ? softDarkSurface : Colors.white,
+          colorScheme: isDark
+              ? ColorScheme.dark(
+                  primary: AppTheme.primaryColor,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.white70,
+                  surface: softDarkSurface,
+                )
+              : ColorScheme.light(
+                  primary: AppTheme.primaryColor,
+                  onPrimary: Colors.black87,
+                  onSurface: Colors.black87,
+                  surface: Colors.white,
+                ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.primaryColor,
+              textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        child: StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text(AppLocalizations.of(context)!.choose_wilaya),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text(
+                AppLocalizations.of(context)!.choose_wilaya,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               content: SizedBox(
                 height: 450,
                 width: 350,
@@ -287,28 +320,35 @@ class __HomeContentState extends State<_HomeContent> {
                     // SEARCH BAR
                     TextField(
                       controller: searchCtrl,
+                      style: TextStyle(
+                        color: isDark ? Colors.white70 : Colors.black87,
+                      ),
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.search_wilaya,
+                        hintStyle: TextStyle(
+                          color: isDark ? Colors.white54 : const Color.fromARGB(255, 115, 115, 115),
+                          fontSize: 16,
+                        ),
                         filled: true,
-                        fillColor: AppTheme.primaryColor.withOpacity(0.08),
+                        fillColor: isDark
+                        ? const Color.fromARGB(255, 101, 101, 101).withOpacity(0.1)
+                        : const Color.fromARGB(255, 225, 226, 226).withOpacity(0.08),
+                        prefixIcon: const Icon(Icons.search),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             color: AppTheme.primaryColor,
                             width: 1,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             color: AppTheme.primaryColor,
                             width: 2,
                           ),
                         ),
-                        prefixIcon: const Icon(Icons.search),
                       ),
-
-                      // UPDATE SEARCH RESULTS
                       onChanged: (value) {
                         setState(() {
                           filteredWilayas = wilayas
@@ -318,16 +358,19 @@ class __HomeContentState extends State<_HomeContent> {
                         });
                       },
                     ),
-
                     const SizedBox(height: 10),
-
                     // WILAYA LIST
                     Expanded(
                       child: ListView.builder(
                         itemCount: filteredWilayas.length,
                         itemBuilder: (_, index) {
                           return ListTile(
-                            title: Text(filteredWilayas[index]),
+                            title: Text(
+                              filteredWilayas[index],
+                              style: TextStyle(
+                                color: isDark ? Colors.white70 : Colors.black87,
+                              ),
+                            ),
                             onTap: () =>
                                 Navigator.pop(context, filteredWilayas[index]),
                           );
@@ -339,8 +382,8 @@ class __HomeContentState extends State<_HomeContent> {
               ),
             );
           },
-        );
-      },
+        ),
+      ),
     );
 
     if (result != null) {
@@ -349,13 +392,45 @@ class __HomeContentState extends State<_HomeContent> {
   }
 
 
+
   
   void _selectDate() async {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final softDarkSurface = const Color(0xFF1F1F1F);
+
     DateTime? date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: isDark
+                ? ColorScheme.dark(
+                    primary: AppTheme.primaryColor,
+                    onPrimary: Colors.white,
+                    onSurface: Colors.white70,
+                    surface: softDarkSurface,
+                  )
+                : ColorScheme.light(
+                    primary: AppTheme.primaryColor,
+                    onPrimary: Colors.white,
+                    onSurface: Colors.black87,
+                    surface: Colors.white,
+                  ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.primaryColor,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (date != null) {
@@ -364,54 +439,95 @@ class __HomeContentState extends State<_HomeContent> {
     }
   }
 
+
+
   void _enterPrice() async {
     TextEditingController priceCtrl = TextEditingController();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Soft dark surface for dark mode
+    final softDarkSurface = const Color(0xFF1F1F1F);
 
     final result = await showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.enter_price, style: TextStyle(fontWeight: FontWeight.bold)),
-        content: TextField(
-          controller: priceCtrl,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            hintText: AppLocalizations.of(context)!.enter_max_price,
-            hintStyle: const TextStyle(
-              color: Color.fromARGB(255, 115, 115, 115),
-              fontSize: 16,
-            ),
-            filled: true,
-            fillColor: AppTheme.primaryColor.withOpacity(0.08),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(
-                color: AppTheme.primaryColor,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(
-                color: AppTheme.primaryColor,
-                width: 2,
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
+      builder: (_) => Theme(
+        data: Theme.of(context).copyWith(
+          dialogBackgroundColor: isDark ? softDarkSurface : Colors.white,
+          colorScheme: isDark
+              ? ColorScheme.dark(
+                  primary: AppTheme.primaryColor,       // border & highlights
+                  onPrimary: Colors.white,              // title text
+                  onSurface: Colors.white70,            // input text
+                  surface: softDarkSurface,             // dialog background
+                )
+              : ColorScheme.light(
+                  primary: AppTheme.primaryColor,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.black87,
+                  surface: Colors.white,
+                ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.primaryColor,
+              textStyle: const TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalizations.of(context)!.profile_cancel, style: TextStyle(color: Colors.red)),
+        child: AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)!.enter_price,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, priceCtrl.text),
-            child: Text(AppLocalizations.of(context)!.enter),
+          content: TextField(
+            controller: priceCtrl,
+            keyboardType: TextInputType.number,
+            style: TextStyle(
+              color: isDark ? Colors.white70 : Colors.black87,
+            ),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.enter_max_price,
+              hintStyle: TextStyle(
+                color: isDark ? Colors.white54 : const Color.fromARGB(255, 115, 115, 115),
+                fontSize: 16,
+              ),
+              filled: true,
+              fillColor: isDark
+                  ? const Color.fromARGB(255, 101, 101, 101).withOpacity(0.1)
+                  : const Color.fromARGB(255, 225, 226, 226).withOpacity(0.08),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: AppTheme.primaryColor,
+                  width: 1,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: AppTheme.primaryColor,
+                  width: 2,
+                ),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            ),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                AppLocalizations.of(context)!.profile_cancel,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, priceCtrl.text),
+              child: Text(AppLocalizations.of(context)!.enter),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -420,4 +536,5 @@ class __HomeContentState extends State<_HomeContent> {
       print("Entered price: $result");
     }
   }
+
 }

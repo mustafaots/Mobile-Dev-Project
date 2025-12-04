@@ -14,27 +14,194 @@ class SubscriptionPlanScreen extends StatefulWidget {
   State<SubscriptionPlanScreen> createState() => _SubscriptionPlanScreenState();
 }
 
+class PlanCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final String price;
+  final List details;
+  final bool isSelected;
+  final bool isLoading;
+  final bool isRecommended;
+  final VoidCallback onSelect;
+
+  const PlanCard({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.price,
+    required this.details,
+    required this.isSelected,
+    required this.isLoading,
+    required this.onSelect,
+    this.isRecommended = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          width: isSelected ? 2 : 1,
+          color: isSelected
+              ? AppTheme.primaryColor
+              : secondaryTextColor.withOpacity(0.3),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: textColor.withOpacity(isSelected ? 0.1 : 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: AppTheme.primaryColor, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
+                ),
+              ),
+              if(isRecommended)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.neutralColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.plan_recommended_label,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          Text(
+            price,
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.w900,
+              color: textColor,
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var detail in details)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.check, color: AppTheme.primaryColor, size: 20),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          detail,
+                          style: TextStyle(fontSize: 15, color: textColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: AppTheme.primaryColor.withOpacity(0.6),
+                disabledForegroundColor: Colors.white70,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: isSelected ? null: onSelect,
+              child: isLoading
+                  ? const SizedBox(
+                      height: 22,
+                      width: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      isSelected ? 
+                      AppLocalizations.of(context)!.plan_current_button
+                      : AppLocalizations.of(context)!.plan_select_button,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
 class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   late List<Map<String, dynamic>> subscriptions;
+  int? loadingIndex;
 
   Future<String> getUserSub() async {
     final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
     final p = await subRepo.getLatestSubscriptionBySubscriber(2);
-    return p?.plan ?? 'free';
+    return p?.plan ?? "free";
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final t = AppLocalizations.of(context)!;
+
     subscriptions = [
       {
         'key': "free",
         'type': t.plan_free,
         'icon': Icons.person_outline,
         'cost': '0',
-        'details': [t.plan_detail_pay_per_cost, t.plan_detail_limited_uploads],
-        'is_selected': false,
+        'details': [
+          t.plan_detail_pay_per_cost,
+          t.plan_detail_limited_uploads,
+        ],
       },
       {
         'key': "monthly",
@@ -45,7 +212,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           t.plan_detail_unlimited_listings,
           t.plan_detail_increased_visibility,
         ],
-        'is_selected': false,
       },
       {
         'key': "yearly",
@@ -57,7 +223,6 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           t.plan_detail_top_placement,
           t.plan_detail_special_badges,
         ],
-        'is_selected': false,
       },
     ];
   }
@@ -65,272 +230,94 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
   Future<bool> changePlan(int idx) async {
     await Future.delayed(const Duration(milliseconds: 1500));
     final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
-    final p = await getUserSub();
-    if (subscriptions[idx]['key'] == p) {
-      setState(() {
-        loadingIndex = null;
-      });
-      return false;
-    }
+    final current = await getUserSub();
 
-    final newSubscription = Subscription(
+    if (subscriptions[idx]['key'] == current) return false;
+
+    final newSub = Subscription(
       subscriberId: 2,
       plan: subscriptions[idx]['key'],
       createdAt: DateTime.now(),
     );
-    await subRepo.insertSubscription(newSubscription);
+
+    await subRepo.insertSubscription(newSub);
     return true;
   }
 
-  int? loadingIndex;
+  void showSuccessMsg() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        backgroundColor: const Color.fromARGB(255, 2, 177, 14),
+        content: Row(
+          children: const [
+            Icon(Icons.check_circle_outline, color: Colors.white),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                "Your subscription has been updated successfully",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
-    final backgroundColor = context.scaffoldBackgroundColor;
-
-    void showSuccessMsg() {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: Duration(seconds: 3),
-          backgroundColor: const Color.fromARGB(255, 2, 177, 14),
-          content: Row(
-            children: [
-              Icon(Icons.check_circle_outline, color: Colors.white),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  AppLocalizations.of(context)!.subscription_update_success,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      );
-    }
-
-    Widget plan(
-      String tp,
-      IconData icon,
-      String price,
-      List details,
-      bool selected,
-      int idx,
-      BuildContext context,
-    ) {
-      final textColor = context.textColor;
-      final secondaryTextColor = context.secondaryTextColor;
-      final cardColor = context.cardColor;
-
-      return GestureDetector(
-        onTap: () {},
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          decoration: BoxDecoration(
-            color: cardColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              width: selected ? 2 : 1,
-              color: selected
-                  ? AppTheme.primaryColor
-                  : secondaryTextColor.withOpacity(0.3),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: textColor.withOpacity(selected ? 0.1 : 0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(icon, color: AppTheme.primaryColor, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      tp,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-                  ),
-                  if (tp == t.plan_yearly)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppTheme.neutralColor,
-                      ),
-                      child: Text(
-                        t.plan_recommended_label,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              Text(
-                '$price ${t.dinars}',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w900,
-                  color: textColor,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (var detail in details)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: AppTheme.primaryColor,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              detail,
-                              style: TextStyle(fontSize: 15, color: textColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selected
-                        ? AppTheme.primaryColor
-                        : secondaryTextColor.withOpacity(0.2),
-                    foregroundColor: selected ? Colors.white : textColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (subscriptions[idx]['is_selected']) return;
-                    setState(() {
-                      loadingIndex = idx;
-                    });
-                    final changed = await changePlan(idx);
-                    setState(() { loadingIndex = null; });
-                    if(changed) showSuccessMsg();
-                  },
-                  child: loadingIndex == idx
-                      ? SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: CircularProgressIndicator(
-                            color: const Color.fromARGB(255, 255, 255, 255),
-                          ),
-                        )
-                      : Text(
-                          selected
-                              ? t.plan_current_button
-                              : t.plan_select_button,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: context.scaffoldBackgroundColor,
       appBar: App_Bar(context, t.subscriptions_title),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: FutureBuilder<String>(
-            future: getUserSub(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.primaryColor,
-                  ),
-                );
-              }
+        child: FutureBuilder<String>(
+          future: getUserSub(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+              );
+            }
 
-              if (snapshot.hasData) {
-                final p = snapshot.data;
+            final current = snapshot.data;
 
-                for (var sub in subscriptions) {
-                  sub['is_selected'] = false;
-                }
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (var i = 0; i < subscriptions.length; i++)
+                    PlanCard(
+                      title: subscriptions[i]['type'],
+                      icon: subscriptions[i]['icon'],
+                      price: "${subscriptions[i]['cost']} ${t.dinars}",
+                      details: subscriptions[i]['details'],
+                      isSelected: subscriptions[i]['key'] == current,
+                      isLoading: loadingIndex == i,
+                      isRecommended: subscriptions[i]['key'] == "yearly",
+                      onSelect: () async {
+                        setState(() => loadingIndex = i);
 
-                if (p == 'free') {
-                  subscriptions[0]['is_selected'] = true;
-                } else if (p == 'monthly') {
-                  subscriptions[1]['is_selected'] = true;
-                } else {
-                  subscriptions[2]['is_selected'] = true;
-                }
+                        final changed = await changePlan(i);
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    for (var i = 0; i < subscriptions.length; i++)
-                      plan(
-                        subscriptions[i]['type'],
-                        subscriptions[i]['icon'],
-                        subscriptions[i]['cost'],
-                        subscriptions[i]['details'],
-                        subscriptions[i]['is_selected'],
-                        i,
-                        context,
-                      ),
-                  ],
-                );
-              } else {
-                return const Text('Error in getting data!');
-              }
-            },
-          ),
+                        setState(() => loadingIndex = null);
+
+                        if (changed) showSuccessMsg();
+                      },
+                    ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

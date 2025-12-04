@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filterDate => 'Date';
 
   @override
+  String get filterType => 'Type';
+
+  @override
   String get tabStays => 'Stays';
 
   @override

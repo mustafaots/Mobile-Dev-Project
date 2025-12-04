@@ -1,6 +1,5 @@
 import 'db_repositories/db_repo.dart';
 import '../database/db_helper.dart';
-import 'db_repositories/sharedprefs_repository.dart';
 
 class RepoFactory {
   static Map<String, dynamic>? _repositories;
@@ -41,7 +40,7 @@ class RepoFactory {
       'reviewRepo': ReviewRepository(db),
       'subscriptionRepo': SubscriptionRepository(db),
       'reportRepo': ReportRepository(db),
-      'imageRepo': ImagesRepository(db),
+      'imageRepo': PostImagesRepository(db),
       'sharedprefsRepo': sharedPrefsRepo,
     };
   }

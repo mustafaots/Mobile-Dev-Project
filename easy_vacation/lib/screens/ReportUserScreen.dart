@@ -164,8 +164,8 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
         _isSubmitting = false;
       });
 
-      final reportRepo = appRepos['reportRepo'] as ReportRepository;
-      /*await reportRepo.insertReport(
+      /*final reportRepo = appRepos['reportRepo'] as ReportRepository;
+      await reportRepo.insertReport(
         reporterId: reporterId,
         reportedUserId: reportedUserId ?? null,
         reportedPostId: reportedPostId ?? null,

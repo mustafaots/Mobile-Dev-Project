@@ -1,9 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 
-class ImagesRepository {
+class PostImagesRepository {
   final Database db;
 
-  ImagesRepository(this.db);
+  PostImagesRepository(this.db);
 
   /// Insert a new image for a post
   Future<int> insertImage({
