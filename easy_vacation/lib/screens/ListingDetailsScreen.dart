@@ -137,6 +137,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                 children: [
                   const ImageGallery(),
                   TitleSection(post: _post),
+                  DetailsSection(post: _post),
                   HostInfo(host: _host, post: _post),
                   ReviewsSection(reviews: _reviews, reviewers: _reviewers),
                   AvailabilitySection(
