@@ -248,12 +248,8 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
                       loadingIndex = idx;
                     });
                     final changed = await changePlan(idx);
-                    if(changed) {
-                      setState(() {
-                        loadingIndex = null;
-                      });
-                      showSuccessMsg();
-                    }
+                    setState(() { loadingIndex = null; });
+                    if(changed) showSuccessMsg();
                   },
                   child: loadingIndex == idx ? 
                     SizedBox(

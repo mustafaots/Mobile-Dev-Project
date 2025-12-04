@@ -7,3 +7,4 @@ export 'review_repository.dart';
 export 'subscription_repository.dart';
 export 'report_repository.dart';
 export 'sharedprefs_repository.dart';
+export 'images_repository.dart';
