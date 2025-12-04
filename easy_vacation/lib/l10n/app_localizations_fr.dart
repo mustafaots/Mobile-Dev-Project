@@ -366,10 +366,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bookings_confirmed => 'Confirmées';
 
   @override
-  String get bookings_canceled => 'Annulées';
+  String get bookings_rejected => 'Rejetées';
 
   @override
   String get bookings_viewDetails => 'Voir les détails';
+
+  @override
+  String get bookings_yourBooking => 'Votre réservation';
 
   @override
   String get bookings_noBookingsYet => 'Aucune réservation pour l\'instant';
@@ -401,6 +404,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get listingDetails_reserveNow => 'Réserver maintenant';
+
+  @override
+  String get listingDetails_selectDatesFirst =>
+      'Veuillez sélectionner les dates avant de réserver';
+
+  @override
+  String get listingDetails_bookingConfirmed =>
+      'Réservation confirmée ! Consultez vos réservations.';
 
   @override
   String listingDetails_daysAgo(int count) {
@@ -919,4 +930,27 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get subscription_update_success =>
       'Votre abonnement a été mis à jour avec succès';
+
+  @override
+  String get bookings_cancel => 'Annuler';
+
+  @override
+  String get bookings_cancelBooking => 'Annuler la réservation';
+
+  @override
+  String get bookings_cancelConfirmation =>
+      'Êtes-vous sûr de vouloir annuler cette réservation ? Cette action ne peut pas être annulée.';
+
+  @override
+  String get bookings_canceledSuccessfully => 'Réservation annulée avec succès';
+
+  @override
+  String get bookings_cancelationError =>
+      'Impossible d\'annuler la réservation. Veuillez réessayer.';
+
+  @override
+  String get common_yes => 'Oui';
+
+  @override
+  String get common_no => 'Non';
 }

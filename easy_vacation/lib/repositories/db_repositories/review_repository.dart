@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import '../../models/reviews.model.dart';
 
 /// Repository for managing review data
 class ReviewRepository {
@@ -7,46 +8,40 @@ class ReviewRepository {
   ReviewRepository(this.db);
 
   /// Insert a new review
-  Future<int> insertReview({
-    required int postId,
-    required int reviewerId,
-    required int rating,
-    String? comment,
-  }) async {
-    return await db.insert('reviews', {
-      'post_id': postId,
-      'reviewer_id': reviewerId,
-      'rating': rating,
-      'comment': comment,
-      'created_at': DateTime.now().toIso8601String(),
-    });
+  Future<int> insertReview(Review review) async {
+    return await db.insert('reviews', review.toMap());
   }
 
   /// Get review by ID
-  Future<Map<String, dynamic>?> getReviewById(int id) async {
+  Future<Review?> getReviewById(int id) async {
     final result = await db.query('reviews', where: 'id = ?', whereArgs: [id]);
-    return result.isNotEmpty ? result.first : null;
+    return result.isNotEmpty ? Review.fromMap(result.first) : null;
   }
 
   /// Get all reviews
-  Future<List<Map<String, dynamic>>> getAllReviews() async {
-    return await db.query('reviews');
+  Future<List<Review>> getAllReviews() async {
+    final results = await db.query('reviews');
+    return results.map((map) => Review.fromMap(map)).toList();
   }
 
   /// Get reviews by post ID
-  Future<List<Map<String, dynamic>>> getReviewsByPostId(int postId) async {
-    return await db.query('reviews', where: 'post_id = ?', whereArgs: [postId]);
+  Future<List<Review>> getReviewsByPostId(int postId) async {
+    final results = await db.query(
+      'reviews',
+      where: 'post_id = ?',
+      whereArgs: [postId],
+    );
+    return results.map((map) => Review.fromMap(map)).toList();
   }
 
   /// Get reviews by reviewer ID
-  Future<List<Map<String, dynamic>>> getReviewsByReviewerId(
-    int reviewerId,
-  ) async {
-    return await db.query(
+  Future<List<Review>> getReviewsByReviewerId(int reviewerId) async {
+    final results = await db.query(
       'reviews',
       where: 'reviewer_id = ?',
       whereArgs: [reviewerId],
     );
+    return results.map((map) => Review.fromMap(map)).toList();
   }
 
   /// Get average rating for a post
@@ -62,7 +57,9 @@ class ReviewRepository {
   }
 
   /// Update review
-  Future<int> updateReview(int id, Map<String, dynamic> values) async {
+  Future<int> updateReview(int id, Review review) async {
+    final values = review.toMap();
+    values.remove('id'); // Remove ID to avoid updating it
     return await db.update('reviews', values, where: 'id = ?', whereArgs: [id]);
   }
 
