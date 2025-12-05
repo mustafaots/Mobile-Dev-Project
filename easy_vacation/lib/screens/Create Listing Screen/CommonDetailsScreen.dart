@@ -528,13 +528,13 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
       vehicleDetails: widget.postData.vehicleDetails,
     );
 
-    // Navigate to confirmation screen
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConfirmAndPostScreen(),//postData: updatedPostData 
-        ),
-      );
+    // Navigate to confirmation screen WITH DATA
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConfirmAndPostScreen(postData: updatedPostData),
+      ),
+    );
   }
 
   @override
@@ -704,70 +704,63 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                     ),
                     const SizedBox(height: 16),
 
+                    // Map Selection Button - NOW FIRST AND ON ITS OWN ROW
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: _selectLocationOnMap,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.white,
+                          foregroundColor: categoryColor,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              color: categoryColor.withOpacity(_selectedLatitude == null ? 0.3 : 1.0),
+                            ),
+                          ),
+                        ),
+                        icon: Icon(_selectedLatitude == null ? Icons.map : Icons.location_on),
+                        label: Text(
+                          _selectedLatitude == null
+                              ? 'Select Location on Map'
+                              : 'Location Selected (${_selectedLatitude!.toStringAsFixed(4)}, ${_selectedLongitude!.toStringAsFixed(4)})',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Wilaya Dropdown - ON ITS OWN ROW
+                    _buildWilayaDropdown(),
+                    const SizedBox(height: 16),
+
+                    // Row for City and Address
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Map Preview
-                        _buildLocationPreview(),
-                        SizedBox(width: 16),
-                        // Location Fields
                         Expanded(
-                          child: Column(
-                            children: [
-                              // Wilaya Dropdown
-                              _buildWilayaDropdown(),
-                              const SizedBox(height: 16),
-
-                              // City
-                              buildFormField(
-                                context,
-                                controller: _cityController,
-                                label: 'City',
-                                icon: Icons.location_city,
-                                validator: (value) => value == null || value.trim().isEmpty
-                                    ? 'Please enter city'
-                                    : null,
-                              ),
-                              const SizedBox(height: 16),
-
-                              // Address
-                              buildFormField(
-                                context,
-                                controller: _addressController,
-                                label: 'Address',
-                                icon: Icons.home,
-                                validator: (value) => value == null || value.trim().isEmpty
-                                    ? 'Please enter address'
-                                    : null,
-                              ),
-                            ],
+                          child: buildFormField(
+                            context,
+                            controller: _cityController,
+                            label: 'City',
+                            icon: Icons.location_city,
+                            validator: (value) => value == null || value.trim().isEmpty
+                                ? 'Please enter city'
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: buildFormField(
+                            context,
+                            controller: _addressController,
+                            label: 'Address',
+                            icon: Icons.home,
+                            validator: (value) => value == null || value.trim().isEmpty
+                                ? 'Please enter address'
+                                : null,
                           ),
                         ),
                       ],
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Map Selection Button
-                    ElevatedButton.icon(
-                      onPressed: _selectLocationOnMap,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.white,
-                        foregroundColor: categoryColor,
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(
-                            color: categoryColor.withOpacity(0.3),
-                          ),
-                        ),
-                      ),
-                      icon: Icon(Icons.map),
-                      label: Text(
-                        _selectedLatitude == null
-                            ? 'Select Location on Map'
-                            : 'Location Selected (${_selectedLatitude!.toStringAsFixed(4)}, ${_selectedLongitude!.toStringAsFixed(4)})',
-                      ),
                     ),
                   ],
                 ),

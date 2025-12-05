@@ -1,3 +1,4 @@
+import 'package:easy_vacation/models/details.model.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../models/posts.model.dart';
 import '../../models/stays.model.dart';
@@ -268,4 +269,70 @@ class PostRepository {
       whereArgs: [postId],
     );
   }
+
+  /////////////////////////////////////////
+  // METHODS TO HANDLE PASSING POST DATE //
+  /////////////////////////////////////////
+
+  Future<int> createCompletePost({
+    required Post post,
+    required Location location,
+    List<String>? imagePaths,
+    Stay? stay,
+    Activity? activity,
+    Vehicle? vehicle,
+  }) async {
+    // Start transaction
+    await db.execute('BEGIN TRANSACTION');
+    
+    try {
+      // 1. Insert location
+      final locationMap = location.toMap();
+      locationMap.remove('id'); // Remove ID so database auto-generates it
+      final locationId = await db.insert('locations', locationMap);
+      
+      // 2. Create and insert post with location ID
+      final postMap = post.toMap();
+      postMap.remove('id'); // Remove ID so database auto-generates it
+      postMap['location_id'] = locationId;
+      final postId = await db.insert('posts', postMap); // <-- FIXED: This declares postId
+      
+      // 3. Insert category-specific data
+      if (stay != null) {
+        final stayMap = stay.toMap();
+        stayMap['post_id'] = postId; // <-- Now postId is declared above
+        await db.insert('stays', stayMap);
+      } else if (activity != null) {
+        final activityMap = activity.toMap();
+        activityMap['post_id'] = postId; // <-- postId is available here
+        await db.insert('activities', activityMap);
+      } else if (vehicle != null) {
+        final vehicleMap = vehicle.toMap();
+        vehicleMap['post_id'] = postId; // <-- postId is available here
+        await db.insert('vehicles', vehicleMap);
+      }
+      
+      // 4. Insert images if any
+      if (imagePaths != null && imagePaths.isNotEmpty) {
+        for (final imagePath in imagePaths) {
+          final postImage = PostImage(
+            postId: postId, // <-- postId is available here
+            imageData: imagePath,
+          );
+          await db.insert('post_images', postImage.toMap());
+        }
+      }
+      
+      // Commit transaction
+      await db.execute('COMMIT');
+      return postId; // <-- postId is available here
+      
+    } catch (e) {
+      // Rollback on error
+      await db.execute('ROLLBACK');
+      rethrow;
+    }
+  }
 }
+
+

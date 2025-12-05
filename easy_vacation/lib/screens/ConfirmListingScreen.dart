@@ -1,5 +1,14 @@
 // ConfirmListingScreen.dart
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/activities.model.dart';
+import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/models/stays.model.dart';
+import 'package:easy_vacation/models/vehicles.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/location_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/sharedprefs_repository.dart';
+import 'package:easy_vacation/repositories/repo_factory.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -7,7 +16,9 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmAndPostScreen extends StatefulWidget {
-  const ConfirmAndPostScreen({super.key});
+  final CreatePostData postData;
+
+  const ConfirmAndPostScreen({required this.postData, super.key});
 
   @override
   State<ConfirmAndPostScreen> createState() => _ConfirmAndPostScreenState();
@@ -16,31 +27,137 @@ class ConfirmAndPostScreen extends StatefulWidget {
 class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   bool agreedCheck = false;
 
-  // In _postListing() method, replace the current code with:
+  Future<bool> _createPostInDatabase() async {
+    try {
+      // Get user ID
+      final sharedPrefsRepo = await RepoFactory.getRepository<SharedPrefsRepository>('sharedprefsRepo');
 
-  void _postListing() {
-    if (agreedCheck) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
-          backgroundColor: AppTheme.successColor,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
+      int userId = 0;
+      //int? userId = sharedPrefsRepo.getInt('currentUserId');
+      
+      // Get repositories
+      final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
+      final locationRepo = await RepoFactory.getRepository<LocationRepository>('locationRepo');
+      
+      // Create Post object
+      final post = Post(
+        ownerId: userId,
+        category: widget.postData.category,
+        title: widget.postData.title,
+        description: widget.postData.description,
+        price: widget.postData.price,
+        status: 'active',
       );
       
-      // Clear ENTIRE navigation stack and go to HomeScreen
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-          (route) => false, // This removes ALL routes from stack
-        );
-      });
+      // Create Location object
+      final location = Location(
+        wilaya: widget.postData.location.wilaya,
+        city: widget.postData.location.city,
+        address: widget.postData.location.address,
+        latitude: widget.postData.location.latitude,
+        longitude: widget.postData.location.longitude,
+      );
+      
+      // Convert XFiles to bytes
+      List<XFile> images = [];
+      for (String path in widget.postData.imagePaths) {
+        images.add(XFile(path));
+      }
+      
+      // Create category-specific object
+      Stay? stay;
+      Activity? activity;
+      Vehicle? vehicle;
+      
+      switch (widget.postData.category) {
+        case 'stay':
+          if (widget.postData.stayDetails != null) {
+            stay = Stay(
+              postId: 0, // Will be set by repository
+              stayType: widget.postData.stayDetails!.stayType,
+              area: widget.postData.stayDetails!.area,
+              bedrooms: widget.postData.stayDetails!.bedrooms,
+            );
+          }
+          break;
+        case 'activity':
+          if (widget.postData.activityDetails != null) {
+            activity = Activity(
+              postId: 0, // Will be set by repository
+              activityType: widget.postData.activityDetails!.activityType,
+              requirements: widget.postData.activityDetails!.requirements,
+            );
+          }
+          break;
+        case 'vehicle':
+          if (widget.postData.vehicleDetails != null) {
+            vehicle = Vehicle(
+              postId: 0, // Will be set by repository
+              vehicleType: widget.postData.vehicleDetails!.vehicleType,
+              model: widget.postData.vehicleDetails!.model,
+              year: widget.postData.vehicleDetails!.year,
+              fuelType: widget.postData.vehicleDetails!.fuelType,
+              transmission: widget.postData.vehicleDetails!.transmission,
+              seats: widget.postData.vehicleDetails!.seats,
+              features: widget.postData.vehicleDetails!.features,
+            );
+          }
+          break;
+      }
+      
+      // Insert into database
+      final postId = await postRepo.createCompletePost(
+        post: post,
+        location: location,
+        images: images,
+        stay: stay,
+        activity: activity,
+        vehicle: vehicle,
+      );
+      
+      print('Post created successfully with ID: $postId');
+      return true;
+      
+    } catch (e) {
+      print('Error creating post: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating listing: ${e.toString()}')),
+      );
+      return false;
     }
   }
+
+  void _postListing() async {
+    if (agreedCheck) {
+      // Create the post in database
+      //bool success = await _createPostInDatabase();
+
+      bool success = true;
+      
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
+            backgroundColor: AppTheme.successColor,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+        );
+        
+        // Clear ALL routes and go to HomeScreen
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+            (route) => false, // Clear entire stack
+          );
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -439,4 +556,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
       ),
     );
   }
+}
+
+class XFile {
 }
