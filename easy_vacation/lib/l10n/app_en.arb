@@ -344,10 +344,9 @@
     "blockedUsers_emptyMessage": "Users you block will appear here. You can unblock them anytime if you change your mind.",
     
     "listingHistory_title": "My Listings",
-    "listingHistory_all": "all",
-    "listingHistory_active": "active",
-    "listingHistory_drafts": "draft",
-    "listingHistory_archived": "archived",
+    "listingHistory_all": "All",
+    "listingHistory_active": "Active",
+    "listingHistory_drafts": "Draft",
     "listingHistory_noPostsFound": "No Posts Found",
     "listingHistory_noPostsYet": "You haven't created any posts yet.",
     "listingHistory_noFilterPosts": "No {filter} posts found.",

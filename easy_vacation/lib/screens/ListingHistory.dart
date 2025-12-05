@@ -221,10 +221,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
                         PopupMenuItem(value: 'edit', child: Text(loc.listingHistory_editPost)),
                         PopupMenuItem(value: 'delete', child: Text(loc.listingHistory_deletePost)),
                         if (post.status == 'draft')
-                          PopupMenuItem(value: 'publish', child: Text(loc.listingHistory_publish)),
-                        if (post.status == 'active')
-                          PopupMenuItem(value: 'archive', child: Text(loc.listingHistory_archive)),
-                      ],
+                          PopupMenuItem(value: 'publish', child: Text(loc.listingHistory_publish)),                      ],
                     ),
                   ],
                 ),
@@ -469,7 +466,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       case 'edit': _editPost(post); break;
       case 'delete': _deletePost(post, postRepo); break;
       case 'publish': await _updatePostStatus(post, 'active', postRepo, loc.listingHistory_postPublished); break;
-      case 'archive': await _updatePostStatus(post, 'archived', postRepo, loc.listingHistory_postArchived); break;
     }
   }
 
