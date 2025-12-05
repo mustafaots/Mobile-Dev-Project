@@ -64,37 +64,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  Future<void> _changeProfilePicture() async {
-    // Simple implementation - in real app, you'd use image_picker
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.editProfile_changeProfilePicture),
-        content: Text(AppLocalizations.of(context)!.editProfile_chooseOption),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Handle camera
-            },
-            child: Text(AppLocalizations.of(context)!.editProfile_camera),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Handle gallery
-            },
-            child: Text(AppLocalizations.of(context)!.editProfile_gallery),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalizations.of(context)!.delete),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
@@ -122,52 +91,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             color: AppTheme.primaryColor,
                             width: 3,
                           ),
-                          image: const DecorationImage(
-                            image: NetworkImage(
-                              'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: _changeProfilePicture,
-                          child: Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppTheme.white,
-                                width: 2,
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: AppTheme.white,
-                              size: 18,
-                            ),
-                          ),
+                          // user image
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: _changeProfilePicture,
-                    child: Text(
-                      loc.editProfile_changePhoto,
-                      style: TextStyle(
-                        color: AppTheme.primaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  // editProfile_changePhoto : obsolete   
                 ],
               ),
 

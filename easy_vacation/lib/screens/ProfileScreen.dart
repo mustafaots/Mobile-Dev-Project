@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class ProfileScreen extends StatelessWidget {
   final String userName;
   final String userEmail;
-  final String userImage;
   final String subscriptionType;
   final int postsCount;
   final bool isFollowing;
@@ -18,8 +17,6 @@ class ProfileScreen extends StatelessWidget {
     super.key,
     this.userName = 'USERNAME',
     this.userEmail = 'EXAMPLE@EMAIL.COM',
-    this.userImage =
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuB8oBGBPI4UQgunUlLsbeG4LUCDyQOMJF7C52rKedX1NSZNqWTIc_lLUZgNjYD16keoTwuGfxpaqSo405BelcjMCKal_PA_rxLg1_Ebw5cFfY7t-FGo11kuFKWJmzypIC5g2e7mNvNHwNlyorCpzomh0rpWo3MMEK5Kurz-muMtXrh3LGps3M_ldfNF0Hxm3atFKU1TCfxRQ22nMiHRVvyXelgdHD0FjrVmHRk1ExmxHsazhYbgIfMNEN73JZr0JnuGPsfkjy6ZaNw',
     this.subscriptionType = 'Free',
     this.postsCount = 0,
     this.isFollowing = false,
@@ -81,10 +78,7 @@ class ProfileScreen extends StatelessWidget {
                               color: AppTheme.primaryColor,
                               width: 2,
                             ),
-                            image: DecorationImage(
-                              image: NetworkImage(userImage),
-                              fit: BoxFit.cover,
-                            ),
+                            // TODO: user image
                           ),
                         ),
                         const SizedBox(width: 20),
