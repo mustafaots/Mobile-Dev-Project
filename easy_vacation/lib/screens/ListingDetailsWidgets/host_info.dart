@@ -16,7 +16,6 @@ class HostInfo extends StatelessWidget {
     BuildContext context, {
     required String userName,
     required String userEmail,
-    required String userImage,
     required int postsCount,
     required int reviewsCount,
   }) {
@@ -26,7 +25,6 @@ class HostInfo extends StatelessWidget {
         pageBuilder: (_, __, ___) => ProfileScreen(
           userName: userName,
           userEmail: userEmail,
-          userImage: userImage,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         ),
@@ -60,7 +58,6 @@ class HostInfo extends StatelessWidget {
     // Use model data or defaults
     final hostName = host?.username ?? 'Ali';
     final hostEmail = host?.email ?? 'ali@example.com';
-    final hostImage = host?.profilePicture ?? 'assets/images/host_Ali.jpg';
     final price = post?.price ?? 6000;
     final rating = 4.9;
     final reviewCount = 127;
@@ -88,7 +85,6 @@ class HostInfo extends StatelessWidget {
                 context,
                 userName: hostName,
                 userEmail: hostEmail,
-                userImage: hostImage,
                 postsCount: 24,
                 reviewsCount: reviewCount,
               );
@@ -98,10 +94,7 @@ class HostInfo extends StatelessWidget {
               height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage(hostImage),
-                  fit: BoxFit.cover,
-                ),
+                // TODO: image for user
                 border: Border.all(
                   color: AppTheme.primaryColor.withOpacity(0.3),
                   width: 2,

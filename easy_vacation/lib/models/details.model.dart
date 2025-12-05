@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Location {
   final int? id;
   final String wilaya;

@@ -16,7 +16,6 @@ class ReviewsSection extends StatelessWidget {
     BuildContext context, {
     required String userName,
     required String userEmail,
-    required String userImage,
     required int postsCount,
     required int reviewsCount,
   }) {
@@ -26,7 +25,6 @@ class ReviewsSection extends StatelessWidget {
         pageBuilder: (_, __, ___) => ProfileScreen(
           userName: userName,
           userEmail: userEmail,
-          userImage: userImage,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         ),
@@ -52,7 +50,6 @@ class ReviewsSection extends StatelessWidget {
 
   Widget _buildReviewItem(
     BuildContext context,
-    String avatarPath,
     String name,
     double rating,
     String comment, {
@@ -69,7 +66,6 @@ class ReviewsSection extends StatelessWidget {
           context,
           userName: name,
           userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
-          userImage: avatarPath,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         );
@@ -91,10 +87,7 @@ class ReviewsSection extends StatelessWidget {
                 height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(avatarPath),
-                    fit: BoxFit.cover,
-                  ),
+                  // TODO: image
                   border: Border.all(
                     color: AppTheme.primaryColor.withOpacity(0.3),
                     width: 1.5,
@@ -186,7 +179,6 @@ class ReviewsSection extends StatelessWidget {
       displayedReviews = [
         _buildReviewItem(
           context,
-          'assets/images/reviewer_alex.jpg',
           'Alex Johnson',
           4.5,
           'Absolutely stunning view and the villa was immaculate. Ali was a fantastic host!',
@@ -195,7 +187,6 @@ class ReviewsSection extends StatelessWidget {
         ),
         _buildReviewItem(
           context,
-          'assets/images/reviewer_maria.jpg',
           'Maria Garcia',
           5.0,
           'A perfect getaway. The location is unbeatable. Highly recommended.',
@@ -208,12 +199,12 @@ class ReviewsSection extends StatelessWidget {
         final reviewer = reviewers?[review.reviewerId];
         return _buildReviewItem(
           context,
-          reviewer?.profilePicture ?? 'assets/images/placeholder.jpg',
-          reviewer?.username ?? 'Anonymous',
+          reviewer!.username,
           review.rating.toDouble(),
-          review.comment ?? 'Great experience!',
+          review.comment ?? '',
           postsCount: 0,
           reviewsCount: 0,
+
         );
       }).toList();
     }

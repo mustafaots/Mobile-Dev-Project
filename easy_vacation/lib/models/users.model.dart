@@ -7,7 +7,6 @@ class User {
   final String? lastName;
   final DateTime createdAt;
   final bool isVerified;
-  final String? profilePicture; // Store as base64 string or file path
   final String userType; // "tourist", "host", or "both"
   final bool isSuspended;
 
@@ -20,7 +19,6 @@ class User {
     this.lastName,
     required this.createdAt,
     this.isVerified = false,
-    this.profilePicture,
     this.userType = 'tourist',
     this.isSuspended = false,
   });
@@ -35,7 +33,6 @@ class User {
       'last_name': lastName,
       'created_at': createdAt.toIso8601String(),
       'is_verified': isVerified ? 1 : 0,
-      'profile_picture': profilePicture,
       'user_type': userType,
       'is_suspended': isSuspended ? 1 : 0,
     };
@@ -53,7 +50,6 @@ class User {
           ? DateTime.parse(map['created_at']) 
           : DateTime.now(),
       isVerified: map['is_verified'] == 1,
-      profilePicture: map['profile_picture'],
       userType: map['user_type'] ?? 'tourist',
       isSuspended: map['is_suspended'] == 1,
     );

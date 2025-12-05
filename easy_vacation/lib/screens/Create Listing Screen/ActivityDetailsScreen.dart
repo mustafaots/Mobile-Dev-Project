@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/CommonDetailsScreen.dart';
