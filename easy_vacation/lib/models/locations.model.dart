@@ -1,5 +1,4 @@
 // easy_vacation/lib/models/locations.model.dart
-import 'package:easy_vacation/models/details.model.dart' as details;
 import 'package:easy_vacation/models/locations.model.dart' as details;
 
 class Location {
