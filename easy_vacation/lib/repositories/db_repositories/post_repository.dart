@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_vacation/models/locations.model.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../models/posts.model.dart';
@@ -322,6 +324,9 @@ class PostRepository {
   // METHODS TO HANDLE PASSING POST DATE //
   /////////////////////////////////////////
 
+// OPTION 1: Quick Fix - Store image paths and read them as files
+// Update your PostRepository.createCompletePost method:
+
   Future<int> createCompletePost({
     required Post post,
     required Location location,
@@ -330,53 +335,65 @@ class PostRepository {
     Activity? activity,
     Vehicle? vehicle,
   }) async {
-    // Start transaction
     await db.execute('BEGIN TRANSACTION');
     
     try {
       // 1. Insert location
       final locationMap = location.toMap();
-      locationMap.remove('id'); // Remove ID so database auto-generates it
+      locationMap.remove('id');
       final locationId = await db.insert('locations', locationMap);
       
       // 2. Create and insert post with location ID
       final postMap = post.toMap();
-      postMap.remove('id'); // Remove ID so database auto-generates it
+      postMap.remove('id');
       postMap['location_id'] = locationId;
-      final postId = await db.insert('posts', postMap); // <-- FIXED: This declares postId
+      final postId = await db.insert('posts', postMap);
       
       // 3. Insert category-specific data
       if (stay != null) {
         final stayMap = stay.toMap();
-        stayMap['post_id'] = postId; // <-- Now postId is declared above
+        stayMap['post_id'] = postId;
         await db.insert('stays', stayMap);
       } else if (activity != null) {
         final activityMap = activity.toMap();
-        activityMap['post_id'] = postId; // <-- postId is available here
+        activityMap['post_id'] = postId;
         await db.insert('activities', activityMap);
       } else if (vehicle != null) {
         final vehicleMap = vehicle.toMap();
-        vehicleMap['post_id'] = postId; // <-- postId is available here
+        vehicleMap['post_id'] = postId;
         await db.insert('vehicles', vehicleMap);
       }
       
-      // 4. Insert images if any
+      // 4. FIXED: Insert images - convert file to bytes before storing
       if (imagePaths != null && imagePaths.isNotEmpty) {
         for (final imagePath in imagePaths) {
-          final postImage = PostImage(
-            postId: postId, // <-- postId is available here
-            imageData: imagePath,
-          );
-          await db.insert('post_images', postImage.toMap());
+          try {
+            // Read the image file as bytes
+            final file = File(imagePath);
+            if (await file.exists()) {
+              final imageBytes = await file.readAsBytes();
+              
+              // Store the bytes in database
+              await db.insert('post_images', {
+                'post_id': postId,
+                'image': imageBytes,  // Store as BLOB
+              });
+              
+              print('✅ Stored image for post $postId: ${imageBytes.length} bytes');
+            } else {
+              print('⚠️ Image file not found: $imagePath');
+            }
+          } catch (e) {
+            print('❌ Error storing image: $e');
+            // Continue with other images even if one fails
+          }
         }
       }
       
-      // Commit transaction
       await db.execute('COMMIT');
-      return postId; // <-- postId is available here
+      return postId;
       
     } catch (e) {
-      // Rollback on error
       await db.execute('ROLLBACK');
       rethrow;
     }
