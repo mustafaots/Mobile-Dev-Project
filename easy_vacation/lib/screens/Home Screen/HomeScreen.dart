@@ -114,7 +114,7 @@ class __HomeContentState extends State<_HomeContent> {
   DateTime? selectedDate;
   String? selectedPrice;
 
-  final List<Widget> screens = const [
+  final List<Widget> screens = [
     StaysScreen(),
     VehiclesScreen(),
     ActivitiesScreen(),
