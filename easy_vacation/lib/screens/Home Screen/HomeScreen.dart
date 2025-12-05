@@ -1,3 +1,4 @@
+import 'package:easy_vacation/screens/Home%20Screen/SearchScreen.dart';
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/NotificationsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
@@ -112,13 +113,50 @@ class __HomeContentState extends State<_HomeContent> {
 
   String? selectedWilaya;
   DateTime? selectedDate;
-  String? selectedPrice;
+  double? selectedPrice;
+  String? selectedType;
 
+  bool changedWilaya = false;
+  bool changedDate = false;
+  bool changedPrice = false;
+  bool changedType = false;
+  
   final List<Widget> screens = [
     StaysScreen(),
     VehiclesScreen(),
     ActivitiesScreen(),
   ];
+
+  String post_type = 'stay';
+
+  Widget _simpleChip(String text, VoidCallback onRemove) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppTheme.primaryColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(width: 6),
+          GestureDetector(
+            onTap: onRemove,
+            child: const Icon(Icons.close, size: 18, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +197,7 @@ class __HomeContentState extends State<_HomeContent> {
                         ),
                         child: GestureDetector(
                           onTap: () {
+                            if(i == 0) _selectType();
                             if(i == 1) _selectWilaya();
                             if(i == 2) _selectDate();
                             if(i == 3) _enterPrice();
@@ -190,6 +229,49 @@ class __HomeContentState extends State<_HomeContent> {
                 ),
               ),
 
+              const SizedBox(height: 10),
+
+              if (selectedWilaya != null || selectedDate != null || selectedPrice != null || selectedType != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        if (selectedWilaya != null)
+                          _simpleChip(selectedWilaya!, () {
+                            setState(() {
+                              selectedWilaya = null;
+                              changedWilaya = false;
+                            });
+                          }),
+                        if (selectedDate != null)
+                          _simpleChip(selectedDate!.toString().split(" ")[0], () {
+                            setState(() {
+                              selectedDate = null;
+                              changedDate = false;
+                            });
+                          }),
+                        if (selectedPrice != null)
+                          _simpleChip("${selectedPrice!} DZD", () {
+                            setState(() {
+                              selectedPrice = null;
+                              changedPrice = false;
+                            });
+                          }),
+                        if (selectedType != null)
+                          _simpleChip("${selectedType!}", () {
+                            setState(() {
+                              selectedType = null;
+                              changedType = false;
+                            });
+                          }),
+                      ],
+                    ),
+                  )
+                ),
+
               const SizedBox(height: 20),
 
               Row(
@@ -203,7 +285,12 @@ class __HomeContentState extends State<_HomeContent> {
                   final bool isSelected = index == selectedIndex;
 
                   return GestureDetector(
-                    onTap: () => setState(() => selectedIndex = index),
+                    onTap: () => setState(() {
+                      selectedIndex = index;
+                      if(selectedIndex == 0) post_type = 'stay';
+                      else if(selectedIndex == 1) post_type = 'vehicle';
+                      else if(selectedIndex == 2) post_type = 'activity';
+                    }),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 0),
@@ -247,7 +334,15 @@ class __HomeContentState extends State<_HomeContent> {
 
               const SizedBox(height: 30),
 
-              screens[selectedIndex],
+              if(changedDate || changedPrice || changedWilaya || changedType)
+                SearchScreen(
+                  postCategory: post_type,
+                  price: selectedPrice,
+                  wilaya: selectedWilaya,
+                  date: selectedDate,
+                  postType: selectedType,
+                )
+              else screens[selectedIndex],
             ],
           ),
         ),
@@ -352,8 +447,7 @@ class __HomeContentState extends State<_HomeContent> {
                       onChanged: (value) {
                         setState(() {
                           filteredWilayas = wilayas
-                              .where((w) =>
-                                  w.toLowerCase().contains(value.toLowerCase()))
+                              .where((w) => w.contains(value))
                               .toList();
                         });
                       },
@@ -387,6 +481,10 @@ class __HomeContentState extends State<_HomeContent> {
     );
 
     if (result != null) {
+      setState(() {
+        selectedWilaya = result;
+        changedWilaya = selectedWilaya != null;
+      });
       print("Selected wilaya: $result");
     }
   }
@@ -434,7 +532,10 @@ class __HomeContentState extends State<_HomeContent> {
     );
 
     if (date != null) {
-      setState(() => selectedDate = date);
+      setState(() {
+        selectedDate = date;
+        changedDate = selectedDate != null;
+      });
       print("Selected date: $date");
     }
   }
@@ -519,7 +620,7 @@ class __HomeContentState extends State<_HomeContent> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 AppLocalizations.of(context)!.profile_cancel,
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: AppTheme.primaryColor),
               ),
             ),
             TextButton(
@@ -532,8 +633,101 @@ class __HomeContentState extends State<_HomeContent> {
     );
 
     if (result != null && result.trim().isNotEmpty) {
-      setState(() => selectedPrice = result);
+      setState(() {
+        selectedPrice = double.parse(result);
+        changedPrice = selectedPrice != null;
+      });
       print("Entered price: $result");
+    }
+  }
+
+
+
+  List<String> _getTypesForPostType() {
+    switch (post_type) {
+      case 'vehicle':
+        return ['Motorcycle', 'Car', 'Bicycle', 'Boat', 'Scooter'];
+      case 'stay':
+        return ['Apartment', 'Villa', 'House', 'Room', 'Chalet'];
+      default:
+        return [];
+    }
+  }
+
+  void _selectType() async {
+    if (post_type == 'activity') {
+      return;
+    }
+
+    final types = _getTypesForPostType();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final softDarkSurface = const Color(0xFF1F1F1F);
+    //final loc = AppLocalizations.of(context)!;
+
+    final result = await showDialog<String>(
+      context: context,
+      builder: (_) => Theme(
+        data: Theme.of(context).copyWith(
+          dialogBackgroundColor: isDark ? softDarkSurface : Colors.white,
+          colorScheme: isDark
+              ? ColorScheme.dark(
+                  primary: AppTheme.primaryColor,
+                  onPrimary: Colors.white,
+                  onSurface: Colors.white70,
+                  surface: softDarkSurface,
+                )
+              : ColorScheme.light(
+                  primary: AppTheme.primaryColor,
+                  onPrimary: Colors.black87,
+                  onSurface: Colors.black87,
+                  surface: Colors.white,
+                ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.primaryColor,
+              textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            'Choose Type',
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black87,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: types.length,
+              itemBuilder: (_, index) {
+                return ListTile(
+                  title: Text(
+                    types[index],
+                    style: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black87,
+                    ),
+                  ),
+                  onTap: () => Navigator.pop(context, types[index]),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedType = result;
+        changedType = selectedType != null;
+      });
+      print("Selected type: $result");
     }
   }
 

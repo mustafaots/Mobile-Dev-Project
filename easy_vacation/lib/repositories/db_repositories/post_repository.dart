@@ -59,6 +59,54 @@ class PostRepository {
     return results.map((map) => Post.fromMap(map)).toList();
   }
 
+  // get posts by filters(wilaya, price, type)
+  Future<List<Post>> getPostsFiltered({
+    String? wilaya,
+    double? maxPrice,
+    String? category,
+    String? type
+  }) async {
+    String query = '''
+      SELECT DISTINCT p.*
+      FROM posts p
+      INNER JOIN locations l ON p.location_id = l.id
+      LEFT JOIN vehicles v ON p.id = v.post_id
+      LEFT JOIN stays s ON p.id = s.post_id
+      LEFT JOIN activities a ON p.id = a.post_id
+    ''';
+
+    List<String> conditions = [];
+    List<dynamic> args = [];
+
+    if (wilaya != null) {
+      conditions.add('l.wilaya = ?');
+      args.add(wilaya);
+    }
+    if (maxPrice != null) {
+      conditions.add('p.price <= ?');
+      args.add(maxPrice);
+    }
+    if (category != null) {
+      conditions.add('p.category = ?');
+      args.add(category);
+    }
+    if (type != null) {
+      conditions.add('''
+        (v.vehicle_type = ? OR s.stay_type = ? OR a.activity_type = ?)
+      ''');
+      args.addAll([type, type, type]);
+    }
+
+    if (conditions.isNotEmpty) {
+      query += ' WHERE ' + conditions.join(' AND ');
+    }
+    query += ' ORDER BY p.created_at DESC';
+
+    final results = await db.rawQuery(query, args);
+    return results.map((map) => Post.fromMap(map)).toList();
+  }
+
+
   /// Update post
   Future<int> updatePost(int id, Post post) async {
     final values = post.toMap();
