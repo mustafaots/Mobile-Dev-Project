@@ -408,6 +408,9 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم تأكيد الحجز! تحقق من حجوزاتك.';
 
   @override
+  String get listingDetails_bookingPending => 'حجزك قيد الانتظار';
+
+  @override
   String listingDetails_daysAgo(int count) {
     return 'قبل $count يوم';
   }
@@ -936,4 +939,70 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get common_no => 'لا';
+
+  @override
+  String get details_description => 'الوصف';
+
+  @override
+  String get details_stayType => 'نوع الإقامة';
+
+  @override
+  String get details_bedrooms => 'غرف النوم';
+
+  @override
+  String get details_area => 'المساحة';
+
+  @override
+  String get details_vehicleType => 'نوع المركبة';
+
+  @override
+  String get details_model => 'الموديل';
+
+  @override
+  String get details_year => 'السنة';
+
+  @override
+  String get details_fuelType => 'نوع الوقود';
+
+  @override
+  String get details_transmission => 'ناقل الحركة';
+
+  @override
+  String get details_automatic => 'أوتوماتيكي';
+
+  @override
+  String get details_manual => 'يدوي';
+
+  @override
+  String get details_seats => 'المقاعد';
+
+  @override
+  String get details_features => 'الميزات';
+
+  @override
+  String get details_activityType => 'نوع النشاط';
+
+  @override
+  String get details_noAdditionalDetails => 'لا توجد معلومات إضافية متاحة';
+
+  @override
+  String get details_price => 'السعر';
+
+  @override
+  String get details_available => 'متاح';
+
+  @override
+  String get details_unavailable => 'غير متاح';
+
+  @override
+  String get details_pricePerNight => 'ليلة';
+
+  @override
+  String get details_pricePerDay => 'يوم';
+
+  @override
+  String get details_pricePerPerson => 'شخص';
+
+  @override
+  String get details_pricePerUnit => 'وحدة';
 }

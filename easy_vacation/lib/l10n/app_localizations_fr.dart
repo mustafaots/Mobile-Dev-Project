@@ -414,6 +414,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Réservation confirmée ! Consultez vos réservations.';
 
   @override
+  String get listingDetails_bookingPending =>
+      'Votre réservation est en attente';
+
+  @override
   String listingDetails_daysAgo(int count) {
     return 'Il y a $count jour';
   }
@@ -953,4 +957,71 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get common_no => 'Non';
+
+  @override
+  String get details_description => 'Description';
+
+  @override
+  String get details_stayType => 'Type d\'hébergement';
+
+  @override
+  String get details_bedrooms => 'Chambres';
+
+  @override
+  String get details_area => 'Superficie';
+
+  @override
+  String get details_vehicleType => 'Type de véhicule';
+
+  @override
+  String get details_model => 'Modèle';
+
+  @override
+  String get details_year => 'Année';
+
+  @override
+  String get details_fuelType => 'Type de carburant';
+
+  @override
+  String get details_transmission => 'Transmission';
+
+  @override
+  String get details_automatic => 'Automatique';
+
+  @override
+  String get details_manual => 'Manuel';
+
+  @override
+  String get details_seats => 'Places';
+
+  @override
+  String get details_features => 'Caractéristiques';
+
+  @override
+  String get details_activityType => 'Type d\'activité';
+
+  @override
+  String get details_noAdditionalDetails =>
+      'Aucune information supplémentaire disponible';
+
+  @override
+  String get details_price => 'Prix';
+
+  @override
+  String get details_available => 'Disponible';
+
+  @override
+  String get details_unavailable => 'Non disponible';
+
+  @override
+  String get details_pricePerNight => 'nuit';
+
+  @override
+  String get details_pricePerDay => 'jour';
+
+  @override
+  String get details_pricePerPerson => 'personne';
+
+  @override
+  String get details_pricePerUnit => 'unité';
 }
