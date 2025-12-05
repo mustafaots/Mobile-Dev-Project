@@ -136,8 +136,9 @@
   "listingDetails_reviews": "التقييمات",
   "listingDetails_availability": "التوفر",
   "listingDetails_reserveNow": "احجز الآن",
-  "listingDetails_selectDatesFirst": "يرجى تحديد التواريخ قبل الحجز",
-  "listingDetails_bookingConfirmed": "تم تأكيد الحجز! تحقق من حجوزاتك.",
+    "listingDetails_selectDatesFirst": "يرجى تحديد التواريخ قبل الحجز",
+    "listingDetails_bookingConfirmed": "تم تأكيد الحجز! تحقق من حجوزاتك.",
+    "listingDetails_bookingPending": "حجزك قيد الانتظار",
   "listingDetails_daysAgo": "قبل {count} يوم",
   "listingDetails_daysAgo_other": "قبل {count} يوم",
   "@listingDetails_daysAgo": {
@@ -432,5 +433,28 @@
   "bookings_cancelationError": "فشل في إلغاء الحجز. يرجى المحاولة مرة أخرى.",
   
   "common_yes": "نعم",
-  "common_no": "لا"
+  "common_no": "لا",
+  
+  "details_description": "الوصف",
+  "details_stayType": "نوع الإقامة",
+  "details_bedrooms": "غرف النوم",
+  "details_area": "المساحة",
+  "details_vehicleType": "نوع المركبة",
+  "details_model": "الموديل",
+  "details_year": "السنة",
+  "details_fuelType": "نوع الوقود",
+  "details_transmission": "ناقل الحركة",
+  "details_automatic": "أوتوماتيكي",
+  "details_manual": "يدوي",
+  "details_seats": "المقاعد",
+  "details_features": "الميزات",
+  "details_activityType": "نوع النشاط",
+  "details_noAdditionalDetails": "لا توجد معلومات إضافية متاحة",
+  "details_price": "السعر",
+  "details_available": "متاح",
+  "details_unavailable": "غير متاح",
+  "details_pricePerNight": "ليلة",
+  "details_pricePerDay": "يوم",
+  "details_pricePerPerson": "شخص",
+  "details_pricePerUnit": "وحدة"
 }

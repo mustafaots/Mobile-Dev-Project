@@ -138,6 +138,7 @@
   "listingDetails_reserveNow": "Réserver maintenant",
   "listingDetails_selectDatesFirst": "Veuillez sélectionner les dates avant de réserver",
   "listingDetails_bookingConfirmed": "Réservation confirmée ! Consultez vos réservations.",
+  "listingDetails_bookingPending": "Votre réservation est en attente",
   "listingDetails_daysAgo": "Il y a {count} jour",
   "listingDetails_daysAgo_other": "Il y a {count} jours",
   "@listingDetails_daysAgo": {
@@ -432,5 +433,28 @@
   "bookings_cancelationError": "Impossible d'annuler la réservation. Veuillez réessayer.",
   
   "common_yes": "Oui",
-  "common_no": "Non"
+  "common_no": "Non",
+  
+  "details_description": "Description",
+  "details_stayType": "Type d'hébergement",
+  "details_bedrooms": "Chambres",
+  "details_area": "Superficie",
+  "details_vehicleType": "Type de véhicule",
+  "details_model": "Modèle",
+  "details_year": "Année",
+  "details_fuelType": "Type de carburant",
+  "details_transmission": "Transmission",
+  "details_automatic": "Automatique",
+  "details_manual": "Manuel",
+  "details_seats": "Places",
+  "details_features": "Caractéristiques",
+  "details_activityType": "Type d'activité",
+  "details_noAdditionalDetails": "Aucune information supplémentaire disponible",
+  "details_price": "Prix",
+  "details_available": "Disponible",
+  "details_unavailable": "Non disponible",
+  "details_pricePerNight": "nuit",
+  "details_pricePerDay": "jour",
+  "details_pricePerPerson": "personne",
+  "details_pricePerUnit": "unité"
 }

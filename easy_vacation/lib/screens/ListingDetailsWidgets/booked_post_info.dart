@@ -1,71 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/logic/cubit/booked_post_cubit.dart';
+import 'package:easy_vacation/logic/cubit/booked_post_state.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/main.dart';
 
-class BookedPostBottomInfo extends StatefulWidget {
-  final Post? post;
+class BookedPostBottomInfo extends StatelessWidget {
   final int postId;
-  final BookingRepository bookingRepository;
   final VoidCallback? onBookingCanceled;
 
   const BookedPostBottomInfo({
     super.key,
-    required this.post,
     required this.postId,
-    required this.bookingRepository,
     this.onBookingCanceled,
   });
 
   @override
-  State<BookedPostBottomInfo> createState() => _BookedPostBottomInfoState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => BookedPostCubit(
+        bookingRepository: appRepos['bookingRepo'] as BookingRepository,
+        postRepository: appRepos['postRepo'] as PostRepository,
+        reviewRepository: appRepos['reviewRepo'] as ReviewRepository,
+        userRepository: appRepos['userRepo'] as UserRepository,
+      )..loadPostDetails(postId),
+      child: _BookedPostBottomInfoContent(
+        postId: postId,
+        onBookingCanceled: onBookingCanceled,
+      ),
+    );
+  }
 }
 
-class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
-  bool _isLoadingBooking = true;
-  bool _isCanceling = false;
-  String? _bookingDates;
-  String? _bookingStatus;
+class _BookedPostBottomInfoContent extends StatelessWidget {
+  final int postId;
+  final VoidCallback? onBookingCanceled;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadBookingInfo();
-  }
+  const _BookedPostBottomInfoContent({
+    required this.postId,
+    this.onBookingCanceled,
+  });
 
-  Future<void> _loadBookingInfo() async {
-    try {
-      // Get the latest booking for this post
-      final bookings = await widget.bookingRepository.getAllBookings();
-      var booking;
-      try {
-        booking = bookings.lastWhere((b) => b.postId == widget.postId);
-      } catch (e) {
-        booking = null;
-      }
-
-      if (mounted) {
-        setState(() {
-          if (booking != null) {
-            _bookingDates =
-                '${booking.startTime.day}/${booking.startTime.month} - ${booking.endTime.day}/${booking.endTime.month}/${booking.endTime.year}';
-            _bookingStatus = booking.status;
-          }
-          _isLoadingBooking = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoadingBooking = false;
-        });
-      }
-    }
-  }
-
-  Color _getStatusColor(String? status) {
+  Color _getStatusColor(String status) {
     switch (status) {
       case 'confirmed':
         return AppTheme.successColor;
@@ -78,7 +60,7 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
     }
   }
 
-  String _getStatusLabel(BuildContext context, String? status) {
+  String _getStatusLabel(BuildContext context, String status) {
     final loc = AppLocalizations.of(context)!;
     switch (status) {
       case 'confirmed':
@@ -88,27 +70,27 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
       case 'rejected':
         return loc.bookings_rejected;
       default:
-        return status ?? 'Unknown';
+        return status;
     }
   }
 
-  Future<void> _cancelBooking() async {
+  Future<void> _handleCancelBooking(BuildContext context) async {
+    final loc = AppLocalizations.of(context)!;
+
     // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.bookings_cancelBooking),
-        content: Text(
-          AppLocalizations.of(context)!.bookings_cancelConfirmation,
-        ),
+        title: Text(loc.bookings_cancelBooking),
+        content: Text(loc.bookings_cancelConfirmation),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.common_no),
+            child: Text(loc.common_no),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(AppLocalizations.of(context)!.common_yes),
+            child: Text(loc.common_yes),
           ),
         ],
       ),
@@ -116,61 +98,8 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
 
     if (confirmed != true) return;
 
-    setState(() {
-      _isCanceling = true;
-    });
-
-    try {
-      final bookings = await widget.bookingRepository.getAllBookings();
-      var booking;
-      try {
-        booking = bookings.lastWhere((b) => b.postId == widget.postId);
-      } catch (e) {
-        booking = null;
-      }
-
-      if (booking != null && booking.id != null) {
-        // Delete the booking from database
-        await widget.bookingRepository.deleteBooking(booking.id!);
-
-        if (mounted) {
-          setState(() {
-            _bookingStatus = 'rejected';
-            _isCanceling = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.bookings_canceledSuccessfully,
-              ),
-              backgroundColor: AppTheme.successColor,
-            ),
-          );
-
-          // Notify parent of cancellation to refresh bookings list
-          Future.delayed(const Duration(seconds: 1), () {
-            if (mounted) {
-              widget.onBookingCanceled
-                  ?.call(); // This will navigate back via parent
-            }
-          });
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isCanceling = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.bookings_cancelationError,
-            ),
-            backgroundColor: AppTheme.failureColor,
-          ),
-        );
-      }
+    if (context.mounted) {
+      context.read<BookedPostCubit>().cancelBooking(postId);
     }
   }
 
@@ -180,133 +109,192 @@ class _BookedPostBottomInfoState extends State<BookedPostBottomInfo> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
 
-    if (_isLoadingBooking) {
-      return Positioned(
-        bottom: 0,
-        left: 0,
-        right: 0,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: cardColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 16,
-                offset: const Offset(0, -4),
+    return BlocListener<BookedPostCubit, BookedPostState>(
+      listener: (context, state) {
+        if (state is BookedPostCanceled) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.bookings_canceledSuccessfully,
               ),
-            ],
-          ),
-          child: const SizedBox(
-            height: 56,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: AppTheme.primaryColor,
-                strokeWidth: 2,
-              ),
+              backgroundColor: AppTheme.successColor,
             ),
-          ),
-        ),
-      );
-    }
+          );
 
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: cardColor,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 16,
-              offset: const Offset(0, -4),
+          // Notify parent of cancellation and pop screen
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            if (context.mounted) {
+              onBookingCanceled?.call();
+              Navigator.of(context).pop();
+            }
+          });
+        } else if (state is BookedPostError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppTheme.failureColor,
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.bookings_yourBooking,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: secondaryTextColor,
-                      fontWeight: FontWeight.w500,
+          );
+        }
+      },
+      child: BlocBuilder<BookedPostCubit, BookedPostState>(
+        builder: (context, state) {
+          if (state is BookedPostLoading) {
+            return Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 16,
+                      offset: const Offset(0, -4),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _bookingDates ?? 'Loading...',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _getStatusColor(_bookingStatus).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: _getStatusColor(_bookingStatus).withOpacity(0.3),
-                      ),
-                    ),
-                    child: Text(
-                      _getStatusLabel(context, _bookingStatus),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: _getStatusColor(_bookingStatus),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (_bookingStatus != 'rejected')
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: ElevatedButton.icon(
-                  onPressed: _isCanceling ? null : _cancelBooking,
-                  icon: _isCanceling
-                      ? SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          ),
-                        )
-                      : const Icon(Icons.close, size: 16),
-                  label: Text(AppLocalizations.of(context)!.bookings_cancel),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.failureColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                  ],
+                ),
+                child: const SizedBox(
+                  height: 56,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppTheme.primaryColor,
+                      strokeWidth: 2,
                     ),
                   ),
                 ),
               ),
-          ],
-        ),
+            );
+          }
+
+          // Handle both BookedPostLoaded and BookedPostCanceling states
+          // The cubit preserves all data during cancellation
+          if (state is BookedPostLoaded || state is BookedPostCanceling) {
+            // Extract shared data from either state using getters
+            final bookingDates = state is BookedPostLoaded
+                ? state.bookingDates
+                : (state as BookedPostCanceling).bookingDates;
+
+            final bookingStatus = state is BookedPostLoaded
+                ? state.bookingStatus
+                : (state as BookedPostCanceling).bookingStatus;
+
+            final isCanceling = state is BookedPostCanceling;
+
+            return Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 16,
+                      offset: const Offset(0, -4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.bookings_yourBooking,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: secondaryTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            bookingDates,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _getStatusColor(
+                                bookingStatus,
+                              ).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: _getStatusColor(
+                                  bookingStatus,
+                                ).withOpacity(0.3),
+                              ),
+                            ),
+                            child: Text(
+                              _getStatusLabel(context, bookingStatus),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: _getStatusColor(bookingStatus),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (bookingStatus != 'rejected')
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: ElevatedButton.icon(
+                          onPressed: isCanceling
+                              ? null
+                              : () => _handleCancelBooking(context),
+                          icon: isCanceling
+                              ? SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
+                                        ),
+                                  ),
+                                )
+                              : const Icon(Icons.close, size: 16),
+                          label: Text(
+                            AppLocalizations.of(context)!.bookings_cancel,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.failureColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

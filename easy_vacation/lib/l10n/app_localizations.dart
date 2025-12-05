@@ -898,6 +898,12 @@ abstract class AppLocalizations {
   /// **'Booking confirmed! Check your bookings.'**
   String get listingDetails_bookingConfirmed;
 
+  /// No description provided for @listingDetails_bookingPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is pending'**
+  String get listingDetails_bookingPending;
+
   /// No description provided for @listingDetails_daysAgo.
   ///
   /// In en, this message translates to:
@@ -1851,6 +1857,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get common_no;
+
+  /// No description provided for @details_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get details_description;
+
+  /// No description provided for @details_stayType.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Type'**
+  String get details_stayType;
+
+  /// No description provided for @details_bedrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms'**
+  String get details_bedrooms;
+
+  /// No description provided for @details_area.
+  ///
+  /// In en, this message translates to:
+  /// **'Area'**
+  String get details_area;
+
+  /// No description provided for @details_vehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get details_vehicleType;
+
+  /// No description provided for @details_model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get details_model;
+
+  /// No description provided for @details_year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get details_year;
+
+  /// No description provided for @details_fuelType.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel Type'**
+  String get details_fuelType;
+
+  /// No description provided for @details_transmission.
+  ///
+  /// In en, this message translates to:
+  /// **'Transmission'**
+  String get details_transmission;
+
+  /// No description provided for @details_automatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get details_automatic;
+
+  /// No description provided for @details_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get details_manual;
+
+  /// No description provided for @details_seats.
+  ///
+  /// In en, this message translates to:
+  /// **'Seats'**
+  String get details_seats;
+
+  /// No description provided for @details_features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get details_features;
+
+  /// No description provided for @details_activityType.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Type'**
+  String get details_activityType;
+
+  /// No description provided for @details_noAdditionalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'No additional details available'**
+  String get details_noAdditionalDetails;
+
+  /// No description provided for @details_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get details_price;
+
+  /// No description provided for @details_available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get details_available;
+
+  /// No description provided for @details_unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get details_unavailable;
+
+  /// No description provided for @details_pricePerNight.
+  ///
+  /// In en, this message translates to:
+  /// **'night'**
+  String get details_pricePerNight;
+
+  /// No description provided for @details_pricePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get details_pricePerDay;
+
+  /// No description provided for @details_pricePerPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'person'**
+  String get details_pricePerPerson;
+
+  /// No description provided for @details_pricePerUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'unit'**
+  String get details_pricePerUnit;
 }
 
 class _AppLocalizationsDelegate

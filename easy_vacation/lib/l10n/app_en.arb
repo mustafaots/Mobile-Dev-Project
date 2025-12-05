@@ -139,6 +139,7 @@
     "listingDetails_reserveNow": "Reserve Now",
     "listingDetails_selectDatesFirst": "Please select dates before booking",
     "listingDetails_bookingConfirmed": "Booking confirmed! Check your bookings.",
+    "listingDetails_bookingPending": "Your booking is pending",
     "listingDetails_daysAgo": "{count} days ago",
     "listingDetails_daysAgo_other": "{count} days ago",
     "@listingDetails_daysAgo": {
@@ -433,5 +434,28 @@
     "bookings_cancelationError": "Failed to cancel booking. Please try again.",
     
     "common_yes": "Yes",
-    "common_no": "No"
+    "common_no": "No",
+    
+    "details_description": "Description",
+    "details_stayType": "Stay Type",
+    "details_bedrooms": "Bedrooms",
+    "details_area": "Area",
+    "details_vehicleType": "Vehicle Type",
+    "details_model": "Model",
+    "details_year": "Year",
+    "details_fuelType": "Fuel Type",
+    "details_transmission": "Transmission",
+    "details_automatic": "Automatic",
+    "details_manual": "Manual",
+    "details_seats": "Seats",
+    "details_features": "Features",
+    "details_activityType": "Activity Type",
+    "details_noAdditionalDetails": "No additional details available",
+    "details_price": "Price",
+    "details_available": "Available",
+    "details_unavailable": "Unavailable",
+    "details_pricePerNight": "night",
+    "details_pricePerDay": "day",
+    "details_pricePerPerson": "person",
+    "details_pricePerUnit": "unit"
 }
