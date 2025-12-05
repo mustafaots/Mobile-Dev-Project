@@ -1,5 +1,4 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/BookingHistoryScreen.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/ListingHistory.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
@@ -268,31 +267,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             PageRouteBuilder(
                               pageBuilder: (_, __, ___) =>
                                   const ListingsHistory(),
-                              transitionsBuilder: (_, animation, __, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                              transitionDuration: const Duration(
-                                milliseconds: 300,
-                              ),
-                            ),
-                          );
-                        },
-                        context: context,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildMenuItem(
-                        icon: Icons.history_outlined,
-                        title: loc.bookingHistory,
-                        subtitle: loc.bookingHistorySubtitle,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (_, __, ___) =>
-                                  const BookingHistoryScreen(),
                               transitionsBuilder: (_, animation, __, child) {
                                 return FadeTransition(
                                   opacity: animation,
