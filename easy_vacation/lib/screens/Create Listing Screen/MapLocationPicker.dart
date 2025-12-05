@@ -78,28 +78,6 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
           ),
         ],
       ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(16),
-        color: Colors.white,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Selected Location:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text('Latitude: ${_selectedLocation.latitude.toStringAsFixed(6)}'),
-            Text('Longitude: ${_selectedLocation.longitude.toStringAsFixed(6)}'),
-            const SizedBox(height: 8),
-            const Text(
-              'Tap on the map to select a location',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
