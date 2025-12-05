@@ -120,16 +120,26 @@ class ActivitiesScreen extends StatelessWidget {
                                   post.id!,
                                   cardCacheW,
                                   cardCacheH,
-                                  260, 170
+                                  260, 170,
                                 ),
                                 builder: (context, snapshot) {
-                                  if(snapshot.connectionState == ConnectionState.waiting) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
                                     return SizedBox(
                                       width: 260,
                                       height: 170,
                                       child: Center(child: CircularProgressIndicator()),
                                     );
                                   }
+
+                                  if(!snapshot.hasData) {
+                                    return Image.asset(
+                                      'assets/images/skiing.jpg',
+                                      width: 260,
+                                      height: 170,
+                                      fit: BoxFit.cover,
+                                    );
+                                  }
+
                                   return snapshot.data!;
                                 },
                               ),

@@ -67,7 +67,7 @@ class PostRepository {
     String? wilaya,
     double? maxPrice,
     String? category,
-    String? type
+    String? type,
   }) async {
     String query = '''
       SELECT DISTINCT p.*
@@ -93,20 +93,27 @@ class PostRepository {
       conditions.add('p.category = ?');
       args.add(category);
     }
-    if (type != null) {
-      conditions.add('''
-        (v.vehicle_type = ? OR s.stay_type = ? OR a.activity_type = ?)
-      ''');
-      args.addAll([type, type, type]);
+
+    if (type != null && category != null) {
+      if (category == 'stay') {
+        conditions.add('s.stay_type = ?');
+        args.add(type);
+      } else if (category == 'vehicle') {
+        conditions.add('v.vehicle_type = ?');
+        args.add(type);
+      } else if (category == 'activity') {
+        conditions.add('a.activity_type = ?');
+        args.add(type);
+      }
     }
 
     if (conditions.isNotEmpty) {
       query += ' WHERE ' + conditions.join(' AND ');
     }
     query += ' ORDER BY p.created_at DESC';
-
-    final results = await db.rawQuery(query, args);
-    return results.map((map) => Post.fromMap(map)).toList();
+    final rows = await db.rawQuery(query, args);
+    
+    return rows.map((map) => Post.fromMap(map)).toList();
   }
 
 
