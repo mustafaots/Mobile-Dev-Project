@@ -30,6 +30,7 @@
     "filterWilaya": "Wilaya",
     "filterPrice": "Price",
     "filterDate": "Date",
+    "filterType": "Type",
     "tabStays": "Stays",
     "tabVehicles": "Vehicles",
     "tabActivities": "Activities",

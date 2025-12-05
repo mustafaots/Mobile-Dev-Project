@@ -99,6 +99,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get filterDate => 'التاريخ';
 
   @override
+  String get filterType => 'النوع';
+
+  @override
   String get tabStays => 'الإقامات';
 
   @override
