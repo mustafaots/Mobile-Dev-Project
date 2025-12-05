@@ -5,9 +5,7 @@ import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
-import 'package:easy_vacation/repositories/db_repositories/location_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
-import 'package:easy_vacation/repositories/db_repositories/sharedprefs_repository.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -27,51 +25,55 @@ class ConfirmAndPostScreen extends StatefulWidget {
 class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   bool agreedCheck = false;
 
+  // Fixed _createPostInDatabase method for ConfirmListingScreen
+
   Future<bool> _createPostInDatabase() async {
     try {
-      // Get user ID
-      final sharedPrefsRepo = await RepoFactory.getRepository<SharedPrefsRepository>('sharedprefsRepo');
-
-      int userId = 0;
-      //int? userId = sharedPrefsRepo.getInt('currentUserId');
+      print('🚀 Starting post creation...');
       
       // Get repositories
       final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
-      final locationRepo = await RepoFactory.getRepository<LocationRepository>('locationRepo');
       
-      // Create Post object
+      // FIX: Get actual user ID (you'll need to implement proper user authentication)
+      // For now using a placeholder
+      int userId = 1; // TODO: Replace with actual logged-in user ID
+      
+      print('📝 Creating post for user: $userId');
+      print('📝 Category: ${widget.postData.category}');
+      
+      // Create Post object with proper availability conversion
       final post = Post(
         ownerId: userId,
         category: widget.postData.category,
         title: widget.postData.title,
         description: widget.postData.description,
         price: widget.postData.price,
+        locationId: 0, // Will be set by repository
         status: 'active',
+        isPaid: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        // FIX: Convert availability to proper format
+        availability: widget.postData.availability
+            .map((interval) => interval.toMap())
+            .toList(),
       );
       
-      // Create Location object
-      final location = Location(
-        wilaya: widget.postData.location.wilaya,
-        city: widget.postData.location.city,
-        address: widget.postData.location.address,
-        latitude: widget.postData.location.latitude,
-        longitude: widget.postData.location.longitude,
-      );
+      print('📍 Creating location...');
+      // Create Location object from details.Location
+      final location = Location.fromDetailsLocation(widget.postData.location);
       
-      // Convert XFiles to bytes
-      List<XFile> images = [];
-      for (String path in widget.postData.imagePaths) {
-        images.add(XFile(path));
-      }
+      print('🖼️ Processing images: ${widget.postData.imagePaths.length}');
       
       // Create category-specific object
       Stay? stay;
       Activity? activity;
       Vehicle? vehicle;
       
-      switch (widget.postData.category) {
+      switch (widget.postData.category.toLowerCase()) {
         case 'stay':
           if (widget.postData.stayDetails != null) {
+            print('🏠 Creating stay details...');
             stay = Stay(
               postId: 0, // Will be set by repository
               stayType: widget.postData.stayDetails!.stayType,
@@ -82,6 +84,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
           break;
         case 'activity':
           if (widget.postData.activityDetails != null) {
+            print('🎯 Creating activity details...');
             activity = Activity(
               postId: 0, // Will be set by repository
               activityType: widget.postData.activityDetails!.activityType,
@@ -91,6 +94,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
           break;
         case 'vehicle':
           if (widget.postData.vehicleDetails != null) {
+            print('🚗 Creating vehicle details...');
             vehicle = Vehicle(
               postId: 0, // Will be set by repository
               vehicleType: widget.postData.vehicleDetails!.vehicleType,
@@ -105,24 +109,33 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
           break;
       }
       
+      print('💾 Inserting into database...');
       // Insert into database
       final postId = await postRepo.createCompletePost(
         post: post,
         location: location,
-        images: images,
+        imagePaths: widget.postData.imagePaths,
         stay: stay,
         activity: activity,
         vehicle: vehicle,
       );
       
-      print('Post created successfully with ID: $postId');
+      print('✅ Post created successfully with ID: $postId');
       return true;
       
-    } catch (e) {
-      print('Error creating post: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error creating listing: ${e.toString()}')),
-      );
+    } catch (e, stackTrace) {
+      print('❌ Error creating post: $e');
+      print('❌ Stack trace: $stackTrace');
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating listing: ${e.toString()}'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
       return false;
     }
   }

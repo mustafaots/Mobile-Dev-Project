@@ -28,7 +28,7 @@ class Post {
     required this.createdAt,
     required this.updatedAt,
     this.status = 'active',
-    required this.availability,
+    this.availability = const [], // FIX: Default empty list
   });
 
   Map<String, dynamic> toMap() {
@@ -70,6 +70,39 @@ class Post {
       availability: map['availability'] != null
           ? List<Map<String, dynamic>>.from(jsonDecode(map['availability']))
           : [],
+    );
+  }
+
+  // FIX: Add copyWith method for easier updates
+  Post copyWith({
+    int? id,
+    int? ownerId,
+    String? category,
+    String? title,
+    String? description,
+    double? price,
+    int? locationId,
+    String? contentUrl,
+    bool? isPaid,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? status,
+    List<Map<String, dynamic>>? availability,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      ownerId: ownerId ?? this.ownerId,
+      category: category ?? this.category,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      locationId: locationId ?? this.locationId,
+      contentUrl: contentUrl ?? this.contentUrl,
+      isPaid: isPaid ?? this.isPaid,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      status: status ?? this.status,
+      availability: availability ?? this.availability,
     );
   }
 }
