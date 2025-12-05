@@ -1501,26 +1501,20 @@ abstract class AppLocalizations {
   /// No description provided for @listingHistory_all.
   ///
   /// In en, this message translates to:
-  /// **'all'**
+  /// **'All'**
   String get listingHistory_all;
 
   /// No description provided for @listingHistory_active.
   ///
   /// In en, this message translates to:
-  /// **'active'**
+  /// **'Active'**
   String get listingHistory_active;
 
   /// No description provided for @listingHistory_drafts.
   ///
   /// In en, this message translates to:
-  /// **'draft'**
+  /// **'Draft'**
   String get listingHistory_drafts;
-
-  /// No description provided for @listingHistory_archived.
-  ///
-  /// In en, this message translates to:
-  /// **'archived'**
-  String get listingHistory_archived;
 
   /// No description provided for @listingHistory_noPostsFound.
   ///

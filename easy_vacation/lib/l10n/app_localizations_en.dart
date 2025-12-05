@@ -756,16 +756,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listingHistory_title => 'My Listings';
 
   @override
-  String get listingHistory_all => 'all';
+  String get listingHistory_all => 'All';
 
   @override
-  String get listingHistory_active => 'active';
+  String get listingHistory_active => 'Active';
 
   @override
-  String get listingHistory_drafts => 'draft';
-
-  @override
-  String get listingHistory_archived => 'archived';
+  String get listingHistory_drafts => 'Draft';
 
   @override
   String get listingHistory_noPostsFound => 'No Posts Found';

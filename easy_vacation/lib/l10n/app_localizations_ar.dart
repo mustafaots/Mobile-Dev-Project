@@ -759,9 +759,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingHistory_drafts => 'مسودات';
 
   @override
-  String get listingHistory_archived => 'أرشيف';
-
-  @override
   String get listingHistory_noPostsFound => 'لم يتم العثور على مشاركات';
 
   @override

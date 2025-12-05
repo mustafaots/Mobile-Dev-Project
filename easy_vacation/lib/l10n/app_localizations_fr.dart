@@ -773,9 +773,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get listingHistory_drafts => 'Brouillons';
 
   @override
-  String get listingHistory_archived => 'Archivées';
-
-  @override
   String get listingHistory_noPostsFound => 'Aucune publication trouvée';
 
   @override
