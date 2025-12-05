@@ -15,7 +15,6 @@ class ReviewsSection extends StatelessWidget {
   void _navigateToProfile(
     BuildContext context, {
     required String userName,
-    required String userEmail,
     required int postsCount,
     required int reviewsCount,
   }) {
@@ -24,7 +23,6 @@ class ReviewsSection extends StatelessWidget {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileScreen(
           userName: userName,
-          userEmail: userEmail,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         ),
@@ -65,7 +63,6 @@ class ReviewsSection extends StatelessWidget {
         _navigateToProfile(
           context,
           userName: name,
-          userEmail: '${name.toLowerCase().replaceAll(' ', '.')}@example.com',
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         );

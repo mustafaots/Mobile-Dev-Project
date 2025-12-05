@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String userName;
-  final String userEmail;
   final String subscriptionType;
   final int postsCount;
   final bool isFollowing;
@@ -16,7 +15,6 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     super.key,
     this.userName = 'USERNAME',
-    this.userEmail = 'EXAMPLE@EMAIL.COM',
     this.subscriptionType = 'Free',
     this.postsCount = 0,
     this.isFollowing = false,
@@ -109,14 +107,6 @@ class ProfileScreen extends StatelessWidget {
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: textColor,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          userEmail,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: secondaryTextColor,
                           ),
                         ),
                         const SizedBox(height: 8),

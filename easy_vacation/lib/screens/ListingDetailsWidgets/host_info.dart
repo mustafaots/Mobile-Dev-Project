@@ -24,7 +24,6 @@ class HostInfo extends StatelessWidget {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileScreen(
           userName: userName,
-          userEmail: userEmail,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         ),
