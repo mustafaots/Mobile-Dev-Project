@@ -7,6 +7,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
+import 'package:easy_vacation/screens/AddReviewScreen.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -180,7 +181,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             context,
                                             PageRouteBuilder(
                                               pageBuilder: (_, __, ___) =>
-                                                  const AddReviewScreen(),
+                                                  AddReviewScreen(postId: 1, reviewerId: 1),
                                               transitionsBuilder:
                                                   (_, animation, __, child) {
                                                     return FadeTransition(
