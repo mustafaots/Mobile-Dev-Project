@@ -25,7 +25,6 @@ class DBHelper {
             last_name TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             is_verified BOOLEAN DEFAULT 0,
-            profile_picture BLOB,
             user_type TEXT,
             is_suspended BOOLEAN
           )
