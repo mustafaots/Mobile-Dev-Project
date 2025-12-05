@@ -74,7 +74,7 @@ class DBHelper {
         title TEXT NOT NULL,
         description TEXT,
         price REAL NOT NULL,
-        location_id INTEGER NOT NULL UNIQUE,
+        location_id INTEGER NOT NULL,
         content_url TEXT,
         is_paid BOOLEAN DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
