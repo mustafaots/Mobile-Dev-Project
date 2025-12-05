@@ -447,7 +447,7 @@ class __HomeContentState extends State<_HomeContent> {
                       onChanged: (value) {
                         setState(() {
                           filteredWilayas = wilayas
-                              .where((w) => w.contains(value))
+                              .where((w) => w.toLowerCase().contains(value.toLowerCase()))
                               .toList();
                         });
                       },
