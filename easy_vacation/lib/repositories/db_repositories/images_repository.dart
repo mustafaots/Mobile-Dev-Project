@@ -36,6 +36,16 @@ class PostImagesRepository {
     return result.isNotEmpty ? result.first : null;
   }
 
+  Future<List<Map<String, dynamic>>?> getAllImagesByPostId(int postId) async {
+    final result = await db.query(
+      'post_images',
+      where: 'post_id = ?',
+      whereArgs: [postId],
+    );
+
+    return result.length == 0 ? result: null;
+  }
+
   /// Get all images
   Future<List<Map<String, dynamic>>> getAllImages() async {
     return await db.query('post_images');
