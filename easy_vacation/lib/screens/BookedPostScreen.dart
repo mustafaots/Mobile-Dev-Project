@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/main.dart';
 import 'ListingDetailsWidgets/index.dart';
 
-class BookedPostScreen extends StatefulWidget {
+class BookedPostScreen extends StatelessWidget {
   final int postId;
   final VoidCallback? onBookingCanceled;
 
@@ -24,24 +24,17 @@ class BookedPostScreen extends StatefulWidget {
   });
 
   @override
-  State<BookedPostScreen> createState() => _BookedPostScreenState();
-}
-
-class _BookedPostScreenState extends State<BookedPostScreen> {
-  @override
   Widget build(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
-
     return BlocProvider(
       create: (context) => BookedPostCubit(
         bookingRepository: appRepos['bookingRepo'] as BookingRepository,
         postRepository: appRepos['postRepo'] as PostRepository,
         reviewRepository: appRepos['reviewRepo'] as ReviewRepository,
         userRepository: appRepos['userRepo'] as UserRepository,
-      )..loadPostDetails(widget.postId),
+      )..loadPostDetails(postId),
       child: _BookedPostScreenContent(
-        postId: widget.postId,
-        onBookingCanceled: widget.onBookingCanceled,
+        postId: postId,
+        onBookingCanceled: onBookingCanceled,
       ),
     );
   }
@@ -58,14 +51,12 @@ class _BookedPostScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = context.scaffoldBackgroundColor;
-
     return Scaffold(
       appBar: App_Bar(
         context,
         AppLocalizations.of(context)!.listingDetails_title,
       ),
-      backgroundColor: backgroundColor,
+      backgroundColor: context.scaffoldBackgroundColor,
       body: SafeArea(
         child: BlocBuilder<BookedPostCubit, BookedPostState>(
           builder: (context, state) {
@@ -92,6 +83,9 @@ class _BookedPostScreenContent extends StatelessWidget {
                         DetailsSection(
                           post: state.post,
                           category: state.post?.category,
+                          stay: state.stay,
+                          vehicle: state.vehicle,
+                          activity: state.activity,
                         ),
                         ReviewsSection(
                           reviews: state.reviews,

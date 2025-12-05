@@ -1,6 +1,9 @@
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/reviews.model.dart';
 import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/models/stays.model.dart';
+import 'package:easy_vacation/models/vehicles.model.dart';
+import 'package:easy_vacation/models/activities.model.dart';
 
 abstract class BookedPostState {
   const BookedPostState();
@@ -21,6 +24,9 @@ class BookedPostLoaded extends BookedPostState {
   final Map<int, User> reviewers;
   final String bookingDates;
   final String bookingStatus;
+  final Stay? stay;
+  final Vehicle? vehicle;
+  final Activity? activity;
 
   const BookedPostLoaded({
     this.post,
@@ -29,6 +35,9 @@ class BookedPostLoaded extends BookedPostState {
     this.reviewers = const {},
     required this.bookingDates,
     required this.bookingStatus,
+    this.stay,
+    this.vehicle,
+    this.activity,
   });
 
   // CopyWith method for easier state updates
@@ -39,6 +48,9 @@ class BookedPostLoaded extends BookedPostState {
     Map<int, User>? reviewers,
     String? bookingDates,
     String? bookingStatus,
+    Stay? stay,
+    Vehicle? vehicle,
+    Activity? activity,
   }) {
     return BookedPostLoaded(
       post: post ?? this.post,
@@ -47,6 +59,9 @@ class BookedPostLoaded extends BookedPostState {
       reviewers: reviewers ?? this.reviewers,
       bookingDates: bookingDates ?? this.bookingDates,
       bookingStatus: bookingStatus ?? this.bookingStatus,
+      stay: stay ?? this.stay,
+      vehicle: vehicle ?? this.vehicle,
+      activity: activity ?? this.activity,
     );
   }
 }
@@ -58,6 +73,9 @@ class BookedPostCanceling extends BookedPostState {
   final Map<int, User> reviewers;
   final String bookingDates;
   final String bookingStatus;
+  final Stay? stay;
+  final Vehicle? vehicle;
+  final Activity? activity;
 
   const BookedPostCanceling({
     this.post,
@@ -66,6 +84,9 @@ class BookedPostCanceling extends BookedPostState {
     this.reviewers = const {},
     required this.bookingDates,
     required this.bookingStatus,
+    this.stay,
+    this.vehicle,
+    this.activity,
   });
 }
 
