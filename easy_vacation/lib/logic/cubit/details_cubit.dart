@@ -78,7 +78,7 @@ class DetailsCubit extends Cubit<DetailsState> {
     }
 
     // Get the category from parameter or post
-    final cat = (category ?? post.category ?? '').toLowerCase();
+    final cat = (category ?? post.category).toLowerCase();
 
     // Add category-specific details based on category
     if (cat == 'stay') {

@@ -188,7 +188,6 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
   }
 
   Widget _buildImageGrid() {
-    final secondaryTextColor = context.secondaryTextColor;
     
     return Wrap(
       spacing: 12,

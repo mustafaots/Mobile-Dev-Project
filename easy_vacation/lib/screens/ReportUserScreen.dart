@@ -1,6 +1,4 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
