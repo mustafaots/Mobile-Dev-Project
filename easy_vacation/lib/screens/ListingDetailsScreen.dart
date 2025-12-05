@@ -85,6 +85,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                         children: [
                           const ImageGallery(),
                           TitleSection(post: post),
+                          HostInfo(host: host, post: post),
                           DetailsSection(
                             post: post,
                             category: post?.category,
@@ -92,7 +93,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             vehicle: vehicle,
                             activity: activity,
                           ),
-                          HostInfo(host: host, post: post),
                           ReviewsSection(
                             reviews: reviews,
                             reviewers: reviewers,
