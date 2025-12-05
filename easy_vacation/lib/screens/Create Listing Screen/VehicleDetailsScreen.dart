@@ -1,5 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/CommonDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -192,7 +193,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
       description: _descriptionController.text,
       price: double.parse(_priceController.text),
       priceRate: _selectedPriceRate,
-      location: widget.existingData?.location ?? Location(wilaya: '', city: '', address: ''),
+      location: widget.existingData?.location ?? Location(wilaya: '', city: '', address: '', latitude: 0, longitude: 0),
       availability: widget.existingData?.availability ?? [],
       imagePaths: widget.existingData?.imagePaths ?? [],
       stayDetails: null,

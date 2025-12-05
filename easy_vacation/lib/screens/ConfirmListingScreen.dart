@@ -5,6 +5,7 @@ import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
+import 'package:easy_vacation/models/locations.model.dart' as loc_model;
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
@@ -24,24 +25,27 @@ class ConfirmAndPostScreen extends StatefulWidget {
 
 class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   bool agreedCheck = false;
+  bool _isCreating = false;
 
-  // Fixed _createPostInDatabase method for ConfirmListingScreen
-
+  // FIXED: Complete implementation of post creation
   Future<bool> _createPostInDatabase() async {
+    if (_isCreating) return false;
+    
+    setState(() => _isCreating = true);
+    
     try {
       print('🚀 Starting post creation...');
       
-      // Get repositories
+      // Get repository
       final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
       
-      // FIX: Get actual user ID (you'll need to implement proper user authentication)
-      // For now using a placeholder
-      int userId = 1; // TODO: Replace with actual logged-in user ID
+      // TODO: Replace with actual logged-in user ID from your auth system
+      int userId = 1; // PLACEHOLDER - implement proper auth
       
       print('📝 Creating post for user: $userId');
       print('📝 Category: ${widget.postData.category}');
       
-      // Create Post object with proper availability conversion
+      // Create Post object
       final post = Post(
         ownerId: userId,
         category: widget.postData.category,
@@ -53,15 +57,14 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
         isPaid: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        // FIX: Convert availability to proper format
         availability: widget.postData.availability
             .map((interval) => interval.toMap())
             .toList(),
       );
       
       print('📍 Creating location...');
-      // Create Location object from details.Location
-      final location = Location.fromDetailsLocation(widget.postData.location);
+      // Convert from details.Location to loc_model.Location
+      final location = loc_model.Location.fromDetailsLocation(widget.postData.location);
       
       print('🖼️ Processing images: ${widget.postData.imagePaths.length}');
       
@@ -137,28 +140,32 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
         );
       }
       return false;
+    } finally {
+      if (mounted) {
+        setState(() => _isCreating = false);
+      }
     }
   }
 
   void _postListing() async {
-    if (agreedCheck) {
-      // Create the post in database
-      //bool success = await _createPostInDatabase();
+    if (!agreedCheck || _isCreating) return;
 
-      bool success = true;
+    // Create the post in database
+    bool success = await _createPostInDatabase();
+    
+    if (success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
+          backgroundColor: AppTheme.successColor,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      );
       
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
-            backgroundColor: AppTheme.successColor,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-        );
-        
-        // Clear ALL routes and go to HomeScreen
-        Future.delayed(const Duration(milliseconds: 1500), () {
+      // Clear ALL routes and go to HomeScreen
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -166,11 +173,10 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
             ),
             (route) => false, // Clear entire stack
           );
-        });
-      }
+        }
+      });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -283,8 +289,8 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                           ),
                           const SizedBox(height: 20),
                           
-                          _buildPricingRow(loc.confirmListing_basePrice, "\$50", context),
-                          _buildPricingRow(loc.confirmListing_serviceFee, "\$5", context),
+                          _buildPricingRow(loc.confirmListing_basePrice, "${widget.postData.price} DA", context),
+                          _buildPricingRow(loc.confirmListing_serviceFee, "0 DA", context),
                           
                           const SizedBox(height: 12),
                           Divider(color: secondaryTextColor.withOpacity(0.3)),
@@ -292,7 +298,7 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                           
                           _buildPricingRow(
                             loc.confirmListing_totalAmount,
-                            "\$55",
+                            "${widget.postData.price} DA",
                             context,
                             isTotal: true,
                           ),
@@ -301,114 +307,6 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // Subscription Card
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryColor.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppTheme.primaryColor.withOpacity(0.2),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: AppTheme.primaryColor,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.star,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  loc.confirmListing_premiumPlan,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                                ),
-                                Text(
-                                  loc.confirmListing_subscriptionDays,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: secondaryTextColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Tips Card
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: cardColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: secondaryTextColor.withOpacity(0.1),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: AppTheme.neutralColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Icon(
-                                  Icons.lightbulb_outline,
-                                  color: AppTheme.neutralColor,
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                loc.confirmListing_proTips,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          
-                          _buildTipItem(loc.confirmListing_tip1),
-                          _buildTipItem(loc.confirmListing_tip2),
-                          _buildTipItem(loc.confirmListing_tip3),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
 
                   // Agreement Checkbox
                   Container(
@@ -423,24 +321,27 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                     ),
                     child: Row(
                       children: [
-                        Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            color: agreedCheck ? AppTheme.primaryColor : Colors.transparent,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: agreedCheck ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.5),
-                              width: 2,
+                        GestureDetector(
+                          onTap: () => setState(() => agreedCheck = !agreedCheck),
+                          child: Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              color: agreedCheck ? AppTheme.primaryColor : Colors.transparent,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: agreedCheck ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.5),
+                                width: 2,
+                              ),
                             ),
+                            child: agreedCheck
+                                ? Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 16,
+                                  )
+                                : null,
                           ),
-                          child: agreedCheck
-                              ? Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 16,
-                                )
-                              : null,
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -479,9 +380,11 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
               ),
             ),
             child: ElevatedButton(
-              onPressed: agreedCheck ? _postListing : null,
+              onPressed: (agreedCheck && !_isCreating) ? _postListing : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: agreedCheck ? AppTheme.primaryColor : secondaryTextColor.withOpacity(0.3),
+                backgroundColor: (agreedCheck && !_isCreating) 
+                    ? AppTheme.primaryColor 
+                    : secondaryTextColor.withOpacity(0.3),
                 foregroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 56),
                 shape: RoundedRectangleBorder(
@@ -490,23 +393,29 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
                 elevation: 2,
                 shadowColor: AppTheme.primaryColor.withOpacity(0.3),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.rocket_launch,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    loc.confirmListing_postListing,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              child: _isCreating
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.rocket_launch, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          loc.confirmListing_postListing,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -542,34 +451,4 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
       ),
     );
   }
-
-  Widget _buildTipItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.check_circle,
-            color: AppTheme.successColor,
-            size: 16,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 14,
-                color: context.textColor,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class XFile {
 }

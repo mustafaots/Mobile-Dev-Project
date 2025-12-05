@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/MapLocationPicker.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -518,8 +519,8 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         wilaya: _wilayaController.text,
         city: _cityController.text,
         address: _addressController.text,
-        latitude: _selectedLatitude,
-        longitude: _selectedLongitude,
+        latitude: _selectedLatitude ?? 0,
+        longitude: _selectedLongitude ?? 0,
       ),
       availability: _availabilityIntervals,
       imagePaths: _selectedImages.map((xfile) => xfile.path).toList(),

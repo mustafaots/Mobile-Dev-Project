@@ -1,4 +1,6 @@
-import 'package:easy_vacation/models/details.model.dart';
+// easy_vacation/lib/models/locations.model.dart
+import 'package:easy_vacation/models/details.model.dart' as details;
+import 'package:easy_vacation/models/locations.model.dart' as details;
 
 class Location {
   final int? id;
@@ -39,14 +41,14 @@ class Location {
     );
   }
 
-  // Helper method to create from your existing CreatePostData location
-  factory Location.fromCreatePostLocation(CreatePostData data) {
+  // FIXED: Add method to convert from details.Location
+  factory Location.fromDetailsLocation(details.Location detailsLocation) {
     return Location(
-      wilaya: data.location.wilaya,
-      city: data.location.city,
-      address: data.location.address,
-      latitude: data.location.latitude ?? 0,
-      longitude: data.location.longitude ?? 0,
+      wilaya: detailsLocation.wilaya,
+      city: detailsLocation.city,
+      address: detailsLocation.address,
+      latitude: detailsLocation.latitude,
+      longitude: detailsLocation.longitude,
     );
   }
 

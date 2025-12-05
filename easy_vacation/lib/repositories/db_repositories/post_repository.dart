@@ -1,4 +1,5 @@
 import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../models/posts.model.dart';
 import '../../models/stays.model.dart';

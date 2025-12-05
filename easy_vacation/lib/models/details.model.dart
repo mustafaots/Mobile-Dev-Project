@@ -1,42 +1,4 @@
-class Location {
-  final int? id;
-  final String wilaya;
-  final String city;
-  final String address;
-  final double? latitude;
-  final double? longitude;
-
-  Location({
-    this.id,
-    required this.wilaya,
-    required this.city,
-    required this.address,
-    this.latitude,
-    this.longitude,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      if (id != null) 'id': id,
-      'wilaya': wilaya,
-      'city': city,
-      'address': address,
-      'latitude': latitude,
-      'longitude': longitude,
-    };
-  }
-
-  factory Location.fromMap(Map<String, dynamic> map) {
-    return Location(
-      id: map['id'],
-      wilaya: map['wilaya'] ?? '',
-      city: map['city'] ?? '',
-      address: map['address'] ?? '',
-      latitude: map['latitude']?.toDouble(),
-      longitude: map['longitude']?.toDouble(),
-    );
-  }
-}
+import 'package:easy_vacation/models/locations.model.dart';
 
 class StayDetails {
   final String stayType;
