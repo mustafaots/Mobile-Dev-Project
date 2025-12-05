@@ -16,6 +16,8 @@ class ConfirmAndPostScreen extends StatefulWidget {
 class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
   bool agreedCheck = false;
 
+  // In _postListing() method, replace the current code with:
+
   void _postListing() {
     if (agreedCheck) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -27,17 +29,14 @@ class _ConfirmAndPostScreenState extends State<ConfirmAndPostScreen> {
         ),
       );
       
-      // Navigate to home after a brief delay
+      // Clear ENTIRE navigation stack and go to HomeScreen
       Future.delayed(const Duration(milliseconds: 1500), () {
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const HomeScreen(),
-            transitionsBuilder: (_, animation, __, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            transitionDuration: const Duration(milliseconds: 500),
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
           ),
+          (route) => false, // This removes ALL routes from stack
         );
       });
     }

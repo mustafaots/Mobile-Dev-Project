@@ -532,10 +532,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmAndPostScreen(//postData: updatedPostData),
+          builder: (context) => ConfirmAndPostScreen(),//postData: updatedPostData 
         ),
-      )
-    );
+      );
   }
 
   @override
