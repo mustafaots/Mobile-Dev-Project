@@ -1,4 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/models/reports.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/report_repository.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -6,11 +9,14 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class ReportUserScreen extends StatefulWidget {
+  final reporterId;
+  final reportedPostId;
+  final reportedUserId;
   const ReportUserScreen({
     super.key,
-    //this.reporterId
-    //this.reportedUserId,
-    //this.reportedPostId
+    this.reporterId,
+    this.reportedUserId,
+    this.reportedPostId
   });
 
   @override
@@ -162,14 +168,13 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
         _isSubmitting = false;
       });
 
-      /*final reportRepo = appRepos['reportRepo'] as ReportRepository;
-      await reportRepo.insertReport(
-        reporterId: reporterId,
-        reportedUserId: reportedUserId ?? null,
-        reportedPostId: reportedPostId ?? null,
+      final reportRepo = appRepos['reportRepo'] as ReportRepository;
+      final rp = Report(
+        reporterId: widget.reporterId,
         reason: selectedOption!,
-        additionalDetails: _detailsController.text
-      );*/
+        createdAt: DateTime.now()
+      );
+      await reportRepo.insertReport(rp);
       _showSuccessModal();
     });
   }
