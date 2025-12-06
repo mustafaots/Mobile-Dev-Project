@@ -80,7 +80,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
         child: DropdownButtonFormField<String>(
           value: _selectedPriceRate,
           decoration: InputDecoration(
-            labelText: 'Rate',
+            labelText: AppLocalizations.of(context)!.rate_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.schedule, color: secondaryTextColor),
@@ -97,7 +97,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select rate';
+              return AppLocalizations.of(context)!.rate_error;
             }
             return null;
           },
@@ -170,7 +170,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -217,9 +217,10 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: App_Bar(context, 'Vehicle Details'),
+      appBar: App_Bar(context, loc.vehicle_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -245,7 +246,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Vehicle Details',
+                    loc.vehicle_details_title,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -254,7 +255,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Provide details about your vehicle',
+                    loc.vehicle_details_subtitle,
                     style: TextStyle(
                       fontSize: 16,
                       color: secondaryTextColor,
@@ -311,14 +312,14 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                           child: buildFormField(
                             context,
                             controller: _priceController,
-                            label: 'Price (DA)',
+                            label: loc.price_label,
                             icon: Icons.money,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter price';
+                                return loc.price_error_required;
                               }
                               if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number';
+                                return loc.price_error_invalid;
                               }
                               return null;
                             },
@@ -336,7 +337,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
 
                     // Vehicle Type
                     _buildDropdownField(
-                      label: 'Vehicle Type',
+                      label: loc.vehicle_type_label,
                       icon: Icons.directions_car,
                       items: _vehicleTypes,
                       value: _selectedVehicleType,
@@ -345,7 +346,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select vehicle type';
+                          return loc.vehicle_type_error;
                         }
                         return null;
                       },
@@ -356,11 +357,11 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                     buildFormField(
                       context,
                       controller: _modelController,
-                      label: 'Model',
+                      label: loc.model_label,
                       icon: Icons.badge,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter model';
+                          return loc.model_error;
                         }
                         return null;
                       },
@@ -371,18 +372,18 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                     buildFormField(
                       context,
                       controller: _yearController,
-                      label: 'Year',
+                      label: loc.year_label,
                       icon: Icons.calendar_today,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter year';
+                          return loc.year_error_empty;
                         }
                         if (int.tryParse(value) == null) {
-                          return 'Please enter a valid year';
+                          return loc.year_error_invalid;
                         }
                         final year = int.parse(value);
                         if (year < 1900 || year > DateTime.now().year + 1) {
-                          return 'Please enter a valid year (1900-${DateTime.now().year + 1})';
+                          return loc.year_error_range(DateTime.now().year + 1);
                         }
                         return null;
                       },
@@ -392,7 +393,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
 
                     // Fuel Type
                     _buildDropdownField(
-                      label: 'Fuel Type',
+                      label: loc.fuel_type_label,
                       icon: Icons.local_gas_station,
                       items: _fuelTypes,
                       value: _selectedFuelType,
@@ -401,7 +402,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select fuel type';
+                          return loc.fuel_type_error;
                         }
                         return null;
                       },
@@ -426,7 +427,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                               Icon(Icons.settings, color: AppTheme.neutralColor, size: 20),
                               SizedBox(width: 8),
                               Text(
-                                'Transmission',
+                                loc.transmission_label,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -440,7 +441,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               ChoiceChip(
-                                label: Text('Manual'),
+                                label: Text(loc.transmission_manual),
                                 selected: !_isAutomaticTransmission,
                                 selectedColor: AppTheme.neutralColor,
                                 onSelected: (selected) {
@@ -450,7 +451,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                                 },
                               ),
                               ChoiceChip(
-                                label: Text('Automatic'),
+                                label: Text(loc.transmission_automatic),
                                 selected: _isAutomaticTransmission,
                                 selectedColor: AppTheme.neutralColor,
                                 onSelected: (selected) {
@@ -470,18 +471,18 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                     buildFormField(
                       context,
                       controller: _seatsController,
-                      label: 'Number of Seats',
+                      label: loc.seats_label,
                       icon: Icons.airline_seat_recline_normal,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter number of seats';
+                          return loc.seats_error_empty;
                         }
                         if (int.tryParse(value) == null) {
-                          return 'Please enter a valid number';
+                          return loc.seats_error_invalid;
                         }
                         final seats = int.parse(value);
                         if (seats < 1 || seats > 100) {
-                          return 'Please enter valid number of seats (1-100)';
+                          return loc.seats_error_range;
                         }
                         return null;
                       },
@@ -511,7 +512,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                 ),
                 onPressed: _validateForm() ? _submitForm : null,
                 child: Text(
-                  'Continue to Location',
+                  loc.continue_button,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

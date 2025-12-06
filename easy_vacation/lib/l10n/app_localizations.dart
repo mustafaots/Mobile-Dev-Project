@@ -1989,6 +1989,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'unit'**
   String get details_pricePerUnit;
+
+  /// No description provided for @no_posts_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get no_posts_yet;
+
+  /// No description provided for @categorySelection_continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get categorySelection_continue;
+
+  /// No description provided for @vehicleCategory_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent cars, motorcycles, bicycles, or boats'**
+  String get vehicleCategory_description;
+
+  /// No description provided for @stayCategory_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent apartments, villas, rooms, or houses'**
+  String get stayCategory_description;
+
+  /// No description provided for @activityCategory_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer tours, workshops, adventures, or experiences'**
+  String get activityCategory_description;
+
+  /// No description provided for @choose_listing_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Listing Category'**
+  String get choose_listing_category;
+
+  /// No description provided for @select_type_of_listing.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the type of listing you want to create'**
+  String get select_type_of_listing;
+
+  /// No description provided for @select_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get select_location;
+
+  /// No description provided for @stay_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Details'**
+  String get stay_details_title;
+
+  /// No description provided for @stay_details_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide details about your stay'**
+  String get stay_details_subtitle;
+
+  /// No description provided for @rate_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get rate_label;
+
+  /// No description provided for @rate_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select rate'**
+  String get rate_error;
+
+  /// No description provided for @stay_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Type'**
+  String get stay_type_label;
+
+  /// No description provided for @stay_type_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select stay type'**
+  String get stay_type_error;
+
+  /// No description provided for @price_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (DA)'**
+  String get price_label;
+
+  /// No description provided for @price_error_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter price'**
+  String get price_error_required;
+
+  /// No description provided for @price_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get price_error_invalid;
+
+  /// No description provided for @area_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Area (m²)'**
+  String get area_label;
+
+  /// No description provided for @area_error_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter area'**
+  String get area_error_required;
+
+  /// No description provided for @area_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get area_error_invalid;
+
+  /// No description provided for @bedrooms_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Bedrooms'**
+  String get bedrooms_label;
+
+  /// No description provided for @bedrooms_error_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter number of bedrooms'**
+  String get bedrooms_error_required;
+
+  /// No description provided for @bedrooms_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get bedrooms_error_invalid;
+
+  /// No description provided for @form_error_fill_all.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields correctly'**
+  String get form_error_fill_all;
+
+  /// No description provided for @continue_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Location'**
+  String get continue_button;
+
+  /// No description provided for @vehicle_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Details'**
+  String get vehicle_details_title;
+
+  /// No description provided for @vehicle_details_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide details about your vehicle'**
+  String get vehicle_details_subtitle;
+
+  /// No description provided for @vehicle_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get vehicle_type_label;
+
+  /// No description provided for @vehicle_type_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select vehicle type'**
+  String get vehicle_type_error;
+
+  /// No description provided for @model_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model_label;
+
+  /// No description provided for @model_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter model'**
+  String get model_error;
+
+  /// No description provided for @year_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year_label;
+
+  /// No description provided for @year_error_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter year'**
+  String get year_error_empty;
+
+  /// No description provided for @year_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid year'**
+  String get year_error_invalid;
+
+  /// No description provided for @year_error_range.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid year (1900-{maxYear})'**
+  String year_error_range(int maxYear);
+
+  /// No description provided for @fuel_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel Type'**
+  String get fuel_type_label;
+
+  /// No description provided for @fuel_type_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select fuel type'**
+  String get fuel_type_error;
+
+  /// No description provided for @transmission_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Transmission'**
+  String get transmission_label;
+
+  /// No description provided for @transmission_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get transmission_manual;
+
+  /// No description provided for @transmission_automatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get transmission_automatic;
+
+  /// No description provided for @seats_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Seats'**
+  String get seats_label;
+
+  /// No description provided for @seats_error_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter number of seats'**
+  String get seats_error_empty;
+
+  /// No description provided for @seats_error_invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get seats_error_invalid;
+
+  /// No description provided for @seats_error_range.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter valid number of seats (1-100)'**
+  String get seats_error_range;
 }
 
 class _AppLocalizationsDelegate

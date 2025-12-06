@@ -1014,4 +1014,142 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get details_pricePerUnit => 'unit';
+
+  @override
+  String get no_posts_yet => 'No posts yet';
+
+  @override
+  String get categorySelection_continue => 'Continue';
+
+  @override
+  String get vehicleCategory_description =>
+      'Rent cars, motorcycles, bicycles, or boats';
+
+  @override
+  String get stayCategory_description =>
+      'Rent apartments, villas, rooms, or houses';
+
+  @override
+  String get activityCategory_description =>
+      'Offer tours, workshops, adventures, or experiences';
+
+  @override
+  String get choose_listing_category => 'Choose Listing Category';
+
+  @override
+  String get select_type_of_listing =>
+      'Select the type of listing you want to create';
+
+  @override
+  String get select_location => 'Select Location';
+
+  @override
+  String get stay_details_title => 'Stay Details';
+
+  @override
+  String get stay_details_subtitle => 'Provide details about your stay';
+
+  @override
+  String get rate_label => 'Rate';
+
+  @override
+  String get rate_error => 'Please select rate';
+
+  @override
+  String get stay_type_label => 'Stay Type';
+
+  @override
+  String get stay_type_error => 'Please select stay type';
+
+  @override
+  String get price_label => 'Price (DA)';
+
+  @override
+  String get price_error_required => 'Please enter price';
+
+  @override
+  String get price_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get area_label => 'Area (m²)';
+
+  @override
+  String get area_error_required => 'Please enter area';
+
+  @override
+  String get area_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get bedrooms_label => 'Number of Bedrooms';
+
+  @override
+  String get bedrooms_error_required => 'Please enter number of bedrooms';
+
+  @override
+  String get bedrooms_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get form_error_fill_all => 'Please fill all required fields correctly';
+
+  @override
+  String get continue_button => 'Continue to Location';
+
+  @override
+  String get vehicle_details_title => 'Vehicle Details';
+
+  @override
+  String get vehicle_details_subtitle => 'Provide details about your vehicle';
+
+  @override
+  String get vehicle_type_label => 'Vehicle Type';
+
+  @override
+  String get vehicle_type_error => 'Please select vehicle type';
+
+  @override
+  String get model_label => 'Model';
+
+  @override
+  String get model_error => 'Please enter model';
+
+  @override
+  String get year_label => 'Year';
+
+  @override
+  String get year_error_empty => 'Please enter year';
+
+  @override
+  String get year_error_invalid => 'Please enter a valid year';
+
+  @override
+  String year_error_range(int maxYear) {
+    return 'Please enter a valid year (1900-$maxYear)';
+  }
+
+  @override
+  String get fuel_type_label => 'Fuel Type';
+
+  @override
+  String get fuel_type_error => 'Please select fuel type';
+
+  @override
+  String get transmission_label => 'Transmission';
+
+  @override
+  String get transmission_manual => 'Manual';
+
+  @override
+  String get transmission_automatic => 'Automatic';
+
+  @override
+  String get seats_label => 'Number of Seats';
+
+  @override
+  String get seats_error_empty => 'Please enter number of seats';
+
+  @override
+  String get seats_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get seats_error_range => 'Please enter valid number of seats (1-100)';
 }

@@ -456,5 +456,7 @@
   "details_pricePerNight": "ليلة",
   "details_pricePerDay": "يوم",
   "details_pricePerPerson": "شخص",
-  "details_pricePerUnit": "وحدة"
+  "details_pricePerUnit": "وحدة",
+
+  "no_posts_yet": "لا توجد مشاركات بعد"
 }

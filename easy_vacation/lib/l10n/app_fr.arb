@@ -456,5 +456,7 @@
   "details_pricePerNight": "nuit",
   "details_pricePerDay": "jour",
   "details_pricePerPerson": "personne",
-  "details_pricePerUnit": "unité"
+  "details_pricePerUnit": "unité",
+
+  "no_posts_yet": "Aucune publication pour l'instant"
 }

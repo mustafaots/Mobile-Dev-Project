@@ -57,6 +57,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -71,7 +72,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
         child: DropdownButtonFormField<String>(
           value: _selectedPriceRate,
           decoration: InputDecoration(
-            labelText: 'Rate',
+            labelText: loc.rate_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.schedule, color: secondaryTextColor),
@@ -88,7 +89,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select rate';
+              return loc.rate_error;
             }
             return null;
           },
@@ -118,7 +119,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
         child: DropdownButtonFormField<String>(
           value: _selectedStayType,
           decoration: InputDecoration(
-            labelText: 'Stay Type',
+            labelText: AppLocalizations.of(context)!.stay_type_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.home_work_outlined, color: secondaryTextColor),
@@ -135,7 +136,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select stay type';
+              return AppLocalizations.of(context)!.stay_type_error;
             }
             return null;
           },
@@ -159,7 +160,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -202,9 +203,10 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: App_Bar(context, 'Stay Details'),
+      appBar: App_Bar(context, loc.stay_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -230,7 +232,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Stay Details',
+                    loc.stay_details_title,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -239,7 +241,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Provide details about your stay',
+                    loc.stay_details_subtitle,
                     style: TextStyle(
                       fontSize: 16,
                       color: secondaryTextColor,
@@ -296,14 +298,14 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                           child: buildFormField(
                             context,
                             controller: _priceController,
-                            label: 'Price (DA)',
+                            label: loc.price_label,
                             icon: Icons.money,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter price';
+                                return loc.price_error_required;
                               }
                               if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number';
+                                return loc.price_error_invalid;
                               }
                               return null;
                             },
@@ -327,14 +329,14 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                     buildFormField(
                       context,
                       controller: _areaController,
-                      label: 'Area (m²)',
+                      label: loc.area_label,
                       icon: Icons.square_foot,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter area';
+                          return loc.area_error_required;
                         }
                         if (double.tryParse(value) == null) {
-                          return 'Please enter a valid number';
+                          return loc.area_error_invalid;
                         }
                         return null;
                       },
@@ -346,14 +348,14 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                     buildFormField(
                       context,
                       controller: _bedroomsController,
-                      label: 'Number of Bedrooms',
+                      label: loc.bedrooms_label,
                       icon: Icons.bed,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter number of bedrooms';
+                          return loc.bedrooms_error_required;
                         }
                         if (int.tryParse(value) == null) {
-                          return 'Please enter a valid number';
+                          return loc.bedrooms_error_invalid;
                         }
                         return null;
                       },
@@ -383,7 +385,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                 ),
                 onPressed: _validateForm() ? _submitForm : null,
                 child: Text(
-                  'Continue to Location',
+                  loc.continue_button,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

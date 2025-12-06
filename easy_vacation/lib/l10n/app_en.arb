@@ -457,5 +457,62 @@
     "details_pricePerNight": "night",
     "details_pricePerDay": "day",
     "details_pricePerPerson": "person",
-    "details_pricePerUnit": "unit"
+    "details_pricePerUnit": "unit",
+
+    "no_posts_yet": "No posts yet",
+
+    "categorySelection_continue": "Continue",
+    "vehicleCategory_description": "Rent cars, motorcycles, bicycles, or boats",
+    "stayCategory_description": "Rent apartments, villas, rooms, or houses",
+    "activityCategory_description": "Offer tours, workshops, adventures, or experiences",
+    "choose_listing_category": "Choose Listing Category",
+    "select_type_of_listing": "Select the type of listing you want to create",
+
+    "select_location": "Select Location",
+
+    "stay_details_title": "Stay Details",
+    "stay_details_subtitle": "Provide details about your stay",
+    "rate_label": "Rate",
+    "rate_error": "Please select rate",
+    "stay_type_label": "Stay Type",
+    "stay_type_error": "Please select stay type",
+    "price_label": "Price (DA)",
+    "price_error_required": "Please enter price",
+    "price_error_invalid": "Please enter a valid number",
+    "area_label": "Area (m²)",
+    "area_error_required": "Please enter area",
+    "area_error_invalid": "Please enter a valid number",
+    "bedrooms_label": "Number of Bedrooms",
+    "bedrooms_error_required": "Please enter number of bedrooms",
+    "bedrooms_error_invalid": "Please enter a valid number",
+    "form_error_fill_all": "Please fill all required fields correctly",
+    "continue_button": "Continue to Location",
+
+
+    "vehicle_details_title": "Vehicle Details",
+    "vehicle_details_subtitle": "Provide details about your vehicle",
+    "vehicle_type_label": "Vehicle Type",
+    "vehicle_type_error": "Please select vehicle type",
+    "model_label": "Model",
+    "model_error": "Please enter model",
+    "year_label": "Year",
+    "year_error_empty": "Please enter year",
+    "year_error_invalid": "Please enter a valid year",
+    "year_error_range": "Please enter a valid year (1900-{maxYear})",
+    "@year_error_range": {
+        "placeholders": {
+            "maxYear": {
+                "type": "int"
+            }
+        }
+    },
+    "fuel_type_label": "Fuel Type",
+    "fuel_type_error": "Please select fuel type",
+    "transmission_label": "Transmission",
+    "transmission_manual": "Manual",
+    "transmission_automatic": "Automatic",
+    "seats_label": "Number of Seats",
+    "seats_error_empty": "Please enter number of seats",
+    "seats_error_invalid": "Please enter a valid number",
+    "seats_error_range": "Please enter valid number of seats (1-100)"
 }
