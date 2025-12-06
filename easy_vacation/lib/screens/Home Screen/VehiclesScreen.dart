@@ -71,6 +71,30 @@ class VehiclesScreen extends StatelessWidget {
 
         if(snapshot.hasData) {
           final posts = snapshot.data!;
+          if(posts.length == 0) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.search_off,
+                    size: 80,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "No posts yet",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 85, 85, 85),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -133,7 +157,7 @@ class VehiclesScreen extends StatelessWidget {
 
                                   if(!snapshot.hasData) {
                                     return Image.asset(
-                                      'assets/images/mercedes.jpg',
+                                      'assets/images/no_image.png',
                                       width: 260,
                                       height: 170,
                                       fit: BoxFit.cover,
@@ -234,11 +258,19 @@ class VehiclesScreen extends StatelessWidget {
                                     double.infinity, 200
                                   ),
                                   builder: (context, snapshot) {
-                                    if(snapshot.connectionState == ConnectionState.waiting) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
                                       return SizedBox(
                                         width: 260,
                                         height: 170,
                                         child: Center(child: CircularProgressIndicator()),
+                                      );
+                                    }
+                                    if(!snapshot.hasData) {
+                                      return Image.asset(
+                                        'assets/images/no_image.png',
+                                        width: double.infinity,
+                                        height: 200,
+                                        fit: BoxFit.cover,
                                       );
                                     }
                                     return snapshot.data!;
