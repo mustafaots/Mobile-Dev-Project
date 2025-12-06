@@ -1013,137 +1013,135 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_posts_yet => 'لا توجد مشاركات بعد';
 
   @override
-  String get categorySelection_continue => 'Continue';
+  String get categorySelection_continue => 'متابعة';
 
   @override
   String get vehicleCategory_description =>
-      'Rent cars, motorcycles, bicycles, or boats';
+      'استئجار سيارات أو دراجات نارية أو دراجات هوائية أو قوارب';
 
   @override
-  String get stayCategory_description =>
-      'Rent apartments, villas, rooms, or houses';
+  String get stayCategory_description => 'استئجار شقق أو فيلات أو غرف أو منازل';
 
   @override
   String get activityCategory_description =>
-      'Offer tours, workshops, adventures, or experiences';
+      'تقديم جولات، ورشات، مغامرات أو تجارب';
 
   @override
-  String get choose_listing_category => 'Choose Listing Category';
+  String get choose_listing_category => 'اختر فئة الإعلان';
 
   @override
-  String get select_type_of_listing =>
-      'Select the type of listing you want to create';
+  String get select_type_of_listing => 'اختر نوع الإعلان الذي تريد إنشاءه';
 
   @override
-  String get select_location => 'Select Location';
+  String get select_location => 'اختر الموقع';
 
   @override
-  String get stay_details_title => 'Stay Details';
+  String get stay_details_title => 'تفاصيل الإقامة';
 
   @override
-  String get stay_details_subtitle => 'Provide details about your stay';
+  String get stay_details_subtitle => 'قدّم تفاصيل حول مكان إقامتك';
 
   @override
-  String get rate_label => 'Rate';
+  String get rate_label => 'السعر';
 
   @override
-  String get rate_error => 'Please select rate';
+  String get rate_error => 'يرجى اختيار السعر';
 
   @override
-  String get stay_type_label => 'Stay Type';
+  String get stay_type_label => 'نوع الإقامة';
 
   @override
-  String get stay_type_error => 'Please select stay type';
+  String get stay_type_error => 'يرجى اختيار نوع الإقامة';
 
   @override
-  String get price_label => 'Price (DA)';
+  String get price_label => 'السعر (دج)';
 
   @override
-  String get price_error_required => 'Please enter price';
+  String get price_error_required => 'يرجى إدخال السعر';
 
   @override
-  String get price_error_invalid => 'Please enter a valid number';
+  String get price_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
-  String get area_label => 'Area (m²)';
+  String get area_label => 'المساحة (م²)';
 
   @override
-  String get area_error_required => 'Please enter area';
+  String get area_error_required => 'يرجى إدخال المساحة';
 
   @override
-  String get area_error_invalid => 'Please enter a valid number';
+  String get area_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
-  String get bedrooms_label => 'Number of Bedrooms';
+  String get bedrooms_label => 'عدد الغرف';
 
   @override
-  String get bedrooms_error_required => 'Please enter number of bedrooms';
+  String get bedrooms_error_required => 'يرجى إدخال عدد الغرف';
 
   @override
-  String get bedrooms_error_invalid => 'Please enter a valid number';
+  String get bedrooms_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
-  String get form_error_fill_all => 'Please fill all required fields correctly';
+  String get form_error_fill_all => 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح';
 
   @override
-  String get continue_button => 'Continue to Location';
+  String get continue_button => 'المتابعة إلى الموقع';
 
   @override
-  String get vehicle_details_title => 'Vehicle Details';
+  String get vehicle_details_title => 'تفاصيل المركبة';
 
   @override
-  String get vehicle_details_subtitle => 'Provide details about your vehicle';
+  String get vehicle_details_subtitle => 'قدّم تفاصيل حول مركبتك';
 
   @override
-  String get vehicle_type_label => 'Vehicle Type';
+  String get vehicle_type_label => 'نوع المركبة';
 
   @override
-  String get vehicle_type_error => 'Please select vehicle type';
+  String get vehicle_type_error => 'يرجى اختيار نوع المركبة';
 
   @override
-  String get model_label => 'Model';
+  String get model_label => 'الطراز';
 
   @override
-  String get model_error => 'Please enter model';
+  String get model_error => 'يرجى إدخال الطراز';
 
   @override
-  String get year_label => 'Year';
+  String get year_label => 'السنة';
 
   @override
-  String get year_error_empty => 'Please enter year';
+  String get year_error_empty => 'يرجى إدخال السنة';
 
   @override
-  String get year_error_invalid => 'Please enter a valid year';
+  String get year_error_invalid => 'يرجى إدخال سنة صالحة';
 
   @override
   String year_error_range(int maxYear) {
-    return 'Please enter a valid year (1900-$maxYear)';
+    return 'يرجى إدخال سنة صالحة (1900–$maxYear)';
   }
 
   @override
-  String get fuel_type_label => 'Fuel Type';
+  String get fuel_type_label => 'نوع الوقود';
 
   @override
-  String get fuel_type_error => 'Please select fuel type';
+  String get fuel_type_error => 'يرجى اختيار نوع الوقود';
 
   @override
-  String get transmission_label => 'Transmission';
+  String get transmission_label => 'ناقل الحركة';
 
   @override
-  String get transmission_manual => 'Manual';
+  String get transmission_manual => 'يدوي';
 
   @override
-  String get transmission_automatic => 'Automatic';
+  String get transmission_automatic => 'أوتوماتيكي';
 
   @override
-  String get seats_label => 'Number of Seats';
+  String get seats_label => 'عدد المقاعد';
 
   @override
-  String get seats_error_empty => 'Please enter number of seats';
+  String get seats_error_empty => 'يرجى إدخال عدد المقاعد';
 
   @override
-  String get seats_error_invalid => 'Please enter a valid number';
+  String get seats_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
-  String get seats_error_range => 'Please enter valid number of seats (1-100)';
+  String get seats_error_range => 'يرجى إدخال عدد مقاعد صالح (1-100)';
 }

@@ -1032,137 +1032,141 @@ class AppLocalizationsFr extends AppLocalizations {
   String get no_posts_yet => 'Aucune publication pour l\'instant';
 
   @override
-  String get categorySelection_continue => 'Continue';
+  String get categorySelection_continue => 'Continuer';
 
   @override
   String get vehicleCategory_description =>
-      'Rent cars, motorcycles, bicycles, or boats';
+      'Louez des voitures, motos, vélos ou bateaux';
 
   @override
   String get stayCategory_description =>
-      'Rent apartments, villas, rooms, or houses';
+      'Louez des appartements, villas, chambres ou maisons';
 
   @override
   String get activityCategory_description =>
-      'Offer tours, workshops, adventures, or experiences';
+      'Proposez des visites, ateliers, aventures ou expériences';
 
   @override
-  String get choose_listing_category => 'Choose Listing Category';
+  String get choose_listing_category => 'Choisir une catégorie d\'annonce';
 
   @override
   String get select_type_of_listing =>
-      'Select the type of listing you want to create';
+      'Sélectionnez le type d\'annonce que vous souhaitez créer';
 
   @override
-  String get select_location => 'Select Location';
+  String get select_location => 'Sélectionner l\'emplacement';
 
   @override
-  String get stay_details_title => 'Stay Details';
+  String get stay_details_title => 'Détails du logement';
 
   @override
-  String get stay_details_subtitle => 'Provide details about your stay';
+  String get stay_details_subtitle =>
+      'Fournissez les détails de votre logement';
 
   @override
-  String get rate_label => 'Rate';
+  String get rate_label => 'Tarif';
 
   @override
-  String get rate_error => 'Please select rate';
+  String get rate_error => 'Veuillez sélectionner un tarif';
 
   @override
-  String get stay_type_label => 'Stay Type';
+  String get stay_type_label => 'Type de logement';
 
   @override
-  String get stay_type_error => 'Please select stay type';
+  String get stay_type_error => 'Veuillez sélectionner un type de logement';
 
   @override
-  String get price_label => 'Price (DA)';
+  String get price_label => 'Prix (DA)';
 
   @override
-  String get price_error_required => 'Please enter price';
+  String get price_error_required => 'Veuillez entrer un prix';
 
   @override
-  String get price_error_invalid => 'Please enter a valid number';
+  String get price_error_invalid => 'Veuillez entrer un nombre valide';
 
   @override
-  String get area_label => 'Area (m²)';
+  String get area_label => 'Superficie (m²)';
 
   @override
-  String get area_error_required => 'Please enter area';
+  String get area_error_required => 'Veuillez entrer la superficie';
 
   @override
-  String get area_error_invalid => 'Please enter a valid number';
+  String get area_error_invalid => 'Veuillez entrer un nombre valide';
 
   @override
-  String get bedrooms_label => 'Number of Bedrooms';
+  String get bedrooms_label => 'Nombre de chambres';
 
   @override
-  String get bedrooms_error_required => 'Please enter number of bedrooms';
+  String get bedrooms_error_required => 'Veuillez entrer le nombre de chambres';
 
   @override
-  String get bedrooms_error_invalid => 'Please enter a valid number';
+  String get bedrooms_error_invalid => 'Veuillez entrer un nombre valide';
 
   @override
-  String get form_error_fill_all => 'Please fill all required fields correctly';
+  String get form_error_fill_all =>
+      'Veuillez remplir correctement tous les champs requis';
 
   @override
-  String get continue_button => 'Continue to Location';
+  String get continue_button => 'Continuer vers l\'emplacement';
 
   @override
-  String get vehicle_details_title => 'Vehicle Details';
+  String get vehicle_details_title => 'Détails du véhicule';
 
   @override
-  String get vehicle_details_subtitle => 'Provide details about your vehicle';
+  String get vehicle_details_subtitle =>
+      'Fournissez les détails de votre véhicule';
 
   @override
-  String get vehicle_type_label => 'Vehicle Type';
+  String get vehicle_type_label => 'Type de véhicule';
 
   @override
-  String get vehicle_type_error => 'Please select vehicle type';
+  String get vehicle_type_error => 'Veuillez sélectionner un type de véhicule';
 
   @override
-  String get model_label => 'Model';
+  String get model_label => 'Modèle';
 
   @override
-  String get model_error => 'Please enter model';
+  String get model_error => 'Veuillez entrer le modèle';
 
   @override
-  String get year_label => 'Year';
+  String get year_label => 'Année';
 
   @override
-  String get year_error_empty => 'Please enter year';
+  String get year_error_empty => 'Veuillez entrer l\'année';
 
   @override
-  String get year_error_invalid => 'Please enter a valid year';
+  String get year_error_invalid => 'Veuillez entrer une année valide';
 
   @override
   String year_error_range(int maxYear) {
-    return 'Please enter a valid year (1900-$maxYear)';
+    return 'Veuillez entrer une année valide (1900-$maxYear)';
   }
 
   @override
-  String get fuel_type_label => 'Fuel Type';
+  String get fuel_type_label => 'Type de carburant';
 
   @override
-  String get fuel_type_error => 'Please select fuel type';
+  String get fuel_type_error => 'Veuillez sélectionner un type de carburant';
 
   @override
   String get transmission_label => 'Transmission';
 
   @override
-  String get transmission_manual => 'Manual';
+  String get transmission_manual => 'Manuelle';
 
   @override
-  String get transmission_automatic => 'Automatic';
+  String get transmission_automatic => 'Automatique';
 
   @override
-  String get seats_label => 'Number of Seats';
+  String get seats_label => 'Nombre de sièges';
 
   @override
-  String get seats_error_empty => 'Please enter number of seats';
+  String get seats_error_empty => 'Veuillez entrer le nombre de sièges';
 
   @override
-  String get seats_error_invalid => 'Please enter a valid number';
+  String get seats_error_invalid => 'Veuillez entrer un nombre valide';
 
   @override
-  String get seats_error_range => 'Please enter valid number of seats (1-100)';
+  String get seats_error_range =>
+      'Veuillez entrer un nombre de sièges valide (1-100)';
 }

@@ -458,5 +458,59 @@
   "details_pricePerPerson": "personne",
   "details_pricePerUnit": "unité",
 
-  "no_posts_yet": "Aucune publication pour l'instant"
+  "no_posts_yet": "Aucune publication pour l'instant",
+
+  "categorySelection_continue": "Continuer",
+  "vehicleCategory_description": "Louez des voitures, motos, vélos ou bateaux",
+  "stayCategory_description": "Louez des appartements, villas, chambres ou maisons",
+  "activityCategory_description": "Proposez des visites, ateliers, aventures ou expériences",
+  "choose_listing_category": "Choisir une catégorie d'annonce",
+  "select_type_of_listing": "Sélectionnez le type d'annonce que vous souhaitez créer",
+
+  "select_location": "Sélectionner l'emplacement",
+
+  "stay_details_title": "Détails du logement",
+  "stay_details_subtitle": "Fournissez les détails de votre logement",
+  "rate_label": "Tarif",
+  "rate_error": "Veuillez sélectionner un tarif",
+  "stay_type_label": "Type de logement",
+  "stay_type_error": "Veuillez sélectionner un type de logement",
+  "price_label": "Prix (DA)",
+  "price_error_required": "Veuillez entrer un prix",
+  "price_error_invalid": "Veuillez entrer un nombre valide",
+  "area_label": "Superficie (m²)",
+  "area_error_required": "Veuillez entrer la superficie",
+  "area_error_invalid": "Veuillez entrer un nombre valide",
+  "bedrooms_label": "Nombre de chambres",
+  "bedrooms_error_required": "Veuillez entrer le nombre de chambres",
+  "bedrooms_error_invalid": "Veuillez entrer un nombre valide",
+  "form_error_fill_all": "Veuillez remplir correctement tous les champs requis",
+  "continue_button": "Continuer vers l'emplacement",
+
+  "vehicle_details_title": "Détails du véhicule",
+  "vehicle_details_subtitle": "Fournissez les détails de votre véhicule",
+  "vehicle_type_label": "Type de véhicule",
+  "vehicle_type_error": "Veuillez sélectionner un type de véhicule",
+  "model_label": "Modèle",
+  "model_error": "Veuillez entrer le modèle",
+  "year_label": "Année",
+  "year_error_empty": "Veuillez entrer l'année",
+  "year_error_invalid": "Veuillez entrer une année valide",
+  "year_error_range": "Veuillez entrer une année valide (1900-{maxYear})",
+  "@year_error_range": {
+    "placeholders": {
+      "maxYear": {
+        "type": "int"
+      }
+    }
+  },
+  "fuel_type_label": "Type de carburant",
+  "fuel_type_error": "Veuillez sélectionner un type de carburant",
+  "transmission_label": "Transmission",
+  "transmission_manual": "Manuelle",
+  "transmission_automatic": "Automatique",
+  "seats_label": "Nombre de sièges",
+  "seats_error_empty": "Veuillez entrer le nombre de sièges",
+  "seats_error_invalid": "Veuillez entrer un nombre valide",
+  "seats_error_range": "Veuillez entrer un nombre de sièges valide (1-100)"
 }
