@@ -10,7 +10,9 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class StayDetailsScreen extends StatefulWidget {
   final CreatePostData? existingData;
-  const StayDetailsScreen({this.existingData, super.key});
+  final int userId;
+
+  const StayDetailsScreen({required this.userId, this.existingData, super.key});
   
   @override
   State<StayDetailsScreen> createState() => _StayDetailsScreenState();
@@ -45,7 +47,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CommonDetailsScreen(postData: postData),
+        builder: (context) => CommonDetailsScreen(userId: widget.userId, postData: postData),
       ),
     );
   }

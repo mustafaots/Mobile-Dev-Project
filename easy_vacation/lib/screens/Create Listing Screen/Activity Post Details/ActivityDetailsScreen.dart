@@ -11,7 +11,9 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class ActivityDetailsScreen extends StatefulWidget {
   final CreatePostData? existingData;
-  const ActivityDetailsScreen({this.existingData, super.key});
+  final int userId;
+
+  const ActivityDetailsScreen({required this.userId, this.existingData, super.key});
   
   @override
   State<ActivityDetailsScreen> createState() => _ActivityDetailsScreenState();
@@ -46,7 +48,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CommonDetailsScreen(postData: postData),
+        builder: (context) => CommonDetailsScreen(userId: widget.userId, postData: postData),
       ),
     );
   }

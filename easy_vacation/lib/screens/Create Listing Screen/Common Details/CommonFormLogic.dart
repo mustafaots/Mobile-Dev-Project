@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_vacation/models/details.model.dart';
@@ -20,7 +19,7 @@ class CommonFormController {
   final List<String> wilayas = [
     'Alger', 'Oran', 'Constantine', 'Annaba', 'Blida', 'Batna', 'Sétif',
     'Chlef', 'Djelfa', 'Tébessa', 'Ouargla', 'Béjaïa', 'Skikda', 'Tizi Ouzou',
-    'Algiers', 'Sidi Bel Abbès', 'Biskra', 'Tébessa', 'Tiaret', 'Guelma',
+    'Algiers', 'Sidi Bel Abbès', 'Biskra', 'Tbessa', 'Tiaret', 'Guelma',
     'Mostaganem', 'M\'Sila', 'Saïda', 'El Oued', 'Tlemcen', 'Laghouat',
   ];
   

@@ -1,4 +1,5 @@
 import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/screens/Confirm%20Listing/ConfirmListingScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/AvailabilitySection.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/CommonHeader.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/LocationSection.dart';
@@ -6,7 +7,6 @@ import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonFormLogic.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_vacation/screens/ConfirmListingScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/MapLocationPicker.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -15,8 +15,9 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class CommonDetailsScreen extends StatefulWidget {
   final CreatePostData postData;
+  final int userId;
 
-  const CommonDetailsScreen({required this.postData, super.key});
+  const CommonDetailsScreen({required this.userId, required this.postData, super.key});
 
   @override
   State<CommonDetailsScreen> createState() => _CommonDetailsScreenState();
@@ -152,7 +153,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ConfirmAndPostScreen(postData: updatedPostData),
+        builder: (context) => ConfirmListingScreen(userId: widget.userId, postData: updatedPostData),
       ),
     );
   }

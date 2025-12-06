@@ -1,6 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
-import 'package:easy_vacation/screens/ListingHistory.dart';
+import 'package:easy_vacation/screens/Listings History/ListingsHistoryScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';

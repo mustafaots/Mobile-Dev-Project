@@ -8,7 +8,9 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectionScreen extends StatefulWidget {
-  const CategorySelectionScreen({super.key});
+  final int userId;
+
+  const CategorySelectionScreen({super.key, required this.userId});
 
   @override
   State<CategorySelectionScreen> createState() => _CategorySelectionScreenState();
@@ -202,7 +204,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StayDetailsScreen(),
+                          builder: (context) => StayDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
@@ -210,7 +212,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ActivityDetailsScreen(),
+                          builder: (context) => ActivityDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
@@ -218,7 +220,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => VehicleDetailsScreen(),
+                          builder: (context) => VehicleDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
