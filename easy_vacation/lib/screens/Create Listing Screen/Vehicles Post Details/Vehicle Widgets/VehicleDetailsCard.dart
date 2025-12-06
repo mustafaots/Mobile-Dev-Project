@@ -1,6 +1,6 @@
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/FuelTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/TransmissionSelector.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/VehicleTypeDrowndown.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/VehicleTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/VehicleFormLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
@@ -155,7 +155,7 @@ class VehicleDetailsCard extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-          
+
           // Price and Rate (using shared RateDropdown)
           Row(
             children: [
