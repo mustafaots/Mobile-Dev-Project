@@ -1996,6 +1996,12 @@ abstract class AppLocalizations {
   /// **'No posts yet'**
   String get no_posts_yet;
 
+  /// No description provided for @no_matching_posts.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching posts'**
+  String get no_matching_posts;
+
   /// No description provided for @categorySelection_continue.
   ///
   /// In en, this message translates to:
@@ -2253,6 +2259,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter valid number of seats (1-100)'**
   String get seats_error_range;
+
+  /// No description provided for @activity_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Details'**
+  String get activity_details_title;
+
+  /// No description provided for @activity_details_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide details about your activity'**
+  String get activity_details_subtitle;
+
+  /// No description provided for @activity_type_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Type'**
+  String get activity_type_label;
+
+  /// No description provided for @activity_type_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select activity type'**
+  String get activity_type_error;
+
+  /// No description provided for @requirements_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get requirements_title;
+
+  /// No description provided for @minimum_age.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Age'**
+  String get minimum_age;
+
+  /// No description provided for @minimum_age_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter minimum age'**
+  String get minimum_age_error;
+
+  /// No description provided for @valid_number_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get valid_number_error;
+
+  /// No description provided for @years_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Years'**
+  String get years_label;
+
+  /// No description provided for @minimum_age_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum age required'**
+  String get minimum_age_required;
+
+  /// No description provided for @duration_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration_label;
+
+  /// No description provided for @duration_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter duration'**
+  String get duration_error;
+
+  /// No description provided for @hours_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get hours_label;
+
+  /// No description provided for @duration_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity duration in hours'**
+  String get duration_description;
+
+  /// No description provided for @group_size_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Group Size'**
+  String get group_size_label;
+
+  /// No description provided for @group_size_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter group size'**
+  String get group_size_error;
+
+  /// No description provided for @persons_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Persons'**
+  String get persons_label;
+
+  /// No description provided for @max_participants.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum participants allowed'**
+  String get max_participants;
+
+  /// No description provided for @additional_requirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Requirements (Optional)'**
+  String get additional_requirements;
+
+  /// No description provided for @requirement_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirement Name'**
+  String get requirement_name;
+
+  /// No description provided for @requirement_value.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get requirement_value;
+
+  /// No description provided for @example_text.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"'**
+  String get example_text;
+
+  /// No description provided for @appbar_complete_listing.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Listing'**
+  String get appbar_complete_listing;
+
+  /// No description provided for @header_complete_listing.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Your Listing'**
+  String get header_complete_listing;
+
+  /// No description provided for @subtitle_complete_listing.
+  ///
+  /// In en, this message translates to:
+  /// **'Add location, photos, and availability'**
+  String get subtitle_complete_listing;
+
+  /// No description provided for @photos_section_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos_section_title;
+
+  /// No description provided for @photos_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos to make your listing more attractive'**
+  String get photos_description;
+
+  /// No description provided for @add_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add_button;
+
+  /// No description provided for @gallery_option.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get gallery_option;
+
+  /// No description provided for @camera_option.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a Photo'**
+  String get camera_option;
+
+  /// No description provided for @select_location_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location on Map'**
+  String get select_location_button;
+
+  /// No description provided for @location_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Selected ({latitude}, {longitude})'**
+  String location_selected(String latitude, String longitude);
+
+  /// No description provided for @location_preview_not_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Select\nLocation'**
+  String get location_preview_not_selected;
+
+  /// No description provided for @location_preview_selected.
+  ///
+  /// In en, this message translates to:
+  /// **'Location\nSelected'**
+  String get location_preview_selected;
+
+  /// No description provided for @location_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location_section;
+
+  /// No description provided for @wilaya_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Wilaya'**
+  String get wilaya_label;
+
+  /// No description provided for @wilaya_validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select wilaya'**
+  String get wilaya_validation;
+
+  /// No description provided for @city_label.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city_label;
+
+  /// No description provided for @city_validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter city'**
+  String get city_validation;
+
+  /// No description provided for @address_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address_label;
+
+  /// No description provided for @address_validation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter address'**
+  String get address_validation;
+
+  /// No description provided for @availability_section.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get availability_section;
+
+  /// No description provided for @availability_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time periods when your listing is available'**
+  String get availability_description;
+
+  /// No description provided for @availability_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No availability periods added'**
+  String get availability_empty;
+
+  /// No description provided for @availability_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {days} days'**
+  String availability_duration(int days);
+
+  /// No description provided for @add_availability_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Availability Period'**
+  String get add_availability_button;
+
+  /// No description provided for @datepicker_help.
+  ///
+  /// In en, this message translates to:
+  /// **'Select availability period'**
+  String get datepicker_help;
+
+  /// No description provided for @submit_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and Submit'**
+  String get submit_button;
+
+  /// No description provided for @form_validation_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields correctly'**
+  String get form_validation_error;
+
+  /// No description provided for @time_validation_error.
+  ///
+  /// In en, this message translates to:
+  /// **'End time must be after start time'**
+  String get time_validation_error;
+
+  /// No description provided for @home_screen_choose_type.
+  ///
+  /// In en, this message translates to:
+  /// **'choose type'**
+  String get home_screen_choose_type;
 }
 
 class _AppLocalizationsDelegate

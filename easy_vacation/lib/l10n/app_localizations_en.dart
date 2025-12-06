@@ -1019,6 +1019,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_posts_yet => 'No posts yet';
 
   @override
+  String get no_matching_posts => 'No matching posts';
+
+  @override
   String get categorySelection_continue => 'Continue';
 
   @override
@@ -1152,4 +1155,166 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seats_error_range => 'Please enter valid number of seats (1-100)';
+
+  @override
+  String get activity_details_title => 'Activity Details';
+
+  @override
+  String get activity_details_subtitle => 'Provide details about your activity';
+
+  @override
+  String get activity_type_label => 'Activity Type';
+
+  @override
+  String get activity_type_error => 'Please select activity type';
+
+  @override
+  String get requirements_title => 'Requirements';
+
+  @override
+  String get minimum_age => 'Minimum Age';
+
+  @override
+  String get minimum_age_error => 'Please enter minimum age';
+
+  @override
+  String get valid_number_error => 'Please enter a valid number';
+
+  @override
+  String get years_label => 'Years';
+
+  @override
+  String get minimum_age_required => 'Minimum age required';
+
+  @override
+  String get duration_label => 'Duration';
+
+  @override
+  String get duration_error => 'Please enter duration';
+
+  @override
+  String get hours_label => 'Hours';
+
+  @override
+  String get duration_description => 'Activity duration in hours';
+
+  @override
+  String get group_size_label => 'Maximum Group Size';
+
+  @override
+  String get group_size_error => 'Please enter group size';
+
+  @override
+  String get persons_label => 'Persons';
+
+  @override
+  String get max_participants => 'Maximum participants allowed';
+
+  @override
+  String get additional_requirements => 'Additional Requirements (Optional)';
+
+  @override
+  String get requirement_name => 'Requirement Name';
+
+  @override
+  String get requirement_value => 'Value';
+
+  @override
+  String get example_text =>
+      'Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"';
+
+  @override
+  String get appbar_complete_listing => 'Complete Listing';
+
+  @override
+  String get header_complete_listing => 'Complete Your Listing';
+
+  @override
+  String get subtitle_complete_listing =>
+      'Add location, photos, and availability';
+
+  @override
+  String get photos_section_title => 'Photos';
+
+  @override
+  String get photos_description =>
+      'Add photos to make your listing more attractive';
+
+  @override
+  String get add_button => 'Add';
+
+  @override
+  String get gallery_option => 'Choose from Gallery';
+
+  @override
+  String get camera_option => 'Take a Photo';
+
+  @override
+  String get select_location_button => 'Select Location on Map';
+
+  @override
+  String location_selected(String latitude, String longitude) {
+    return 'Location Selected ($latitude, $longitude)';
+  }
+
+  @override
+  String get location_preview_not_selected => 'Select\nLocation';
+
+  @override
+  String get location_preview_selected => 'Location\nSelected';
+
+  @override
+  String get location_section => 'Location';
+
+  @override
+  String get wilaya_label => 'Wilaya';
+
+  @override
+  String get wilaya_validation => 'Please select wilaya';
+
+  @override
+  String get city_label => 'City';
+
+  @override
+  String get city_validation => 'Please enter city';
+
+  @override
+  String get address_label => 'Address';
+
+  @override
+  String get address_validation => 'Please enter address';
+
+  @override
+  String get availability_section => 'Availability';
+
+  @override
+  String get availability_description =>
+      'Add time periods when your listing is available';
+
+  @override
+  String get availability_empty => 'No availability periods added';
+
+  @override
+  String availability_duration(int days) {
+    return 'Duration: $days days';
+  }
+
+  @override
+  String get add_availability_button => 'Add Availability Period';
+
+  @override
+  String get datepicker_help => 'Select availability period';
+
+  @override
+  String get submit_button => 'Review and Submit';
+
+  @override
+  String get form_validation_error =>
+      'Please fill all required fields correctly';
+
+  @override
+  String get time_validation_error => 'End time must be after start time';
+
+  @override
+  String get home_screen_choose_type => 'choose type';
 }

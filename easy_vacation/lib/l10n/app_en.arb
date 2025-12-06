@@ -460,6 +460,7 @@
     "details_pricePerUnit": "unit",
 
     "no_posts_yet": "No posts yet",
+    "no_matching_posts": "No matching posts",
 
     "categorySelection_continue": "Continue",
     "vehicleCategory_description": "Rent cars, motorcycles, bicycles, or boats",
@@ -514,5 +515,79 @@
     "seats_label": "Number of Seats",
     "seats_error_empty": "Please enter number of seats",
     "seats_error_invalid": "Please enter a valid number",
-    "seats_error_range": "Please enter valid number of seats (1-100)"
+    "seats_error_range": "Please enter valid number of seats (1-100)",
+
+
+    "activity_details_title": "Activity Details",
+    "activity_details_subtitle": "Provide details about your activity",
+    "activity_type_label": "Activity Type",
+    "activity_type_error": "Please select activity type",
+    "requirements_title": "Requirements",
+    "minimum_age": "Minimum Age",
+    "minimum_age_error": "Please enter minimum age",
+    "valid_number_error": "Please enter a valid number",
+    "years_label": "Years",
+    "minimum_age_required": "Minimum age required",
+    "duration_label": "Duration",
+    "duration_error": "Please enter duration",
+    "hours_label": "Hours",
+    "duration_description": "Activity duration in hours",
+    "group_size_label": "Maximum Group Size",
+    "group_size_error": "Please enter group size",
+    "persons_label": "Persons",
+    "max_participants": "Maximum participants allowed",
+    "additional_requirements": "Additional Requirements (Optional)",
+    "requirement_name": "Requirement Name",
+    "requirement_value": "Value",
+    "example_text": "Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"",
+
+
+    "appbar_complete_listing": "Complete Listing",
+    "header_complete_listing": "Complete Your Listing",
+    "subtitle_complete_listing": "Add location, photos, and availability",
+    "photos_section_title": "Photos",
+    "photos_description": "Add photos to make your listing more attractive",
+    "add_button": "Add",
+    "gallery_option": "Choose from Gallery",
+    "camera_option": "Take a Photo",
+    "select_location_button": "Select Location on Map",
+    "location_selected": "Location Selected ({latitude}, {longitude})",
+    "@location_selected": {
+        "placeholders": {
+            "latitude": {
+                "type": "String"
+            },
+            "longitude": {
+                "type": "String"
+            }
+        }
+    },
+    "location_preview_not_selected": "Select\nLocation",
+    "location_preview_selected": "Location\nSelected",
+    "location_section": "Location",
+    "wilaya_label": "Wilaya",
+    "wilaya_validation": "Please select wilaya",
+    "city_label": "City",
+    "city_validation": "Please enter city",
+    "address_label": "Address",
+    "address_validation": "Please enter address",
+    "availability_section": "Availability",
+    "availability_description": "Add time periods when your listing is available",
+    "availability_empty": "No availability periods added",
+    "availability_duration": "Duration: {days} days",
+    "@availability_duration": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "add_availability_button": "Add Availability Period",
+    "datepicker_help": "Select availability period",
+    "submit_button": "Review and Submit",
+    "form_validation_error": "Please fill all required fields correctly",
+    "time_validation_error": "End time must be after start time",
+
+
+    "home_screen_choose_type": "choose type"
 }

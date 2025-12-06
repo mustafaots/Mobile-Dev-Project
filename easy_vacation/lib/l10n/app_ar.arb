@@ -459,6 +459,7 @@
   "details_pricePerUnit": "وحدة",
 
   "no_posts_yet": "لا توجد مشاركات بعد",
+  "no_matching_posts": "لا توجد مشاركات مطابقة",
 
   "categorySelection_continue": "متابعة",
   "vehicleCategory_description": "استئجار سيارات أو دراجات نارية أو دراجات هوائية أو قوارب",
@@ -512,5 +513,80 @@
   "seats_label": "عدد المقاعد",
   "seats_error_empty": "يرجى إدخال عدد المقاعد",
   "seats_error_invalid": "يرجى إدخال رقم صالح",
-  "seats_error_range": "يرجى إدخال عدد مقاعد صالح (1-100)"
+  "seats_error_range": "يرجى إدخال عدد مقاعد صالح (1-100)",
+
+
+  "activity_details_title": "تفاصيل النشاط",
+  "activity_details_subtitle": "قدّم تفاصيل حول نشاطك",
+  "activity_type_label": "نوع النشاط",
+  "activity_type_error": "يرجى اختيار نوع النشاط",
+  "requirements_title": "المتطلبات",
+  "minimum_age": "الحد الأدنى للعمر",
+  "minimum_age_error": "يرجى إدخال الحد الأدنى للعمر",
+  "valid_number_error": "يرجى إدخال رقم صالح",
+  "years_label": "سنوات",
+  "minimum_age_required": "العمر الأدنى المطلوب",
+  "duration_label": "المدة",
+  "duration_error": "يرجى إدخال المدة",
+  "hours_label": "ساعات",
+  "duration_description": "مدة النشاط بالساعات",
+  "group_size_label": "الحد الأقصى لحجم المجموعة",
+  "group_size_error": "يرجى إدخال حجم المجموعة",
+  "persons_label": "أشخاص",
+  "max_participants": "الحد الأقصى للمشاركين المسموح به",
+  "additional_requirements": "متطلبات إضافية (اختياري)",
+  "requirement_name": "اسم المتطلب",
+  "requirement_value": "القيمة",
+  "example_text": "مثال: \"التأمين\" = \"مطلوب\"، \"اللغة\" = \"الإنجليزية\"",
+
+
+  "appbar_complete_listing": "إكمال الإعلان",
+  "header_complete_listing": "أكمل إعلانك",
+  "subtitle_complete_listing": "أضف الموقع، الصور، والتوفر",
+  "photos_section_title": "الصور",
+  "photos_description": "أضف صورًا لجعل إعلانك أكثر جاذبية",
+  "add_button": "إضافة",
+  "gallery_option": "اختيار من المعرض",
+  "camera_option": "التقاط صورة",
+  "select_location_button": "تحديد الموقع على الخريطة",
+  "location_selected": "تم تحديد الموقع ({latitude}, {longitude})",
+  "@location_selected": {
+        "placeholders": {
+            "latitude": {
+                "type": "String"
+            },
+            "longitude": {
+                "type": "String"
+            }
+        }
+    },
+  "location_preview_not_selected": "اختر\nالموقع",
+  "location_preview_selected": "تم اختيار\nالموقع",
+  "location_section": "الموقع",
+  "wilaya_label": "الولاية",
+  "wilaya_validation": "يرجى اختيار الولاية",
+  "city_label": "المدينة",
+  "city_validation": "يرجى إدخال المدينة",
+  "address_label": "العنوان",
+  "address_validation": "يرجى إدخال العنوان",
+  "availability_section": "التوفر",
+  "availability_description": "أضف الفترات الزمنية التي يكون فيها إعلانك متاحًا",
+  "availability_empty": "لم يتم إضافة أي فترات توفر",
+  "availability_duration": "المدة: {days} يومًا",
+  "@availability_duration": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+  "add_availability_button": "إضافة فترة توفر",
+  "datepicker_help": "اختر فترة التوفر",
+  "submit_button": "مراجعة وإرسال",
+  "form_validation_error": "يرجى تعبئة جميع الحقول المطلوبة بشكل صحيح",
+  "time_validation_error": "يجب أن يكون وقت الانتهاء بعد وقت البدء",
+
+   
+  "home_screen_choose_type": "اختر النوع"
+
 }

@@ -105,7 +105,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
       context: context,
       firstDate: DateTime.now(),
       lastDate: DateTime(DateTime.now().year + 2),
-      helpText: 'Select availability period',
+      helpText: AppLocalizations.of(context)!.datepicker_help,
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -175,7 +175,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('End time must be after start time')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.time_validation_error)),
           );
         }
       }
@@ -258,7 +258,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                         const SizedBox(height: 20),
                         ListTile(
                           leading: Icon(Icons.photo_library, color: AppTheme.primaryColor),
-                          title: Text('Choose from Gallery'),
+                          title: Text(AppLocalizations.of(context)!.gallery_option),
                           onTap: () {
                             Navigator.pop(context);
                             _pickImage(ImageSource.gallery);
@@ -266,7 +266,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                         ),
                         ListTile(
                           leading: Icon(Icons.camera_alt, color: AppTheme.primaryColor),
-                          title: Text('Take a Photo'),
+                          title: Text(AppLocalizations.of(context)!.camera_option),
                           onTap: () {
                             Navigator.pop(context);
                             _pickImage(ImageSource.camera);
@@ -302,7 +302,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Add',
+                  AppLocalizations.of(context)!.add_button,
                   style: TextStyle(
                     fontSize: 12,
                     color: AppTheme.primaryColor,
@@ -385,7 +385,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         child: DropdownButtonFormField<String>(
           value: _wilayaController.text.isNotEmpty ? _wilayaController.text : null,
           decoration: InputDecoration(
-            labelText: 'Wilaya',
+            labelText: AppLocalizations.of(context)!.wilaya_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.location_city, color: secondaryTextColor),
@@ -402,7 +402,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select wilaya';
+              return AppLocalizations.of(context)!.wilaya_validation;
             }
             return null;
           },
@@ -427,7 +427,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         ),
         child: Center(
           child: Text(
-            'No availability periods added',
+            AppLocalizations.of(context)!.availability_empty,
             style: TextStyle(
               color: context.secondaryTextColor,
               fontStyle: FontStyle.italic,
@@ -470,7 +470,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Duration: ${interval.end.difference(interval.start).inDays} days',
+                      AppLocalizations.of(context)!.availability_duration(interval.end.difference(interval.start).inDays),
                       style: TextStyle(
                         color: context.secondaryTextColor,
                         fontSize: 12,
@@ -503,7 +503,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_validation_error)),
       );
       return;
     }
@@ -563,7 +563,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
     }
 
     return Scaffold(
-      appBar: App_Bar(context, 'Complete Listing'),
+      appBar: App_Bar(context, t.appbar_complete_listing),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -589,7 +589,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Complete Your Listing',
+                    t.header_complete_listing,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -598,7 +598,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Add location, photos, and availability',
+                    t.subtitle_complete_listing,
                     style: TextStyle(
                       fontSize: 16,
                       color: secondaryTextColor,
@@ -628,7 +628,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                           color: categoryColor, size: 20),
                       const SizedBox(width: 8),
                       Text(
-                        'Photos',
+                        t.photos_section_title,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -660,7 +660,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Add photos to make your listing more attractive',
+                    t.photos_description,
                     style: TextStyle(
                       fontSize: 14,
                       color: secondaryTextColor,
@@ -694,7 +694,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                             color: categoryColor, size: 20),
                         const SizedBox(width: 8),
                         Text(
-                          'Location',
+                          t.location_section,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -724,8 +724,8 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                         icon: Icon(_selectedLatitude == null ? Icons.map : Icons.location_on),
                         label: Text(
                           _selectedLatitude == null
-                              ? 'Select Location on Map'
-                              : 'Location Selected (${_selectedLatitude!.toStringAsFixed(4)}, ${_selectedLongitude!.toStringAsFixed(4)})',
+                              ? t.select_location_button
+                              : t.location_selected(_selectedLatitude!.toStringAsFixed(4), _selectedLongitude!.toStringAsFixed(4)),
                         ),
                       ),
                     ),
@@ -742,10 +742,10 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                           child: buildFormField(
                             context,
                             controller: _cityController,
-                            label: 'City',
+                            label: t.city_label,
                             icon: Icons.location_city,
                             validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please enter city'
+                                ? t.city_validation
                                 : null,
                           ),
                         ),
@@ -754,10 +754,10 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                           child: buildFormField(
                             context,
                             controller: _addressController,
-                            label: 'Address',
+                            label: t.address_label,
                             icon: Icons.home,
                             validator: (value) => value == null || value.trim().isEmpty
-                                ? 'Please enter address'
+                                ? t.address_validation
                                 : null,
                           ),
                         ),
@@ -788,7 +788,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                           color: categoryColor, size: 20),
                       const SizedBox(width: 8),
                       Text(
-                        'Availability',
+                        t.availability_section,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -799,7 +799,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Add time periods when your listing is available',
+                    t.availability_description,
                     style: TextStyle(
                       fontSize: 14,
                       color: secondaryTextColor,
@@ -822,7 +822,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                       ),
                     ),
                     icon: Icon(Icons.add),
-                    label: Text('Add Availability Period'),
+                    label: Text(t.add_availability_button),
                   ),
                 ],
               ),
@@ -847,7 +847,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                 ),
                 onPressed: _validateForm() ? _submitForm : null,
                 child: Text(
-                  'Review and Submit',
+                  t.submit_button,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

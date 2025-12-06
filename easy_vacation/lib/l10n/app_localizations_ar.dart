@@ -1013,6 +1013,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get no_posts_yet => 'لا توجد مشاركات بعد';
 
   @override
+  String get no_matching_posts => 'لا توجد مشاركات مطابقة';
+
+  @override
   String get categorySelection_continue => 'متابعة';
 
   @override
@@ -1144,4 +1147,164 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get seats_error_range => 'يرجى إدخال عدد مقاعد صالح (1-100)';
+
+  @override
+  String get activity_details_title => 'تفاصيل النشاط';
+
+  @override
+  String get activity_details_subtitle => 'قدّم تفاصيل حول نشاطك';
+
+  @override
+  String get activity_type_label => 'نوع النشاط';
+
+  @override
+  String get activity_type_error => 'يرجى اختيار نوع النشاط';
+
+  @override
+  String get requirements_title => 'المتطلبات';
+
+  @override
+  String get minimum_age => 'الحد الأدنى للعمر';
+
+  @override
+  String get minimum_age_error => 'يرجى إدخال الحد الأدنى للعمر';
+
+  @override
+  String get valid_number_error => 'يرجى إدخال رقم صالح';
+
+  @override
+  String get years_label => 'سنوات';
+
+  @override
+  String get minimum_age_required => 'العمر الأدنى المطلوب';
+
+  @override
+  String get duration_label => 'المدة';
+
+  @override
+  String get duration_error => 'يرجى إدخال المدة';
+
+  @override
+  String get hours_label => 'ساعات';
+
+  @override
+  String get duration_description => 'مدة النشاط بالساعات';
+
+  @override
+  String get group_size_label => 'الحد الأقصى لحجم المجموعة';
+
+  @override
+  String get group_size_error => 'يرجى إدخال حجم المجموعة';
+
+  @override
+  String get persons_label => 'أشخاص';
+
+  @override
+  String get max_participants => 'الحد الأقصى للمشاركين المسموح به';
+
+  @override
+  String get additional_requirements => 'متطلبات إضافية (اختياري)';
+
+  @override
+  String get requirement_name => 'اسم المتطلب';
+
+  @override
+  String get requirement_value => 'القيمة';
+
+  @override
+  String get example_text =>
+      'مثال: \"التأمين\" = \"مطلوب\"، \"اللغة\" = \"الإنجليزية\"';
+
+  @override
+  String get appbar_complete_listing => 'إكمال الإعلان';
+
+  @override
+  String get header_complete_listing => 'أكمل إعلانك';
+
+  @override
+  String get subtitle_complete_listing => 'أضف الموقع، الصور، والتوفر';
+
+  @override
+  String get photos_section_title => 'الصور';
+
+  @override
+  String get photos_description => 'أضف صورًا لجعل إعلانك أكثر جاذبية';
+
+  @override
+  String get add_button => 'إضافة';
+
+  @override
+  String get gallery_option => 'اختيار من المعرض';
+
+  @override
+  String get camera_option => 'التقاط صورة';
+
+  @override
+  String get select_location_button => 'تحديد الموقع على الخريطة';
+
+  @override
+  String location_selected(String latitude, String longitude) {
+    return 'تم تحديد الموقع ($latitude, $longitude)';
+  }
+
+  @override
+  String get location_preview_not_selected => 'اختر\nالموقع';
+
+  @override
+  String get location_preview_selected => 'تم اختيار\nالموقع';
+
+  @override
+  String get location_section => 'الموقع';
+
+  @override
+  String get wilaya_label => 'الولاية';
+
+  @override
+  String get wilaya_validation => 'يرجى اختيار الولاية';
+
+  @override
+  String get city_label => 'المدينة';
+
+  @override
+  String get city_validation => 'يرجى إدخال المدينة';
+
+  @override
+  String get address_label => 'العنوان';
+
+  @override
+  String get address_validation => 'يرجى إدخال العنوان';
+
+  @override
+  String get availability_section => 'التوفر';
+
+  @override
+  String get availability_description =>
+      'أضف الفترات الزمنية التي يكون فيها إعلانك متاحًا';
+
+  @override
+  String get availability_empty => 'لم يتم إضافة أي فترات توفر';
+
+  @override
+  String availability_duration(int days) {
+    return 'المدة: $days يومًا';
+  }
+
+  @override
+  String get add_availability_button => 'إضافة فترة توفر';
+
+  @override
+  String get datepicker_help => 'اختر فترة التوفر';
+
+  @override
+  String get submit_button => 'مراجعة وإرسال';
+
+  @override
+  String get form_validation_error =>
+      'يرجى تعبئة جميع الحقول المطلوبة بشكل صحيح';
+
+  @override
+  String get time_validation_error => 'يجب أن يكون وقت الانتهاء بعد وقت البدء';
+
+  @override
+  String get home_screen_choose_type => 'اختر النوع';
 }

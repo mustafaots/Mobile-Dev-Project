@@ -278,6 +278,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
     final cardColor = context.cardColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final t = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -294,7 +295,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
               Icon(Icons.checklist, color: AppTheme.successColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Requirements',
+                t.requirements_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -312,14 +313,14 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 child: buildFormField(
                   context,
                   controller: _minAgeController,
-                  label: 'Minimum Age',
+                  label: t.minimum_age,
                   icon: Icons.person,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter minimum age';
+                      return t.minimum_age_error;
                     }
                     if (int.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return t.valid_number_error;
                     }
                     return null;
                   },
@@ -327,13 +328,13 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Years', style: TextStyle(color: Colors.grey)),
+                    Text(t.years_label, style: TextStyle(color: Colors.grey)),
                     SizedBox(height: 8),
-                    Text('Minimum age required', 
+                    Text(t.minimum_age_required, 
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
@@ -357,14 +358,14 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 child: buildFormField(
                   context,
                   controller: _durationController,
-                  label: 'Duration',
+                  label: t.duration_label,
                   icon: Icons.timer,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter duration';
+                      return t.duration_error;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return t.valid_number_error;
                     }
                     return null;
                   },
@@ -372,13 +373,13 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Hours', style: TextStyle(color: Colors.grey)),
+                    Text(t.hours_label, style: TextStyle(color: Colors.grey)),
                     SizedBox(height: 8),
-                    Text('Activity duration in hours', 
+                    Text(t.duration_description, 
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
@@ -394,14 +395,14 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 child: buildFormField(
                   context,
                   controller: _groupSizeController,
-                  label: 'Maximum Group Size',
+                  label: t.group_size_label,
                   icon: Icons.group,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter group size';
+                      return t.group_size_error;
                     }
                     if (int.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return t.valid_number_error;
                     }
                     return null;
                   },
@@ -409,13 +410,13 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Persons', style: TextStyle(color: Colors.grey)),
+                    Text(t.persons_label, style: TextStyle(color: Colors.grey)),
                     SizedBox(height: 8),
-                    Text('Maximum participants allowed', 
+                    Text(t.max_participants, 
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
@@ -426,7 +427,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
 
           // Custom Requirements
           Text(
-            'Additional Requirements (Optional)',
+            t.additional_requirements,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -487,7 +488,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 child: TextFormField(
                   controller: _customKeyController,
                   decoration: InputDecoration(
-                    labelText: 'Requirement Name',
+                    labelText: t.requirement_name,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -499,7 +500,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                 child: TextFormField(
                   controller: _customValueController,
                   decoration: InputDecoration(
-                    labelText: 'Value',
+                    labelText: t.requirement_value,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -527,7 +528,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Example: "Insurance" = "Required", "Language" = "English"',
+            t.example_text,
             style: TextStyle(
               fontSize: 12,
               color: secondaryTextColor,
@@ -571,7 +572,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -613,9 +614,10 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: App_Bar(context, 'Activity Details'),
+      appBar: App_Bar(context, loc.activity_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -641,7 +643,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Activity Details',
+                    loc.activity_details_title,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -650,7 +652,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Provide details about your activity',
+                    loc.activity_details_subtitle,
                     style: TextStyle(
                       fontSize: 16,
                       color: secondaryTextColor,
@@ -710,14 +712,14 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                               child: buildFormField(
                                 context,
                                 controller: _priceController,
-                                label: 'Price (DA)',
+                                label: loc.price_label,
                                 icon: Icons.money,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter price';
+                                    return loc.price_error_required;
                                   }
                                   if (double.tryParse(value) == null) {
-                                    return 'Please enter a valid number';
+                                    return loc.price_error_invalid;
                                   }
                                   return null;
                                 },
@@ -737,11 +739,11 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                         buildFormField(
                           context,
                           controller: _activityTypeController,
-                          label: 'Activity Type',
+                          label: loc.activity_type_label,
                           icon: Icons.hiking,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter activity type';
+                              return loc.activity_type_error;
                             }
                             return null;
                           },
@@ -774,7 +776,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                       ),
                       onPressed: _validateForm() ? _submitForm : null,
                       child: Text(
-                        'Continue to Location',
+                        loc.continue_button,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

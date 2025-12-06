@@ -1032,6 +1032,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get no_posts_yet => 'Aucune publication pour l\'instant';
 
   @override
+  String get no_matching_posts => 'Aucune publication correspondante';
+
+  @override
   String get categorySelection_continue => 'Continuer';
 
   @override
@@ -1169,4 +1172,169 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get seats_error_range =>
       'Veuillez entrer un nombre de sièges valide (1-100)';
+
+  @override
+  String get activity_details_title => 'Détails de l\'activité';
+
+  @override
+  String get activity_details_subtitle =>
+      'Fournissez les détails de votre activité';
+
+  @override
+  String get activity_type_label => 'Type d\'activité';
+
+  @override
+  String get activity_type_error => 'Veuillez sélectionner un type d\'activité';
+
+  @override
+  String get requirements_title => 'Exigences';
+
+  @override
+  String get minimum_age => 'Âge minimum';
+
+  @override
+  String get minimum_age_error => 'Veuillez entrer l’âge minimum';
+
+  @override
+  String get valid_number_error => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get years_label => 'Années';
+
+  @override
+  String get minimum_age_required => 'Âge minimum requis';
+
+  @override
+  String get duration_label => 'Durée';
+
+  @override
+  String get duration_error => 'Veuillez entrer la durée';
+
+  @override
+  String get hours_label => 'Heures';
+
+  @override
+  String get duration_description => 'Durée de l’activité en heures';
+
+  @override
+  String get group_size_label => 'Taille maximale du groupe';
+
+  @override
+  String get group_size_error => 'Veuillez entrer la taille du groupe';
+
+  @override
+  String get persons_label => 'Personnes';
+
+  @override
+  String get max_participants => 'Nombre maximal de participants autorisé';
+
+  @override
+  String get additional_requirements => 'Exigences supplémentaires (optionnel)';
+
+  @override
+  String get requirement_name => 'Nom de l’exigence';
+
+  @override
+  String get requirement_value => 'Valeur';
+
+  @override
+  String get example_text =>
+      'Exemple : \"Assurance\" = \"Obligatoire\", \"Langue\" = \"Anglais\"';
+
+  @override
+  String get appbar_complete_listing => 'Finaliser l\'annonce';
+
+  @override
+  String get header_complete_listing => 'Complétez votre annonce';
+
+  @override
+  String get subtitle_complete_listing =>
+      'Ajoutez la localisation, des photos et la disponibilité';
+
+  @override
+  String get photos_section_title => 'Photos';
+
+  @override
+  String get photos_description =>
+      'Ajoutez des photos pour rendre votre annonce plus attrayante';
+
+  @override
+  String get add_button => 'Ajouter';
+
+  @override
+  String get gallery_option => 'Choisir depuis la galerie';
+
+  @override
+  String get camera_option => 'Prendre une photo';
+
+  @override
+  String get select_location_button =>
+      'Sélectionner l\'emplacement sur la carte';
+
+  @override
+  String location_selected(String latitude, String longitude) {
+    return 'Emplacement sélectionné ($latitude, $longitude)';
+  }
+
+  @override
+  String get location_preview_not_selected => 'Sélectionner\nl\'emplacement';
+
+  @override
+  String get location_preview_selected => 'Emplacement\nsélectionné';
+
+  @override
+  String get location_section => 'Localisation';
+
+  @override
+  String get wilaya_label => 'Wilaya';
+
+  @override
+  String get wilaya_validation => 'Veuillez sélectionner une wilaya';
+
+  @override
+  String get city_label => 'Ville';
+
+  @override
+  String get city_validation => 'Veuillez entrer une ville';
+
+  @override
+  String get address_label => 'Adresse';
+
+  @override
+  String get address_validation => 'Veuillez entrer une adresse';
+
+  @override
+  String get availability_section => 'Disponibilité';
+
+  @override
+  String get availability_description =>
+      'Ajoutez les périodes où votre annonce est disponible';
+
+  @override
+  String get availability_empty => 'Aucune période de disponibilité ajoutée';
+
+  @override
+  String availability_duration(int days) {
+    return 'Durée : $days jours';
+  }
+
+  @override
+  String get add_availability_button => 'Ajouter une période de disponibilité';
+
+  @override
+  String get datepicker_help => 'Sélectionnez une période de disponibilité';
+
+  @override
+  String get submit_button => 'Vérifier et envoyer';
+
+  @override
+  String get form_validation_error =>
+      'Veuillez remplir correctement tous les champs requis';
+
+  @override
+  String get time_validation_error =>
+      'L\'heure de fin doit être après l\'heure de début';
+
+  @override
+  String get home_screen_choose_type => 'choisir le type';
 }

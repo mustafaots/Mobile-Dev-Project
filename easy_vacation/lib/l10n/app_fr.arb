@@ -459,6 +459,7 @@
   "details_pricePerUnit": "unité",
 
   "no_posts_yet": "Aucune publication pour l'instant",
+  "no_matching_posts": "Aucune publication correspondante",
 
   "categorySelection_continue": "Continuer",
   "vehicleCategory_description": "Louez des voitures, motos, vélos ou bateaux",
@@ -512,5 +513,80 @@
   "seats_label": "Nombre de sièges",
   "seats_error_empty": "Veuillez entrer le nombre de sièges",
   "seats_error_invalid": "Veuillez entrer un nombre valide",
-  "seats_error_range": "Veuillez entrer un nombre de sièges valide (1-100)"
+  "seats_error_range": "Veuillez entrer un nombre de sièges valide (1-100)",
+
+
+  "activity_details_title": "Détails de l'activité",
+  "activity_details_subtitle": "Fournissez les détails de votre activité",
+  "activity_type_label": "Type d'activité",
+  "activity_type_error": "Veuillez sélectionner un type d'activité",
+  "requirements_title": "Exigences",
+  "minimum_age": "Âge minimum",
+  "minimum_age_error": "Veuillez entrer l’âge minimum",
+  "valid_number_error": "Veuillez entrer un nombre valide",
+  "years_label": "Années",
+  "minimum_age_required": "Âge minimum requis",
+  "duration_label": "Durée",
+  "duration_error": "Veuillez entrer la durée",
+  "hours_label": "Heures",
+  "duration_description": "Durée de l’activité en heures",
+  "group_size_label": "Taille maximale du groupe",
+  "group_size_error": "Veuillez entrer la taille du groupe",
+  "persons_label": "Personnes",
+  "max_participants": "Nombre maximal de participants autorisé",
+  "additional_requirements": "Exigences supplémentaires (optionnel)",
+  "requirement_name": "Nom de l’exigence",
+  "requirement_value": "Valeur",
+  "example_text": "Exemple : \"Assurance\" = \"Obligatoire\", \"Langue\" = \"Anglais\"",
+
+
+  "appbar_complete_listing": "Finaliser l'annonce",
+  "header_complete_listing": "Complétez votre annonce",
+  "subtitle_complete_listing": "Ajoutez la localisation, des photos et la disponibilité",
+  "photos_section_title": "Photos",
+  "photos_description": "Ajoutez des photos pour rendre votre annonce plus attrayante",
+  "add_button": "Ajouter",
+  "gallery_option": "Choisir depuis la galerie",
+  "camera_option": "Prendre une photo",
+  "select_location_button": "Sélectionner l'emplacement sur la carte",
+  "location_selected": "Emplacement sélectionné ({latitude}, {longitude})",
+  "@location_selected": {
+        "placeholders": {
+            "latitude": {
+                "type": "String"
+            },
+            "longitude": {
+                "type": "String"
+            }
+        }
+    },
+  "location_preview_not_selected": "Sélectionner\nl'emplacement",
+  "location_preview_selected": "Emplacement\nsélectionné",
+  "location_section": "Localisation",
+  "wilaya_label": "Wilaya",
+  "wilaya_validation": "Veuillez sélectionner une wilaya",
+  "city_label": "Ville",
+  "city_validation": "Veuillez entrer une ville",
+  "address_label": "Adresse",
+  "address_validation": "Veuillez entrer une adresse",
+  "availability_section": "Disponibilité",
+  "availability_description": "Ajoutez les périodes où votre annonce est disponible",
+  "availability_empty": "Aucune période de disponibilité ajoutée",
+  "availability_duration": "Durée : {days} jours",
+  "@availability_duration": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+  "add_availability_button": "Ajouter une période de disponibilité",
+  "datepicker_help": "Sélectionnez une période de disponibilité",
+  "submit_button": "Vérifier et envoyer",
+  "form_validation_error": "Veuillez remplir correctement tous les champs requis",
+  "time_validation_error": "L'heure de fin doit être après l'heure de début",
+
+
+  "home_screen_choose_type": "choisir le type"
+
 }

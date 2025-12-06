@@ -84,7 +84,7 @@ class StaysScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "No posts yet",
+                    loc.no_posts_yet,
                     style: TextStyle(
                       fontSize: 18,
                       color: const Color.fromARGB(255, 85, 85, 85),
