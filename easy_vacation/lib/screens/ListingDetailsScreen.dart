@@ -8,7 +8,7 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/main.dart';
-import 'ListingDetailsWidgets/index.dart';
+import 'Listing Details Widgets/index.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   final int? postId;
