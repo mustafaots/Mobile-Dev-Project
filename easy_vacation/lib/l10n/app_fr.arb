@@ -456,5 +456,137 @@
   "details_pricePerNight": "nuit",
   "details_pricePerDay": "jour",
   "details_pricePerPerson": "personne",
-  "details_pricePerUnit": "unité"
+  "details_pricePerUnit": "unité",
+
+  "no_posts_yet": "Aucune publication pour l'instant",
+  "no_matching_posts": "Aucune publication correspondante",
+
+  "categorySelection_continue": "Continuer",
+  "vehicleCategory_description": "Louez des voitures, motos, vélos ou bateaux",
+  "stayCategory_description": "Louez des appartements, villas, chambres ou maisons",
+  "activityCategory_description": "Proposez des visites, ateliers, aventures ou expériences",
+  "choose_listing_category": "Choisir une catégorie d'annonce",
+  "select_type_of_listing": "Sélectionnez le type d'annonce que vous souhaitez créer",
+
+  "select_location": "Sélectionner l'emplacement",
+
+  "stay_details_title": "Détails du logement",
+  "stay_details_subtitle": "Fournissez les détails de votre logement",
+  "rate_label": "Tarif",
+  "rate_error": "Veuillez sélectionner un tarif",
+  "stay_type_label": "Type de logement",
+  "stay_type_error": "Veuillez sélectionner un type de logement",
+  "price_label": "Prix (DA)",
+  "price_error_required": "Veuillez entrer un prix",
+  "price_error_invalid": "Veuillez entrer un nombre valide",
+  "area_label": "Superficie (m²)",
+  "area_error_required": "Veuillez entrer la superficie",
+  "area_error_invalid": "Veuillez entrer un nombre valide",
+  "bedrooms_label": "Nombre de chambres",
+  "bedrooms_error_required": "Veuillez entrer le nombre de chambres",
+  "bedrooms_error_invalid": "Veuillez entrer un nombre valide",
+  "form_error_fill_all": "Veuillez remplir correctement tous les champs requis",
+  "continue_button": "Continuer vers l'emplacement",
+
+  "vehicle_details_title": "Détails du véhicule",
+  "vehicle_details_subtitle": "Fournissez les détails de votre véhicule",
+  "vehicle_type_label": "Type de véhicule",
+  "vehicle_type_error": "Veuillez sélectionner un type de véhicule",
+  "model_label": "Modèle",
+  "model_error": "Veuillez entrer le modèle",
+  "year_label": "Année",
+  "year_error_empty": "Veuillez entrer l'année",
+  "year_error_invalid": "Veuillez entrer une année valide",
+  "year_error_range": "Veuillez entrer une année valide (1900-{maxYear})",
+  "@year_error_range": {
+    "placeholders": {
+      "maxYear": {
+        "type": "int"
+      }
+    }
+  },
+  "fuel_type_label": "Type de carburant",
+  "fuel_type_error": "Veuillez sélectionner un type de carburant",
+  "transmission_label": "Transmission",
+  "transmission_manual": "Manuelle",
+  "transmission_automatic": "Automatique",
+  "seats_label": "Nombre de sièges",
+  "seats_error_empty": "Veuillez entrer le nombre de sièges",
+  "seats_error_invalid": "Veuillez entrer un nombre valide",
+  "seats_error_range": "Veuillez entrer un nombre de sièges valide (1-100)",
+
+
+  "activity_details_title": "Détails de l'activité",
+  "activity_details_subtitle": "Fournissez les détails de votre activité",
+  "activity_type_label": "Type d'activité",
+  "activity_type_error": "Veuillez sélectionner un type d'activité",
+  "requirements_title": "Exigences",
+  "minimum_age": "Âge minimum",
+  "minimum_age_error": "Veuillez entrer l’âge minimum",
+  "valid_number_error": "Veuillez entrer un nombre valide",
+  "years_label": "Années",
+  "minimum_age_required": "Âge minimum requis",
+  "duration_label": "Durée",
+  "duration_error": "Veuillez entrer la durée",
+  "hours_label": "Heures",
+  "duration_description": "Durée de l’activité en heures",
+  "group_size_label": "Taille maximale du groupe",
+  "group_size_error": "Veuillez entrer la taille du groupe",
+  "persons_label": "Personnes",
+  "max_participants": "Nombre maximal de participants autorisé",
+  "additional_requirements": "Exigences supplémentaires (optionnel)",
+  "requirement_name": "Nom de l’exigence",
+  "requirement_value": "Valeur",
+  "example_text": "Exemple : \"Assurance\" = \"Obligatoire\", \"Langue\" = \"Anglais\"",
+
+
+  "appbar_complete_listing": "Finaliser l'annonce",
+  "header_complete_listing": "Complétez votre annonce",
+  "subtitle_complete_listing": "Ajoutez la localisation, des photos et la disponibilité",
+  "photos_section_title": "Photos",
+  "photos_description": "Ajoutez des photos pour rendre votre annonce plus attrayante",
+  "add_button": "Ajouter",
+  "gallery_option": "Choisir depuis la galerie",
+  "camera_option": "Prendre une photo",
+  "select_location_button": "Sélectionner l'emplacement sur la carte",
+  "location_selected": "Emplacement sélectionné ({latitude}, {longitude})",
+  "@location_selected": {
+        "placeholders": {
+            "latitude": {
+                "type": "String"
+            },
+            "longitude": {
+                "type": "String"
+            }
+        }
+    },
+  "location_preview_not_selected": "Sélectionner\nl'emplacement",
+  "location_preview_selected": "Emplacement\nsélectionné",
+  "location_section": "Localisation",
+  "wilaya_label": "Wilaya",
+  "wilaya_validation": "Veuillez sélectionner une wilaya",
+  "city_label": "Ville",
+  "city_validation": "Veuillez entrer une ville",
+  "address_label": "Adresse",
+  "address_validation": "Veuillez entrer une adresse",
+  "availability_section": "Disponibilité",
+  "availability_description": "Ajoutez les périodes où votre annonce est disponible",
+  "availability_empty": "Aucune période de disponibilité ajoutée",
+  "availability_duration": "Durée : {days} jours",
+  "@availability_duration": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+  "add_availability_button": "Ajouter une période de disponibilité",
+  "datepicker_help": "Sélectionnez une période de disponibilité",
+  "submit_button": "Vérifier et envoyer",
+  "form_validation_error": "Veuillez remplir correctement tous les champs requis",
+  "time_validation_error": "L'heure de fin doit être après l'heure de début",
+
+
+  "home_screen_choose_type": "choisir le type"
+
 }

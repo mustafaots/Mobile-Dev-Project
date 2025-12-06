@@ -665,20 +665,21 @@ class __HomeContentState extends State<_HomeContent> {
         return ['motorcycle', 'car', 'bicycle', 'boat', 'scooter'];
       case 'stay':
         return ['apartment', 'villa', 'house', 'room', 'chalet'];
+      case 'activity':
+        return ['cultural', 'sport', 'entertainment', 'scientific'];
       default:
         return [];
     }
   }
 
   void _selectType() async {
-    if (post_type == 'activity') {
+    /*if (post_type == 'activity') {
       return;
-    }
+    }*/
 
     final types = _getTypesForPostType();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final softDarkSurface = const Color(0xFF1F1F1F);
-    //final loc = AppLocalizations.of(context)!;
 
     final result = await showDialog<String>(
       context: context,
@@ -710,7 +711,7 @@ class __HomeContentState extends State<_HomeContent> {
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
-            'Choose Type',
+            AppLocalizations.of(context)!.home_screen_choose_type,
             style: TextStyle(
               color: isDark ? Colors.white : Colors.black87,
               fontWeight: FontWeight.bold,

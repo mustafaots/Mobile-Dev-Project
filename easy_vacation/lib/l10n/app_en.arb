@@ -456,5 +456,137 @@
     "details_pricePerNight": "night",
     "details_pricePerDay": "day",
     "details_pricePerPerson": "person",
-    "details_pricePerUnit": "unit"
+    "details_pricePerUnit": "unit",
+
+    "no_posts_yet": "No posts yet",
+    "no_matching_posts": "No matching posts",
+
+    "categorySelection_continue": "Continue",
+    "vehicleCategory_description": "Rent cars, motorcycles, bicycles, or boats",
+    "stayCategory_description": "Rent apartments, villas, rooms, or houses",
+    "activityCategory_description": "Offer tours, workshops, adventures, or experiences",
+    "choose_listing_category": "Choose Listing Category",
+    "select_type_of_listing": "Select the type of listing you want to create",
+
+    "select_location": "Select Location",
+
+    "stay_details_title": "Stay Details",
+    "stay_details_subtitle": "Provide details about your stay",
+    "rate_label": "Rate",
+    "rate_error": "Please select rate",
+    "stay_type_label": "Stay Type",
+    "stay_type_error": "Please select stay type",
+    "price_label": "Price (DA)",
+    "price_error_required": "Please enter price",
+    "price_error_invalid": "Please enter a valid number",
+    "area_label": "Area (m²)",
+    "area_error_required": "Please enter area",
+    "area_error_invalid": "Please enter a valid number",
+    "bedrooms_label": "Number of Bedrooms",
+    "bedrooms_error_required": "Please enter number of bedrooms",
+    "bedrooms_error_invalid": "Please enter a valid number",
+    "form_error_fill_all": "Please fill all required fields correctly",
+    "continue_button": "Continue to Location",
+
+
+    "vehicle_details_title": "Vehicle Details",
+    "vehicle_details_subtitle": "Provide details about your vehicle",
+    "vehicle_type_label": "Vehicle Type",
+    "vehicle_type_error": "Please select vehicle type",
+    "model_label": "Model",
+    "model_error": "Please enter model",
+    "year_label": "Year",
+    "year_error_empty": "Please enter year",
+    "year_error_invalid": "Please enter a valid year",
+    "year_error_range": "Please enter a valid year (1900-{maxYear})",
+    "@year_error_range": {
+        "placeholders": {
+            "maxYear": {
+                "type": "int"
+            }
+        }
+    },
+    "fuel_type_label": "Fuel Type",
+    "fuel_type_error": "Please select fuel type",
+    "transmission_label": "Transmission",
+    "transmission_manual": "Manual",
+    "transmission_automatic": "Automatic",
+    "seats_label": "Number of Seats",
+    "seats_error_empty": "Please enter number of seats",
+    "seats_error_invalid": "Please enter a valid number",
+    "seats_error_range": "Please enter valid number of seats (1-100)",
+
+
+    "activity_details_title": "Activity Details",
+    "activity_details_subtitle": "Provide details about your activity",
+    "activity_type_label": "Activity Type",
+    "activity_type_error": "Please select activity type",
+    "requirements_title": "Requirements",
+    "minimum_age": "Minimum Age",
+    "minimum_age_error": "Please enter minimum age",
+    "valid_number_error": "Please enter a valid number",
+    "years_label": "Years",
+    "minimum_age_required": "Minimum age required",
+    "duration_label": "Duration",
+    "duration_error": "Please enter duration",
+    "hours_label": "Hours",
+    "duration_description": "Activity duration in hours",
+    "group_size_label": "Maximum Group Size",
+    "group_size_error": "Please enter group size",
+    "persons_label": "Persons",
+    "max_participants": "Maximum participants allowed",
+    "additional_requirements": "Additional Requirements (Optional)",
+    "requirement_name": "Requirement Name",
+    "requirement_value": "Value",
+    "example_text": "Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"",
+
+
+    "appbar_complete_listing": "Complete Listing",
+    "header_complete_listing": "Complete Your Listing",
+    "subtitle_complete_listing": "Add location, photos, and availability",
+    "photos_section_title": "Photos",
+    "photos_description": "Add photos to make your listing more attractive",
+    "add_button": "Add",
+    "gallery_option": "Choose from Gallery",
+    "camera_option": "Take a Photo",
+    "select_location_button": "Select Location on Map",
+    "location_selected": "Location Selected ({latitude}, {longitude})",
+    "@location_selected": {
+        "placeholders": {
+            "latitude": {
+                "type": "String"
+            },
+            "longitude": {
+                "type": "String"
+            }
+        }
+    },
+    "location_preview_not_selected": "Select\nLocation",
+    "location_preview_selected": "Location\nSelected",
+    "location_section": "Location",
+    "wilaya_label": "Wilaya",
+    "wilaya_validation": "Please select wilaya",
+    "city_label": "City",
+    "city_validation": "Please enter city",
+    "address_label": "Address",
+    "address_validation": "Please enter address",
+    "availability_section": "Availability",
+    "availability_description": "Add time periods when your listing is available",
+    "availability_empty": "No availability periods added",
+    "availability_duration": "Duration: {days} days",
+    "@availability_duration": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "add_availability_button": "Add Availability Period",
+    "datepicker_help": "Select availability period",
+    "submit_button": "Review and Submit",
+    "form_validation_error": "Please fill all required fields correctly",
+    "time_validation_error": "End time must be after start time",
+
+
+    "home_screen_choose_type": "choose type"
 }

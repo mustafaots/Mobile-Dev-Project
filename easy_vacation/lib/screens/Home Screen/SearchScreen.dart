@@ -83,6 +83,30 @@ class SearchScreen extends StatelessWidget {
         }
         else if(snapshot.hasData) {
           final posts = snapshot.data!;
+          if(posts.length == 0) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.search_off,
+                    size: 80,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    loc.no_matching_posts,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: const Color.fromARGB(255, 85, 85, 85),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return Padding(
             padding: const EdgeInsets.all(20),
             child: SingleChildScrollView(
@@ -183,13 +207,13 @@ class SearchScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.search_off,
+                  Icons.error_outline,
                   size: 80,
                   color: Colors.grey,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "No matching posts",
+                  "Error in getting data",
                   style: TextStyle(
                     fontSize: 18,
                     color: const Color.fromARGB(255, 85, 85, 85),

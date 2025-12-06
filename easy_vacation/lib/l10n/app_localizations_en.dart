@@ -1011,4 +1011,307 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get details_pricePerUnit => 'unit';
+
+  @override
+  String get no_posts_yet => 'No posts yet';
+
+  @override
+  String get no_matching_posts => 'No matching posts';
+
+  @override
+  String get categorySelection_continue => 'Continue';
+
+  @override
+  String get vehicleCategory_description =>
+      'Rent cars, motorcycles, bicycles, or boats';
+
+  @override
+  String get stayCategory_description =>
+      'Rent apartments, villas, rooms, or houses';
+
+  @override
+  String get activityCategory_description =>
+      'Offer tours, workshops, adventures, or experiences';
+
+  @override
+  String get choose_listing_category => 'Choose Listing Category';
+
+  @override
+  String get select_type_of_listing =>
+      'Select the type of listing you want to create';
+
+  @override
+  String get select_location => 'Select Location';
+
+  @override
+  String get stay_details_title => 'Stay Details';
+
+  @override
+  String get stay_details_subtitle => 'Provide details about your stay';
+
+  @override
+  String get rate_label => 'Rate';
+
+  @override
+  String get rate_error => 'Please select rate';
+
+  @override
+  String get stay_type_label => 'Stay Type';
+
+  @override
+  String get stay_type_error => 'Please select stay type';
+
+  @override
+  String get price_label => 'Price (DA)';
+
+  @override
+  String get price_error_required => 'Please enter price';
+
+  @override
+  String get price_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get area_label => 'Area (m²)';
+
+  @override
+  String get area_error_required => 'Please enter area';
+
+  @override
+  String get area_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get bedrooms_label => 'Number of Bedrooms';
+
+  @override
+  String get bedrooms_error_required => 'Please enter number of bedrooms';
+
+  @override
+  String get bedrooms_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get form_error_fill_all => 'Please fill all required fields correctly';
+
+  @override
+  String get continue_button => 'Continue to Location';
+
+  @override
+  String get vehicle_details_title => 'Vehicle Details';
+
+  @override
+  String get vehicle_details_subtitle => 'Provide details about your vehicle';
+
+  @override
+  String get vehicle_type_label => 'Vehicle Type';
+
+  @override
+  String get vehicle_type_error => 'Please select vehicle type';
+
+  @override
+  String get model_label => 'Model';
+
+  @override
+  String get model_error => 'Please enter model';
+
+  @override
+  String get year_label => 'Year';
+
+  @override
+  String get year_error_empty => 'Please enter year';
+
+  @override
+  String get year_error_invalid => 'Please enter a valid year';
+
+  @override
+  String year_error_range(int maxYear) {
+    return 'Please enter a valid year (1900-$maxYear)';
+  }
+
+  @override
+  String get fuel_type_label => 'Fuel Type';
+
+  @override
+  String get fuel_type_error => 'Please select fuel type';
+
+  @override
+  String get transmission_label => 'Transmission';
+
+  @override
+  String get transmission_manual => 'Manual';
+
+  @override
+  String get transmission_automatic => 'Automatic';
+
+  @override
+  String get seats_label => 'Number of Seats';
+
+  @override
+  String get seats_error_empty => 'Please enter number of seats';
+
+  @override
+  String get seats_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get seats_error_range => 'Please enter valid number of seats (1-100)';
+
+  @override
+  String get activity_details_title => 'Activity Details';
+
+  @override
+  String get activity_details_subtitle => 'Provide details about your activity';
+
+  @override
+  String get activity_type_label => 'Activity Type';
+
+  @override
+  String get activity_type_error => 'Please select activity type';
+
+  @override
+  String get requirements_title => 'Requirements';
+
+  @override
+  String get minimum_age => 'Minimum Age';
+
+  @override
+  String get minimum_age_error => 'Please enter minimum age';
+
+  @override
+  String get valid_number_error => 'Please enter a valid number';
+
+  @override
+  String get years_label => 'Years';
+
+  @override
+  String get minimum_age_required => 'Minimum age required';
+
+  @override
+  String get duration_label => 'Duration';
+
+  @override
+  String get duration_error => 'Please enter duration';
+
+  @override
+  String get hours_label => 'Hours';
+
+  @override
+  String get duration_description => 'Activity duration in hours';
+
+  @override
+  String get group_size_label => 'Maximum Group Size';
+
+  @override
+  String get group_size_error => 'Please enter group size';
+
+  @override
+  String get persons_label => 'Persons';
+
+  @override
+  String get max_participants => 'Maximum participants allowed';
+
+  @override
+  String get additional_requirements => 'Additional Requirements (Optional)';
+
+  @override
+  String get requirement_name => 'Requirement Name';
+
+  @override
+  String get requirement_value => 'Value';
+
+  @override
+  String get example_text =>
+      'Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"';
+
+  @override
+  String get appbar_complete_listing => 'Complete Listing';
+
+  @override
+  String get header_complete_listing => 'Complete Your Listing';
+
+  @override
+  String get subtitle_complete_listing =>
+      'Add location, photos, and availability';
+
+  @override
+  String get photos_section_title => 'Photos';
+
+  @override
+  String get photos_description =>
+      'Add photos to make your listing more attractive';
+
+  @override
+  String get add_button => 'Add';
+
+  @override
+  String get gallery_option => 'Choose from Gallery';
+
+  @override
+  String get camera_option => 'Take a Photo';
+
+  @override
+  String get select_location_button => 'Select Location on Map';
+
+  @override
+  String location_selected(String latitude, String longitude) {
+    return 'Location Selected ($latitude, $longitude)';
+  }
+
+  @override
+  String get location_preview_not_selected => 'Select\nLocation';
+
+  @override
+  String get location_preview_selected => 'Location\nSelected';
+
+  @override
+  String get location_section => 'Location';
+
+  @override
+  String get wilaya_label => 'Wilaya';
+
+  @override
+  String get wilaya_validation => 'Please select wilaya';
+
+  @override
+  String get city_label => 'City';
+
+  @override
+  String get city_validation => 'Please enter city';
+
+  @override
+  String get address_label => 'Address';
+
+  @override
+  String get address_validation => 'Please enter address';
+
+  @override
+  String get availability_section => 'Availability';
+
+  @override
+  String get availability_description =>
+      'Add time periods when your listing is available';
+
+  @override
+  String get availability_empty => 'No availability periods added';
+
+  @override
+  String availability_duration(int days) {
+    return 'Duration: $days days';
+  }
+
+  @override
+  String get add_availability_button => 'Add Availability Period';
+
+  @override
+  String get datepicker_help => 'Select availability period';
+
+  @override
+  String get submit_button => 'Review and Submit';
+
+  @override
+  String get form_validation_error =>
+      'Please fill all required fields correctly';
+
+  @override
+  String get time_validation_error => 'End time must be after start time';
+
+  @override
+  String get home_screen_choose_type => 'choose type';
 }

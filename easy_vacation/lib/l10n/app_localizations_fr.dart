@@ -1024,4 +1024,314 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get details_pricePerUnit => 'unité';
+
+  @override
+  String get no_posts_yet => 'Aucune publication pour l\'instant';
+
+  @override
+  String get no_matching_posts => 'Aucune publication correspondante';
+
+  @override
+  String get categorySelection_continue => 'Continuer';
+
+  @override
+  String get vehicleCategory_description =>
+      'Louez des voitures, motos, vélos ou bateaux';
+
+  @override
+  String get stayCategory_description =>
+      'Louez des appartements, villas, chambres ou maisons';
+
+  @override
+  String get activityCategory_description =>
+      'Proposez des visites, ateliers, aventures ou expériences';
+
+  @override
+  String get choose_listing_category => 'Choisir une catégorie d\'annonce';
+
+  @override
+  String get select_type_of_listing =>
+      'Sélectionnez le type d\'annonce que vous souhaitez créer';
+
+  @override
+  String get select_location => 'Sélectionner l\'emplacement';
+
+  @override
+  String get stay_details_title => 'Détails du logement';
+
+  @override
+  String get stay_details_subtitle =>
+      'Fournissez les détails de votre logement';
+
+  @override
+  String get rate_label => 'Tarif';
+
+  @override
+  String get rate_error => 'Veuillez sélectionner un tarif';
+
+  @override
+  String get stay_type_label => 'Type de logement';
+
+  @override
+  String get stay_type_error => 'Veuillez sélectionner un type de logement';
+
+  @override
+  String get price_label => 'Prix (DA)';
+
+  @override
+  String get price_error_required => 'Veuillez entrer un prix';
+
+  @override
+  String get price_error_invalid => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get area_label => 'Superficie (m²)';
+
+  @override
+  String get area_error_required => 'Veuillez entrer la superficie';
+
+  @override
+  String get area_error_invalid => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get bedrooms_label => 'Nombre de chambres';
+
+  @override
+  String get bedrooms_error_required => 'Veuillez entrer le nombre de chambres';
+
+  @override
+  String get bedrooms_error_invalid => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get form_error_fill_all =>
+      'Veuillez remplir correctement tous les champs requis';
+
+  @override
+  String get continue_button => 'Continuer vers l\'emplacement';
+
+  @override
+  String get vehicle_details_title => 'Détails du véhicule';
+
+  @override
+  String get vehicle_details_subtitle =>
+      'Fournissez les détails de votre véhicule';
+
+  @override
+  String get vehicle_type_label => 'Type de véhicule';
+
+  @override
+  String get vehicle_type_error => 'Veuillez sélectionner un type de véhicule';
+
+  @override
+  String get model_label => 'Modèle';
+
+  @override
+  String get model_error => 'Veuillez entrer le modèle';
+
+  @override
+  String get year_label => 'Année';
+
+  @override
+  String get year_error_empty => 'Veuillez entrer l\'année';
+
+  @override
+  String get year_error_invalid => 'Veuillez entrer une année valide';
+
+  @override
+  String year_error_range(int maxYear) {
+    return 'Veuillez entrer une année valide (1900-$maxYear)';
+  }
+
+  @override
+  String get fuel_type_label => 'Type de carburant';
+
+  @override
+  String get fuel_type_error => 'Veuillez sélectionner un type de carburant';
+
+  @override
+  String get transmission_label => 'Transmission';
+
+  @override
+  String get transmission_manual => 'Manuelle';
+
+  @override
+  String get transmission_automatic => 'Automatique';
+
+  @override
+  String get seats_label => 'Nombre de sièges';
+
+  @override
+  String get seats_error_empty => 'Veuillez entrer le nombre de sièges';
+
+  @override
+  String get seats_error_invalid => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get seats_error_range =>
+      'Veuillez entrer un nombre de sièges valide (1-100)';
+
+  @override
+  String get activity_details_title => 'Détails de l\'activité';
+
+  @override
+  String get activity_details_subtitle =>
+      'Fournissez les détails de votre activité';
+
+  @override
+  String get activity_type_label => 'Type d\'activité';
+
+  @override
+  String get activity_type_error => 'Veuillez sélectionner un type d\'activité';
+
+  @override
+  String get requirements_title => 'Exigences';
+
+  @override
+  String get minimum_age => 'Âge minimum';
+
+  @override
+  String get minimum_age_error => 'Veuillez entrer l’âge minimum';
+
+  @override
+  String get valid_number_error => 'Veuillez entrer un nombre valide';
+
+  @override
+  String get years_label => 'Années';
+
+  @override
+  String get minimum_age_required => 'Âge minimum requis';
+
+  @override
+  String get duration_label => 'Durée';
+
+  @override
+  String get duration_error => 'Veuillez entrer la durée';
+
+  @override
+  String get hours_label => 'Heures';
+
+  @override
+  String get duration_description => 'Durée de l’activité en heures';
+
+  @override
+  String get group_size_label => 'Taille maximale du groupe';
+
+  @override
+  String get group_size_error => 'Veuillez entrer la taille du groupe';
+
+  @override
+  String get persons_label => 'Personnes';
+
+  @override
+  String get max_participants => 'Nombre maximal de participants autorisé';
+
+  @override
+  String get additional_requirements => 'Exigences supplémentaires (optionnel)';
+
+  @override
+  String get requirement_name => 'Nom de l’exigence';
+
+  @override
+  String get requirement_value => 'Valeur';
+
+  @override
+  String get example_text =>
+      'Exemple : \"Assurance\" = \"Obligatoire\", \"Langue\" = \"Anglais\"';
+
+  @override
+  String get appbar_complete_listing => 'Finaliser l\'annonce';
+
+  @override
+  String get header_complete_listing => 'Complétez votre annonce';
+
+  @override
+  String get subtitle_complete_listing =>
+      'Ajoutez la localisation, des photos et la disponibilité';
+
+  @override
+  String get photos_section_title => 'Photos';
+
+  @override
+  String get photos_description =>
+      'Ajoutez des photos pour rendre votre annonce plus attrayante';
+
+  @override
+  String get add_button => 'Ajouter';
+
+  @override
+  String get gallery_option => 'Choisir depuis la galerie';
+
+  @override
+  String get camera_option => 'Prendre une photo';
+
+  @override
+  String get select_location_button =>
+      'Sélectionner l\'emplacement sur la carte';
+
+  @override
+  String location_selected(String latitude, String longitude) {
+    return 'Emplacement sélectionné ($latitude, $longitude)';
+  }
+
+  @override
+  String get location_preview_not_selected => 'Sélectionner\nl\'emplacement';
+
+  @override
+  String get location_preview_selected => 'Emplacement\nsélectionné';
+
+  @override
+  String get location_section => 'Localisation';
+
+  @override
+  String get wilaya_label => 'Wilaya';
+
+  @override
+  String get wilaya_validation => 'Veuillez sélectionner une wilaya';
+
+  @override
+  String get city_label => 'Ville';
+
+  @override
+  String get city_validation => 'Veuillez entrer une ville';
+
+  @override
+  String get address_label => 'Adresse';
+
+  @override
+  String get address_validation => 'Veuillez entrer une adresse';
+
+  @override
+  String get availability_section => 'Disponibilité';
+
+  @override
+  String get availability_description =>
+      'Ajoutez les périodes où votre annonce est disponible';
+
+  @override
+  String get availability_empty => 'Aucune période de disponibilité ajoutée';
+
+  @override
+  String availability_duration(int days) {
+    return 'Durée : $days jours';
+  }
+
+  @override
+  String get add_availability_button => 'Ajouter une période de disponibilité';
+
+  @override
+  String get datepicker_help => 'Sélectionnez une période de disponibilité';
+
+  @override
+  String get submit_button => 'Vérifier et envoyer';
+
+  @override
+  String get form_validation_error =>
+      'Veuillez remplir correctement tous les champs requis';
+
+  @override
+  String get time_validation_error =>
+      'L\'heure de fin doit être après l\'heure de début';
+
+  @override
+  String get home_screen_choose_type => 'choisir le type';
 }
