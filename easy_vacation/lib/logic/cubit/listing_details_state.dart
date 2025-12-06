@@ -4,6 +4,7 @@ import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
+import 'package:easy_vacation/models/post_images.model.dart';
 
 abstract class ListingDetailsState {
   const ListingDetailsState();
@@ -25,6 +26,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
   final Stay? stay;
   final Vehicle? vehicle;
   final Activity? activity;
+  final List<PostImage> postImages;
 
   const ListingDetailsLoaded({
     this.post,
@@ -34,6 +36,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
     this.stay,
     this.vehicle,
     this.activity,
+    this.postImages = const [],
   });
 
   ListingDetailsLoaded copyWith({
@@ -44,6 +47,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
     Stay? stay,
     Vehicle? vehicle,
     Activity? activity,
+    List<PostImage>? postImages,
   }) {
     return ListingDetailsLoaded(
       post: post ?? this.post,
@@ -53,6 +57,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
       stay: stay ?? this.stay,
       vehicle: vehicle ?? this.vehicle,
       activity: activity ?? this.activity,
+      postImages: postImages ?? this.postImages,
     );
   }
 }

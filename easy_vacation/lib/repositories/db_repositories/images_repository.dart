@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import 'dart:typed_data';
 
 class PostImagesRepository {
   final Database db;
@@ -18,8 +19,11 @@ class PostImagesRepository {
 
   /// Get image record by its ID
   Future<Map<String, dynamic>?> getImageById(int id) async {
-    final result =
-        await db.query('post_images', where: 'id = ?', whereArgs: [id]);
+    final result = await db.query(
+      'post_images',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
 
     return result.isNotEmpty ? result.first : null;
   }
@@ -36,14 +40,45 @@ class PostImagesRepository {
     return result.isNotEmpty ? result.first : null;
   }
 
-  Future<List<Map<String, dynamic>>?> getAllImagesByPostId(int postId) async {
-    final result = await db.query(
-      'post_images',
-      where: 'post_id = ?',
-      whereArgs: [postId],
-    );
+  /// Get all images by post ID - loads image data separately to avoid CursorWindow issues
+  Future<List<Map<String, dynamic>>> getAllImagesByPostId(int postId) async {
+    try {
+      // First, get just the IDs to avoid loading all BLOB data at once
+      final idResults = await db.query(
+        'post_images',
+        columns: ['id', 'post_id'],
+        where: 'post_id = ?',
+        whereArgs: [postId],
+      );
 
-    return result.length == 0 ? result: null;
+      if (idResults.isEmpty) {
+        return [];
+      }
+
+      // Now load each image separately to avoid CursorWindow overflow
+      final List<Map<String, dynamic>> allImages = [];
+      for (final row in idResults) {
+        final imageId = row['id'];
+        try {
+          final imageData = await db.query(
+            'post_images',
+            where: 'id = ?',
+            whereArgs: [imageId],
+          );
+          if (imageData.isNotEmpty) {
+            allImages.add(imageData.first);
+          }
+        } catch (e) {
+          // Log error but continue with other images
+          print('Error loading image $imageId: $e');
+        }
+      }
+
+      return allImages;
+    } catch (e) {
+      print('Error in getAllImagesByPostId: $e');
+      return [];
+    }
   }
 
   /// Get all images
@@ -75,10 +110,6 @@ class PostImagesRepository {
 
   /// Delete image by ID
   Future<int> deleteImageById(int id) async {
-    return await db.delete(
-      'post_images',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    return await db.delete('post_images', where: 'id = ?', whereArgs: [id]);
   }
 }

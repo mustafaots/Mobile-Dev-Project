@@ -4,9 +4,11 @@ import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
+import 'package:easy_vacation/models/post_images.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'listing_details_state.dart';
 import 'dummy_data.dart';
 
@@ -14,11 +16,13 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
   final PostRepository postRepository;
   final ReviewRepository reviewRepository;
   final UserRepository userRepository;
+  final PostImagesRepository imagesRepository;
 
   ListingDetailsCubit({
     required this.postRepository,
     required this.reviewRepository,
     required this.userRepository,
+    required this.imagesRepository,
   }) : super(const ListingDetailsInitial());
 
   Future<void> loadPostDetails(int postId) async {
@@ -33,6 +37,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
       Stay? stay;
       Vehicle? vehicle;
       Activity? activity;
+      List<PostImage> postImages = [];
 
       // If no post found, use dummy data
       if (post == null) {
@@ -52,6 +57,14 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
           reviewersMap[review.reviewerId] = reviewer;
         }
       }
+
+      // Load post images by postId using imagesRepository
+      final imageDataList = await imagesRepository.getAllImagesByPostId(
+        post.id!,
+      );
+      postImages = imageDataList
+          .map((imageData) => PostImage.fromMap(imageData))
+          .toList();
 
       // Load category-specific details
       final category = (post.category).toLowerCase();
@@ -79,6 +92,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
           stay: stay,
           vehicle: vehicle,
           activity: activity,
+          postImages: postImages,
         ),
       );
     } catch (e) {
@@ -118,6 +132,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
             stay: dummyStay,
             vehicle: dummyVehicle,
             activity: dummyActivity,
+            postImages: const [],
           ),
         );
       } catch (_) {

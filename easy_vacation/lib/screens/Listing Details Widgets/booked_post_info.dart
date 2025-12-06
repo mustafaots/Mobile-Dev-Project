@@ -7,6 +7,7 @@ import 'package:easy_vacation/repositories/db_repositories/booking_repository.da
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/main.dart';
@@ -29,6 +30,7 @@ class BookedPostBottomInfo extends StatelessWidget {
         postRepository: appRepos['postRepo'] as PostRepository,
         reviewRepository: appRepos['reviewRepo'] as ReviewRepository,
         userRepository: appRepos['userRepo'] as UserRepository,
+        imagesRepository: appRepos['imageRepo'] as PostImagesRepository,
       )..loadPostDetails(postId),
       child: _BookedPostBottomInfoContent(
         postId: postId,
