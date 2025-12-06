@@ -42,18 +42,6 @@ class EmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            if (posts.isEmpty)
-              ElevatedButton.icon(
-                onPressed: () => Navigator.pushNamed(context, '/create-listing'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryColor,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                icon: const Icon(Icons.add),
-                label: Text('Create Listing'),
-              ),
           ],
         ),
       ),
