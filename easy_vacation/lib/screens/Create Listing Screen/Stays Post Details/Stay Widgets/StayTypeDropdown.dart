@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 
-class RateDropdown extends StatelessWidget {
-  final String value;
-  final List<String> priceRates;
+class StayTypeDropdown extends StatelessWidget {
+  final String? value;
+  final List<String> stayTypes;
   final ValueChanged<String?> onChanged;
   final Color textColor;
   final Color secondaryTextColor;
   final Color cardColor;
-  final FormFieldValidator<String>? validator;
   
-  const RateDropdown({
+  const StayTypeDropdown({
     Key? key,
     required this.value,
-    required this.priceRates,
+    required this.stayTypes,
     required this.onChanged,
     required this.textColor,
     required this.secondaryTextColor,
     required this.cardColor,
-    this.validator,
   }) : super(key: key);
   
   @override
@@ -33,25 +31,24 @@ class RateDropdown extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: DropdownButtonFormField<String>(
-          value: value.isEmpty ? null : value, // Handle empty string
+          value: value,
           decoration: InputDecoration(
-            labelText: 'Rate',
+            labelText: 'Stay Type',
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
-            icon: Icon(Icons.schedule, color: secondaryTextColor),
+            icon: Icon(Icons.home_work_outlined, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
-          hint: Text('Select rate', style: TextStyle(color: secondaryTextColor)), // Add hint
-          items: priceRates.map((rate) {
+          items: stayTypes.map((type) {
             return DropdownMenuItem<String>(
-              value: rate,
-              child: Text('/$rate', style: TextStyle(color: textColor)),
+              value: type,
+              child: Text(_capitalize(type), style: TextStyle(color: textColor)),
             );
           }).toList(),
           onChanged: onChanged,
-          validator: validator ?? (value) {
+          validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select rate';
+              return 'Please select stay type';
             }
             return null;
           },
@@ -61,5 +58,10 @@ class RateDropdown extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  String _capitalize(String text) {
+    if (text.isEmpty) return text;
+    return "${text[0].toUpperCase()}${text.substring(1).toLowerCase()}";
   }
 }

@@ -1,6 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityDetailsScreen.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/StaysDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/StayDetailsScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/VehicleDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
