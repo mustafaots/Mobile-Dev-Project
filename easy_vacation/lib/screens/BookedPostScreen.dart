@@ -1,10 +1,15 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_cubit.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_state.dart';
+import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
+import 'package:easy_vacation/logic/cubit/reviews_cubit.dart';
+import 'package:easy_vacation/logic/cubit/host_info_cubit.dart';
+import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -25,13 +30,49 @@ class BookedPostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BookedPostCubit(
-        bookingRepository: appRepos['bookingRepo'] as BookingRepository,
-        postRepository: appRepos['postRepo'] as PostRepository,
-        reviewRepository: appRepos['reviewRepo'] as ReviewRepository,
-        userRepository: appRepos['userRepo'] as UserRepository,
-      )..loadPostDetails(postId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => BookedPostCubit(
+            bookingRepository: appRepos['bookingRepo'] as BookingRepository,
+            postRepository: appRepos['postRepo'] as PostRepository,
+            reviewRepository: appRepos['reviewRepo'] as ReviewRepository,
+            userRepository: appRepos['userRepo'] as UserRepository,
+            imagesRepository: appRepos['imageRepo'] as PostImagesRepository,
+          )..loadPostDetails(postId),
+        ),
+        BlocProvider(
+          create: (context) {
+            final imagesRepository =
+                appRepos['imageRepo'] as PostImagesRepository;
+            return ImageGalleryCubit(imagesRepository: imagesRepository)
+              ..loadImages(postId);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final reviewRepository = appRepos['reviewRepo'] as ReviewRepository;
+            final userRepository = appRepos['userRepo'] as UserRepository;
+            return ReviewsCubit(
+              reviewRepository: reviewRepository,
+              userRepository: userRepository,
+            )..loadReviews(postId);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final postRepository = appRepos['postRepo'] as PostRepository;
+            final userRepository = appRepos['userRepo'] as UserRepository;
+            final reviewRepository = appRepos['reviewRepo'] as ReviewRepository;
+            return HostInfoCubit(
+              postRepository: postRepository,
+              userRepository: userRepository,
+              reviewRepository: reviewRepository,
+            )..loadHostInfo(postId);
+          },
+        ),
+        BlocProvider(create: (context) => DetailsCubit()),
+      ],
       child: _BookedPostScreenContent(
         postId: postId,
         onBookingCanceled: onBookingCanceled,
@@ -71,25 +112,53 @@ class _BookedPostScreenContent extends StatelessWidget {
             }
 
             if (state is BookedPostLoaded) {
+              final post = state.post;
+              final host = state.host;
+              final stay = state.stay;
+              final vehicle = state.vehicle;
+              final activity = state.activity;
+              final loc = AppLocalizations.of(context)!;
+
+              // Load details data into the cubit
+              Future.microtask(() {
+                context.read<DetailsCubit>().loadDetails(
+                  post: post,
+                  category: post?.category,
+                  stay: stay,
+                  vehicle: vehicle,
+                  activity: activity,
+                  loc: loc,
+                );
+              });
+
               return Stack(
                 children: [
                   SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const ImageGallery(),
-                        TitleSection(post: state.post),
-                        HostInfo(host: state.host, post: state.post),
+                        ImageGallery(
+                          postId: post?.id,
+                          cubit: context.read<ImageGalleryCubit>(),
+                        ),
+                        TitleSection(post: post),
+                        HostInfo(
+                          postId: post?.id,
+                          host: host,
+                          post: post,
+                          cubit: context.read<HostInfoCubit>(),
+                        ),
                         DetailsSection(
-                          post: state.post,
-                          category: state.post?.category,
-                          stay: state.stay,
-                          vehicle: state.vehicle,
-                          activity: state.activity,
+                          post: post,
+                          category: post?.category,
+                          stay: stay,
+                          vehicle: vehicle,
+                          activity: activity,
+                          cubit: context.read<DetailsCubit>(),
                         ),
                         ReviewsSection(
-                          reviews: state.reviews,
-                          reviewers: state.reviewers,
+                          postId: post?.id,
+                          cubit: context.read<ReviewsCubit>(),
                         ),
                         const SizedBox(height: 112),
                       ],

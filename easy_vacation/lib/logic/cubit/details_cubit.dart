@@ -27,6 +27,8 @@ class DetailsCubit extends Cubit<DetailsState> {
             vehicleDetails: [],
             activityDetails: [],
             allDetails: [],
+            price: null,
+            priceUnit: null,
           ),
         );
         return;
@@ -45,12 +47,16 @@ class DetailsCubit extends Cubit<DetailsState> {
         loc: loc,
       );
 
+      final priceUnit = getPriceUnit(category ?? post.category, loc);
+
       emit(
         DetailsLoaded(
           stayDetails: stayDetails,
           vehicleDetails: vehicleDetails,
           activityDetails: activityDetails,
           allDetails: allDetails,
+          price: post.price,
+          priceUnit: priceUnit,
         ),
       );
     } catch (e) {

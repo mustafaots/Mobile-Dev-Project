@@ -1,7 +1,16 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/logic/cubit/listing_details_cubit.dart';
 import 'package:easy_vacation/logic/cubit/listing_details_state.dart';
+import 'package:easy_vacation/logic/cubit/availability_cubit.dart';
+import 'package:easy_vacation/logic/cubit/reviews_cubit.dart';
+import 'package:easy_vacation/logic/cubit/host_info_cubit.dart';
+import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
+import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -37,18 +46,65 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
 
-    return BlocProvider(
-      create: (context) {
-        final postRepository = appRepos['postRepo'] as dynamic;
-        final reviewRepository = appRepos['reviewRepo'] as dynamic;
-        final userRepository = appRepos['userRepo'] as dynamic;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final postRepository = appRepos['postRepo'] as dynamic;
+            final reviewRepository = appRepos['reviewRepo'] as dynamic;
+            final userRepository = appRepos['userRepo'] as dynamic;
+            final imagesRepository =
+                appRepos['imageRepo'] as PostImagesRepository;
 
-        return ListingDetailsCubit(
-          postRepository: postRepository,
-          reviewRepository: reviewRepository,
-          userRepository: userRepository,
-        )..loadPostDetails(widget.postId ?? 1);
-      },
+            return ListingDetailsCubit(
+              postRepository: postRepository,
+              reviewRepository: reviewRepository,
+              userRepository: userRepository,
+              imagesRepository: imagesRepository,
+            )..loadPostDetails(widget.postId ?? 1);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final postRepository = appRepos['postRepo'] as PostRepository;
+            return AvailabilityCubit(postRepository: postRepository)
+              ..loadAvailability(widget.postId ?? 1);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final reviewRepository = appRepos['reviewRepo'] as ReviewRepository;
+            final userRepository = appRepos['userRepo'] as UserRepository;
+            return ReviewsCubit(
+              reviewRepository: reviewRepository,
+              userRepository: userRepository,
+            )..loadReviews(widget.postId ?? 1);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final postRepository = appRepos['postRepo'] as PostRepository;
+            final userRepository = appRepos['userRepo'] as UserRepository;
+            final reviewRepository = appRepos['reviewRepo'] as ReviewRepository;
+            return HostInfoCubit(
+              postRepository: postRepository,
+              userRepository: userRepository,
+              reviewRepository: reviewRepository,
+            )..loadHostInfo(widget.postId ?? 1);
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final imagesRepository =
+                appRepos['imageRepo'] as PostImagesRepository;
+            return ImageGalleryCubit(imagesRepository: imagesRepository)
+              ..loadImages(widget.postId ?? 1);
+          },
+        ),
+        BlocProvider(
+          create: (context) => DetailsCubit(),
+        ),
+      ],
       child: Scaffold(
         appBar: App_Bar(
           context,
@@ -70,11 +126,22 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             if (state is ListingDetailsLoaded) {
               final post = state.post;
               final host = state.host;
-              final reviews = state.reviews;
-              final reviewers = state.reviewers;
               final stay = state.stay;
               final vehicle = state.vehicle;
               final activity = state.activity;
+              final loc = AppLocalizations.of(context)!;
+
+              // Load details data into the cubit
+              Future.microtask(() {
+                context.read<DetailsCubit>().loadDetails(
+                  post: post,
+                  category: post?.category,
+                  stay: stay,
+                  vehicle: vehicle,
+                  activity: activity,
+                  loc: loc,
+                );
+              });
 
               return SafeArea(
                 child: Stack(
@@ -83,26 +150,32 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const ImageGallery(),
+                          ImageGallery(
+                            postId: post?.id,
+                            cubit: context.read<ImageGalleryCubit>(),
+                          ),
                           TitleSection(post: post),
-                          HostInfo(host: host, post: post),
+                          HostInfo(
+                            postId: post?.id,
+                            host: host,
+                            post: post,
+                            cubit: context.read<HostInfoCubit>(),
+                          ),
                           DetailsSection(
                             post: post,
                             category: post?.category,
                             stay: stay,
                             vehicle: vehicle,
                             activity: activity,
+                            cubit: context.read<DetailsCubit>(),
                           ),
                           ReviewsSection(
-                            reviews: reviews,
-                            reviewers: reviewers,
+                            postId: post?.id,
+                            cubit: context.read<ReviewsCubit>(),
                           ),
                           AvailabilitySection(
-                            availabilityJson: post?.availability != null
-                                ? (post!.availability is String
-                                      ? post.availability as String
-                                      : null)
-                                : null,
+                            postId: post?.id,
+                            cubit: context.read<AvailabilityCubit>(),
                             onDatesSelected: (dates) {
                               setState(() {
                                 _selectedDates = dates;

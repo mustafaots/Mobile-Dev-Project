@@ -4,10 +4,12 @@ import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
+import 'package:easy_vacation/models/post_images.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'booked_post_state.dart';
 import 'dummy_data.dart';
 
@@ -16,12 +18,14 @@ class BookedPostCubit extends Cubit<BookedPostState> {
   final PostRepository postRepository;
   final ReviewRepository reviewRepository;
   final UserRepository userRepository;
+  final PostImagesRepository imagesRepository;
 
   BookedPostCubit({
     required this.bookingRepository,
     required this.postRepository,
     required this.reviewRepository,
     required this.userRepository,
+    required this.imagesRepository,
   }) : super(const BookedPostInitial());
 
   Future<void> loadPostDetails(int postId) async {
@@ -47,6 +51,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       Stay? stay;
       Vehicle? vehicle;
       Activity? activity;
+      List<PostImage> postImages = [];
 
       final reviews = await reviewRepository.getReviewsByPostId(postId);
       reviewsList = reviews;
@@ -56,6 +61,12 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           reviewersMap[review.reviewerId] = reviewer;
         }
       }
+
+      // Load post images by postId
+      final imageDataList = await imagesRepository.getAllImagesByPostId(postId);
+      postImages = imageDataList
+          .map((imageData) => PostImage.fromMap(imageData))
+          .toList();
 
       // Load category-specific details
       final category = (post.category).toLowerCase();
@@ -85,6 +96,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           stay: stay,
           vehicle: vehicle,
           activity: activity,
+          postImages: postImages,
         ),
       );
     } catch (e) {
@@ -127,6 +139,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
             stay: dummyStay,
             vehicle: dummyVehicle,
             activity: dummyActivity,
+            postImages: const [],
           ),
         );
       } catch (_) {
@@ -152,6 +165,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           stay: currentState.stay,
           vehicle: currentState.vehicle,
           activity: currentState.activity,
+          postImages: currentState.postImages,
         ),
       );
     } else {

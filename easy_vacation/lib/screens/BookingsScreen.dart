@@ -1,8 +1,11 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/logic/cubit/bookings_cubit.dart';
 import 'package:easy_vacation/logic/cubit/bookings_state.dart';
+import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
+import 'package:easy_vacation/models/bookings.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
+import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/screens/BookingsWidgets/index.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
@@ -94,20 +97,31 @@ class _BookingsScreenContent extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: filteredBookings.map((bookingData) {
-          return BookingCard(
-            imagePath: bookingData['imagePath'],
-            booking: bookingData['booking'],
-            status: BookingsHelper.getStatusLabel(
-              context,
-              bookingData['status'],
-            ),
-            statusColor: BookingsHelper.getStatusColor(bookingData['status']),
-            title: bookingData['title'],
-            price: bookingData['price'],
-            date: bookingData['date'],
-            onRefresh: () {
-              context.read<BookingsCubit>().reloadBookings();
+          final postId = (bookingData['booking'] as Booking).postId;
+
+          return BlocProvider(
+            create: (context) {
+              final imagesRepository =
+                  appRepos['imageRepo'] as PostImagesRepository;
+              return ImageGalleryCubit(imagesRepository: imagesRepository)
+                ..loadImages(postId);
             },
+            child: BookingCard(
+              imagePath: bookingData['imagePath'],
+              booking: bookingData['booking'],
+              status: BookingsHelper.getStatusLabel(
+                context,
+                bookingData['status'],
+              ),
+              statusColor: BookingsHelper.getStatusColor(bookingData['status']),
+              title: bookingData['title'],
+              price: bookingData['price'],
+              date: bookingData['date'],
+              postId: postId,
+              onRefresh: () {
+                context.read<BookingsCubit>().reloadBookings();
+              },
+            ),
           );
         }).toList(),
       ),

@@ -1,9 +1,13 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/bookings.model.dart';
+import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
+import 'package:easy_vacation/logic/cubit/image_gallery_state.dart';
 import 'package:easy_vacation/screens/BookedPostScreen.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:convert';
 
 /// Individual booking card widget
 class BookingCard extends StatelessWidget {
@@ -14,6 +18,7 @@ class BookingCard extends StatelessWidget {
   final String title;
   final String price;
   final String date;
+  final int? postId;
   final VoidCallback onRefresh;
 
   const BookingCard({
@@ -25,6 +30,7 @@ class BookingCard extends StatelessWidget {
     required this.title,
     required this.price,
     required this.date,
+    this.postId,
     required this.onRefresh,
   });
 
@@ -50,19 +56,83 @@ class BookingCard extends StatelessWidget {
       child: Column(
         children: [
           // Image
-          Container(
-            height: 150,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
+          if (postId != null)
+            BlocBuilder<ImageGalleryCubit, ImageGalleryState>(
+              builder: (context, state) {
+                if (state is ImageGalleryLoading) {
+                  return Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      color: Colors.grey[300],
+                    ),
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                if (state is ImageGalleryLoaded && state.images.isNotEmpty) {
+                  final image = state.images.first;
+                  ImageProvider imageProvider;
+
+                  try {
+                    if (image.imageData.isEmpty) {
+                      imageProvider = AssetImage(imagePath);
+                    } else {
+                      final decodedBytes = base64Decode(image.imageData);
+                      imageProvider = MemoryImage(decodedBytes);
+                    }
+                  } catch (e) {
+                    imageProvider = AssetImage(imagePath);
+                  }
+
+                  return Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                }
+
+                // Fallback to asset image
+                return Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            )
+          else
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                image: DecorationImage(
+                  image: AssetImage(imagePath),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
 
           // Content
           Padding(
