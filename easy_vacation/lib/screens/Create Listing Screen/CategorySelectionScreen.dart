@@ -1,14 +1,16 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/ActivityDetailsScreen.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/StaysDetailsScreen.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/VehicleDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/StayDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/VehicleDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectionScreen extends StatefulWidget {
-  const CategorySelectionScreen({super.key});
+  final int userId;
+
+  const CategorySelectionScreen({super.key, required this.userId});
 
   @override
   State<CategorySelectionScreen> createState() => _CategorySelectionScreenState();
@@ -30,21 +32,21 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         'display': t.listingType_stay,
         'icon': Icons.house_outlined,
         'color': AppTheme.primaryColor,
-        'description': t.stayCategory_description,
+        'description': 'Rent apartments, villas, rooms, or houses',
       },
       {
         'type': 'activity',
         'display': t.listingType_activity,
         'icon': Icons.hiking_outlined,
         'color': AppTheme.successColor,
-        'description': t.activityCategory_description,
+        'description': 'Offer tours, workshops, adventures, or experiences',
       },
       {
         'type': 'vehicle',
         'display': t.listingType_vehicle,
         'icon': Icons.directions_car_outlined,
         'color': AppTheme.neutralColor,
-        'description': t.vehicleCategory_description,
+        'description': 'Rent cars, motorcycles, bicycles, or boats',
       },
     ];
 
@@ -75,7 +77,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    t.choose_listing_category,
+                    'Choose Listing Category',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -84,7 +86,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    t.select_type_of_listing,
+                    'Select the type of listing you want to create',
                     style: TextStyle(
                       fontSize: 16,
                       color: textColor.withOpacity(0.7),
@@ -202,7 +204,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StayDetailsScreen(),
+                          builder: (context) => StayDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
@@ -210,7 +212,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ActivityDetailsScreen(),
+                          builder: (context) => ActivityDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
@@ -218,14 +220,14 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => VehicleDetailsScreen(),
+                          builder: (context) => VehicleDetailsScreen(userId: widget.userId),
                         ),
                       );
                       break;
                   }
                 } : null,
                 child: Text(
-                  t.categorySelection_continue,
+                  'Continue',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
