@@ -183,7 +183,7 @@ class VehiclesScreen extends StatelessWidget {
                                 ),
                               ),
                               subtitle: Text(
-                                '${loc.dinars}${post.price}/${loc.day}',
+                                '${post.price}${loc.dinars}/${loc.day}',
                                 style: TextStyle(color: secondaryTextColor),
                               ),
                               trailing: Row(
@@ -293,7 +293,7 @@ class VehiclesScreen extends StatelessWidget {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  '${loc.dinars}${post.price}/${loc.day}',
+                                  '${post.price}${loc.dinars}/${loc.day}',
                                   style: TextStyle(color: secondaryTextColor),
                                 ),
                                 trailing: Row(

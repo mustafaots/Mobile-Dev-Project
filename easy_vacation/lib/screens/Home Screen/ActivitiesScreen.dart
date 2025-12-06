@@ -183,7 +183,7 @@ class ActivitiesScreen extends StatelessWidget {
                                 ),
                               ),
                               subtitle: Text(
-                                'chrea',
+                                "${post.price}${loc.dinars}/hour",
                                 style: TextStyle(color: secondaryTextColor),
                               ),
                               trailing: Row(
@@ -293,7 +293,7 @@ class ActivitiesScreen extends StatelessWidget {
                                   ),
                                 ),
                                 subtitle: Text(
-                                  'chrea',
+                                  "${post.price}${loc.dinars}/hour",
                                   style: TextStyle(color: secondaryTextColor),
                                 ),
                                 trailing: Row(
