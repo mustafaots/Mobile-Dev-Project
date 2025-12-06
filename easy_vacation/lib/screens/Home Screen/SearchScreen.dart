@@ -192,7 +192,7 @@ class SearchScreen extends StatelessWidget {
                   "No matching posts",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey[700],
+                    color: const Color.fromARGB(255, 85, 85, 85),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

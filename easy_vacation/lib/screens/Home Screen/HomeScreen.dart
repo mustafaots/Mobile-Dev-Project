@@ -646,9 +646,9 @@ class __HomeContentState extends State<_HomeContent> {
   List<String> _getTypesForPostType() {
     switch (post_type) {
       case 'vehicle':
-        return ['Motorcycle', 'Car', 'Bicycle', 'Boat', 'Scooter'];
+        return ['motorcycle', 'car', 'bicycle', 'boat', 'scooter'];
       case 'stay':
-        return ['Apartment', 'Villa', 'House', 'Room', 'Chalet'];
+        return ['apartment', 'villa', 'house', 'room', 'chalet'];
       default:
         return [];
     }
