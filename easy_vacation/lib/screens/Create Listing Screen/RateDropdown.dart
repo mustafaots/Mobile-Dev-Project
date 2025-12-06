@@ -20,8 +20,8 @@ class RateDropdown extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    // Get safe value - handle empty string
-    final safeValue = _getSafeValue(value, priceRates);
+    // Convert empty string to null for the dropdown
+    final String? dropdownValue = value.isEmpty ? null : value;
     
     return Container(
       decoration: BoxDecoration(
@@ -34,8 +34,7 @@ class RateDropdown extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: DropdownButtonFormField<String>(
-          // FIX: Use safeValue which will be null if value is empty
-          value: safeValue,
+          value: dropdownValue,
           decoration: InputDecoration(
             labelText: 'Rate',
             labelStyle: TextStyle(color: secondaryTextColor),
@@ -43,7 +42,6 @@ class RateDropdown extends StatelessWidget {
             icon: Icon(Icons.schedule, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
-          // Add hint for when value is null (empty)
           hint: Text(
             'Select rate',
             style: TextStyle(color: secondaryTextColor),
@@ -67,14 +65,5 @@ class RateDropdown extends StatelessWidget {
         ),
       ),
     );
-  }
-  
-  /// Helper method to handle empty string values
-  String? _getSafeValue(String value, List<String> priceRates) {
-    // If value is empty or not in the list, return null (shows hint)
-    if (value.isEmpty || !priceRates.contains(value)) {
-      return null;
-    }
-    return value;
   }
 }
