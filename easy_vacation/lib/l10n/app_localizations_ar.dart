@@ -12,6 +12,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appTitle => 'عطلة سهلة';
 
   @override
+  String get your_perfect_gateway => 'وجهتك المثالية';
+
+  @override
+  String get discrover_places =>
+      'اكتشف أماكن مذهلة وصنع ذكريات لا تُنسى مع منصّة السفر الخاصة بنا.';
+
+  @override
   String get welcomeMessage => 'مرحبًا، أيها المسافر';
 
   @override
