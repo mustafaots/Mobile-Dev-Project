@@ -102,12 +102,6 @@ class BasicDetailsCard extends StatelessWidget {
                   textColor: textColor,
                   secondaryTextColor: secondaryTextColor,
                   cardColor: cardColor,
-                  validator: (value) { // Add this validator
-                    if (value == null || value.isEmpty) {
-                      return 'Please select rate';
-                    }
-                    return null;
-                  }
                 ),
               ),
             ],

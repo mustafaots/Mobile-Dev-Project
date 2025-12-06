@@ -140,7 +140,7 @@ class StayDetailsCard extends StatelessWidget {
                   onChanged: onRateChanged,
                   textColor: textColor,
                   secondaryTextColor: secondaryTextColor,
-                  cardColor: cardColor, validator: (value) {  },
+                  cardColor: cardColor
                 ),
               ),
             ],

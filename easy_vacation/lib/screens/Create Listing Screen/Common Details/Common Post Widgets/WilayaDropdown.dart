@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-class RateDropdown extends StatelessWidget {
-  final String value;
-  final List<String> priceRates;
-  final ValueChanged<String?> onChanged;
+class WilayaDropdown extends StatelessWidget {
+  final TextEditingController controller;
+  final List<String> wilayas;
   final Color textColor;
   final Color secondaryTextColor;
   final Color cardColor;
   
-  const RateDropdown({
+  const WilayaDropdown({
     Key? key,
-    required this.value,
-    required this.priceRates,
-    required this.onChanged,
+    required this.controller,
+    required this.wilayas,
     required this.textColor,
     required this.secondaryTextColor,
     required this.cardColor,
@@ -20,9 +18,6 @@ class RateDropdown extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    // Get safe value - handle empty string
-    final safeValue = _getSafeValue(value, priceRates);
-    
     return Container(
       decoration: BoxDecoration(
         color: cardColor,
@@ -34,30 +29,26 @@ class RateDropdown extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: DropdownButtonFormField<String>(
-          // FIX: Use safeValue which will be null if value is empty
-          value: safeValue,
+          value: controller.text.isNotEmpty ? controller.text : null,
           decoration: InputDecoration(
-            labelText: 'Rate',
+            labelText: 'Wilaya',
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
-            icon: Icon(Icons.schedule, color: secondaryTextColor),
+            icon: Icon(Icons.location_city, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
-          // Add hint for when value is null (empty)
-          hint: Text(
-            'Select rate',
-            style: TextStyle(color: secondaryTextColor),
-          ),
-          items: priceRates.map((rate) {
+          items: wilayas.map((wilaya) {
             return DropdownMenuItem<String>(
-              value: rate,
-              child: Text('/$rate', style: TextStyle(color: textColor)),
+              value: wilaya,
+              child: Text(wilaya, style: TextStyle(color: textColor)),
             );
           }).toList(),
-          onChanged: onChanged,
+          onChanged: (value) {
+            controller.text = value!;
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select rate';
+              return 'Please select wilaya';
             }
             return null;
           },
@@ -67,14 +58,5 @@ class RateDropdown extends StatelessWidget {
         ),
       ),
     );
-  }
-  
-  /// Helper method to handle empty string values
-  String? _getSafeValue(String value, List<String> priceRates) {
-    // If value is empty or not in the list, return null (shows hint)
-    if (value.isEmpty || !priceRates.contains(value)) {
-      return null;
-    }
-    return value;
   }
 }

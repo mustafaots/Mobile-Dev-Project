@@ -3,7 +3,7 @@ import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/ActivityHeader.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/BasicDetailsCard.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/RequirementSection.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/CommonDetailsScreen.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonDetailsScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
