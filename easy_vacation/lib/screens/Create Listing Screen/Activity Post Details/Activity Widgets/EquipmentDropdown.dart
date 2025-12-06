@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EquipmentDropdown extends StatelessWidget {
@@ -20,6 +21,7 @@ class EquipmentDropdown extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     // Handle empty value
     final currentValue = controller.text.isEmpty 
         ? null 
@@ -38,13 +40,13 @@ class EquipmentDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: currentValue,
           decoration: InputDecoration(
-            labelText: 'Equipment',
+            labelText: loc.equipment_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.build, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
-          hint: Text('Select equipment', style: TextStyle(color: secondaryTextColor)),
+          hint: Text(loc.select_equipment, style: TextStyle(color: secondaryTextColor)),
           items: options.map((option) {
             return DropdownMenuItem<String>(
               value: option,
@@ -54,7 +56,7 @@ class EquipmentDropdown extends StatelessWidget {
           onChanged: onChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select equipment option';
+              return loc.equipment_error;
             }
             return null;
           },

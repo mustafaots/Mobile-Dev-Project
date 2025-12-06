@@ -1221,6 +1221,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"';
 
   @override
+  String get equipment_label => 'Equipment';
+
+  @override
+  String get select_equipment => 'Select equipment';
+
+  @override
+  String get equipment_error => 'Please select equipment option';
+
+  @override
+  String get experience_label => 'Experience Level';
+
+  @override
+  String get select_experience => 'Select experience';
+
+  @override
+  String get experience_error => 'Please select experience level';
+
+  @override
   String get appbar_complete_listing => 'Complete Listing';
 
   @override

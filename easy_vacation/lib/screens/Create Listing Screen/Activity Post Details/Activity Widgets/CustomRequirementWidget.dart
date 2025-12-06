@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -20,11 +21,13 @@ class CustomRequirementWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Additional Requirements (Optional)',
+          loc.additional_requirements,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -85,7 +88,7 @@ class CustomRequirementWidget extends StatelessWidget {
               child: TextFormField(
                 controller: formController.customKeyController,
                 decoration: InputDecoration(
-                  labelText: 'Requirement Name',
+                  labelText: loc.requirement_name,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -97,7 +100,7 @@ class CustomRequirementWidget extends StatelessWidget {
               child: TextFormField(
                 controller: formController.customValueController,
                 decoration: InputDecoration(
-                  labelText: 'Value',
+                  labelText: loc.requirement_value,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -124,7 +127,7 @@ class CustomRequirementWidget extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Example: "Insurance" = "Required", "Language" = "English"',
+          loc.example_text,
           style: TextStyle(
             fontSize: 12,
             color: secondaryTextColor,

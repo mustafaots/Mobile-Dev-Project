@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/AvailabilityList.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonFormLogic.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class AvailabilitySection extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -43,7 +45,7 @@ class AvailabilitySection extends StatelessWidget {
                   color: categoryColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Availability',
+                t.availability_section,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -54,7 +56,7 @@ class AvailabilitySection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Add time periods when your listing is available',
+            t.availability_description,
             style: TextStyle(
               fontSize: 14,
               color: secondaryTextColor,
@@ -86,7 +88,7 @@ class AvailabilitySection extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.add),
-            label: const Text('Add Availability Period'),
+            label: Text(t.add_availability_button),
           ),
         ],
       ),

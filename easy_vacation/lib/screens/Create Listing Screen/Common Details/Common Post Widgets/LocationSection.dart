@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/WilayaDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonFormLogic.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class LocationSection extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -45,7 +47,7 @@ class LocationSection extends StatelessWidget {
                     color: categoryColor, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'Location',
+                  loc.location_section,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -78,8 +80,8 @@ class LocationSection extends StatelessWidget {
                     : Icons.location_on),
                 label: Text(
                   formController.selectedLatitude == null
-                      ? 'Select Location on Map'
-                      : 'Location Selected (${formController.selectedLatitude!.toStringAsFixed(4)}, ${formController.selectedLongitude!.toStringAsFixed(4)})',
+                      ? loc.select_location_button
+                      : loc.location_selected(formController.selectedLatitude!.toStringAsFixed(4), formController.selectedLongitude!.toStringAsFixed(4)),
                 ),
               ),
             ),
@@ -102,10 +104,10 @@ class LocationSection extends StatelessWidget {
                   child: buildFormField(
                     context,
                     controller: formController.cityController,
-                    label: 'City',
+                    label: loc.city_label,
                     icon: Icons.location_city,
                     validator: (value) => value == null || value.trim().isEmpty
-                        ? 'Please enter city'
+                        ? loc.city_validation
                         : null,
                   ),
                 ),
@@ -114,10 +116,10 @@ class LocationSection extends StatelessWidget {
                   child: buildFormField(
                     context,
                     controller: formController.addressController,
-                    label: 'Address',
+                    label: loc.address_label,
                     icon: Icons.home,
                     validator: (value) => value == null || value.trim().isEmpty
-                        ? 'Please enter address'
+                        ? loc.address_validation
                         : null,
                   ),
                 ),

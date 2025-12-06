@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/ActivityHeader.dart';
@@ -38,7 +39,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -59,9 +60,10 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
     
     return Scaffold(
-      appBar: App_Bar(context, 'Activity Details'),
+      appBar: App_Bar(context, loc.activity_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -124,8 +126,8 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                         elevation: 2,
                       ),
                       onPressed: _formController.validateForm() ? _submitForm : null,
-                      child: const Text(
-                        'Continue to Location',
+                      child: Text(
+                        loc.continue_button,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

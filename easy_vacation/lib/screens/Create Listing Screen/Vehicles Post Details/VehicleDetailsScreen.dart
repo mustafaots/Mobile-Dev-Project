@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonDetailsScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/VehicleDetailsCard.dart';
@@ -37,7 +38,7 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -58,9 +59,10 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
     
     return Scaffold(
-      appBar: App_Bar(context, 'Vehicle Details'),
+      appBar: App_Bar(context, loc.vehicle_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -127,8 +129,8 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                         elevation: 2,
                       ),
                       onPressed: _formController.validateForm() ? _submitForm : null,
-                      child: const Text(
-                        'Continue to Location',
+                      child: Text(
+                        loc.continue_button,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

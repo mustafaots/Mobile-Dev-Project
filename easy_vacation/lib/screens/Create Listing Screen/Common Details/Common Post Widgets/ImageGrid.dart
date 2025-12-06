@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -86,7 +87,7 @@ class ImageGrid extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Add',
+                  AppLocalizations.of(context)!.add_button,
                   style: TextStyle(
                     fontSize: 12,
                     color: categoryColor,

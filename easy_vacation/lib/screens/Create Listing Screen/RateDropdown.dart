@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class RateDropdown extends StatelessWidget {
@@ -22,6 +23,7 @@ class RateDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     // Convert empty string to null for the dropdown
     final String? dropdownValue = value.isEmpty ? null : value;
+    final t = AppLocalizations.of(context)!;
     
     return Container(
       decoration: BoxDecoration(
@@ -36,14 +38,14 @@ class RateDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: dropdownValue,
           decoration: InputDecoration(
-            labelText: 'Rate',
+            labelText: t.rate_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.schedule, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
           hint: Text(
-            'Select rate',
+            t.rate_error,
             style: TextStyle(color: secondaryTextColor),
           ),
           items: priceRates.map((rate) {
@@ -55,7 +57,7 @@ class RateDropdown extends StatelessWidget {
           onChanged: onChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select rate';
+              return t.rate_error;
             }
             return null;
           },

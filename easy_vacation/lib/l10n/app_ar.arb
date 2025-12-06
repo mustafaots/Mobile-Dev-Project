@@ -538,6 +538,14 @@
   "requirement_name": "اسم المتطلب",
   "requirement_value": "القيمة",
   "example_text": "مثال: \"التأمين\" = \"مطلوب\"، \"اللغة\" = \"الإنجليزية\"",
+  "equipment_label": "المعدات",
+  "select_equipment": "اختر المعدات",
+  "equipment_error": "يرجى اختيار خيار المعدات",
+  "experience_label": "مستوى الخبرة",
+  "select_experience": "اختر مستوى الخبرة",
+  "experience_error": "يرجى اختيار مستوى الخبرة",
+
+
 
 
   "appbar_complete_listing": "إكمال الإعلان",

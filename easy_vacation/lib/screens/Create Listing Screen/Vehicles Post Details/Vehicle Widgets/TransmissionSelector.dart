@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -34,7 +35,7 @@ class TransmissionSelector extends StatelessWidget {
               Icon(Icons.settings, color: AppTheme.neutralColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Transmission',
+                AppLocalizations.of(context)!.transmission_label,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -48,7 +49,7 @@ class TransmissionSelector extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ChoiceChip(
-                label: const Text('Manual'),
+                label: Text(AppLocalizations.of(context)!.transmission_manual),
                 selected: !isAutomatic,
                 selectedColor: AppTheme.neutralColor,
                 onSelected: (selected) {
@@ -56,7 +57,7 @@ class TransmissionSelector extends StatelessWidget {
                 },
               ),
               ChoiceChip(
-                label: const Text('Automatic'),
+                label: Text(AppLocalizations.of(context)!.transmission_automatic),
                 selected: isAutomatic,
                 selectedColor: AppTheme.neutralColor,
                 onSelected: (selected) {

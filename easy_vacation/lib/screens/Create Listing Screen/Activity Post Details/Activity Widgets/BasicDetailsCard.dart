@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/RateDropdown.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class BasicDetailsCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -35,10 +38,10 @@ class BasicDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.titleController,
-            label: 'Title',
+            label: loc.field_title,
             icon: Icons.title_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Title is required'
+                ? loc.field_title_error
                 : null,
           ),
           const SizedBox(height: 16),
@@ -46,10 +49,10 @@ class BasicDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.descriptionController,
-            label: 'Description',
+            label: loc.field_description,
             icon: Icons.description_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Description is required'
+                ? loc.field_description_error
                 : null,
             maxLines: 3,
           ),
@@ -59,11 +62,11 @@ class BasicDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.activityTypeController,
-            label: 'Activity Type',
+            label: loc.activity_type_label,
             icon: Icons.hiking,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter activity type';
+                return loc.activity_type_error;
               }
               return null;
             },
@@ -78,14 +81,14 @@ class BasicDetailsCard extends StatelessWidget {
                 child: buildFormField(
                   context,
                   controller: formController.priceController,
-                  label: 'Price (DA)',
+                  label: loc.price_label,
                   icon: Icons.money,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter price';
+                      return loc.price_error_required;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return loc.price_error_invalid;
                     }
                     return null;
                   },

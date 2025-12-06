@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -60,7 +61,7 @@ class CommonHeader extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Complete Your Listing',
+            AppLocalizations.of(context)!.header_complete_listing,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -69,7 +70,7 @@ class CommonHeader extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Add location, photos, and availability',
+            AppLocalizations.of(context)!.subtitle_complete_listing,
             style: TextStyle(
               fontSize: 16,
               color: secondaryTextColor,
