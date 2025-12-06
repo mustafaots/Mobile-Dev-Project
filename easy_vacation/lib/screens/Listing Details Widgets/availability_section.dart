@@ -308,6 +308,25 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
                     ),
                   ),
                   calendarBuilders: CalendarBuilders(
+                    selectedBuilder: (context, day, focusedDay) {
+                      return Container(
+                        margin: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${day.day}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+
                     defaultBuilder: (context, day, focusedDay) {
                       final isAvailable = _availabilityCubit.isDateAvailable(
                         day,
@@ -319,10 +338,9 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
                           margin: const EdgeInsets.all(6),
                           child: Center(
                             child: Text(
-                              day.day.toString(),
+                              '${day.day}',
                               style: TextStyle(
                                 color: secondaryTextColor.withOpacity(0.5),
-                                fontSize: 14,
                                 decoration: TextDecoration.lineThrough,
                               ),
                             ),
@@ -330,7 +348,19 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
                         );
                       }
 
-                      return null;
+                      return Container(
+                        margin: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${day.day}',
+                            style: TextStyle(color: textColor),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
