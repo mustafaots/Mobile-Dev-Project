@@ -1,52 +1,52 @@
+import 'package:easy_vacation/bloc/confirm_listing_cubit.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/screens/Confirm%20Listing/Confirm%20Listing%20Widgets/AgreementCheckbox.dart';
 import 'package:easy_vacation/screens/Confirm%20Listing/Confirm%20Listing%20Widgets/SubscriptionInfo.dart';
-import 'package:easy_vacation/screens/Confirm%20Listing/PostCreationService.dart';
 import 'package:easy_vacation/screens/Home%20Screen/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ConfirmListingScreen extends StatefulWidget {
+class ConfirmListingScreen extends StatelessWidget {
   final CreatePostData postData;
   final int userId;
 
-  const ConfirmListingScreen({required this.userId, required this.postData, super.key});
+  const ConfirmListingScreen({
+    required this.userId,
+    required this.postData,
+    super.key,
+  });
 
   @override
-  State<ConfirmListingScreen> createState() => _ConfirmListingScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ConfirmListingCubit(),
+      child: _ConfirmListingContent(
+        userId: userId,
+        postData: postData,
+      ),
+    );
+  }
 }
 
-class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
-  bool _agreedCheck = false;
-  bool _isCreating = false;
-  final PostCreationService _postCreationService = PostCreationService();
+class _ConfirmListingContent extends StatelessWidget {
+  final CreatePostData postData;
+  final int userId;
 
-  Future<void> _postListing() async {
-    if (!_agreedCheck || _isCreating) return;
+  const _ConfirmListingContent({
+    required this.userId,
+    required this.postData,
+  });
 
-    setState(() => _isCreating = true);
-    
-    final success = await _postCreationService.createPost(
-      userId: widget.userId,
-      postData: widget.postData,
-      context: context,
-    );
-    
-    setState(() => _isCreating = false);
-    
-    if (success && mounted) {
-      _showSuccessMessage();
-      _navigateToHome();
-    }
-  }
-
-  void _showSuccessMessage() {
+  void _showSuccessMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context)!.confirmListing_listingPosted),
+        content: Text(
+          AppLocalizations.of(context)!.confirmListing_listingPosted,
+        ),
         backgroundColor: AppTheme.successColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -54,12 +54,14 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
     );
   }
 
-  void _navigateToHome() {
+  void _navigateToHome(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) {
+      if (context.mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen(userId: widget.userId)),
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(userId: userId),
+          ),
           (route) => false,
         );
       }
@@ -72,48 +74,71 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
     final textColor = context.textColor;
     final loc = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: App_Bar(context, loc.confirmListing_title),
-      body: Column(
-        children: [
-          // Progress indicator
-          LinearProgressIndicator(
-            value: _agreedCheck ? 1.0 : 0.5,
-            backgroundColor: context.secondaryTextColor.withOpacity(0.2),
-            color: AppTheme.primaryColor,
-            minHeight: 3,
-          ),
-          
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  // Header
-                  _buildHeader(context),
-                  const SizedBox(height: 32),
-                  
-                  // Subscription Info for Pay-Per-Post
-                  SubscriptionInfo(
-                    postData: widget.postData,
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Agreement Checkbox
-                  AgreementCheckbox(
-                    agreed: _agreedCheck,
-                    onChanged: (value) => setState(() => _agreedCheck = value),
-                  ),
-                  const SizedBox(height: 32),
-                ],
-              ),
+    return BlocListener<ConfirmListingCubit, ConfirmListingState>(
+      listener: (context, state) {
+        if (state is ConfirmListingSuccess) {
+          _showSuccessMessage(context);
+          _navigateToHome(context);
+        } else if (state is ConfirmListingError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error: ${state.message}'),
+              backgroundColor: AppTheme.failureColor,
             ),
-          ),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.confirmListing_title),
+        body: BlocBuilder<ConfirmListingCubit, ConfirmListingState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                // Progress indicator
+                LinearProgressIndicator(
+                  value: state.agreedCheck ? 1.0 : 0.5,
+                  backgroundColor:
+                      context.secondaryTextColor.withOpacity(0.2),
+                  color: AppTheme.primaryColor,
+                  minHeight: 3,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        // Header
+                        _buildHeader(context),
+                        const SizedBox(height: 32),
 
-          // Submit Button
-          _buildSubmitButton(context),
-        ],
+                        // Subscription Info for Pay-Per-Post
+                        SubscriptionInfo(
+                          postData: postData,
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Agreement Checkbox
+                        AgreementCheckbox(
+                          agreed: state.agreedCheck,
+                          onChanged: (value) {
+                            context
+                                .read<ConfirmListingCubit>()
+                                .toggleAgreement(value);
+                          },
+                        ),
+                        const SizedBox(height: 32),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Submit Button
+                _buildSubmitButton(context, state),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -149,7 +174,6 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          //loc.confirmListing_payPerPostMessage,
           'Review your listing and complete payment to publish',
           style: TextStyle(
             fontSize: 16,
@@ -161,7 +185,10 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
     );
   }
 
-  Widget _buildSubmitButton(BuildContext context) {
+  Widget _buildSubmitButton(
+    BuildContext context,
+    ConfirmListingState state,
+  ) {
     final cardColor = context.cardColor;
     final secondaryTextColor = context.secondaryTextColor;
 
@@ -176,10 +203,18 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
         ),
       ),
       child: ElevatedButton(
-        onPressed: (_agreedCheck && !_isCreating) ? _postListing : null,
+        onPressed: (state.agreedCheck && !state.isCreating)
+            ? () {
+                context.read<ConfirmListingCubit>().createPost(
+                      userId: userId,
+                      postData: postData,
+                      context: context,
+                    );
+              }
+            : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: (_agreedCheck && !_isCreating) 
-              ? AppTheme.primaryColor 
+          backgroundColor: (state.agreedCheck && !state.isCreating)
+              ? AppTheme.primaryColor
               : secondaryTextColor.withOpacity(0.3),
           foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 56),
@@ -188,7 +223,7 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
           ),
           elevation: 2,
         ),
-        child: _isCreating
+        child: state.isCreating
             ? const SizedBox(
                 height: 20,
                 width: 20,
@@ -203,7 +238,7 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
                   Icon(Icons.rocket_launch, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'Post & Pay ${widget.postData.price} DA',
+                    'Post & Pay ${postData.price} DA',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
