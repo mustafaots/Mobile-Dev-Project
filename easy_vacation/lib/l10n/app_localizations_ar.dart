@@ -1213,6 +1213,24 @@ class AppLocalizationsAr extends AppLocalizations {
       'مثال: \"التأمين\" = \"مطلوب\"، \"اللغة\" = \"الإنجليزية\"';
 
   @override
+  String get equipment_label => 'المعدات';
+
+  @override
+  String get select_equipment => 'اختر المعدات';
+
+  @override
+  String get equipment_error => 'يرجى اختيار خيار المعدات';
+
+  @override
+  String get experience_label => 'مستوى الخبرة';
+
+  @override
+  String get select_experience => 'اختر مستوى الخبرة';
+
+  @override
+  String get experience_error => 'يرجى اختيار مستوى الخبرة';
+
+  @override
   String get appbar_complete_listing => 'إكمال الإعلان';
 
   @override

@@ -538,6 +538,13 @@
   "requirement_name": "Nom de l’exigence",
   "requirement_value": "Valeur",
   "example_text": "Exemple : \"Assurance\" = \"Obligatoire\", \"Langue\" = \"Anglais\"",
+  "equipment_label": "Équipement",
+  "select_equipment": "Sélectionner l'équipement",
+  "equipment_error": "Veuillez sélectionner une option d'équipement",
+  "experience_label": "Niveau d'expérience",
+  "select_experience": "Sélectionner le niveau d'expérience",
+  "experience_error": "Veuillez sélectionner un niveau d'expérience",
+
 
 
   "appbar_complete_listing": "Finaliser l'annonce",

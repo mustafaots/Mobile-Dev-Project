@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonDetailsScreen.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/Stay%20Widgets/StayDetailsCard.dart';
@@ -37,7 +38,7 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all required fields correctly')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
       );
       return;
     }
@@ -58,9 +59,10 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
+    final loc = AppLocalizations.of(context)!;
     
     return Scaffold(
-      appBar: App_Bar(context, 'Stay Details'),
+      appBar: App_Bar(context, loc.stay_details_title),
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -117,8 +119,8 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                         elevation: 2,
                       ),
                       onPressed: _formController.validateForm() ? _submitForm : null,
-                      child: const Text(
-                        'Continue to Location',
+                      child: Text(
+                        loc.continue_button,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

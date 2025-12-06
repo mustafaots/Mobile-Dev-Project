@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class VehicleTypeDropdown extends StatelessWidget {
@@ -33,7 +34,7 @@ class VehicleTypeDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: value,
           decoration: InputDecoration(
-            labelText: 'Vehicle Type',
+            labelText: AppLocalizations.of(context)!.vehicle_type_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.directions_car, color: secondaryTextColor),
@@ -48,7 +49,7 @@ class VehicleTypeDropdown extends StatelessWidget {
           onChanged: onChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select vehicle type';
+              return AppLocalizations.of(context)!.vehicle_type_error;
             }
             return null;
           },

@@ -539,6 +539,12 @@
     "requirement_name": "Requirement Name",
     "requirement_value": "Value",
     "example_text": "Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"",
+    "equipment_label": "Equipment",
+    "select_equipment": "Select equipment",
+    "equipment_error": "Please select equipment option",
+    "experience_label": "Experience Level",
+    "select_experience": "Select experience",
+    "experience_error": "Please select experience level",
 
 
     "appbar_complete_listing": "Complete Listing",

@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:easy_vacation/models/details.model.dart';
@@ -21,6 +22,7 @@ class AvailabilityList extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     if (availabilityIntervals.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16),
@@ -33,7 +35,7 @@ class AvailabilityList extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            'No availability periods added',
+            loc.availability_empty,
             style: TextStyle(
               color: secondaryTextColor,
               fontStyle: FontStyle.italic,
@@ -76,7 +78,7 @@ class AvailabilityList extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Duration: ${interval.end.difference(interval.start).inDays} days',
+                      loc.availability_duration(interval.end.difference(interval.start).inDays),
                       style: TextStyle(
                         color: secondaryTextColor,
                         fontSize: 12,

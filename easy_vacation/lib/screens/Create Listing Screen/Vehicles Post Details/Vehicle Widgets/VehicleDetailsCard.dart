@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/FuelTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/TransmissionSelector.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Vehicles%20Post%20Details/Vehicle%20Widgets/VehicleTypeDropdown.dart';
@@ -29,6 +30,8 @@ class VehicleDetailsCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -43,10 +46,10 @@ class VehicleDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.titleController,
-            label: 'Title',
+            label: loc.field_title,
             icon: Icons.title_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Title is required'
+                ? loc.field_title_error
                 : null,
           ),
           const SizedBox(height: 16),
@@ -54,10 +57,10 @@ class VehicleDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.descriptionController,
-            label: 'Description',
+            label: loc.field_description,
             icon: Icons.description_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Description is required'
+                ? loc.field_description_error
                 : null,
             maxLines: 3,
           ),
@@ -78,11 +81,11 @@ class VehicleDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.modelController,
-            label: 'Model',
+            label: loc.model_label,
             icon: Icons.badge,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter model';
+                return loc.model_error;
               }
               return null;
             },
@@ -93,18 +96,18 @@ class VehicleDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.yearController,
-            label: 'Year',
+            label: loc.year_label,
             icon: Icons.calendar_today,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter year';
+                return loc.year_error_empty;
               }
               if (int.tryParse(value) == null) {
-                return 'Please enter a valid year';
+                return loc.year_error_invalid;
               }
               final year = int.parse(value);
               if (year < 1900 || year > DateTime.now().year + 1) {
-                return 'Please enter a valid year (1900-${DateTime.now().year + 1})';
+                return loc.year_error_range(DateTime.now().year + 1);
               }
               return null;
             },
@@ -136,18 +139,18 @@ class VehicleDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.seatsController,
-            label: 'Number of Seats',
+            label: loc.seats_label,
             icon: Icons.airline_seat_recline_normal,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter number of seats';
+                return loc.seats_error_empty;
               }
               if (int.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.seats_error_invalid;
               }
               final seats = int.parse(value);
               if (seats < 1 || seats > 100) {
-                return 'Please enter valid number of seats (1-100)';
+                return loc.seats_error_range;
               }
               return null;
             },
@@ -164,14 +167,14 @@ class VehicleDetailsCard extends StatelessWidget {
                 child: buildFormField(
                   context,
                   controller: formController.priceController,
-                  label: 'Price (DA)',
+                  label: loc.price_label,
                   icon: Icons.money,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter price';
+                      return loc.price_error_required;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return loc.price_error_invalid;
                     }
                     return null;
                   },
@@ -194,7 +197,7 @@ class VehicleDetailsCard extends StatelessWidget {
                     child: DropdownButtonFormField<String>(
                       value: formController.selectedPriceRate,
                       decoration: InputDecoration(
-                        labelText: 'Rate',
+                        labelText: loc.rate_label,
                         labelStyle: TextStyle(color: secondaryTextColor),
                         border: InputBorder.none,
                         icon: Icon(Icons.schedule, color: secondaryTextColor),
@@ -209,7 +212,7 @@ class VehicleDetailsCard extends StatelessWidget {
                       onChanged: onRateChanged,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select rate';
+                          return loc.rate_error;
                         }
                         return null;
                       },

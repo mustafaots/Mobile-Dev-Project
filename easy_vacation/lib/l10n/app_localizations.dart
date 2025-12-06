@@ -2386,6 +2386,42 @@ abstract class AppLocalizations {
   /// **'Example: \"Insurance\" = \"Required\", \"Language\" = \"English\"'**
   String get example_text;
 
+  /// No description provided for @equipment_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get equipment_label;
+
+  /// No description provided for @select_equipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Select equipment'**
+  String get select_equipment;
+
+  /// No description provided for @equipment_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select equipment option'**
+  String get equipment_error;
+
+  /// No description provided for @experience_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience Level'**
+  String get experience_label;
+
+  /// No description provided for @select_experience.
+  ///
+  /// In en, this message translates to:
+  /// **'Select experience'**
+  String get select_experience;
+
+  /// No description provided for @experience_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select experience level'**
+  String get experience_error;
+
   /// No description provided for @appbar_complete_listing.
   ///
   /// In en, this message translates to:

@@ -18,7 +18,7 @@ class CommonFormController {
   
   final List<String> wilayas = [
     'Alger', 'Oran', 'Constantine', 'Annaba', 'Blida', 'Batna', 'Sétif',
-    'Chlef', 'Djelfa', 'Tébessa', 'Ouargla', 'Béjaïa', 'Skikda', 'Tizi Ouzou',
+    'Chlef', 'Djelfa', 'Tébessa', 'Ouargla', 'Bejaia', 'Skikda', 'Tizi Ouzou',
     'Algiers', 'Sidi Bel Abbès', 'Biskra', 'Tbessa', 'Tiaret', 'Guelma',
     'Mostaganem', 'M\'Sila', 'Saïda', 'El Oued', 'Tlemcen', 'Laghouat',
   ];

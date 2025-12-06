@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ExperienceDropdown extends StatelessWidget {
@@ -20,6 +21,7 @@ class ExperienceDropdown extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     // Handle empty value
     final currentValue = controller.text.isEmpty 
         ? null 
@@ -38,13 +40,13 @@ class ExperienceDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: currentValue,
           decoration: InputDecoration(
-            labelText: 'Experience Level',
+            labelText: loc.experience_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.school, color: secondaryTextColor),
             contentPadding: const EdgeInsets.symmetric(vertical: 8),
           ),
-          hint: Text('Select experience', style: TextStyle(color: secondaryTextColor)),
+          hint: Text(loc.select_experience, style: TextStyle(color: secondaryTextColor)),
           items: options.map((option) {
             return DropdownMenuItem<String>(
               value: option,
@@ -54,7 +56,7 @@ class ExperienceDropdown extends StatelessWidget {
           onChanged: onChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select experience level';
+              return loc.experience_error;
             }
             return null;
           },

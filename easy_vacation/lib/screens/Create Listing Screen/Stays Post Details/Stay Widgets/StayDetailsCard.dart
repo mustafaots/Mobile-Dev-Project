@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/RateDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/Stay%20Widgets/StayTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/StayFormLogic.dart';
@@ -25,6 +26,8 @@ class StayDetailsCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -39,10 +42,10 @@ class StayDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.titleController,
-            label: 'Title',
+            label: loc.field_title,
             icon: Icons.title_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Title is required'
+                ? loc.field_title_error
                 : null,
           ),
           const SizedBox(height: 16),
@@ -50,10 +53,10 @@ class StayDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.descriptionController,
-            label: 'Description',
+            label: loc.field_description,
             icon: Icons.description_outlined,
             validator: (value) => value == null || value.trim().isEmpty
-                ? 'Description is required'
+                ? loc.field_description_error
                 : null,
             maxLines: 3,
           ),
@@ -74,14 +77,14 @@ class StayDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.areaController,
-            label: 'Area (m²)',
+            label: loc.area_label,
             icon: Icons.square_foot,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter area';
+                return loc.area_error_required;
               }
               if (double.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.area_error_invalid;
               }
               return null;
             },
@@ -93,14 +96,14 @@ class StayDetailsCard extends StatelessWidget {
           buildFormField(
             context,
             controller: formController.bedroomsController,
-            label: 'Number of Bedrooms',
+            label: loc.bedrooms_label,
             icon: Icons.bed,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter number of bedrooms';
+                return loc.bedrooms_error_required;
               }
               if (int.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.bedrooms_error_invalid;
               }
               return null;
             },
@@ -117,14 +120,14 @@ class StayDetailsCard extends StatelessWidget {
                 child: buildFormField(
                   context,
                   controller: formController.priceController,
-                  label: 'Price (DA)',
+                  label: loc.price_label,
                   icon: Icons.money,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter price';
+                      return loc.price_error_required;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
+                      return loc.price_error_invalid;
                     }
                     return null;
                   },

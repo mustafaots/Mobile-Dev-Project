@@ -32,21 +32,21 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         'display': t.listingType_stay,
         'icon': Icons.house_outlined,
         'color': AppTheme.primaryColor,
-        'description': 'Rent apartments, villas, rooms, or houses',
+        'description': t.stayCategory_description,
       },
       {
         'type': 'activity',
         'display': t.listingType_activity,
         'icon': Icons.hiking_outlined,
         'color': AppTheme.successColor,
-        'description': 'Offer tours, workshops, adventures, or experiences',
+        'description': t.activityCategory_description,
       },
       {
         'type': 'vehicle',
         'display': t.listingType_vehicle,
         'icon': Icons.directions_car_outlined,
         'color': AppTheme.neutralColor,
-        'description': 'Rent cars, motorcycles, bicycles, or boats',
+        'description': t.vehicleCategory_description,
       },
     ];
 
@@ -77,7 +77,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Choose Listing Category',
+                    t.choose_listing_category,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -86,7 +86,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Select the type of listing you want to create',
+                    t.select_type_of_listing,
                     style: TextStyle(
                       fontSize: 16,
                       color: textColor.withOpacity(0.7),
@@ -227,7 +227,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   }
                 } : null,
                 child: Text(
-                  'Continue',
+                  t.categorySelection_continue,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

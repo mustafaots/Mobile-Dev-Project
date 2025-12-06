@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/CustomRequirementWidget.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/EquipmentDropdown.dart';
@@ -39,7 +40,7 @@ class RequirementSection extends StatelessWidget {
               Icon(Icons.checklist, color: AppTheme.successColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Requirements',
+                AppLocalizations.of(context)!.requirements_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -104,20 +105,21 @@ class RequirementSection extends StatelessWidget {
   }
   
   Widget _buildMinAgeRow(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: buildFormField(
             context,
             controller: formController.minAgeController,
-            label: 'Minimum Age',
+            label: loc.minimum_age,
             icon: Icons.person,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter minimum age';
+                return loc.minimum_age_error;
               }
               if (int.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.valid_number_error;
               }
               return null;
             },
@@ -125,13 +127,13 @@ class RequirementSection extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Years', style: TextStyle(color: Colors.grey)),
+              Text(loc.year_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text('Minimum age required', 
+              Text(loc.minimum_age_required, 
                 style: TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
@@ -141,20 +143,21 @@ class RequirementSection extends StatelessWidget {
   }
   
   Widget _buildDurationRow(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: buildFormField(
             context,
             controller: formController.durationController,
-            label: 'Duration',
+            label: loc.duration_label,
             icon: Icons.timer,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter duration';
+                return loc.duration_error;
               }
               if (double.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.valid_number_error;
               }
               return null;
             },
@@ -162,13 +165,13 @@ class RequirementSection extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Hours', style: TextStyle(color: Colors.grey)),
+              Text(loc.hours_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text('Activity duration in hours', 
+              Text(loc.duration_description, 
                 style: TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
@@ -178,20 +181,21 @@ class RequirementSection extends StatelessWidget {
   }
   
   Widget _buildGroupSizeRow(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: buildFormField(
             context,
             controller: formController.groupSizeController,
-            label: 'Maximum Group Size',
+            label: loc.group_size_label,
             icon: Icons.group,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter group size';
+                return loc.group_size_error;
               }
               if (int.tryParse(value) == null) {
-                return 'Please enter a valid number';
+                return loc.valid_number_error;
               }
               return null;
             },
@@ -199,13 +203,13 @@ class RequirementSection extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Persons', style: TextStyle(color: Colors.grey)),
+              Text(loc.persons_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text('Maximum participants allowed', 
+              Text(loc.max_participants, 
                 style: TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),

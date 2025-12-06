@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
@@ -31,7 +32,7 @@ class StayHeader extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Stay Details',
+            AppLocalizations.of(context)!.stay_details_title,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -40,7 +41,7 @@ class StayHeader extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Provide details about your stay',
+            AppLocalizations.of(context)!.stay_details_subtitle,
             style: TextStyle(
               fontSize: 16,
               color: secondaryTextColor,

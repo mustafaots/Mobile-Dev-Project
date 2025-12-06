@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class WilayaDropdown extends StatelessWidget {
@@ -31,7 +32,7 @@ class WilayaDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: controller.text.isNotEmpty ? controller.text : null,
           decoration: InputDecoration(
-            labelText: 'Wilaya',
+            labelText: AppLocalizations.of(context)!.wilaya_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.location_city, color: secondaryTextColor),
@@ -48,7 +49,7 @@ class WilayaDropdown extends StatelessWidget {
           },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select wilaya';
+              return AppLocalizations.of(context)!.wilaya_validation;
             }
             return null;
           },

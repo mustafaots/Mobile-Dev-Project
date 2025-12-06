@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/Common%20Post%20Widgets/ImageGrid.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details/CommonFormLogic.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class PhotosSection extends StatelessWidget {
                 const SizedBox(height: 20),
                 ListTile(
                   leading: Icon(Icons.photo_library, color: AppTheme.primaryColor),
-                  title: const Text('Choose from Gallery'),
+                  title: Text(AppLocalizations.of(context)!.gallery_option),
                   onTap: () async {
                     Navigator.pop(context);
                     await formController.pickImage(ImageSource.gallery);
@@ -55,7 +56,7 @@ class PhotosSection extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.camera_alt, color: AppTheme.primaryColor),
-                  title: const Text('Take a Photo'),
+                  title: Text(AppLocalizations.of(context)!.camera_option),
                   onTap: () async {
                     Navigator.pop(context);
                     await formController.pickImage(ImageSource.camera);
@@ -72,6 +73,7 @@ class PhotosSection extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -89,7 +91,7 @@ class PhotosSection extends StatelessWidget {
                   color: categoryColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Photos',
+                loc.photos_section_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -121,7 +123,7 @@ class PhotosSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Add photos to make your listing more attractive',
+            loc.photos_description,
             style: TextStyle(
               fontSize: 14,
               color: secondaryTextColor,

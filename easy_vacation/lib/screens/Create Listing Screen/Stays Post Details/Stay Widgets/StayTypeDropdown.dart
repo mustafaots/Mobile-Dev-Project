@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class StayTypeDropdown extends StatelessWidget {
@@ -33,7 +34,7 @@ class StayTypeDropdown extends StatelessWidget {
         child: DropdownButtonFormField<String>(
           value: value,
           decoration: InputDecoration(
-            labelText: 'Stay Type',
+            labelText: AppLocalizations.of(context)!.stay_type_label,
             labelStyle: TextStyle(color: secondaryTextColor),
             border: InputBorder.none,
             icon: Icon(Icons.home_work_outlined, color: secondaryTextColor),
@@ -48,7 +49,7 @@ class StayTypeDropdown extends StatelessWidget {
           onChanged: onChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select stay type';
+              return AppLocalizations.of(context)!.stay_type_error;
             }
             return null;
           },
