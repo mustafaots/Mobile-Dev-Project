@@ -109,7 +109,7 @@ class WelcomeScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Your perfect getaway",
+                              loc.your_perfect_gateway,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: textColor.withOpacity(0.7),
@@ -191,7 +191,7 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              "Discover amazing places and create unforgettable memories with our travel platform.",
+                              loc.discrover_places,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: textColor.withOpacity(0.7),

@@ -1,6 +1,8 @@
 {
     "@@locale": "en",
     "appTitle": "Easy Vacation",
+    "your_perfect_gateway": "Your perfect getaway",
+    "discrover_places": "Discover amazing places and create unforgettable memories with our travel platform.",
     "welcomeMessage": "Welcome, Traveler",
     "exploreMessage": "Explore Now",
     "createAccountTitle": "Create\nYour Account",

@@ -12,6 +12,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appTitle => 'Vacances Faciles';
 
   @override
+  String get your_perfect_gateway => 'Votre escapade parfaite';
+
+  @override
+  String get discrover_places =>
+      'Découvrez des lieux incroyables et créez des souvenirs inoubliables avec notre plateforme de voyage.';
+
+  @override
   String get welcomeMessage => 'Bienvenue, Voyageur';
 
   @override

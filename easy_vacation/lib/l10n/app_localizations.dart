@@ -106,6 +106,18 @@ abstract class AppLocalizations {
   /// **'Easy Vacation'**
   String get appTitle;
 
+  /// No description provided for @your_perfect_gateway.
+  ///
+  /// In en, this message translates to:
+  /// **'Your perfect getaway'**
+  String get your_perfect_gateway;
+
+  /// No description provided for @discrover_places.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover amazing places and create unforgettable memories with our travel platform.'**
+  String get discrover_places;
+
   /// No description provided for @welcomeMessage.
   ///
   /// In en, this message translates to:
