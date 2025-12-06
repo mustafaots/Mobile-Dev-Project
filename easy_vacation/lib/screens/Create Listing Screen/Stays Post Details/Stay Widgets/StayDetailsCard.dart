@@ -1,4 +1,4 @@
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/RateDropdown.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/RateDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/Stay%20Widgets/StayTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/StayFormLogic.dart';
 import 'package:flutter/material.dart';
@@ -59,44 +59,6 @@ class StayDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Price and Rate
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: buildFormField(
-                  context,
-                  controller: formController.priceController,
-                  label: 'Price (DA)',
-                  icon: Icons.money,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter price';
-                    }
-                    if (double.tryParse(value) == null) {
-                      return 'Please enter a valid number';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                flex: 1,
-                child: RateDropdown(
-                  value: formController.selectedPriceRate,
-                  priceRates: formController.priceRates,
-                  onChanged: onRateChanged,
-                  textColor: textColor,
-                  secondaryTextColor: secondaryTextColor,
-                  cardColor: cardColor,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
           // Stay Type
           StayTypeDropdown(
             value: formController.selectedStayType,
@@ -143,6 +105,45 @@ class StayDetailsCard extends StatelessWidget {
               return null;
             },
             keyboardType: TextInputType.number,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Price and Rate
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: buildFormField(
+                  context,
+                  controller: formController.priceController,
+                  label: 'Price (DA)',
+                  icon: Icons.money,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter price';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                flex: 1,
+                child: RateDropdown(
+                  value: formController.selectedPriceRate,
+                  priceRates: formController.priceRates,
+                  onChanged: onRateChanged,
+                  textColor: textColor,
+                  secondaryTextColor: secondaryTextColor,
+                  cardColor: cardColor, validator: (value) {  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

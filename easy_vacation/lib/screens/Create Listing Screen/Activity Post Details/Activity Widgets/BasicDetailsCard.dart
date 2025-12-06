@@ -1,5 +1,5 @@
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityFormLogic.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityWidgets/RateDropdown.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/RateDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 

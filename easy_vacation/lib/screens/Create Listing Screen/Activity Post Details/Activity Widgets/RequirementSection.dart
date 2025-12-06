@@ -1,7 +1,7 @@
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityFormLogic.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityWidgets/CustomRequirementWidget.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityWidgets/EquipmentDropdown.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Listing%20Details/ActivityWidgets/ExperienceDropdown.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/CustomRequirementWidget.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/EquipmentDropdown.dart';
+import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/ExperienceDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';

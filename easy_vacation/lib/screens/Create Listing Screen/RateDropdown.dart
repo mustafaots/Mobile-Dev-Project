@@ -15,7 +15,7 @@ class RateDropdown extends StatelessWidget {
     required this.onChanged,
     required this.textColor,
     required this.secondaryTextColor,
-    required this.cardColor,
+    required this.cardColor, required String? Function(dynamic value) validator,
   }) : super(key: key);
   
   @override
