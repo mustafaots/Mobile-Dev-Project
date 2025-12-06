@@ -168,7 +168,7 @@ class SearchScreen extends StatelessWidget {
                                 ),
                               ),
                               subtitle: Text(
-                                '${loc.dinars}${post.price}/${loc.night}',
+                                '${post.price}${loc.dinars}/${loc.night}',
                                 style: TextStyle(color: secondaryTextColor),
                               ),
                               trailing: Row(
