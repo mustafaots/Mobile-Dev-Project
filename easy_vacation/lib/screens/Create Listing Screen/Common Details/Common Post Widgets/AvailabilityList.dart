@@ -52,7 +52,10 @@ class AvailabilityList extends StatelessWidget {
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         final interval = availabilityIntervals[index];
-        final format = DateFormat('MMM dd, yyyy HH:mm');
+        final format = DateFormat('MMM dd, yyyy');
+        
+        // Calculate days difference (inclusive)
+        final days = interval.end.difference(interval.start).inDays + 1;
         
         return Container(
           padding: const EdgeInsets.all(12),
@@ -78,7 +81,7 @@ class AvailabilityList extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      loc.availability_duration(interval.end.difference(interval.start).inDays),
+                      loc.availability_duration(days),
                       style: TextStyle(
                         color: secondaryTextColor,
                         fontSize: 12,

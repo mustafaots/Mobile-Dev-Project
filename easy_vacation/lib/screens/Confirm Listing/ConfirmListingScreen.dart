@@ -59,7 +59,7 @@ class _ConfirmListingScreenState extends State<ConfirmListingScreen> {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen(userId: widget.userId)),
           (route) => false,
         );
       }

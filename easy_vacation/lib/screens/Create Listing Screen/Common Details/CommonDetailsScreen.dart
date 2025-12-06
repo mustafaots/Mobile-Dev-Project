@@ -78,66 +78,25 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
     );
 
     if (range != null) {
-      final TimeOfDay? startTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        builder: (context, child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              primaryColor: AppTheme.primaryColor,
-              colorScheme: ColorScheme.light(primary: AppTheme.primaryColor),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-            ),
-            child: child!,
-          );
-        },
+      // Normalize dates to midnight (remove time component)
+      final startDate = DateTime(
+        range.start.year,
+        range.start.month,
+        range.start.day,
+      );
+      
+      final endDate = DateTime(
+        range.end.year,
+        range.end.month,
+        range.end.day,
       );
 
-      final TimeOfDay? endTime = await showTimePicker(
-        context: context,
-        initialTime: const TimeOfDay(hour: 17, minute: 0),
-        builder: (context, child) {
-          return Theme(
-            data: ThemeData.light().copyWith(
-              primaryColor: AppTheme.primaryColor,
-              colorScheme: ColorScheme.light(primary: AppTheme.primaryColor),
-              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-            ),
-            child: child!,
-          );
-        },
-      );
-
-      if (startTime != null && endTime != null) {
-        final startDateTime = DateTime(
-          range.start.year,
-          range.start.month,
-          range.start.day,
-          startTime.hour,
-          startTime.minute,
-        );
-        
-        final endDateTime = DateTime(
-          range.end.year,
-          range.end.month,
-          range.end.day,
-          endTime.hour,
-          endTime.minute,
-        );
-
-        if (endDateTime.isAfter(startDateTime)) {
-          setState(() {
-            _formController.availabilityIntervals.add(AvailabilityInterval(
-              start: startDateTime,
-              end: endDateTime,
-            ));
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)!.time_validation_error)),
-          );
-        }
-      }
+      setState(() {
+        _formController.availabilityIntervals.add(AvailabilityInterval(
+          start: startDate,
+          end: endDate,
+        ));
+      });
     }
   }
   
