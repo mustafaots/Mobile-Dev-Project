@@ -12,8 +12,8 @@ import 'ListingDetailsWidgets/index.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   final int? postId;
-
-  const PostDetailsScreen({super.key, this.postId});
+  final int? userId;
+  const PostDetailsScreen({super.key, this.postId, this.userId});
 
   @override
   State<PostDetailsScreen> createState() => _PostDetailsScreenState();

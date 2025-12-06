@@ -1,4 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -180,21 +183,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: login_button_style.copyWith(
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () => {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()){
+                    // this section is for testing local database
+                    
+                    final userRepo = appRepos['userRepo'] as UserRepository;
+                    User usr = User(
+                      firstName: _nameController.text,
+                      email: _emailController.text,
+                      username: _emailController.text,
+                      phoneNumber: _phoneController.text,
+                      createdAt: DateTime.now()
+                    );
+                    int user_id = await userRepo.insertUser(usr);
 
                     ///////////////////////////////////////////////////////
                     Navigator.pushAndRemoveUntil(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const HomeScreen(),
+                        pageBuilder: (_, __, ___) => HomeScreen(userId: user_id),
                         transitionsBuilder: (_, animation, __, child) {
                           return FadeTransition(opacity: animation, child: child);
                         },
                         transitionDuration: const Duration(milliseconds: 300),
                       ),
                       (route) => false, // This removes all previous routes
-                    ),
+                    );
                     ///////////////////////////////////////////////////////
                   }
                 },

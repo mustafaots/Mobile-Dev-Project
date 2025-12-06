@@ -11,7 +11,8 @@ import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  const NotificationsScreen({super.key});
+  final reviewerId;
+  const NotificationsScreen({super.key, this.reviewerId});
 
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();

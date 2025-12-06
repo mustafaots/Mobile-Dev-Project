@@ -8,7 +8,8 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
-  const SubscriptionPlanScreen({super.key});
+  final userId;
+  const SubscriptionPlanScreen({super.key, this.userId});
 
   @override
   State<SubscriptionPlanScreen> createState() => _SubscriptionPlanScreenState();
@@ -183,7 +184,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   Future<String> getUserSub() async {
     final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
-    final p = await subRepo.getLatestSubscriptionBySubscriber(2);
+    final p = await subRepo.getLatestSubscriptionBySubscriber(widget.userId);
     return p?.plan ?? "free";
   }
 
@@ -235,7 +236,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
     if (subscriptions[idx]['key'] == current) return false;
 
     final newSub = Subscription(
-      subscriberId: 2,
+      subscriberId: widget.userId,
       plan: subscriptions[idx]['key'],
       createdAt: DateTime.now(),
     );

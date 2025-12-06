@@ -10,7 +10,8 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ActivitiesScreen extends StatelessWidget {
-  ActivitiesScreen({super.key});
+  final user_Id;
+  ActivitiesScreen({super.key, this.user_Id});
 
   final postRepo = appRepos['postRepo'] as PostRepository;
 
@@ -123,7 +124,10 @@ class ActivitiesScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const PostDetailsScreen(),
+                            pageBuilder: (_, __, ___) => PostDetailsScreen(
+                              postId: post.id,
+                              userId: user_Id,
+                            ),
                             transitionsBuilder: (_, animation, __, child) {
                               return FadeTransition(opacity: animation, child: child);
                             },
@@ -235,7 +239,10 @@ class ActivitiesScreen extends StatelessWidget {
                               context,
                               PageRouteBuilder(
                                 pageBuilder: (_, __, ___) =>
-                                    const PostDetailsScreen(),
+                                    PostDetailsScreen(
+                                      postId: post.id,
+                                      userId: user_Id,
+                                    ),
                                 transitionsBuilder: (_, animation, __, child) {
                                   return FadeTransition(
                                     opacity: animation,
