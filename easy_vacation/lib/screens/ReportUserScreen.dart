@@ -9,9 +9,9 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class ReportUserScreen extends StatefulWidget {
-  final reporterId;
-  final reportedPostId;
-  final reportedUserId;
+  final int? reporterId;
+  final int? reportedPostId;
+  final int? reportedUserId;
   const ReportUserScreen({
     super.key,
     this.reporterId,
@@ -170,11 +170,13 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
 
       final reportRepo = appRepos['reportRepo'] as ReportRepository;
       final rp = Report(
-        reporterId: widget.reporterId,
+        reportedUserId: widget.reportedUserId,
+        reporterId: widget.reporterId ?? 1,
         reason: selectedOption!,
         createdAt: DateTime.now()
       );
-      await reportRepo.insertReport(rp);
+      int report_id = await reportRepo.insertReport(rp);
+      print(report_id);
       _showSuccessModal();
     });
   }

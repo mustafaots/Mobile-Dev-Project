@@ -11,7 +11,8 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/widgets/theme_toggle_button.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final userId;
+  const SettingsScreen({super.key, this.userId});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -291,7 +292,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             context,
                             PageRouteBuilder(
                               pageBuilder: (_, __, ___) =>
-                                  const SubscriptionPlanScreen(),
+                                  SubscriptionPlanScreen(userId: widget.userId,),
                               transitionsBuilder: (_, animation, __, child) {
                                 return FadeTransition(
                                   opacity: animation,

@@ -14,22 +14,29 @@ import 'StaysScreen.dart';
 import 'ActivitiesScreen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final userId;
+  const HomeScreen({super.key, this.userId});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _bottomNavScreens = [
-    const _HomeContent(),
-    const BookingsScreen(),
-    const SizedBox.shrink(),
-    const NotificationsScreen(),
-    const SettingsScreen(),
-  ];
+  late List<Widget> _bottomNavScreens;
 
   int _navIdx = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _bottomNavScreens = [
+      _HomeContent(userId: widget.userId,),
+      BookingsScreen(userId: widget.userId,),
+      SizedBox.shrink(),
+      NotificationsScreen(reviewerId: widget.userId,),
+      SettingsScreen(userId: widget.userId),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 class _HomeContent extends StatefulWidget {
-  const _HomeContent();
+  final userId;
+  const _HomeContent({this.userId});
 
   @override
   State<_HomeContent> createState() => __HomeContentState();
@@ -121,11 +129,17 @@ class __HomeContentState extends State<_HomeContent> {
   bool changedPrice = false;
   bool changedType = false;
   
-  final List<Widget> screens = [
-    StaysScreen(),
-    VehiclesScreen(),
-    ActivitiesScreen(),
-  ];
+  late List<Widget> screens;
+
+  @override
+  void initState() {
+    super.initState();
+    screens = [
+      StaysScreen(user_Id: widget.userId,),
+      VehiclesScreen(user_Id: widget.userId,),
+      ActivitiesScreen(user_Id: widget.userId),
+    ];
+  }
 
   String post_type = 'stay';
 
