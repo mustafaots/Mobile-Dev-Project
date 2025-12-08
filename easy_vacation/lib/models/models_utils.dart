@@ -16,7 +16,17 @@ Map<String, dynamic> parseAvailabilityJson(String jsonString) {
 }
 
 String encodeAvailabilityJson(List<Map<String, dynamic>> availability) {
-  return jsonEncode(availability);
+  final normalized = availability
+      .map(
+        (interval) => interval.map(
+          (key, value) => MapEntry(
+            key,
+            value is DateTime ? value.toIso8601String() : value,
+          ),
+        ),
+      )
+      .toList();
+  return jsonEncode(normalized);
 }
 
 // Convert between your CreatePostData and database models

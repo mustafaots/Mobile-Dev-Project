@@ -13,7 +13,7 @@ class Post {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String status; // 'active', 'draft'
-  final List<Map<String, dynamic>> availability;
+  final List<Map<String, DateTime>> availability;
 
   Post({
     this.id,
@@ -28,7 +28,7 @@ class Post {
     required this.createdAt,
     required this.updatedAt,
     this.status = 'active',
-    this.availability = const [], // FIX: Default empty list
+    this.availability = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -45,7 +45,15 @@ class Post {
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'status': status,
-      'availability': jsonEncode(availability),
+      'availability': jsonEncode(
+        availability
+            .map(
+              (interval) => interval.map(
+                (key, value) => MapEntry(key, value.toIso8601String()),
+              ),
+            )
+            .toList(),
+      ),
     };
   }
 
@@ -67,10 +75,63 @@ class Post {
           ? DateTime.parse(map['updated_at']) 
           : DateTime.now(),
       status: map['status'] ?? 'active',
-      availability: map['availability'] != null
-          ? List<Map<String, dynamic>>.from(jsonDecode(map['availability']))
-          : [],
+      availability: _decodeAvailability(map['availability']),
     );
+  }
+
+  static List<Map<String, DateTime>> _decodeAvailability(dynamic raw) {
+    if (raw == null) return [];
+
+    List<dynamic> decoded;
+
+    try {
+      if (raw is String) {
+        decoded = jsonDecode(raw) as List<dynamic>;
+      } else if (raw is List) {
+        decoded = raw;
+      } else {
+        return [];
+      }
+    } catch (_) {
+      return [];
+    }
+
+    return decoded
+        .map((entry) {
+          try {
+            final map = Map<String, dynamic>.from(entry as Map);
+            final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+            final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
+
+            final startDate = _parseDate(startValue);
+            final endDate = _parseDate(endValue);
+
+            if (startDate == null || endDate == null) {
+              return null;
+            }
+
+            return <String, DateTime>{
+              'startDate': startDate,
+              'endDate': endDate,
+            };
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<Map<String, DateTime>>()
+        .toList();
+  }
+
+  static DateTime? _parseDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String && value.isNotEmpty) {
+      try {
+        return DateTime.parse(value);
+      } catch (_) {
+        return null;
+      }
+    }
+    return null;
   }
 
   // FIX: Add copyWith method for easier updates
@@ -87,7 +148,7 @@ class Post {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? status,
-    List<Map<String, dynamic>>? availability,
+    List<Map<String, DateTime>>? availability,
   }) {
     return Post(
       id: id ?? this.id,

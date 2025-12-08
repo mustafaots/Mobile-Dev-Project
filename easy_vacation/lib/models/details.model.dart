@@ -107,17 +107,23 @@ class AvailabilityInterval {
     required this.end,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, DateTime> toMap() {
     return {
-      'start': start.toIso8601String(),
-      'end': end.toIso8601String(),
+      'startDate': start,
+      'endDate': end,
     };
   }
 
   factory AvailabilityInterval.fromMap(Map<String, dynamic> map) {
+    DateTime _parse(dynamic value) {
+      if (value is DateTime) return value;
+      if (value is String) return DateTime.parse(value);
+      throw ArgumentError('Invalid date value: $value');
+    }
+
     return AvailabilityInterval(
-      start: DateTime.parse(map['start']),
-      end: DateTime.parse(map['end']),
+      start: _parse(map['startDate'] ?? map['start'] ?? map['start_date']),
+      end: _parse(map['endDate'] ?? map['end'] ?? map['end_date']),
     );
   }
 }

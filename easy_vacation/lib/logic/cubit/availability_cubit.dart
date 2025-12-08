@@ -57,31 +57,59 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
         return [];
       }
 
-      // If it's already a list, convert it directly
+      List<dynamic> intervals;
+
       if (availabilityData is List) {
-        return availabilityData.map((interval) {
-          final startDate = DateTime.parse(interval['start'] as String);
-          final endDate = DateTime.parse(interval['end'] as String);
-          return DateInterval(startDate, endDate);
-        }).toList();
+        intervals = availabilityData;
+      } else if (availabilityData is String) {
+        final decoded = jsonDecode(availabilityData);
+        if (decoded is Map<String, dynamic> && decoded['intervals'] is List) {
+          intervals = decoded['intervals'] as List<dynamic>;
+        } else if (decoded is List) {
+          intervals = decoded;
+        } else {
+          return [];
+        }
+      } else {
+        return [];
       }
 
-      // If it's a JSON string, decode it first
-      if (availabilityData is String) {
-        final Map<String, dynamic> data = jsonDecode(availabilityData);
-        final List<dynamic> intervals = data['intervals'] ?? [];
+      return intervals
+          .map((interval) {
+            try {
+              final map = Map<String, dynamic>.from(interval as Map);
+              final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+              final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
 
-        return intervals.map((interval) {
-          final startDate = DateTime.parse(interval['start'] as String);
-          final endDate = DateTime.parse(interval['end'] as String);
-          return DateInterval(startDate, endDate);
-        }).toList();
-      }
+              final startDate = _parseDate(startValue);
+              final endDate = _parseDate(endValue);
 
-      return [];
+              if (startDate == null || endDate == null) {
+                return null;
+              }
+
+              return DateInterval(startDate, endDate);
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<DateInterval>()
+          .toList();
     } catch (e) {
       return [];
     }
+  }
+
+  DateTime? _parseDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String && value.isNotEmpty) {
+      try {
+        return DateTime.parse(value);
+      } catch (_) {
+        return null;
+      }
+    }
+    return null;
   }
 
   /// Emit default availability (all dates for next year)

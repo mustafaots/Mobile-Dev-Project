@@ -55,14 +55,35 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
     }
 
     try {
-      final Map<String, dynamic> data = jsonDecode(widget.availabilityJson!);
-      final List<dynamic> intervals = data['intervals'] ?? [];
+      final decoded = jsonDecode(widget.availabilityJson!);
+      List<dynamic> intervals;
 
-      final availableIntervals = intervals.map((interval) {
-        final startDate = DateTime.parse(interval['start'] as String);
-        final endDate = DateTime.parse(interval['end'] as String);
-        return DateInterval(startDate, endDate);
-      }).toList();
+      if (decoded is Map<String, dynamic> && decoded['intervals'] is List) {
+        intervals = decoded['intervals'] as List<dynamic>;
+      } else if (decoded is List) {
+        intervals = decoded;
+      } else {
+        return;
+      }
+
+      final availableIntervals = intervals
+          .map((interval) {
+            try {
+              final map = Map<String, dynamic>.from(interval as Map);
+              final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+              final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
+
+              final startDate = _parseDate(startValue);
+              final endDate = _parseDate(endValue);
+
+              if (startDate == null || endDate == null) return null;
+              return DateInterval(startDate, endDate);
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<DateInterval>()
+          .toList();
 
       if (availableIntervals.isNotEmpty) {
         // Manually emit the state if not already loaded
@@ -78,6 +99,18 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
     } catch (e) {
       debugPrint('Error parsing availability JSON: $e');
     }
+  }
+
+  DateTime? _parseDate(dynamic value) {
+    if (value is DateTime) return value;
+    if (value is String && value.isNotEmpty) {
+      try {
+        return DateTime.parse(value);
+      } catch (_) {
+        return null;
+      }
+    }
+    return null;
   }
 
   bool _isDateAvailable(DateTime date, List<DateInterval> intervals) {
