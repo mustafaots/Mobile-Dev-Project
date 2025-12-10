@@ -238,7 +238,7 @@ class _ConfirmListingContent extends StatelessWidget {
                   Icon(Icons.rocket_launch, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'Post & Pay ${postData.price} DA',
+                    'Post Your Listing',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

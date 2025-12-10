@@ -1,4 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/screens/ForgotPasswordScreen.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
@@ -121,26 +124,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: login_button_style.copyWith(
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () => {
+                onPressed: () async {
+                  if (!_formKey.currentState!.validate()) return;
 
-                  if (_formKey.currentState!.validate()){
+                  final input = _useridController.text.trim();
+                  final password = _passwordController.text.trim();
+                  final userRepo = appRepos['userRepo'] as UserRepository;
 
-                    ///////////////////////////////////////////////////////
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const HomeScreen(),
-                        transitionsBuilder: (_, animation, __, child) {
-                          return FadeTransition(opacity: animation, child: child);
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                      (route) => false, // This removes all previous routes
-                    ),
-                    ///////////////////////////////////////////////////////
+                  User? user;
+                  if (input.contains('@')) {
+                    user = await userRepo.getUserByEmail(input);
                   }
-                  
+                  user ??= await userRepo.getUserByUsername(input);
+                  user ??= await userRepo.getUserByPhoneNumber(input);
 
+                  if (user == null || user.id == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Invalid credentials. Check your email/phone and try again.'),
+                        backgroundColor: AppTheme.failureColor,
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Note: password is collected but not validated against local DB (no stored hash yet)
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => HomeScreen(userId: user!.id),
+                      transitionsBuilder: (_, animation, __, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      transitionDuration: const Duration(milliseconds: 300),
+                    ),
+                    (route) => false,
+                  );
                 },
                 child: Text(loc.login, style: login_text_style),
               ),

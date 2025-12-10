@@ -28,6 +28,16 @@ class UserRepository {
     return result.isNotEmpty ? User.fromMap(result.first) : null;
   }
 
+  /// Get user by phone number
+  Future<User?> getUserByPhoneNumber(String phone) async {
+    final result = await db.query(
+      'users',
+      where: 'phone_number = ?',
+      whereArgs: [phone],
+    );
+    return result.isNotEmpty ? User.fromMap(result.first) : null;
+  }
+
   /// Get user by username
   Future<User?> getUserByUsername(String username) async {
     final result = await db.query(

@@ -42,38 +42,13 @@ class PostImagesRepository {
   /// Get all images by post ID - loads image data separately to avoid CursorWindow issues
   Future<List<Map<String, dynamic>>> getAllImagesByPostId(int postId) async {
     try {
-      // First, get just the IDs to avoid loading all BLOB data at once
-      final idResults = await db.query(
+      // Fetch all images for the post ordered by insertion id to avoid skipping any
+      return await db.query(
         'post_images',
-        columns: ['id', 'post_id'],
         where: 'post_id = ?',
         whereArgs: [postId],
+        orderBy: 'id ASC',
       );
-
-      if (idResults.isEmpty) {
-        return [];
-      }
-
-      // Now load each image separately to avoid CursorWindow overflow
-      final List<Map<String, dynamic>> allImages = [];
-      for (final row in idResults) {
-        final imageId = row['id'];
-        try {
-          final imageData = await db.query(
-            'post_images',
-            where: 'id = ?',
-            whereArgs: [imageId],
-          );
-          if (imageData.isNotEmpty) {
-            allImages.add(imageData.first);
-          }
-        } catch (e) {
-          // Log error but continue with other images
-          print('Error loading image $imageId: $e');
-        }
-      }
-
-      return allImages;
     } catch (e) {
       print('Error in getAllImagesByPostId: $e');
       return [];
