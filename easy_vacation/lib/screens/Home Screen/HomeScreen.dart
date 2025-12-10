@@ -303,6 +303,7 @@ class __HomeContentState extends State<_HomeContent> {
                   return GestureDetector(
                     onTap: () => setState(() {
                       selectedIndex = index;
+                      selectedType = null;
                       if(selectedIndex == 0) post_type = 'stay';
                       else if(selectedIndex == 1) post_type = 'vehicle';
                       else if(selectedIndex == 2) post_type = 'activity';
