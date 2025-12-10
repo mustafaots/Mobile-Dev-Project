@@ -141,33 +141,33 @@ class StaysScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: FutureBuilder<Widget>(
-                                future: getPostImageWidget(
-                                  post.id!,
-                                  cardCacheW,
-                                  cardCacheH,
-                                  260, 170,
+                            AspectRatio(
+                              aspectRatio: 260 / 170,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: FutureBuilder<Widget>(
+                                  future: getPostImageWidget(
+                                    post.id!,
+                                    cardCacheW,
+                                    cardCacheH,
+                                    260, 170,
+                                  ),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return const Center(child: CircularProgressIndicator());
+                                    }
+                                    if(!snapshot.hasData) {
+                                      return Image.asset(
+                                        'assets/images/no_image.png',
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.center,
+                                      );
+                                    }
+                                    return snapshot.data!;
+                                  },
                                 ),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return SizedBox(
-                                      width: 260,
-                                      height: 170,
-                                      child: Center(child: CircularProgressIndicator()),
-                                    );
-                                  }
-                                  if(!snapshot.hasData) {
-                                    return Image.asset(
-                                      'assets/images/no_image.png',
-                                      width: 260,
-                                      height: 170,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }
-                                  return snapshot.data!;
-                                },
                               ),
                             ),
                             ListTile(
@@ -253,33 +253,33 @@ class StaysScreen extends StatelessWidget {
                           },
                           child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: FutureBuilder<Widget>(
-                                  future: getPostImageWidget(
-                                    post.id!,
-                                    fullWidthCache,
-                                    cardCacheH,
-                                    double.infinity, 200
+                              AspectRatio(
+                                aspectRatio: (MediaQuery.of(context).size.width - 40) / 200,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: FutureBuilder<Widget>(
+                                    future: getPostImageWidget(
+                                      post.id!,
+                                      fullWidthCache,
+                                      cardCacheH,
+                                      double.infinity, 200
+                                    ),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return const Center(child: CircularProgressIndicator());
+                                      }
+                                      if(!snapshot.hasData) {
+                                        return Image.asset(
+                                          'assets/images/no_image.png',
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                        );
+                                      }
+                                      return snapshot.data!;
+                                    },
                                   ),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return SizedBox(
-                                        width: 260,
-                                        height: 170,
-                                        child: Center(child: CircularProgressIndicator()),
-                                      );
-                                    }
-                                    if(!snapshot.hasData) {
-                                      return Image.asset(
-                                        'assets/images/no_image.png',
-                                        width: double.infinity,
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                      );
-                                    }
-                                    return snapshot.data!;
-                                  },
                                 ),
                               ),
                               ListTile(

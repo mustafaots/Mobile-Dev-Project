@@ -29,13 +29,14 @@ class BookingsScreen extends StatelessWidget {
           postRepository: postRepository,
         )..loadBookings();
       },
-      child: const _BookingsScreenContent(),
+      child: _BookingsScreenContent(userId: userId),
     );
   }
 }
 
 class _BookingsScreenContent extends StatelessWidget {
-  const _BookingsScreenContent();
+  final int? userId;
+  const _BookingsScreenContent({this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +76,7 @@ class _BookingsScreenContent extends StatelessWidget {
                     child: filteredBookings.isEmpty
                         ? BookingsEmptyState(
                             selectedFilter: state.selectedFilter,
+                            userId: userId,
                           )
                         : _buildBookingsList(context, filteredBookings),
                   ),

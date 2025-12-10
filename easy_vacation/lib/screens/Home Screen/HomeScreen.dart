@@ -25,8 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<Widget> _bottomNavScreens;
 
   int _navIdx = 0;
-  
-  get userId => null;
 
   @override
   void initState() {

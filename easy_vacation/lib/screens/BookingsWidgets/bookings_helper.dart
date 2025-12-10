@@ -1,7 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/bookings.model.dart';
 import 'package:easy_vacation/models/posts.model.dart';
-import 'package:easy_vacation/logic/cubit/dummy_data.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -55,11 +54,6 @@ class BookingsHelper {
     return months[month - 1];
   }
 
-  /// Get dummy post for booking if not found in database
-  static Post getDummyPostForBooking(int postId) {
-    return DummyDataProvider.getDummyPost(postId);
-  }
-
   /// Filter bookings based on selected filter
   static List<Map<String, dynamic>> getFilteredBookings(
     List<Booking> allBookings,
@@ -78,12 +72,15 @@ class BookingsHelper {
 
     return filtered.map((booking) {
       // Find the corresponding post - use postId from booking
-      Post post;
+      Post? post;
       try {
         post = allPosts.firstWhere((p) => p.id == booking.postId);
-      } catch (e) {
-        // If post not found, generate it from dummy data
-        post = getDummyPostForBooking(booking.postId);
+      } catch (_) {
+        post = null;
+      }
+
+      if (post == null) {
+        return null;
       }
 
       return {
@@ -96,6 +93,6 @@ class BookingsHelper {
         'date':
             '${booking.startTime.day}-${booking.endTime.day} ${getMonthName(booking.startTime.month)}, ${booking.startTime.year}',
       };
-    }).toList();
+    }).whereType<Map<String, dynamic>>().toList();
   }
 }

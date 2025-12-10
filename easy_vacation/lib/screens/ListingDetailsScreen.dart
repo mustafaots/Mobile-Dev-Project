@@ -190,6 +190,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       postId: post?.id ?? 0,
                       selectedDates: _selectedDates,
                       bookingRepository: _bookingRepository,
+                      currentUserId: widget.userId,
+                      ownerId: post?.ownerId,
                     ),
                   ],
                 ),

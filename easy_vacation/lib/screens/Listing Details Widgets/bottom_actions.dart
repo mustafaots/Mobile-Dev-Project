@@ -10,12 +10,16 @@ class BottomActions extends StatefulWidget {
   final int postId;
   final List<DateTime> selectedDates;
   final BookingRepository bookingRepository;
+  final int? currentUserId;
+  final int? ownerId;
 
   const BottomActions({
     super.key,
     required this.postId,
     required this.selectedDates,
     required this.bookingRepository,
+    this.currentUserId,
+    this.ownerId,
   });
 
   @override
@@ -39,6 +43,32 @@ class _BottomActionsState extends State<BottomActions> {
       return;
     }
 
+    // Require an authenticated user id
+    if (widget.currentUserId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please log in to book.',
+          ),
+          backgroundColor: AppTheme.failureColor,
+        ),
+      );
+      return;
+    }
+
+    // Prevent owners from booking their own listing
+    if (widget.ownerId != null && widget.ownerId == widget.currentUserId) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'You cannot book your own listing.',
+          ),
+          backgroundColor: AppTheme.failureColor,
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -49,10 +79,9 @@ class _BottomActionsState extends State<BottomActions> {
       final startDate = sortedDates.first;
       final endDate = sortedDates.last;
 
-      // Create booking with hardcoded clientId=1 (in production, get from auth)
       final booking = Booking(
         postId: widget.postId,
-        clientId: 1, // TODO: Get from auth/user context
+        clientId: widget.currentUserId!,
         status: 'pending',
         bookedAt: DateTime.now(),
         startTime: startDate,
@@ -81,7 +110,7 @@ class _BottomActionsState extends State<BottomActions> {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const BookingsScreen(),
+            pageBuilder: (_, __, ___) => BookingsScreen(userId: widget.currentUserId),
             transitionsBuilder: (_, animation, __, child) {
               return SlideTransition(
                 position:

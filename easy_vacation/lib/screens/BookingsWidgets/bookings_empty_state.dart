@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 /// Empty state widget for bookings
 class BookingsEmptyState extends StatelessWidget {
   final String selectedFilter;
+  final int? userId;
 
-  const BookingsEmptyState({super.key, required this.selectedFilter});
+  const BookingsEmptyState({super.key, required this.selectedFilter, this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class BookingsEmptyState extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const HomeScreen(),
+                      pageBuilder: (_, __, ___) => HomeScreen(userId: userId),
                       transitionsBuilder: (_, animation, __, child) {
                         return FadeTransition(opacity: animation, child: child);
                       },
