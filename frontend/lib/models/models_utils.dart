@@ -31,7 +31,7 @@ String encodeAvailabilityJson(List<Map<String, dynamic>> availability) {
 
 // Convert between your CreatePostData and database models
 class PostConverter {
-  static Post toPost(CreatePostData data, int ownerId) {
+  static Post toPost(CreatePostData data, String ownerId) {
     return Post(
       ownerId: ownerId,
       category: data.category,

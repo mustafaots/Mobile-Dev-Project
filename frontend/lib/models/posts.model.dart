@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Post {
   final int? id;
-  final int ownerId;
+  final String ownerId; // Changed to String for UUID support
   final String category; // 'activity', 'vehicle', 'stay'
   final String title;
   final String? description;
@@ -60,7 +60,7 @@ class Post {
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
       id: map['id'],
-      ownerId: map['owner_id'] ?? 0,
+      ownerId: map['owner_id']?.toString() ?? '',
       category: map['category'] ?? 'stay',
       title: map['title'] ?? '',
       description: map['description'],
@@ -137,7 +137,7 @@ class Post {
   // FIX: Add copyWith method for easier updates
   Post copyWith({
     int? id,
-    int? ownerId,
+    String? ownerId,
     String? category,
     String? title,
     String? description,

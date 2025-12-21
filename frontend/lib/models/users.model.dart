@@ -1,5 +1,5 @@
 class User {
-  final int? id;
+  final String? id;
   final String username;
   final String email;
   final String? phoneNumber;
@@ -40,18 +40,25 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'],
-      username: map['username'] ?? '',
+      id: map['id']?.toString(),
+      username: map['username'] ?? map['email']?.toString().split('@').first ?? '',
       email: map['email'] ?? '',
-      phoneNumber: map['phone_number'],
-      firstName: map['first_name'],
-      lastName: map['last_name'],
-      createdAt: map['created_at'] != null 
-          ? DateTime.parse(map['created_at']) 
-          : DateTime.now(),
-      isVerified: map['is_verified'] == 1,
+      phoneNumber: map['phone_number'] ?? map['phone'],
+      firstName: map['first_name'] ?? map['user_metadata']?['first_name'],
+      lastName: map['last_name'] ?? map['user_metadata']?['last_name'],
+      createdAt: _parseDateTime(map['created_at']),
+      isVerified: map['is_verified'] == 1 || map['is_verified'] == true || map['email_confirmed_at'] != null,
       userType: map['user_type'] ?? 'tourist',
-      isSuspended: map['is_suspended'] == 1,
+      isSuspended: map['is_suspended'] == 1 || map['is_suspended'] == true,
     );
+  }
+
+  static DateTime _parseDateTime(dynamic value) {
+    if (value == null) return DateTime.now();
+    if (value is DateTime) return value;
+    if (value is String) {
+      return DateTime.tryParse(value) ?? DateTime.now();
+    }
+    return DateTime.now();
   }
 }
