@@ -20,7 +20,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       final reviews = await reviewRepository.getReviewsByPostId(postId);
 
       // Fetch reviewer info for each review
-      Map<int, User> reviewersMap = {};
+      Map<String, User> reviewersMap = {};
       for (var review in reviews) {
         final reviewer = await userRepository.getUserById(review.reviewerId);
         if (reviewer != null) {

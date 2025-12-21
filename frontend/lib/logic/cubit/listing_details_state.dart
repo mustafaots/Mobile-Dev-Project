@@ -22,7 +22,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
   final Post? post;
   final User? host;
   final List<Review> reviews;
-  final Map<int, User> reviewers;
+  final Map<String, User> reviewers;
   final Stay? stay;
   final Vehicle? vehicle;
   final Activity? activity;
@@ -43,7 +43,7 @@ class ListingDetailsLoaded extends ListingDetailsState {
     Post? post,
     User? host,
     List<Review>? reviews,
-    Map<int, User>? reviewers,
+    Map<String, User>? reviewers,
     Stay? stay,
     Vehicle? vehicle,
     Activity? activity,

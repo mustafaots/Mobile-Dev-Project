@@ -47,7 +47,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       final host = await userRepository.getUserById(post.ownerId);
 
       List<Review> reviewsList = [];
-      Map<int, User> reviewersMap = {};
+      Map<String, User> reviewersMap = {};
       Stay? stay;
       Vehicle? vehicle;
       Activity? activity;

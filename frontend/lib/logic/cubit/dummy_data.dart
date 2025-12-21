@@ -14,7 +14,7 @@ class DummyDataProvider {
       case 1:
         return Post(
           id: postId,
-          ownerId: 50,
+          ownerId: '50',
           category: 'stay',
           title: 'Luxury Beachfront Villa',
           description:
@@ -31,7 +31,7 @@ class DummyDataProvider {
       case 2:
         return Post(
           id: postId,
-          ownerId: 51,
+          ownerId: '51',
           category: 'vehicle',
           title: 'Premium Mercedes-Benz SUV',
           description:
@@ -48,7 +48,7 @@ class DummyDataProvider {
       default:
         return Post(
           id: postId,
-          ownerId: 52,
+          ownerId: '52',
           category: 'activity',
           title: 'Mountain Hiking Adventure',
           description:
@@ -65,8 +65,9 @@ class DummyDataProvider {
     }
   }
 
-  static User getDummyHost(int ownerId) {
-    switch (ownerId % 3) {
+  static User getDummyHost(String ownerId) {
+    final idHash = ownerId.hashCode;
+    switch (idHash % 3) {
       case 0:
         return User(
           id: ownerId,
@@ -112,7 +113,7 @@ class DummyDataProvider {
       Review(
         id: 1,
         postId: postId,
-        reviewerId: 100,
+        reviewerId: '100',
         rating: 5,
         comment: 'Excellent experience! Highly recommended.',
         createdAt: now.subtract(const Duration(days: 30)),
@@ -120,7 +121,7 @@ class DummyDataProvider {
       Review(
         id: 2,
         postId: postId,
-        reviewerId: 101,
+        reviewerId: '101',
         rating: 4,
         comment: 'Great property with responsive host.',
         createdAt: now.subtract(const Duration(days: 15)),
@@ -128,10 +129,11 @@ class DummyDataProvider {
     ];
   }
 
-  static Map<int, User> getDummyReviewers(List<Review> reviews) {
-    final reviewers = <int, User>{};
+  static Map<String, User> getDummyReviewers(List<Review> reviews) {
+    final reviewers = <String, User>{};
     for (var review in reviews) {
-      switch (review.reviewerId % 2) {
+      final idHash = review.reviewerId.hashCode;
+      switch (idHash % 2) {
         case 0:
           reviewers[review.reviewerId] = User(
             id: review.reviewerId,

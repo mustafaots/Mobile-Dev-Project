@@ -15,7 +15,7 @@ class ReviewsLoading extends ReviewsState {
 
 class ReviewsLoaded extends ReviewsState {
   final List<Review> reviews;
-  final Map<int, User> reviewers;
+  final Map<String, User> reviewers;
   final double averageRating;
 
   const ReviewsLoaded({
@@ -26,7 +26,7 @@ class ReviewsLoaded extends ReviewsState {
 
   ReviewsLoaded copyWith({
     List<Review>? reviews,
-    Map<int, User>? reviewers,
+    Map<String, User>? reviewers,
     double? averageRating,
   }) {
     return ReviewsLoaded(

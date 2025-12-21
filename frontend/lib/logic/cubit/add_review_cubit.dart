@@ -11,7 +11,7 @@ class AddReviewCubit extends Cubit<AddReviewState> {
   /// Submit a review to the database
   Future<void> submitReview({
     required int postId,
-    required int reviewerId,
+    required String reviewerId,
     required int rating,
     String? comment,
   }) async {

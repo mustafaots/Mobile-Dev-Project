@@ -33,7 +33,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
 
       User? host;
       List<Review> reviewsList = [];
-      Map<int, User> reviewersMap = {};
+      Map<String, User> reviewersMap = {};
       Stay? stay;
       Vehicle? vehicle;
       Activity? activity;

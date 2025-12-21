@@ -22,7 +22,7 @@ class BookedPostLoaded extends BookedPostState {
   final Post? post;
   final User? host;
   final List<Review> reviews;
-  final Map<int, User> reviewers;
+  final Map<String, User> reviewers;
   final String bookingDates;
   final String bookingStatus;
   final Stay? stay;
@@ -48,7 +48,7 @@ class BookedPostLoaded extends BookedPostState {
     Post? post,
     User? host,
     List<Review>? reviews,
-    Map<int, User>? reviewers,
+    Map<String, User>? reviewers,
     String? bookingDates,
     String? bookingStatus,
     Stay? stay,
@@ -75,7 +75,7 @@ class BookedPostCanceling extends BookedPostState {
   final Post? post;
   final User? host;
   final List<Review> reviews;
-  final Map<int, User> reviewers;
+  final Map<String, User> reviewers;
   final String bookingDates;
   final String bookingStatus;
   final Stay? stay;
