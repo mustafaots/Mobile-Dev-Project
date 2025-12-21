@@ -56,7 +56,7 @@ class ConfirmListingCubit extends Cubit<ConfirmListingState> {
   }
 
   Future<void> createPost({
-    required int userId,
+    required dynamic userId,
     required CreatePostData postData,
     required BuildContext context,
   }) async {
@@ -70,7 +70,7 @@ class ConfirmListingCubit extends Cubit<ConfirmListingState> {
 
     try {
       final success = await _postCreationService.createPost(
-        userId: userId,
+        userId: userId.toString(),
         postData: postData,
         context: context,
       );
