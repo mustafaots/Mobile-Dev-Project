@@ -54,6 +54,8 @@ export class BaseService<T extends object> {
   }
 
   async create(payload: InsertResult<T>): Promise<T> {
+    console.log(`📝 Creating ${this.table} record:`, JSON.stringify(payload, null, 2));
+    
     const { data, error } = await supabase
       .from(this.table)
       .insert(payload)
@@ -61,6 +63,7 @@ export class BaseService<T extends object> {
       .maybeSingle();
 
     if (error) {
+      console.error(`❌ Failed to create ${this.table}:`, error);
       throw new ApiError(500, `Failed to create ${this.table} record.`, error.message);
     }
 
@@ -68,6 +71,7 @@ export class BaseService<T extends object> {
       throw new ApiError(500, `Supabase did not return the created ${this.table} record.`);
     }
 
+    console.log(`✅ Created ${this.table} record with id:`, (data as any)[this.primaryKey]);
     return data as T;
   }
 

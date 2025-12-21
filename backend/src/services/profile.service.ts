@@ -17,6 +17,7 @@ export interface UserProfileData {
 export interface UpdateProfileInput {
   first_name?: string;
   last_name?: string;
+  phone?: string;
 }
 
 class ProfileService {
@@ -112,6 +113,18 @@ class ProfileService {
 
       if (error) {
         throw new ApiError(500, 'Failed to update profile.', error.message);
+      }
+    }
+
+    // Update phone in Supabase Auth if provided
+    if (updates.phone !== undefined) {
+      const { error: authError } = await supabase.auth.admin.updateUserById(userId, {
+        phone: updates.phone,
+      });
+
+      if (authError) {
+        console.error('Failed to update phone:', authError);
+        // Don't throw - phone update is optional
       }
     }
 

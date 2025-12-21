@@ -217,7 +217,7 @@ class ListingService {
       `,
         { count: 'exact' }
       )
-      .eq('status', filters.status ?? 'published');
+      .eq('status', filters.status ?? 'active');
 
     if (filters.category) {
       query = query.eq('category', filters.category);

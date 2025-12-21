@@ -14,7 +14,8 @@ class AuthService {
     });
 
     if (error || !data.user) {
-      throw new ApiError(400, 'Unable to create user account.', error?.message);
+      console.error('Supabase auth error:', error);
+      throw new ApiError(400, 'Unable to create user account.', error?.message || 'Unknown error');
     }
 
     const profile = await usersService.create({
@@ -35,7 +36,10 @@ class AuthService {
       throw new ApiError(401, 'Invalid credentials.', error?.message);
     }
 
-    return { user: data.user, session: data.session };
+    // Fetch the user's profile to include first_name and last_name
+    const profile = await usersService.getById(data.user.id);
+
+    return { user: data.user, session: data.session, profile };
   }
 
   async getUserFromToken(token: string) {
