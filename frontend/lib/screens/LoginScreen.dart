@@ -1,10 +1,8 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/models/users.model.dart';
-import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/screens/ForgotPasswordScreen.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/SignUpScreen.dart';
+import 'package:easy_vacation/services/sync/sync_manager.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -23,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _useridController = TextEditingController();
+
+  bool _isLoading = false;
 
   // destructor to avoid memory leaks
   @override
@@ -124,44 +124,80 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: login_button_style.copyWith(
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () async {
-                  if (!_formKey.currentState!.validate()) return;
+                onPressed: _isLoading
+                    ? null
+                    : () async {
+                        if (!_formKey.currentState!.validate()) return;
 
-                  final input = _useridController.text.trim();
-                  final password = _passwordController.text.trim();
-                  final userRepo = appRepos['userRepo'] as UserRepository;
+                        final input = _useridController.text.trim();
+                        final password = _passwordController.text;
 
-                  User? user;
-                  if (input.contains('@')) {
-                    user = await userRepo.getUserByEmail(input);
-                  }
-                  user ??= await userRepo.getUserByUsername(input);
-                  user ??= await userRepo.getUserByPhoneNumber(input);
+                        setState(() => _isLoading = true);
 
-                  if (user == null || user.id == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Invalid credentials. Check your email/phone and try again.'),
-                        backgroundColor: AppTheme.failureColor,
-                      ),
-                    );
-                    return;
-                  }
+                        try {
+                          // Use AuthSyncService to login (syncs from remote and stores locally)
+                          final result = await SyncManager.instance.auth.login(
+                            email: input,
+                            password: password,
+                          );
 
-                  // Note: password is collected but not validated against local DB (no stored hash yet)
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => HomeScreen(userId: user!.id),
-                      transitionsBuilder: (_, animation, __, child) {
-                        return FadeTransition(opacity: animation, child: child);
+                          if (!context.mounted) return;
+                          setState(() => _isLoading = false);
+
+                          if (result.isSuccess && result.data != null) {
+                            // Login successful - navigate to home
+                            final user = result.data!.user;
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    HomeScreen(userId: user.id ?? ''),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
+                              ),
+                              (route) => false,
+                            );
+                          } else {
+                            // Show error message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  result.message ?? loc.loginFailed,
+                                ),
+                                backgroundColor: AppTheme.failureColor,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (!context.mounted) return;
+                          setState(() => _isLoading = false);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(e.toString()),
+                              backgroundColor: AppTheme.failureColor,
+                            ),
+                          );
+                        }
                       },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                    (route) => false,
-                  );
-                },
-                child: Text(loc.login, style: login_text_style),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      )
+                    : Text(loc.login, style: login_text_style),
               ),
             ),
 
@@ -256,9 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // Single Google Sign In Button
             InkWell(
-              onTap: () {
-
-              },
+              onTap: () {},
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 padding: const EdgeInsets.all(12),
@@ -271,9 +305,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
-                    FontAwesomeIcons.google,
-                    color: context.secondaryTextColor,
-                    size: 20,
+                  FontAwesomeIcons.google,
+                  color: context.secondaryTextColor,
+                  size: 20,
                 ),
               ),
             ),

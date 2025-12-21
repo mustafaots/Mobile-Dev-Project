@@ -8,7 +8,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
-  final int? userId;
+  final dynamic userId;
   const SubscriptionPlanScreen({super.key, this.userId});
 
   @override

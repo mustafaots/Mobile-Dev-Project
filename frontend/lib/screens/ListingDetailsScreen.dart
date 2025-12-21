@@ -21,7 +21,7 @@ import 'Listing Details Widgets/index.dart';
 
 class PostDetailsScreen extends StatefulWidget {
   final int? postId;
-  final int? userId;
+  final dynamic userId;
   const PostDetailsScreen({super.key, this.postId, this.userId});
 
   @override

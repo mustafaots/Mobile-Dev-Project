@@ -8,7 +8,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class CategorySelectionScreen extends StatefulWidget {
-  final int userId;
+  final dynamic userId;
 
   const CategorySelectionScreen({super.key, required this.userId});
 

@@ -12,7 +12,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class ActivityDetailsScreen extends StatefulWidget {
   final CreatePostData? existingData;
-  final int userId;
+  final dynamic userId;
 
   const ActivityDetailsScreen({required this.userId, this.existingData, super.key});
   

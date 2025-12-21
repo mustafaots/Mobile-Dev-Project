@@ -14,7 +14,7 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/main.dart';
 
 class BookingsScreen extends StatelessWidget {
-  final int? userId;
+  final dynamic userId;
   const BookingsScreen({super.key, this.userId});
 
   @override
@@ -35,7 +35,7 @@ class BookingsScreen extends StatelessWidget {
 }
 
 class _BookingsScreenContent extends StatelessWidget {
-  final int? userId;
+  final dynamic userId;
   const _BookingsScreenContent({this.userId});
 
   @override

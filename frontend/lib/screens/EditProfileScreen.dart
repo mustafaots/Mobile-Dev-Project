@@ -1,73 +1,215 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/services/api/profile_service.dart';
+import 'package:easy_vacation/services/sync/connectivity_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  final dynamic userId;
+  const EditProfileScreen({super.key, this.userId});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+
+  User? _user;
+  bool _isLoading = true;
+  bool _isSaving = false;
 
   @override
   void initState() {
     super.initState();
-    // Pre-fill with current user data (in real app, this would come from your user model)
-    _nameController.text = 'Mohamed Ali';
-    _emailController.text = 'mohamed@easyvacation.com';
-    _bioController.text =
-        'Travel enthusiast exploring the world one destination at a time. Sharing my experiences and tips!';
-    _locationController.text = 'Casablanca, Morocco';
-    _phoneController.text = '+213 123 456 789';
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    if (widget.userId != null) {
+      final userRepo = appRepos['userRepo'] as UserRepository;
+      final user = await userRepo.getUserById(widget.userId.toString());
+      if (mounted && user != null) {
+        setState(() {
+          _user = user;
+          _firstNameController.text = user.firstName ?? '';
+          _lastNameController.text = user.lastName ?? '';
+          _emailController.text = user.email;
+          _phoneController.text = user.phoneNumber ?? '';
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  String _getInitials() {
+    final firstName = _firstNameController.text.trim();
+    final lastName = _lastNameController.text.trim();
+    
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      return '${firstName[0]}${lastName[0]}'.toUpperCase();
+    } else if (firstName.isNotEmpty) {
+      return firstName[0].toUpperCase();
+    } else if (_emailController.text.isNotEmpty) {
+      return _emailController.text[0].toUpperCase();
+    }
+    return '?';
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
-    _bioController.dispose();
-    _locationController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
 
-  void _saveProfile() {
-    // Handle save logic here
-    //final newName = _nameController.text;
-    //final newEmail = _emailController.text;
-    //final newBio = _bioController.text;
-    //final newLocation = _locationController.text;
-    //final newPhone = _phoneController.text;
+  void _saveProfile() async {
+    final loc = AppLocalizations.of(context)!;
+    
+    // Validate required fields
+    if (_firstNameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppTheme.failureColor,
+          content: Text('First name is required'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      return;
+    }
 
-    // Show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: AppTheme.successColor,
-        content: Text(AppLocalizations.of(context)!.editProfile_profileUpdated),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
+    if (_lastNameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppTheme.failureColor,
+          content: Text('Last name is required'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      return;
+    }
 
-    // Navigate back after a short delay
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      Navigator.pop(context);
-    });
+    setState(() => _isSaving = true);
+
+    try {
+      // Check connectivity
+      final isOnline = await ConnectivityService.instance.checkConnectivity();
+      
+      if (isOnline) {
+        // Update on backend
+        final result = await ProfileService.instance.updateMyProfile(
+          UpdateProfileRequest(
+            firstName: _firstNameController.text.trim(),
+            lastName: _lastNameController.text.trim(),
+            phone: _phoneController.text.trim().isNotEmpty 
+                ? _phoneController.text.trim() 
+                : null,
+          ),
+        );
+
+        if (!mounted) return;
+
+        if (result.isSuccess) {
+          // Update local database
+          if (_user != null && _user!.id != null) {
+            final userRepo = appRepos['userRepo'] as UserRepository;
+            final updatedUser = User(
+              id: _user!.id,
+              username: _user!.username,
+              email: _user!.email,
+              phoneNumber: _phoneController.text.trim().isNotEmpty 
+                  ? _phoneController.text.trim() 
+                  : _user!.phoneNumber,
+              firstName: _firstNameController.text.trim(),
+              lastName: _lastNameController.text.trim(),
+              createdAt: _user!.createdAt,
+              isVerified: _user!.isVerified,
+              userType: _user!.userType,
+              isSuspended: _user!.isSuspended,
+            );
+            await userRepo.updateUser(_user!.id!, updatedUser);
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppTheme.successColor,
+              content: Text(loc.editProfile_profileUpdated),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          );
+
+          // Navigate back after a short delay
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            if (mounted) Navigator.pop(context, true); // Return true to indicate update
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppTheme.failureColor,
+              content: Text(result.message ?? 'Failed to update profile'),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: AppTheme.failureColor,
+            content: Text('No internet connection'),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppTheme.failureColor,
+          content: Text('Error: $e'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
     final loc = AppLocalizations.of(context)!;
+
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: backgroundColor,
+        appBar: App_Bar(context, loc.editProfile_title),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -87,17 +229,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          color: AppTheme.primaryColor.withOpacity(0.1),
                           border: Border.all(
                             color: AppTheme.primaryColor,
                             width: 3,
                           ),
-                          // user image
+                        ),
+                        child: Center(
+                          child: Text(
+                            _getInitials(),
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.primaryColor,
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  // editProfile_changePhoto : obsolete   
                 ],
               ),
 
@@ -108,9 +259,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: [
                   _buildFormField(
                     context: context,
-                    controller: _nameController,
-                    label: loc.editProfile_fullName,
+                    controller: _firstNameController,
+                    label: loc.firstName,
                     icon: Icons.person,
+                    isRequired: true,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildFormField(
+                    context: context,
+                    controller: _lastNameController,
+                    label: loc.lastName,
+                    icon: Icons.person_outline,
                     isRequired: true,
                   ),
                   const SizedBox(height: 16),
@@ -120,6 +279,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     label: loc.editProfile_emailAddress,
                     icon: Icons.email,
                     isRequired: true,
+                    enabled: false, // Email cannot be changed
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16),
@@ -130,25 +290,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
-                  const SizedBox(height: 16),
-                  _buildFormField(
-                    context: context,
-                    controller: _locationController,
-                    label: loc.editProfile_location,
-                    icon: Icons.location_on,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildFormField(
-                    context: context,
-                    controller: _bioController,
-                    label: loc.editProfile_bio,
-                    icon: Icons.description,
-                    maxLines: 3,
-                  ),
                 ],
               ),
 
               const SizedBox(height: 32),
+
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _saveProfile,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: _isSaving
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Text(
+                          loc.save,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
 
               // Additional Options
               Container(
@@ -230,15 +406,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     required String label,
     required IconData icon,
     bool isRequired = false,
+    bool enabled = true,
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
   }) {
     final cardColor = context.cardColor;
     final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
 
     return Container(
       decoration: BoxDecoration(
-        color: cardColor,
+        color: enabled ? cardColor : cardColor.withOpacity(0.6),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -252,15 +430,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         controller: controller,
         keyboardType: keyboardType,
         maxLines: maxLines,
+        enabled: enabled,
+        style: TextStyle(
+          color: enabled ? textColor : secondaryTextColor,
+        ),
         decoration: InputDecoration(
           labelText: '$label${isRequired ? ' *' : ''}',
-          prefixIcon: Icon(icon, color: AppTheme.primaryColor),
+          prefixIcon: Icon(icon, color: enabled ? AppTheme.primaryColor : AppTheme.grey),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: cardColor,
+          fillColor: enabled ? cardColor : cardColor.withOpacity(0.6),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 16,

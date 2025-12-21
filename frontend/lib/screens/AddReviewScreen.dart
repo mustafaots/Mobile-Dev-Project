@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddReviewScreen extends StatefulWidget {
   final int postId;
-  final int reviewerId;
+  final dynamic reviewerId;
   final AddReviewCubit addReviewCubit;
 
   const AddReviewScreen({
@@ -40,7 +40,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
       // Submit review using Cubit
       context.read<AddReviewCubit>().submitReview(
         postId: widget.postId,
-        reviewerId: widget.reviewerId,
+        reviewerId: widget.reviewerId.toString(),
         rating: _rating,
         comment: _reviewController.text.trim(),
       );

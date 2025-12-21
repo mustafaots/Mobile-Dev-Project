@@ -16,7 +16,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class CommonDetailsScreen extends StatefulWidget {
   final CreatePostData postData;
-  final int userId;
+  final dynamic userId;
 
   const CommonDetailsScreen({required this.userId, required this.postData, super.key});
 

@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConfirmListingScreen extends StatelessWidget {
   final CreatePostData postData;
-  final int userId;
+  final dynamic userId;
 
   const ConfirmListingScreen({
     required this.userId,
@@ -34,7 +34,7 @@ class ConfirmListingScreen extends StatelessWidget {
 
 class _ConfirmListingContent extends StatelessWidget {
   final CreatePostData postData;
-  final int userId;
+  final dynamic userId;
 
   const _ConfirmListingContent({
     required this.userId,

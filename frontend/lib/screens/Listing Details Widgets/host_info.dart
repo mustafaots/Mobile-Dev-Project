@@ -19,8 +19,7 @@ class HostInfo extends StatelessWidget {
 
   void _navigateToProfile(
     BuildContext context, {
-    required String userName,
-    required String userEmail,
+    required User? hostData,
     required int postsCount,
     required int reviewsCount,
   }) {
@@ -28,7 +27,10 @@ class HostInfo extends StatelessWidget {
       context,
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileScreen(
-          userName: userName,
+          userName: hostData?.username ?? 'User',
+          firstName: hostData?.firstName,
+          lastName: hostData?.lastName,
+          email: hostData?.email,
           postsCount: postsCount,
           reviewsCount: reviewsCount,
         ),
@@ -153,11 +155,11 @@ class HostInfo extends StatelessWidget {
     Color secondaryTextColor,
     AppLocalizations loc,
   ) {
-    final hostName = hostData?.username ?? 'Ali';
-    final hostEmail = hostData?.email ?? 'ali@example.com';
+    final hostName = _getHostFullName(hostData);
+    final hostEmail = hostData?.email ?? 'N/A';
     final hostPhone = hostData?.phoneNumber ?? 'N/A';
     final price = postData?.price ?? 6000;
-    final hostInitials = _getInitials(hostName);
+    final hostInitials = _getInitials(hostData);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -183,8 +185,7 @@ class HostInfo extends StatelessWidget {
                 onTap: () {
                   _navigateToProfile(
                     context,
-                    userName: hostName,
-                    userEmail: hostEmail,
+                    hostData: hostData,
                     postsCount: 24,
                     reviewsCount: reviewCount,
                   );
@@ -337,11 +338,39 @@ class HostInfo extends StatelessWidget {
     );
   }
 
-  String _getInitials(String name) {
-    final parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  String _getInitials(User? user) {
+    if (user == null) return '?';
+    
+    final firstName = user.firstName ?? '';
+    final lastName = user.lastName ?? '';
+    
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      return '${firstName[0]}${lastName[0]}'.toUpperCase();
+    } else if (firstName.isNotEmpty) {
+      return firstName[0].toUpperCase();
+    } else if (user.username.isNotEmpty && !user.username.contains('@')) {
+      return user.username[0].toUpperCase();
+    } else if (user.email.isNotEmpty) {
+      return user.email[0].toUpperCase();
     }
-    return parts[0].substring(0, 1).toUpperCase();
+    return '?';
+  }
+
+  String _getHostFullName(User? user) {
+    if (user == null) return 'Host';
+    
+    final firstName = user.firstName ?? '';
+    final lastName = user.lastName ?? '';
+    
+    if (firstName.isNotEmpty || lastName.isNotEmpty) {
+      return '$firstName $lastName'.trim();
+    }
+    
+    // Fall back to username only if it's not an email
+    if (user.username.isNotEmpty && !user.username.contains('@')) {
+      return user.username;
+    }
+    
+    return 'Host';
   }
 }

@@ -5,23 +5,61 @@ import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String userName;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? bio;
   final String subscriptionType;
   final int postsCount;
   final bool isFollowing;
   final int reviewsCount;
-  final double overallRating; // New field for overall rating
-  final int totalReviews; // New field for total number of reviews
+  final double overallRating;
+  final int totalReviews;
 
   const ProfileScreen({
     super.key,
-    this.userName = 'USERNAME',
+    this.userName = 'User',
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.bio,
     this.subscriptionType = 'Free',
     this.postsCount = 0,
     this.isFollowing = false,
     this.reviewsCount = 0,
-    this.overallRating = 4, // Default overall rating
-    this.totalReviews = 0, // Default total reviews
+    this.overallRating = 4,
+    this.totalReviews = 0,
   });
+
+  String get displayName {
+    if (firstName != null && firstName!.isNotEmpty) {
+      if (lastName != null && lastName!.isNotEmpty) {
+        return '$firstName $lastName';
+      }
+      return firstName!;
+    }
+    // Fall back to userName only if it's not an email
+    if (userName.isNotEmpty && !userName.contains('@')) {
+      return userName;
+    }
+    return 'User';
+  }
+
+  String get initials {
+    if (firstName != null && firstName!.isNotEmpty) {
+      if (lastName != null && lastName!.isNotEmpty) {
+        return '${firstName![0]}${lastName![0]}'.toUpperCase();
+      }
+      return firstName![0].toUpperCase();
+    }
+    if (userName.isNotEmpty && !userName.contains('@')) {
+      return userName[0].toUpperCase();
+    }
+    if (email != null && email!.isNotEmpty) {
+      return email![0].toUpperCase();
+    }
+    return '?';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                     // Profile Image and Stats
                     Row(
                       children: [
-                        // Profile Image
+                        // Profile Image with Initials
                         Container(
                           width: 100,
                           height: 100,
@@ -76,7 +114,17 @@ class ProfileScreen extends StatelessWidget {
                               color: AppTheme.primaryColor,
                               width: 2,
                             ),
-                            // TODO: user image
+                            color: AppTheme.primaryColor.withOpacity(0.1),
+                          ),
+                          child: Center(
+                            child: Text(
+                              initials,
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryColor,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -102,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userName,
+                          displayName,
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -111,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Travel enthusiast exploring the world one destination at a time. Sharing my experiences and tips!',
+                          bio ?? 'Sharing experiences and tips!',
                           style: TextStyle(fontSize: 14, color: textColor),
                         ),
                       ],

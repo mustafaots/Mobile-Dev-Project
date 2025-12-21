@@ -11,7 +11,7 @@ import 'package:easy_vacation/screens/ProfileScreen.dart';
 
 class ReviewsSection extends StatelessWidget {
   final List<review_model.Review>? reviews;
-  final Map<int, User>? reviewers;
+  final Map<String, User>? reviewers;
   final int? postId;
   final ReviewsCubit? cubit;
 

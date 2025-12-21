@@ -1,4 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/models/users.model.dart';
+import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
+import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/Listings History/ListingsHistoryScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
@@ -11,7 +14,7 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/widgets/theme_toggle_button.dart';
 
 class SettingsScreen extends StatefulWidget {
-  final userId;
+  final dynamic userId;
   const SettingsScreen({super.key, this.userId});
 
   @override
@@ -19,6 +22,66 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  User? _user;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    if (widget.userId != null) {
+      final userRepo = appRepos['userRepo'] as UserRepository;
+      final user = await userRepo.getUserById(widget.userId.toString());
+      if (mounted) {
+        setState(() {
+          _user = user;
+          _isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  String _getInitials() {
+    if (_user == null) return '?';
+    
+    final firstName = _user!.firstName ?? '';
+    final lastName = _user!.lastName ?? '';
+    
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      return '${firstName[0]}${lastName[0]}'.toUpperCase();
+    } else if (firstName.isNotEmpty) {
+      return firstName[0].toUpperCase();
+    } else if (_user!.username.isNotEmpty) {
+      return _user!.username[0].toUpperCase();
+    } else if (_user!.email.isNotEmpty) {
+      return _user!.email[0].toUpperCase();
+    }
+    return '?';
+  }
+
+  String _getFullName() {
+    if (_user == null) return 'User';
+    
+    final firstName = _user!.firstName ?? '';
+    final lastName = _user!.lastName ?? '';
+    
+    if (firstName.isNotEmpty || lastName.isNotEmpty) {
+      return '$firstName $lastName'.trim();
+    }
+    return _user!.username;
+  }
+
+  String _getEmail() {
+    return _user?.email ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
@@ -57,11 +120,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      // TODO: user image
+                      color: AppTheme.primaryColor.withOpacity(0.1),
                       border: Border.all(
                         color: AppTheme.primaryColor.withOpacity(0.3),
                         width: 2,
                       ),
+                    ),
+                    child: Center(
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppTheme.primaryColor,
+                            )
+                          : Text(
+                              _getInitials(),
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.primaryColor,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -70,7 +148,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Mohamed',
+                          _getFullName(),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -79,7 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Mohamed@easyvacation.com',
+                          _getEmail(),
                           style: TextStyle(
                             fontSize: 14,
                             color: secondaryTextColor,
@@ -237,12 +315,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: Icons.person_outline,
                         title: loc.editProfile,
                         subtitle: loc.editProfileSubtitle,
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          final result = await Navigator.push(
                             context,
                             PageRouteBuilder(
                               pageBuilder: (_, __, ___) =>
-                                  const EditProfileScreen(),
+                                  EditProfileScreen(userId: widget.userId),
                               transitionsBuilder: (_, animation, __, child) {
                                 return FadeTransition(
                                   opacity: animation,
@@ -254,6 +332,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                           );
+                          // Reload user data if profile was updated
+                          if (result == true) {
+                            _loadUser();
+                          }
                         },
                         context: context,
                       ),

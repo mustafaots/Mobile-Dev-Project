@@ -1,9 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/models/users.model.dart';
-import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
+import 'package:easy_vacation/services/sync/sync_manager.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
@@ -23,9 +21,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _password_2_Controller = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  
+  bool _isLoading = false;
 
   // destructor to avoid memory leaks
   @override
@@ -34,7 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     _passwordController.dispose();
     _password_2_Controller.dispose();
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
   }
@@ -96,17 +98,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  buildFormField(
-                    context,
-                    controller: _nameController,
-                    label: loc.fullName,
-                    icon: Icons.account_circle_outlined,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return loc.pleaseEnterFullName;
-                      }
-                      return null;
-                    },
+                  // First Name and Last Name in a Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: buildFormField(
+                          context,
+                          controller: _firstNameController,
+                          label: loc.firstName,
+                          icon: Icons.person_outline,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return loc.pleaseEnterFirstName;
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: buildFormField(
+                          context,
+                          controller: _lastNameController,
+                          label: loc.lastName,
+                          icon: Icons.person_outline,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return loc.pleaseEnterLastName;
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
 
                   space(12),
@@ -183,36 +207,78 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: login_button_style.copyWith(
                   minimumSize: WidgetStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () async {
+                onPressed: _isLoading ? null : () async {
                   if (_formKey.currentState!.validate()){
-                    // this section is for testing local database
-                    
-                    final userRepo = appRepos['userRepo'] as UserRepository;
-                    User usr = User(
-                      firstName: _nameController.text,
-                      email: _emailController.text,
-                      username: _emailController.text,
-                      phoneNumber: _phoneController.text,
-                      createdAt: DateTime.now()
-                    );
-                    int user_id = await userRepo.insertUser(usr);
+                    // Check if passwords match
+                    if (_passwordController.text != _password_2_Controller.text) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(loc.passwordsDoNotMatch),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
 
-                    ///////////////////////////////////////////////////////
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => HomeScreen(userId: user_id),
-                        transitionsBuilder: (_, animation, __, child) {
-                          return FadeTransition(opacity: animation, child: child);
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                      (route) => false, // This removes all previous routes
-                    );
-                    ///////////////////////////////////////////////////////
+                    setState(() => _isLoading = true);
+
+                    try {
+                      // Use AuthSyncService to register (syncs to remote and local)
+                      final result = await SyncManager.instance.auth.register(
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text,
+                        firstName: _firstNameController.text.trim(),
+                        lastName: _lastNameController.text.trim(),
+                      );
+
+                      if (!context.mounted) return;
+                      setState(() => _isLoading = false);
+
+                      if (result.isSuccess && result.data != null) {
+                        // Registration successful - navigate to home
+                        final user = result.data!.user;
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => HomeScreen(userId: user.id ?? ''),
+                            transitionsBuilder: (_, animation, __, child) {
+                              return FadeTransition(opacity: animation, child: child);
+                            },
+                            transitionDuration: const Duration(milliseconds: 300),
+                          ),
+                          (route) => false,
+                        );
+                      } else {
+                        // Show error message
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(result.message ?? loc.registrationFailed),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      setState(() => _isLoading = false);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(e.toString()),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   }
                 },
-                child: Text(loc.signUp, style: login_text_style),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : Text(loc.signUp, style: login_text_style),
               ),
             ),
 

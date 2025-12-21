@@ -1,35 +1,51 @@
 import 'dart:typed_data';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
-import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
+import 'package:easy_vacation/services/api/api_services.dart';
+import 'package:easy_vacation/services/sync/sync_manager.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
-class StaysScreen extends StatelessWidget {
+class StaysScreen extends StatefulWidget {
   final user_Id;
-  StaysScreen({super.key, this.user_Id});
+  const StaysScreen({super.key, this.user_Id});
 
-  final postRepo = appRepos['postRepo'] as PostRepository;
+  @override
+  State<StaysScreen> createState() => _StaysScreenState();
+}
 
-  Future<List<Post>> getStays() async {
-    return await postRepo.getPostsByCategory('stay');
+class _StaysScreenState extends State<StaysScreen> {
+  late Future<List<Listing>> _staysFuture;
+  final Map<int, Widget> _imageCache = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _staysFuture = SyncManager.instance.listings.getListingsByCategory('stay');
   }
 
   Future<Widget> getPostImageWidget(
     int postId,
-    int cache_w, int cache_h,
-    double width, double height
+    int cache_w,
+    int cache_h,
+    double width,
+    double height,
   ) async {
+    // Check image cache first
+    if (_imageCache.containsKey(postId)) {
+      return _imageCache[postId]!;
+    }
+    
     final imageRepo = appRepos['imageRepo'] as PostImagesRepository;
     final imageRow = await imageRepo.getImageByPostId(postId);
 
+    Widget imageWidget;
     if (imageRow != null) {
       final bytes = imageRow['image'] as Uint8List;
-      return Image.memory(
+      imageWidget = Image.memory(
         bytes,
         width: width,
         height: height,
@@ -39,7 +55,7 @@ class StaysScreen extends StatelessWidget {
       );
     } else {
       // Fallback image if no image in DB
-      return Image.asset(
+      imageWidget = Image.asset(
         'assets/images/apar2.jpg',
         width: width,
         height: height,
@@ -48,8 +64,10 @@ class StaysScreen extends StatelessWidget {
         cacheWidth: cache_w,
       );
     }
+    
+    _imageCache[postId] = imageWidget;
+    return imageWidget;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,27 +79,23 @@ class StaysScreen extends StatelessWidget {
     final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
     final loc = AppLocalizations.of(context)!;
 
-    return FutureBuilder(
-      future: getStays(),
+    return FutureBuilder<List<Listing>>(
+      future: _staysFuture,  // Use cached future
       builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(color: AppTheme.primaryColor,),
+            child: CircularProgressIndicator(color: AppTheme.primaryColor),
           );
         }
 
-        if(snapshot.hasData) {
-          final posts = snapshot.data!;
-          if(posts.length == 0) {
+        if (snapshot.hasData) {
+          final listings = snapshot.data!;
+          if (listings.length == 0) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.search_off,
-                    size: 80,
-                    color: Colors.grey,
-                  ),
+                  Icon(Icons.search_off, size: 80, color: Colors.grey),
                   const SizedBox(height: 16),
                   Text(
                     loc.no_posts_yet,
@@ -116,22 +130,27 @@ class StaysScreen extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: posts.length,
+                  itemCount: listings.length,
                   itemBuilder: (context, index) {
-                    final post = posts[index];
+                    final listing = listings[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
                             pageBuilder: (_, __, ___) => PostDetailsScreen(
-                              postId: post.id,
-                              userId: user_Id,
+                              postId: listing.id,
+                              userId: widget.user_Id,
                             ),
                             transitionsBuilder: (_, animation, __, child) {
-                              return FadeTransition(opacity: animation, child: child);
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
                             },
-                            transitionDuration: const Duration(milliseconds: 300),
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
                         );
                       },
@@ -147,16 +166,20 @@ class StaysScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 child: FutureBuilder<Widget>(
                                   future: getPostImageWidget(
-                                    post.id!,
+                                    listing.id!,
                                     cardCacheW,
                                     cardCacheH,
-                                    260, 170,
+                                    260,
+                                    170,
                                   ),
                                   builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return const Center(child: CircularProgressIndicator());
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
                                     }
-                                    if(!snapshot.hasData) {
+                                    if (!snapshot.hasData) {
                                       return Image.asset(
                                         'assets/images/no_image.png',
                                         width: double.infinity,
@@ -174,14 +197,14 @@ class StaysScreen extends StatelessWidget {
                               dense: true,
                               contentPadding: EdgeInsets.zero,
                               title: Text(
-                                post.title,
+                                listing.title,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: textColor,
                                 ),
                               ),
                               subtitle: Text(
-                                '${post.price}${loc.dinars}/${loc.night}',
+                                '${listing.price}${loc.dinars}/${loc.night}',
                                 style: TextStyle(color: secondaryTextColor),
                               ),
                               trailing: Row(
@@ -228,47 +251,54 @@ class StaysScreen extends StatelessWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: posts.length,
+                      itemCount: listings.length,
                       itemBuilder: (context, index) {
-                        final post = posts[index];
+                        final listing = listings[index];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               PageRouteBuilder(
-                                pageBuilder: (_, __, ___) =>
-                                    PostDetailsScreen(
-                                      postId: post.id,
-                                      userId: user_Id,
-                                    ),
+                                pageBuilder: (_, __, ___) => PostDetailsScreen(
+                                  postId: listing.id,
+                                  userId: widget.user_Id,
+                                ),
                                 transitionsBuilder: (_, animation, __, child) {
                                   return FadeTransition(
                                     opacity: animation,
                                     child: child,
                                   );
                                 },
-                                transitionDuration: const Duration(milliseconds: 300),
+                                transitionDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
                               ),
                             );
                           },
                           child: Column(
                             children: [
                               AspectRatio(
-                                aspectRatio: (MediaQuery.of(context).size.width - 40) / 200,
+                                aspectRatio:
+                                    (MediaQuery.of(context).size.width - 40) /
+                                    200,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: FutureBuilder<Widget>(
                                     future: getPostImageWidget(
-                                      post.id!,
+                                      listing.id!,
                                       fullWidthCache,
                                       cardCacheH,
-                                      double.infinity, 200
+                                      double.infinity,
+                                      200,
                                     ),
                                     builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return const Center(child: CircularProgressIndicator());
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
                                       }
-                                      if(!snapshot.hasData) {
+                                      if (!snapshot.hasData) {
                                         return Image.asset(
                                           'assets/images/no_image.png',
                                           width: double.infinity,
@@ -284,14 +314,14 @@ class StaysScreen extends StatelessWidget {
                               ),
                               ListTile(
                                 title: Text(
-                                  post.title,
+                                  listing.title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: textColor,
                                   ),
                                 ),
                                 subtitle: Text(
-                                  '${post.price}${loc.dinars}/${loc.night}',
+                                  '${listing.price}${loc.dinars}/${loc.night}',
                                   style: TextStyle(color: secondaryTextColor),
                                 ),
                                 trailing: Row(
@@ -324,13 +354,10 @@ class StaysScreen extends StatelessWidget {
               ),
             ],
           );
+        } else {
+          return Center(child: Text("Couldn't get data"));
         }
-        else {
-          return Center(
-            child: Text("Couldn't get data"),
-          );
-        }
-      }
+      },
     );
   }
 }

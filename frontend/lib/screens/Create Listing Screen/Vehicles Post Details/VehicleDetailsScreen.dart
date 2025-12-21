@@ -11,7 +11,7 @@ import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 
 class VehicleDetailsScreen extends StatefulWidget {
   final CreatePostData? existingData;
-  final int userId;
+  final dynamic userId;
 
   const VehicleDetailsScreen({required this.userId, this.existingData, super.key});
   

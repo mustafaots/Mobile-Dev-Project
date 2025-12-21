@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// Empty state widget for bookings
 class BookingsEmptyState extends StatelessWidget {
   final String selectedFilter;
-  final int? userId;
+  final dynamic userId;
 
   const BookingsEmptyState({super.key, required this.selectedFilter, this.userId});
 

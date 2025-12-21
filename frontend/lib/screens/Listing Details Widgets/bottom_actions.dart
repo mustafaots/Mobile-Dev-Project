@@ -10,8 +10,8 @@ class BottomActions extends StatefulWidget {
   final int postId;
   final List<DateTime> selectedDates;
   final BookingRepository bookingRepository;
-  final int? currentUserId;
-  final int? ownerId;
+  final dynamic currentUserId;
+  final dynamic ownerId;
 
   const BottomActions({
     super.key,
