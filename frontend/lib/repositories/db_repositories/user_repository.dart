@@ -7,13 +7,17 @@ class UserRepository {
 
   UserRepository(this.db);
 
-  /// Insert a new user
+  /// Insert a new user (or replace if exists with same ID)
   Future<int> insertUser(User user) async {
-    return await db.insert('users', user.toMap());
+    return await db.insert(
+      'users', 
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
-  /// Get user by ID
-  Future<User?> getUserById(int id) async {
+  /// Get user by ID (now String for UUID support)
+  Future<User?> getUserById(String id) async {
     final result = await db.query('users', where: 'id = ?', whereArgs: [id]);
     return result.isNotEmpty ? User.fromMap(result.first) : null;
   }
@@ -55,14 +59,14 @@ class UserRepository {
   }
 
   /// Update user
-  Future<int> updateUser(int id, User user) async {
+  Future<int> updateUser(String id, User user) async {
     final values = user.toMap();
     values.remove('id'); // Remove ID to avoid updating it
     return await db.update('users', values, where: 'id = ?', whereArgs: [id]);
   }
 
   /// Delete user
-  Future<int> deleteUser(int id) async {
+  Future<int> deleteUser(String id) async {
     return await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
 }

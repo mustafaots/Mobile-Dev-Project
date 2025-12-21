@@ -48,6 +48,16 @@ class LocationRepository {
     return results.map((map) => Location.fromMap(map)).toList();
   }
 
+  /// Get location by full address (wilaya, city, address)
+  Future<Location?> getLocationByAddress(String wilaya, String city, String address) async {
+    final results = await db.query(
+      'locations',
+      where: 'wilaya = ? AND city = ? AND address = ?',
+      whereArgs: [wilaya, city, address],
+    );
+    return results.isNotEmpty ? Location.fromMap(results.first) : null;
+  }
+
   /// Update location
   Future<int> updateLocation(int id, Location location) async {
     final values = location.toMap();
