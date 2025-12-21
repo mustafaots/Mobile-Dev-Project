@@ -4,7 +4,7 @@ import 'dart:async';
 
 class DBHelper {
   static const _databaseName = "easy_vacation.db";
-  static const _databaseVersion = 2; // INCREMENTED VERSION
+  static const _databaseVersion = 3; // INCREMENTED VERSION for UUID support
   static Database? _database;
   
   static Future<Database> getDatabase() async {
@@ -28,6 +28,25 @@ class DBHelper {
             )
           ''');
         }
+        if (oldVersion < 3) {
+          // Migration: Change user ID from INTEGER to TEXT for UUID support
+          // SQLite doesn't support ALTER COLUMN, so we recreate the table
+          await db.execute('DROP TABLE IF EXISTS users');
+          await db.execute('''
+            CREATE TABLE users (
+              id TEXT PRIMARY KEY,
+              username TEXT NOT NULL,
+              email TEXT NOT NULL UNIQUE,
+              phone_number TEXT,
+              first_name TEXT,
+              last_name TEXT,
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              is_verified BOOLEAN DEFAULT 0,
+              user_type TEXT,
+              is_suspended BOOLEAN
+            )
+          ''');
+        }
       },
       version: _databaseVersion,
     );
@@ -39,10 +58,10 @@ class DBHelper {
     // Enable foreign key constraints
     await db.execute('PRAGMA foreign_keys = ON');
     
-    // Create users table
+    // Create users table (with TEXT id for UUID support)
     await db.execute('''
       CREATE TABLE users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id TEXT PRIMARY KEY,
         username TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         phone_number TEXT,
