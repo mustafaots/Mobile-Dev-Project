@@ -34,6 +34,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get fullName => 'Nom Complet';
 
   @override
+  String get firstName => 'Prénom';
+
+  @override
+  String get lastName => 'Nom de famille';
+
+  @override
   String get email => 'E-mail';
 
   @override
@@ -47,6 +53,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pleaseEnterFullName => 'Veuillez entrer votre nom complet';
+
+  @override
+  String get pleaseEnterFirstName => 'Veuillez entrer votre prénom';
+
+  @override
+  String get pleaseEnterLastName => 'Veuillez entrer votre nom de famille';
+
+  @override
+  String get emailAlreadyExists => 'Cet e-mail est déjà enregistré';
 
   @override
   String get pleaseEnterEmail => 'Veuillez entrer votre e-mail';
@@ -63,6 +78,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get signUp => 'S\'inscrire';
+
+  @override
+  String get registrationFailed =>
+      'L\'inscription a échoué. Veuillez réessayer.';
+
+  @override
+  String get loginFailed => 'La connexion a échoué. Vérifiez vos identifiants.';
+
+  @override
+  String get noInternetConnection =>
+      'Pas de connexion internet. Veuillez réessayer plus tard.';
 
   @override
   String get alreadyHaveAccount => 'Vous avez déjà un compte ? Connexion';
@@ -881,6 +907,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get delete => 'Supprimer';
+
+  @override
+  String get save => 'Enregistrer';
 
   @override
   String get forgotPassword_title => 'Mot de passe oublié';
