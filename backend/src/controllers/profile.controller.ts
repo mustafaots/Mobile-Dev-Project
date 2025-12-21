@@ -8,6 +8,7 @@ import { ApiError } from '../utils/apiError';
 const updateProfileSchema = z.object({
   first_name: z.string().min(1).max(100).optional(),
   last_name: z.string().min(1).max(100).optional(),
+  phone: z.string().max(20).optional(),
 });
 
 class ProfileController {

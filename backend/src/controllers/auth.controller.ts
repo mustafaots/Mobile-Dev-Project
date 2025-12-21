@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { asyncHandler } from '../middleware';
-import { authService } from '../services';
+import { authService, usersService } from '../services';
 import { authSchemas } from '../models';
 import { ApiError } from '../utils/apiError';
 
@@ -22,7 +22,11 @@ class AuthController {
     if (!user) {
       throw new ApiError(401, 'Unauthorized.');
     }
-    res.json({ user });
+    
+    // Fetch the user's profile to include first_name and last_name
+    const profile = await usersService.getById(user.id);
+    
+    res.json({ user, profile });
   });
 
   forgotPassword = asyncHandler(async (req: Request, res: Response) => {
