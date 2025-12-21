@@ -44,6 +44,16 @@ class SharedPrefsService {
   static bool isFirstLaunch() => _repo.isFirstLaunch();
   static Future<bool> setFirstLaunchCompleted() => _repo.setFirstLaunchCompleted();
 
+  /// ============= AUTH TOKEN METHODS =============
+  static String? getAuthToken() => _repo.getAuthToken();
+  static Future<bool> setAuthToken(String token) => _repo.setAuthToken(token);
+  static String? getRefreshToken() => _repo.getRefreshToken();
+  static Future<bool> setRefreshToken(String token) => _repo.setRefreshToken(token);
+  static String? getUserId() => _repo.getUserId();
+  static Future<bool> setUserId(String userId) => _repo.setUserId(userId);
+  static Future<void> clearAuthData() => _repo.clearAuthData();
+  static bool hasAuthToken() => _repo.hasAuthToken();
+
   /// ============= UTILITY METHODS =============
   static Map<String, dynamic> getAllPreferences() => _repo.getAllPreferences();
   static Future<bool> clearAll() => _repo.clearAll();
