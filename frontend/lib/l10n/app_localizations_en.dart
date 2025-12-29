@@ -1431,4 +1431,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reloginHint =>
       'After changing your password, you may be asked to log in again.';
+
+  @override
+  String get selectDate_title => 'Select Dates';
+
+  @override
+  String get confirm_button => 'Confirm';
 }

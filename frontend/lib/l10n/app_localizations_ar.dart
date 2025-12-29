@@ -1421,4 +1421,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get reloginHint =>
       'بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get selectDate_title => 'اختر التواريخ';
+
+  @override
+  String get confirm_button => 'تأكيد';
 }

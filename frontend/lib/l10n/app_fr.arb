@@ -629,6 +629,9 @@
   "confirmNewPasswordLabel": "Confirmer le nouveau mot de passe",
   "updatePasswordButton": "Mettre à jour le mot de passe",
   "updatePasswordFailed": "Échec de la mise à jour du mot de passe",
-  "reloginHint": "Après avoir changé votre mot de passe, vous devrez peut-être vous reconnecter."
+  "reloginHint": "Après avoir changé votre mot de passe, vous devrez peut-être vous reconnecter.",
+
+  "selectDate_title": "Sélectionner les dates",
+  "confirm_button": "Confirmer"
 
 }
