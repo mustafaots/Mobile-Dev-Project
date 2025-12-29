@@ -37,6 +37,15 @@ class AuthController {
     const result = await authService.forgotPassword(email);
     res.json(result);
   });
+
+  resetPassword = asyncHandler(async (req: Request, res: Response) => {
+    const { token, new_password } = req.body;
+    if (!token || !new_password) {
+      throw new ApiError(400, 'Token and new password are required.');
+    }
+    const result = await authService.resetPassword(token, new_password);
+    res.json(result);
+  });
 }
 
 export const authController = new AuthController();

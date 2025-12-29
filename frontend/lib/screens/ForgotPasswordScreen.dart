@@ -5,37 +5,63 @@ import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_vacation/services/api/auth_service.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
-  void _handlePasswordReset(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      // Show success message
+  bool _isLoading = false;
+
+  void _handlePasswordReset(BuildContext context) async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final response = await AuthService.instance
+          .forgotPassword(_emailController.text.trim());
+
+      if (response.success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.data ??
+                AppLocalizations.of(context)!.forgotPassword_resetLink),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => const LoginScreen(),
+              transitionsBuilder: (_, animation, __, child) =>
+                  FadeTransition(opacity: animation, child: child),
+              transitionDuration: const Duration(milliseconds: 300),
+            ),
+            (route) => false,
+          );
+        });
+      } else {
+        throw response.message ?? 'Failed to send reset email';
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.forgotPassword_resetLink),
-          backgroundColor: Colors.green,
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
         ),
       );
-
-      // Navigate back to login after a short delay
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushAndRemoveUntil(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const LoginScreen(),
-            transitionsBuilder: (_, animation, __, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            transitionDuration: const Duration(milliseconds: 300),
-          ),
-          (route) => false,
-        );
-      });
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -133,7 +159,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                       if (value == null || value.trim().isEmpty) {
                         return loc.forgotPassword_emailEmptyError;
                       }
-                      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                       if (!emailRegex.hasMatch(value)) {
                         return loc.forgotPassword_emailInvalidError;
                       }
@@ -146,18 +173,28 @@ class ForgotPasswordScreen extends StatelessWidget {
 
             space(30),
 
-            // Send Reset Link Button
+            // Send Reset Link Button with loader
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: login_button_style.copyWith(
-                  minimumSize: WidgetStateProperty.all(const Size(0, 55)),
+                  minimumSize: MaterialStateProperty.all(const Size(0, 55)),
                 ),
-                onPressed: () => _handlePasswordReset(context),
-                child: Text(
-                  loc.forgotPassword_sendButton,
-                  style: login_text_style,
-                ),
+                onPressed:
+                    _isLoading ? null : () => _handlePasswordReset(context),
+                child: _isLoading
+                    ? SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        loc.forgotPassword_sendButton,
+                        style: login_text_style,
+                      ),
               ),
             ),
 
