@@ -213,6 +213,30 @@ class AuthService {
     }
   }
 
+
+  // change to a new password
+  Future<ApiResponse<String>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.auth}/change-password',
+        requiresAuth: true,
+        body: {
+          'current_password': currentPassword,
+          'new_password': newPassword,
+        },
+      );
+
+      final message = response['message'] ?? 'Password updated successfully';
+      return ApiResponse.success(message);
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+
   /// Logout user
   void logout() {
     _apiClient.clearAuthToken();

@@ -1,69 +1,73 @@
+import 'package:easy_vacation/screens/LoginScreen.dart';
+import 'package:easy_vacation/services/api/auth_service.dart';
+import 'package:flutter/material.dart';
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
-import 'package:flutter/material.dart';
-import 'package:easy_vacation/services/api/auth_service.dart';
-import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/LoginScreen.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  final String token;
-  const ResetPasswordScreen({super.key, required this.token});
+class ChangePasswordScreen extends StatefulWidget {
+  final dynamic userId;
+  const ChangePasswordScreen({super.key, this.userId});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmController = TextEditingController();
+
+  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
   bool _isLoading = false;
 
-  void _handleResetPassword() async {
-    if (!_formKey.currentState!.validate()) return;
-
+  void handleUpdatePassword() async {
+    if(!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
 
     try {
-      final response = await AuthService.instance.resetPassword(
-        token: widget.token,
-        newPassword: _passwordController.text.trim(),
+      final response = await AuthService.instance.changePassword(
+        currentPassword: _currentPasswordController.text.trim(),
+        newPassword: _newPasswordController.text.trim(),
       );
 
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.data ?? "Password updated successfully!"),
+            content: Text(response.data ?? 'Password updated successfully'),
             backgroundColor: Colors.green,
           ),
         );
 
+        // Security best practice: login again
         Future.delayed(const Duration(seconds: 2), () {
+          AuthService.instance.logout();
+
           Navigator.pushAndRemoveUntil(
             context,
-            PageRouteBuilder(
-              pageBuilder: (_, __, ___) => const LoginScreen(),
-              transitionsBuilder: (_, animation, __, child) =>
-                  FadeTransition(opacity: animation, child: child),
-              transitionDuration: const Duration(milliseconds: 300),
-            ),
+            MaterialPageRoute(builder: (_) => const LoginScreen()),
             (route) => false,
           );
         });
       } else {
-        throw response.message ?? "Failed to reset password";
+        throw response.message ?? 'Failed to update password';
       }
-    } catch (e) {
+    }
+    catch(e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
-      setState(() => _isLoading = false);
+    }
+    finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -72,78 +76,81 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Change Password",
+          style: header_1.copyWith(fontSize: 22),
+        )
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           children: [
-            space(40),
+            space(20),
 
             Row(
+              spacing: 20,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Reset Password",
-                        style: header_1.copyWith(fontSize: 28),
-                      ),
                       space(8),
                       Text(
-                        "Choose a strong password you haven’t used before.",
+                        "Update your password to keep your account secure.",
                         style: small_grey_text,
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: 90,
-                  height: 90,
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
+                    color: AppTheme.primaryColor.withOpacity(0.1),
                     shape: BoxShape.circle,
-                    image: const DecorationImage(
-                      image: AssetImage('assets/images/ev_icon.png'),
-                      fit: BoxFit.contain,
-                    ),
+                  ),
+                  child: Icon(
+                    Icons.lock_outline,
+                    size: 60,
+                    color: AppTheme.primaryColor,
                   ),
                 ),
               ],
             ),
 
-            space(40),
-
-            // Icon Illustration
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.lock_outline,
-                size: 60,
-                color: AppTheme.primaryColor,
-              ),
-            ),
-
             space(30),
 
-            // Form
+            // Form Section
             Form(
               key: _formKey,
               child: Column(
                 children: [
                   buildFormField(
                     context,
-                    controller: _passwordController,
-                    label: "New Password",
+                    controller: _currentPasswordController,
+                    label: "Current Password",
                     icon: Icons.lock,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "Password cannot be empty";
+                        return "Current password is required";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  space(20),
+
+                  buildFormField(
+                    context,
+                    controller: _newPasswordController,
+                    label: "New Password",
+                    icon: Icons.lock_outline,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "New password is required";
                       }
                       if (value.length < 6) {
                         return "Password must be at least 6 characters";
@@ -156,12 +163,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
                   buildFormField(
                     context,
-                    controller: _confirmController,
-                    label: "Confirm Password",
+                    controller: _confirmPasswordController,
+                    label: "Confirm New Password",
                     icon: Icons.lock_reset,
                     obscureText: true,
                     validator: (value) {
-                      if (value != _passwordController.text) {
+                      if (value != _newPasswordController.text) {
                         return "Passwords do not match";
                       }
                       return null;
@@ -173,14 +180,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
             space(30),
 
-            // Reset Button
+            // Update Button (no logic yet)
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: login_button_style.copyWith(
-                  minimumSize: MaterialStateProperty.all(const Size(0, 55)),
+                  minimumSize: MaterialStateProperty.all(
+                    const Size(0, 55),
+                  ),
                 ),
-                onPressed: _isLoading ? null : _handleResetPassword,
+                onPressed: _isLoading ? null : () {
+                  handleUpdatePassword();
+                },
                 child: _isLoading
                     ? const SizedBox(
                         height: 24,
@@ -191,15 +202,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                       )
                     : Text(
-                        "Reset Password",
+                        "Update Password",
                         style: login_text_style,
                       ),
               ),
             ),
 
-            space(30),
+            space(80),
 
-            // Security Hint
+            // Info Box
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -209,12 +220,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.security, color: Colors.blue[700], size: 20),
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.blue[700],
+                    size: 20,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "For security reasons, you’ll be redirected to login after updating your password.",
-                      style: TextStyle(fontSize: 12, color: Colors.blue[700]),
+                          "After changing your password, you may be asked to log in again.",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue[700],
+                      ),
                     ),
                   ),
                 ],
