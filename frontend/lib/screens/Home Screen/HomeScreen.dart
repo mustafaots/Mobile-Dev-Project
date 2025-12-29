@@ -8,6 +8,7 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import 'VehiclesScreen.dart';
 import 'StaysScreen.dart';
@@ -120,7 +121,7 @@ class __HomeContentState extends State<_HomeContent> {
   int selectedIndex = 0;
 
   String? selectedWilaya;
-  DateTime? selectedDate;
+  List<DateTime>? selectedDates;
   double? selectedPrice;
   String? selectedType;
 
@@ -130,6 +131,9 @@ class __HomeContentState extends State<_HomeContent> {
   bool changedType = false;
   
   late List<Widget> screens;
+
+  DateTime focused_Day = DateTime.now();
+
 
   @override
   void initState() {
@@ -245,7 +249,7 @@ class __HomeContentState extends State<_HomeContent> {
 
               const SizedBox(height: 10),
 
-              if (selectedWilaya != null || selectedDate != null || selectedPrice != null || selectedType != null)
+              if (selectedWilaya != null || selectedDates != null || selectedPrice != null || selectedType != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
                   child: SingleChildScrollView(
@@ -260,10 +264,10 @@ class __HomeContentState extends State<_HomeContent> {
                               changedWilaya = false;
                             });
                           }),
-                        if (selectedDate != null)
-                          _simpleChip(selectedDate!.toString().split(" ")[0], () {
+                        if (selectedDates != null)
+                          _simpleChip(selectedDates!.toString().split(" ")[0], () {
                             setState(() {
-                              selectedDate = null;
+                              selectedDates = null;
                               changedDate = false;
                             });
                           }),
@@ -354,7 +358,7 @@ class __HomeContentState extends State<_HomeContent> {
                   postCategory: post_type,
                   price: selectedPrice,
                   wilaya: selectedWilaya,
-                  date: selectedDate,
+                  date: selectedDates,
                   postType: selectedType,
                 )
               else screens[selectedIndex],
@@ -511,47 +515,112 @@ class __HomeContentState extends State<_HomeContent> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final softDarkSurface = const Color(0xFF1F1F1F);
 
-    DateTime? date = await showDatePicker(
+    List<DateTime>? result = await showModalBottomSheet<List<DateTime>>(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: isDark
-                ? ColorScheme.dark(
-                    primary: AppTheme.primaryColor,
-                    onPrimary: Colors.white,
-                    onSurface: Colors.white70,
-                    surface: softDarkSurface,
-                  )
-                : ColorScheme.light(
-                    primary: AppTheme.primaryColor,
-                    onPrimary: Colors.white,
-                    onSurface: Colors.black87,
-                    surface: Colors.white,
+      isScrollControlled: true,
+      backgroundColor: isDark ? softDarkSurface : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        List<DateTime> tempSelectedDates = List.from(selectedDates ?? []);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.selectDate_title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.close, color: isDark ? Colors.white70 : Colors.black87),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
                   ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: AppTheme.primaryColor,
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: TableCalendar(
+                      locale: AppLocalizations.of(context)!.localeName,
+                      firstDay: DateTime.now(),
+                      lastDay: DateTime(2030, 12, 31),
+                      focusedDay: focused_Day,
+                      selectedDayPredicate: (day) => tempSelectedDates.contains(day),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          focused_Day = focusedDay;
+                          if (tempSelectedDates.contains(selectedDay)) {
+                            tempSelectedDates.remove(selectedDay);
+                          } else {
+                            tempSelectedDates.add(selectedDay);
+                          }
+                        });
+                      },
+                      calendarStyle: CalendarStyle(
+                        selectedDecoration: BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        todayDecoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withOpacity(0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        weekendTextStyle: TextStyle(color: AppTheme.primaryColor),
+                        defaultTextStyle: TextStyle(color: isDark ? Colors.white70 : Colors.black87),
+                      ),
+                      headerStyle: HeaderStyle(
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                        titleTextStyle: TextStyle(
+                          color: AppTheme.primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        leftChevronIcon: Icon(Icons.chevron_left, color: AppTheme.primaryColor),
+                        rightChevronIcon: Icon(Icons.chevron_right, color: AppTheme.primaryColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context, tempSelectedDates),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      backgroundColor: AppTheme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.confirm_button,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          child: child!,
+            );
+          },
         );
       },
     );
 
-    if (date != null) {
+    if (result != null) {
       setState(() {
-        selectedDate = date;
-        changedDate = selectedDate != null;
+        selectedDates = result;
+        changedDate = selectedDates!.isNotEmpty;
       });
-      print("Selected date: $date");
+      print("Selected dates: $selectedDates");
     }
   }
 

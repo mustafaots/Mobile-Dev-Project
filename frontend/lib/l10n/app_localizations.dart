@@ -2781,6 +2781,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'After changing your password, you may be asked to log in again.'**
   String get reloginHint;
+
+  /// No description provided for @selectDate_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Dates'**
+  String get selectDate_title;
+
+  /// No description provided for @confirm_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm_button;
 }
 
 class _AppLocalizationsDelegate

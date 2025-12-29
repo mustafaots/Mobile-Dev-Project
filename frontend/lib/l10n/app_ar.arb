@@ -630,6 +630,9 @@
   "confirmNewPasswordLabel": "تأكيد كلمة المرور الجديدة",
   "updatePasswordButton": "تحديث كلمة المرور",
   "updatePasswordFailed": "فشل في تحديث كلمة المرور",
-  "reloginHint": "بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى."
+  "reloginHint": "بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى.",
+
+  "selectDate_title": "اختر التواريخ",
+  "confirm_button": "تأكيد"
 
 }

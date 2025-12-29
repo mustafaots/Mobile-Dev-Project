@@ -629,5 +629,9 @@
     "confirmNewPasswordLabel": "Confirm New Password",
     "updatePasswordButton": "Update Password",
     "updatePasswordFailed": "Failed to update password",
-    "reloginHint": "After changing your password, you may be asked to log in again."
+    "reloginHint": "After changing your password, you may be asked to log in again.",
+
+
+    "selectDate_title": "Select Dates",
+    "confirm_button": "Confirm"
 }

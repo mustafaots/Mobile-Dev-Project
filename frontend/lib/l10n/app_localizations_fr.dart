@@ -1457,4 +1457,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get reloginHint =>
       'Après avoir changé votre mot de passe, vous devrez peut-être vous reconnecter.';
+
+  @override
+  String get selectDate_title => 'Sélectionner les dates';
+
+  @override
+  String get confirm_button => 'Confirmer';
 }
