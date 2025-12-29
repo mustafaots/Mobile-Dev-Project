@@ -1367,4 +1367,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get home_screen_choose_type => 'choose type';
+
+  @override
+  String get resetPasswordTitle => 'Reset Password';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Choose a strong password you haven’t used before.';
+
+  @override
+  String get newPasswordLabel => 'New Password';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm Password';
+
+  @override
+  String get passwordEmptyError => 'Password cannot be empty';
+
+  @override
+  String get passwordLengthError => 'Password must be at least 6 characters';
+
+  @override
+  String get passwordMismatchError => 'Passwords do not match';
+
+  @override
+  String get resetPasswordButton => 'Reset Password';
+
+  @override
+  String get passwordUpdatedSuccess => 'Password updated successfully';
+
+  @override
+  String get resetPasswordFailed => 'Failed to reset password';
+
+  @override
+  String get securityRedirectHint =>
+      'For security reasons, you’ll be redirected to login after updating your password.';
+
+  @override
+  String get changePasswordTitle => 'Change Password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Update your password to keep your account secure.';
+
+  @override
+  String get currentPasswordLabel => 'Current Password';
+
+  @override
+  String get currentPasswordRequiredError => 'Current password is required';
+
+  @override
+  String get newPasswordRequiredError => 'New password is required';
+
+  @override
+  String get confirmNewPasswordLabel => 'Confirm New Password';
+
+  @override
+  String get updatePasswordButton => 'Update Password';
+
+  @override
+  String get updatePasswordFailed => 'Failed to update password';
+
+  @override
+  String get reloginHint =>
+      'After changing your password, you may be asked to log in again.';
 }

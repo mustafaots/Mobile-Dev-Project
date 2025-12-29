@@ -37,7 +37,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.data ?? 'Password updated successfully'),
+            content: Text(response.data ?? AppLocalizations.of(context)!.passwordUpdatedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -53,7 +53,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           );
         });
       } else {
-        throw response.message ?? 'Failed to update password';
+        throw response.message ?? AppLocalizations.of(context)!.updatePasswordFailed;
       }
     }
     catch(e) {
@@ -78,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Change Password",
+          loc.changePasswordTitle,
           style: header_1.copyWith(fontSize: 22),
         )
       ),
@@ -98,7 +98,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     children: [
                       space(8),
                       Text(
-                        "Update your password to keep your account secure.",
+                        loc.changePasswordSubtitle,
                         style: small_grey_text,
                       ),
                     ],
@@ -129,12 +129,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   buildFormField(
                     context,
                     controller: _currentPasswordController,
-                    label: "Current Password",
+                    label: loc.currentPasswordLabel,
                     icon: Icons.lock,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "Current password is required";
+                        return loc.currentPasswordRequiredError;
                       }
                       return null;
                     },
@@ -145,15 +145,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   buildFormField(
                     context,
                     controller: _newPasswordController,
-                    label: "New Password",
+                    label: loc.newPasswordLabel,
                     icon: Icons.lock_outline,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "New password is required";
+                        return loc.newPasswordRequiredError;
                       }
                       if (value.length < 6) {
-                        return "Password must be at least 6 characters";
+                        return loc.passwordLengthError;
                       }
                       return null;
                     },
@@ -164,12 +164,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   buildFormField(
                     context,
                     controller: _confirmPasswordController,
-                    label: "Confirm New Password",
+                    label: loc.confirmNewPasswordLabel,
                     icon: Icons.lock_reset,
                     obscureText: true,
                     validator: (value) {
                       if (value != _newPasswordController.text) {
-                        return "Passwords do not match";
+                        return loc.passwordMismatchError;
                       }
                       return null;
                     },
@@ -202,7 +202,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         ),
                       )
                     : Text(
-                        "Update Password",
+                        loc.updatePasswordButton,
                         style: login_text_style,
                       ),
               ),
@@ -228,7 +228,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                          "After changing your password, you may be asked to log in again.",
+                        loc.reloginHint,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blue[700],

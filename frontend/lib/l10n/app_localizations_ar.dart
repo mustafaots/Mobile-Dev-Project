@@ -1357,4 +1357,68 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get home_screen_choose_type => 'اختر النوع';
+
+  @override
+  String get resetPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordSubtitle => 'اختر كلمة مرور قوية لم تستخدمها من قبل.';
+
+  @override
+  String get newPasswordLabel => 'كلمة المرور الجديدة';
+
+  @override
+  String get confirmPasswordLabel => 'تأكيد كلمة المرور';
+
+  @override
+  String get passwordEmptyError => 'لا يمكن أن تكون كلمة المرور فارغة';
+
+  @override
+  String get passwordLengthError =>
+      'يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل';
+
+  @override
+  String get passwordMismatchError => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get resetPasswordButton => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get passwordUpdatedSuccess => 'تم تحديث كلمة المرور بنجاح!';
+
+  @override
+  String get resetPasswordFailed => 'فشل في إعادة تعيين كلمة المرور';
+
+  @override
+  String get securityRedirectHint =>
+      'لأسباب أمنية، سيتم توجيهك إلى تسجيل الدخول بعد تحديث كلمة المرور.';
+
+  @override
+  String get changePasswordTitle => 'تغيير كلمة المرور';
+
+  @override
+  String get changePasswordSubtitle =>
+      'قم بتحديث كلمة المرور للحفاظ على أمان حسابك.';
+
+  @override
+  String get currentPasswordLabel => 'كلمة المرور الحالية';
+
+  @override
+  String get currentPasswordRequiredError => 'كلمة المرور الحالية مطلوبة';
+
+  @override
+  String get newPasswordRequiredError => 'كلمة المرور الجديدة مطلوبة';
+
+  @override
+  String get confirmNewPasswordLabel => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get updatePasswordButton => 'تحديث كلمة المرور';
+
+  @override
+  String get updatePasswordFailed => 'فشل في تحديث كلمة المرور';
+
+  @override
+  String get reloginHint =>
+      'بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى.';
 }

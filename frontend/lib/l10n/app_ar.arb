@@ -606,6 +606,30 @@
   "time_validation_error": "يجب أن يكون وقت الانتهاء بعد وقت البدء",
 
    
-  "home_screen_choose_type": "اختر النوع"
+  "home_screen_choose_type": "اختر النوع",
+
+
+  "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+  "resetPasswordSubtitle": "اختر كلمة مرور قوية لم تستخدمها من قبل.",
+  "newPasswordLabel": "كلمة المرور الجديدة",
+  "confirmPasswordLabel": "تأكيد كلمة المرور",
+  "passwordEmptyError": "لا يمكن أن تكون كلمة المرور فارغة",
+  "passwordLengthError": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
+  "passwordMismatchError": "كلمتا المرور غير متطابقتين",
+  "resetPasswordButton": "إعادة تعيين كلمة المرور",
+  "passwordUpdatedSuccess": "تم تحديث كلمة المرور بنجاح!",
+  "resetPasswordFailed": "فشل في إعادة تعيين كلمة المرور",
+  "securityRedirectHint": "لأسباب أمنية، سيتم توجيهك إلى تسجيل الدخول بعد تحديث كلمة المرور.",
+
+
+  "changePasswordTitle": "تغيير كلمة المرور",
+  "changePasswordSubtitle": "قم بتحديث كلمة المرور للحفاظ على أمان حسابك.",
+  "currentPasswordLabel": "كلمة المرور الحالية",
+  "currentPasswordRequiredError": "كلمة المرور الحالية مطلوبة",
+  "newPasswordRequiredError": "كلمة المرور الجديدة مطلوبة",
+  "confirmNewPasswordLabel": "تأكيد كلمة المرور الجديدة",
+  "updatePasswordButton": "تحديث كلمة المرور",
+  "updatePasswordFailed": "فشل في تحديث كلمة المرور",
+  "reloginHint": "بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى."
 
 }

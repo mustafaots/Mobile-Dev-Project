@@ -1390,4 +1390,71 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get home_screen_choose_type => 'choisir le type';
+
+  @override
+  String get resetPasswordTitle => 'Réinitialiser le mot de passe';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Choisissez un mot de passe fort que vous n’avez jamais utilisé auparavant.';
+
+  @override
+  String get newPasswordLabel => 'Nouveau mot de passe';
+
+  @override
+  String get confirmPasswordLabel => 'Confirmer le mot de passe';
+
+  @override
+  String get passwordEmptyError => 'Le mot de passe ne peut pas être vide';
+
+  @override
+  String get passwordLengthError =>
+      'Le mot de passe doit contenir au moins 6 caractères';
+
+  @override
+  String get passwordMismatchError => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get resetPasswordButton => 'Réinitialiser le mot de passe';
+
+  @override
+  String get passwordUpdatedSuccess => 'Mot de passe mis à jour avec succès';
+
+  @override
+  String get resetPasswordFailed =>
+      'Échec de la réinitialisation du mot de passe';
+
+  @override
+  String get securityRedirectHint =>
+      'Pour des raisons de sécurité, vous serez redirigé vers la connexion après la mise à jour de votre mot de passe.';
+
+  @override
+  String get changePasswordTitle => 'Changer le mot de passe';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Mettez à jour votre mot de passe pour sécuriser votre compte.';
+
+  @override
+  String get currentPasswordLabel => 'Mot de passe actuel';
+
+  @override
+  String get currentPasswordRequiredError =>
+      'Le mot de passe actuel est requis';
+
+  @override
+  String get newPasswordRequiredError => 'Le nouveau mot de passe est requis';
+
+  @override
+  String get confirmNewPasswordLabel => 'Confirmer le nouveau mot de passe';
+
+  @override
+  String get updatePasswordButton => 'Mettre à jour le mot de passe';
+
+  @override
+  String get updatePasswordFailed => 'Échec de la mise à jour du mot de passe';
+
+  @override
+  String get reloginHint =>
+      'Après avoir changé votre mot de passe, vous devrez peut-être vous reconnecter.';
 }
