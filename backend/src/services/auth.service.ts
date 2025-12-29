@@ -87,6 +87,29 @@ class AuthService {
 
     return { message: 'Password updated successfully.' };
   }
+
+
+  async changePassword(userId: string, email: string, currentPassword: string, newPassword: string) {
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password: currentPassword,
+    });
+
+    if (signInError) {
+      throw new ApiError(401, 'Current password is incorrect.');
+    }
+
+    // Update password
+    const { error } = await supabase.auth.admin.updateUserById(userId, {
+      password: newPassword,
+    });
+
+    if (error) {
+      throw new ApiError(400, 'Unable to update password.', error.message);
+    }
+
+    return { message: 'Password changed successfully.' };
+  }
 }
 
 export const authService = new AuthService();

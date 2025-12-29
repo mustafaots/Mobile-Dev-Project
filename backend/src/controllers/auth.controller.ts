@@ -46,6 +46,27 @@ class AuthController {
     const result = await authService.resetPassword(token, new_password);
     res.json(result);
   });
+
+  changePassword = asyncHandler(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+
+    if (!user) {
+      throw new ApiError(401, 'Unauthorized.');
+    }
+    const { current_password, new_password } = req.body;
+    if (!current_password || !new_password) {
+      throw new ApiError(400, 'Current and new passwords are required.');
+    }
+
+    const result = await authService.changePassword(
+      user.id,
+      user.email,
+      current_password,
+      new_password
+    );
+
+    res.json(result);
+  });
 }
 
 export const authController = new AuthController();

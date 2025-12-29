@@ -2,6 +2,7 @@ import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/screens/EditProfileChangePassword.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
 import 'package:easy_vacation/services/sync/connectivity_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -347,6 +348,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       title: loc.editProfile_changePassword,
                       onTap: () {
                         // Navigate to change password screen
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => ChangePasswordScreen(userId: widget.userId,),
+                            transitionsBuilder: (_, animation, __, child) =>
+                                FadeTransition(opacity: animation, child: child),
+                            transitionDuration: const Duration(milliseconds: 300),
+                          ),
+                        );
                       },
                     ),
                     _buildOptionTile(
