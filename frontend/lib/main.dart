@@ -1,5 +1,5 @@
 import 'package:easy_vacation/screens/WelcomeScreen.dart';
-import 'package:easy_vacation/screens/SignUpScreen.dart'; // Add your SignUpScreen import
+import 'package:easy_vacation/screens/SignUpScreen.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
@@ -10,9 +10,12 @@ import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
+import 'package:easy_vacation/utils/deep_link_handler.dart';
 
 
 late Map<String, dynamic> appRepos;
+
+final GlobalKey<NavigatorState> navigator_key = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,9 +57,17 @@ class _MainAppState extends State<MainApp> {
     _loadSavedSettings();
     // Defer session check to after first frame to avoid "Build scheduled during frame" error
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      DeepLinkHandler.init(context);
       _checkStoredSession();
     });
   }
+
+  @override
+  void dispose() {
+    DeepLinkHandler.dispose();
+    super.dispose();
+  }
+
 
   void _loadSavedSettings() {
     // Load saved language from SharedPreferences (no setState here, just update directly)
@@ -115,6 +126,7 @@ class _MainAppState extends State<MainApp> {
       child: BlocBuilder<ThemeCubit, ThemeData>(
         builder: (context, themeData) {
           return MaterialApp(
+            navigatorKey: navigator_key,
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

@@ -2,6 +2,7 @@ import supabase from '../config/supabase';
 import { ApiError } from '../utils/apiError';
 import { LoginInput, RegisterInput } from '../models';
 import { usersService } from './users.service';
+import { createClient } from '@supabase/supabase-js';
 
 class AuthService {
   async register(payload: RegisterInput) {
@@ -54,7 +55,7 @@ class AuthService {
 
   async forgotPassword(email: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password`,
+      redirectTo: 'easyvacation://reset-password',
     });
 
     if (error) {
@@ -62,6 +63,29 @@ class AuthService {
     }
 
     return { message: 'Password reset email sent successfully.' };
+  }
+
+
+  async resetPassword(token: string, newPassword: string) {
+    // Create client with service_role key (server only!)
+    const supabaseAdmin = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY! // Must be server-side
+    );
+
+    // Get user from token
+    const { data: userData, error: getUserError } = await supabaseAdmin.auth.getUser(token);
+    if (getUserError || !userData.user) {
+      throw new ApiError(400, 'Invalid or expired token.');
+    }
+    const userId = userData.user.id;
+    // Reset password using admin API
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+      password: newPassword,
+    });
+    if (error) throw new ApiError(400, 'Unable to reset password.', error.message);
+
+    return { message: 'Password updated successfully.' };
   }
 }
 

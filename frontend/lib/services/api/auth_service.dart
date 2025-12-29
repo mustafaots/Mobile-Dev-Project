@@ -187,6 +187,32 @@ class AuthService {
     }
   }
 
+
+  /// Reset password using the link sent via email
+  Future<ApiResponse<String>> resetPassword({
+    required String token,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.auth}/reset-password',
+        body: {
+          'token': token,
+          'new_password': newPassword,
+        },
+      );
+
+      // Safely extract message whether response is Map or String
+      final message = response is Map<String, dynamic>
+          ? response['message'] ?? 'Password updated successfully'
+          : response.toString();
+
+      return ApiResponse.success(message);
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
   /// Logout user
   void logout() {
     _apiClient.clearAuthToken();
