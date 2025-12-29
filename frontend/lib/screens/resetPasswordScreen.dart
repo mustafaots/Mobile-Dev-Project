@@ -35,7 +35,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       if (response.success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.data ?? "Password updated successfully!"),
+            content: Text(response.data ?? AppLocalizations.of(context)!.passwordUpdatedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -53,7 +53,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           );
         });
       } else {
-        throw response.message ?? "Failed to reset password";
+        throw response.message ?? AppLocalizations.of(context)!.resetPasswordFailed;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -86,12 +86,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Reset Password",
+                        loc.resetPasswordTitle,
                         style: header_1.copyWith(fontSize: 28),
                       ),
                       space(8),
                       Text(
-                        "Choose a strong password you haven’t used before.",
+                        loc.resetPasswordSubtitle,
                         style: small_grey_text,
                       ),
                     ],
@@ -138,15 +138,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   buildFormField(
                     context,
                     controller: _passwordController,
-                    label: "New Password",
+                    label: loc.newPasswordLabel,
                     icon: Icons.lock,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "Password cannot be empty";
+                        return loc.passwordEmptyError;
                       }
                       if (value.length < 6) {
-                        return "Password must be at least 6 characters";
+                        return loc.passwordLengthError;
                       }
                       return null;
                     },
@@ -157,12 +157,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   buildFormField(
                     context,
                     controller: _confirmController,
-                    label: "Confirm Password",
+                    label: loc.confirmPasswordLabel,
                     icon: Icons.lock_reset,
                     obscureText: true,
                     validator: (value) {
                       if (value != _passwordController.text) {
-                        return "Passwords do not match";
+                        return loc.passwordMismatchError;
                       }
                       return null;
                     },
@@ -191,7 +191,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                       )
                     : Text(
-                        "Reset Password",
+                        loc.resetPasswordTitle,
                         style: login_text_style,
                       ),
               ),
@@ -213,7 +213,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      "For security reasons, you’ll be redirected to login after updating your password.",
+                      loc.securityRedirectHint,
                       style: TextStyle(fontSize: 12, color: Colors.blue[700]),
                     ),
                   ),

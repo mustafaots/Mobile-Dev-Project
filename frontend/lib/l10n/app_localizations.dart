@@ -2661,6 +2661,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'choose type'**
   String get home_screen_choose_type;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a strong password you haven’t used before.'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPasswordLabel;
+
+  /// No description provided for @confirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPasswordLabel;
+
+  /// No description provided for @passwordEmptyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password cannot be empty'**
+  String get passwordEmptyError;
+
+  /// No description provided for @passwordLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordLengthError;
+
+  /// No description provided for @passwordMismatchError.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordMismatchError;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordButton;
+
+  /// No description provided for @passwordUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated successfully'**
+  String get passwordUpdatedSuccess;
+
+  /// No description provided for @resetPasswordFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to reset password'**
+  String get resetPasswordFailed;
+
+  /// No description provided for @securityRedirectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For security reasons, you’ll be redirected to login after updating your password.'**
+  String get securityRedirectHint;
+
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePasswordTitle;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your password to keep your account secure.'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @currentPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPasswordLabel;
+
+  /// No description provided for @currentPasswordRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password is required'**
+  String get currentPasswordRequiredError;
+
+  /// No description provided for @newPasswordRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'New password is required'**
+  String get newPasswordRequiredError;
+
+  /// No description provided for @confirmNewPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirmNewPasswordLabel;
+
+  /// No description provided for @updatePasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get updatePasswordButton;
+
+  /// No description provided for @updatePasswordFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update password'**
+  String get updatePasswordFailed;
+
+  /// No description provided for @reloginHint.
+  ///
+  /// In en, this message translates to:
+  /// **'After changing your password, you may be asked to log in again.'**
+  String get reloginHint;
 }
 
 class _AppLocalizationsDelegate

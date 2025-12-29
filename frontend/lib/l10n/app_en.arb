@@ -605,5 +605,29 @@
     "time_validation_error": "End time must be after start time",
 
 
-    "home_screen_choose_type": "choose type"
+    "home_screen_choose_type": "choose type",
+
+
+    "resetPasswordTitle": "Reset Password",
+    "resetPasswordSubtitle": "Choose a strong password you haven’t used before.",
+    "newPasswordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "passwordEmptyError": "Password cannot be empty",
+    "passwordLengthError": "Password must be at least 6 characters",
+    "passwordMismatchError": "Passwords do not match",
+    "resetPasswordButton": "Reset Password",
+    "passwordUpdatedSuccess": "Password updated successfully",
+    "resetPasswordFailed": "Failed to reset password",
+    "securityRedirectHint": "For security reasons, you’ll be redirected to login after updating your password.",
+
+
+    "changePasswordTitle": "Change Password",
+    "changePasswordSubtitle": "Update your password to keep your account secure.",
+    "currentPasswordLabel": "Current Password",
+    "currentPasswordRequiredError": "Current password is required",
+    "newPasswordRequiredError": "New password is required",
+    "confirmNewPasswordLabel": "Confirm New Password",
+    "updatePasswordButton": "Update Password",
+    "updatePasswordFailed": "Failed to update password",
+    "reloginHint": "After changing your password, you may be asked to log in again."
 }
