@@ -1,7 +1,5 @@
-import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/main.dart';
-import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
 import 'package:easy_vacation/services/sync/sync_manager.dart';
@@ -19,64 +17,57 @@ class StaysScreen extends StatefulWidget {
 
 class _StaysScreenState extends State<StaysScreen> {
   late Future<List<Listing>> _staysFuture;
-  final Map<int, Widget> _imageCache = {};
 
   @override
   void initState() {
     super.initState();
-    _staysFuture = SyncManager.instance.listings.getListingsByCategory('stay');
+    // Force refresh to ensure we get the latest data with images
+    _staysFuture = SyncManager.instance.listings.getListingsByCategory('stay', forceRefresh: true);
   }
 
-  Future<Widget> getPostImageWidget(
-    int postId,
-    int cache_w,
-    int cache_h,
-    double width,
-    double height,
-  ) async {
-    // Check image cache first
-    if (_imageCache.containsKey(postId)) {
-      return _imageCache[postId]!;
+  /// Build image widget from Cloudinary URL or fallback
+  Widget _buildListingImage(Listing listing, double width, double height) {
+    print('🖼️ StaysScreen._buildListingImage for listing ${listing.id}: ${listing.images.length} images');
+    if (listing.images.isNotEmpty) {
+      print('🖼️ First image URL: ${listing.images.first}');
     }
     
-    final imageRepo = appRepos['imageRepo'] as PostImagesRepository;
-    final imageRow = await imageRepo.getImageByPostId(postId);
-
-    Widget imageWidget;
-    if (imageRow != null) {
-      final bytes = imageRow['image'] as Uint8List;
-      imageWidget = Image.memory(
-        bytes,
+    // Check if listing has Cloudinary images
+    if (listing.images.isNotEmpty) {
+      final imageUrl = listing.images.first;
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
         width: width,
         height: height,
         fit: BoxFit.cover,
-        cacheWidth: cache_w,
-        cacheHeight: cache_h,
-      );
-    } else {
-      // Fallback image if no image in DB
-      imageWidget = Image.asset(
-        'assets/images/apar2.jpg',
-        width: width,
-        height: height,
-        fit: BoxFit.cover,
-        cacheHeight: cache_h,
-        cacheWidth: cache_w,
+        placeholder: (context, url) => Container(
+          width: width,
+          height: height,
+          color: Colors.grey[200],
+          child: const Center(child: CircularProgressIndicator()),
+        ),
+        errorWidget: (context, url, error) => Image.asset(
+          'assets/images/no_image.png',
+          width: width,
+          height: height,
+          fit: BoxFit.cover,
+        ),
       );
     }
     
-    _imageCache[postId] = imageWidget;
-    return imageWidget;
+    // Fallback to placeholder image
+    return Image.asset(
+      'assets/images/no_image.png',
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final dpr = MediaQuery.of(context).devicePixelRatio;
-    final cardCacheW = (260 * dpr).toInt();
-    final cardCacheH = (200 * dpr).toInt();
-    final fullWidthCache = (MediaQuery.of(context).size.width * dpr).toInt();
     final loc = AppLocalizations.of(context)!;
 
     return FutureBuilder<List<Listing>>(
@@ -164,33 +155,7 @@ class _StaysScreenState extends State<StaysScreen> {
                               aspectRatio: 260 / 170,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: FutureBuilder<Widget>(
-                                  future: getPostImageWidget(
-                                    listing.id!,
-                                    cardCacheW,
-                                    cardCacheH,
-                                    260,
-                                    170,
-                                  ),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                    if (!snapshot.hasData) {
-                                      return Image.asset(
-                                        'assets/images/no_image.png',
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        fit: BoxFit.cover,
-                                        alignment: Alignment.center,
-                                      );
-                                    }
-                                    return snapshot.data!;
-                                  },
-                                ),
+                                child: _buildListingImage(listing, 260, 170),
                               ),
                             ),
                             ListTile(
@@ -283,33 +248,7 @@ class _StaysScreenState extends State<StaysScreen> {
                                     200,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: FutureBuilder<Widget>(
-                                    future: getPostImageWidget(
-                                      listing.id!,
-                                      fullWidthCache,
-                                      cardCacheH,
-                                      double.infinity,
-                                      200,
-                                    ),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                      if (!snapshot.hasData) {
-                                        return Image.asset(
-                                          'assets/images/no_image.png',
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.center,
-                                        );
-                                      }
-                                      return snapshot.data!;
-                                    },
-                                  ),
+                                  child: _buildListingImage(listing, double.infinity, 200),
                                 ),
                               ),
                               ListTile(

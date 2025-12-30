@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/models/posts.model.dart';
@@ -10,6 +14,7 @@ import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'package:easy_vacation/services/sync/connectivity_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 
 class PostCreationService {
   Future<bool> createPost({
@@ -26,10 +31,11 @@ class PostCreationService {
       if (hasInternet) {
         // Try to create on backend first (syncs to Supabase)
         print('📡 Creating post on backend...');
-        final listing = _createListingFromPostData(postData, userId);
+        final listing = await _createListingFromPostData(postData, userId);
         
         // Debug: print the listing data being sent
         print('📦 Listing data: ${listing.toJson()}');
+        print('📸 Images count: ${listing.images.length}');
         
         final result = await ApiServiceLocator.listings.createListing(listing);
         
@@ -83,7 +89,7 @@ class PostCreationService {
   }
 
   /// Create a Listing object from CreatePostData for the API
-  Listing _createListingFromPostData(CreatePostData postData, String userId) {
+  Future<Listing> _createListingFromPostData(CreatePostData postData, String userId) async {
     // Convert location
     final location = loc_model.Location.fromDetailsLocation(postData.location);
     
@@ -137,6 +143,10 @@ class PostCreationService {
           .toString();
     }
     
+    // Convert images to base64 for Cloudinary upload
+    final List<String> base64Images = await _convertImagesToBase64(postData.imagePaths);
+    print('📸 Converted ${base64Images.length} images to base64');
+    
     return Listing(
       ownerId: userId,
       category: postData.category,
@@ -149,10 +159,77 @@ class PostCreationService {
       stayDetails: stayDetails,
       vehicleDetails: vehicleDetails,
       activityDetails: activityDetails,
-      // Don't send local file paths - they need to be converted to base64 first
-      // TODO: Implement proper image upload with base64 conversion
-      images: [], // Skip images for now to avoid upload errors
+      images: base64Images, // Send base64 images for Cloudinary upload
     );
+  }
+  
+  /// Convert local image file paths to base64 strings for upload
+  /// Images are compressed to reduce upload size
+  Future<List<String>> _convertImagesToBase64(List<String> imagePaths) async {
+    final List<String> base64Images = [];
+    
+    for (final path in imagePaths) {
+      try {
+        final file = File(path);
+        if (await file.exists()) {
+          final bytes = await file.readAsBytes();
+          final originalSize = bytes.length;
+          
+          // Compress the image
+          Uint8List compressedBytes = await _compressImage(bytes);
+          
+          final base64String = base64Encode(compressedBytes);
+          
+          // Create data URI format for Cloudinary (always JPEG after compression)
+          final dataUri = 'data:image/jpeg;base64,$base64String';
+          base64Images.add(dataUri);
+          
+          final compressedSize = compressedBytes.length;
+          final savings = ((originalSize - compressedSize) / originalSize * 100).toStringAsFixed(1);
+          print('📸 Compressed image: $path (${originalSize ~/ 1024}KB → ${compressedSize ~/ 1024}KB, saved $savings%)');
+        } else {
+          print('⚠️ Image file not found: $path');
+        }
+      } catch (e) {
+        print('❌ Error converting image $path: $e');
+      }
+    }
+    
+    return base64Images;
+  }
+  
+  /// Compress image to reduce file size
+  Future<Uint8List> _compressImage(Uint8List bytes) async {
+    try {
+      // Decode the image
+      final image = img.decodeImage(bytes);
+      if (image == null) {
+        print('⚠️ Could not decode image, using original');
+        return bytes;
+      }
+      
+      // Resize if too large (max 1920px on longest side)
+      const maxDimension = 1920;
+      img.Image resized;
+      
+      if (image.width > maxDimension || image.height > maxDimension) {
+        if (image.width > image.height) {
+          resized = img.copyResize(image, width: maxDimension);
+        } else {
+          resized = img.copyResize(image, height: maxDimension);
+        }
+        print('📐 Resized from ${image.width}x${image.height} to ${resized.width}x${resized.height}');
+      } else {
+        resized = image;
+      }
+      
+      // Encode as JPEG with 80% quality
+      final compressed = img.encodeJpg(resized, quality: 80);
+      return Uint8List.fromList(compressed);
+    } catch (e) {
+      print('⚠️ Compression failed, using original: $e');
+      return bytes;
+    }
   }
 
   /// Save a local copy after successful backend creation
