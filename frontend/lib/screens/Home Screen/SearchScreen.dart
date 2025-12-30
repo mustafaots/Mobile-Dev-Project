@@ -29,7 +29,8 @@ class SearchScreen extends StatelessWidget {
     print('price: $price');
     print('wilaya: $wilaya');
     return await postRepo.getPostsFiltered(
-      wilaya: wilaya, category: postCategory, maxPrice: price, type: postType
+      wilaya: wilaya, category: postCategory, maxPrice: price,
+      type: postType, dates: date
     );
   }
 
@@ -54,7 +55,7 @@ class SearchScreen extends StatelessWidget {
     } else {
       // Fallback image if no image in DB
       return Image.asset(
-        'assets/images/apar2.jpg',
+        'assets/images/no_image.png',
         width: width,
         height: height,
         fit: BoxFit.cover,

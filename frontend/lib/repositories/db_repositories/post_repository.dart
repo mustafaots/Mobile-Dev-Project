@@ -62,12 +62,13 @@ class PostRepository {
     return results.map((map) => Post.fromMap(map)).toList();
   }
 
-  // get posts by filters(wilaya, price, type)
+  // get posts by filters(wilaya, price, type and availability)
   Future<List<Post>> getPostsFiltered({
     String? wilaya,
     double? maxPrice,
     String? category,
     String? type,
+    List<DateTime>? dates
   }) async {
     String query = '''
       SELECT DISTINCT p.*
@@ -105,6 +106,25 @@ class PostRepository {
         conditions.add('a.activity_type = ?');
         args.add(type);
       }
+    }
+
+    if (dates != null && dates.isNotEmpty) {
+      final sorted = [...dates]..sort();
+      final start = sorted.first;
+      final end = sorted.last;
+
+      conditions.add('''
+        EXISTS (
+          SELECT 1
+          FROM json_each(p.availability) AS av
+          WHERE
+            json_extract(av.value, '\$.startDate') <= ?
+            AND json_extract(av.value, '\$.endDate') >= ?
+        )
+      ''');
+
+      args.add(end.toIso8601String());
+      args.add(start.toIso8601String());
     }
 
     if (conditions.isNotEmpty) {
