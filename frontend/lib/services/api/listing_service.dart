@@ -44,29 +44,106 @@ class Listing {
   });
 
   factory Listing.fromJson(Map<String, dynamic> json) {
-    return Listing(
-      id: json['id'],
-      ownerId: json['owner_id']?.toString() ?? '',
-      category: json['category'] ?? 'stay',
-      title: json['title'] ?? '',
-      description: json['description'],
-      price: (json['price'] ?? 0).toDouble(),
-      status: json['status'] ?? 'draft',
-      availability: json['availability'],
-      location: Location.fromMap(json['location'] ?? {}),
-      stayDetails: json['stay_details'] != null 
-          ? Stay.fromMap({...json['stay_details'], 'post_id': json['id'] ?? 0})
-          : null,
-      vehicleDetails: json['vehicle_details'] != null 
-          ? Vehicle.fromMap({...json['vehicle_details'], 'post_id': json['id'] ?? 0})
-          : null,
-      activityDetails: json['activity_details'] != null 
-          ? Activity.fromMap({...json['activity_details'], 'post_id': json['id'] ?? 0})
-          : null,
-      images: (json['images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
-    );
+    try {
+      print('🏠 Listing.fromJson parsing id=${json['id']}, images=${json['images']}');
+      
+      // Parse images - can be array of strings (URLs) or array of image objects with secure_url
+      List<String> imageUrls = [];
+      if (json['images'] != null) {
+        final imagesData = json['images'];
+        print('🏠 imagesData type: ${imagesData.runtimeType}, value: $imagesData');
+        if (imagesData is List) {
+          for (var img in imagesData) {
+            print('🏠 Processing image: type=${img.runtimeType}, value=$img');
+            if (img is String) {
+              imageUrls.add(img);
+            } else if (img is Map) {
+              // Image object from post_images table - handle both Map<String, dynamic> and Map<dynamic, dynamic>
+              final imgMap = Map<String, dynamic>.from(img);
+              final url = imgMap['secure_url'] ?? imgMap['url'] ?? imgMap['content_url'];
+              print('🏠 Extracted URL: $url');
+              if (url != null) {
+                imageUrls.add(url.toString());
+              }
+            }
+          }
+        }
+      }
+      print('🏠 Final imageUrls: $imageUrls');
+      
+      // Parse location - can be a Map or a List (from Supabase join)
+      Map<String, dynamic> locationMap = {};
+      if (json['location'] != null) {
+        final locData = json['location'];
+        if (locData is Map) {
+          locationMap = Map<String, dynamic>.from(locData);
+        } else if (locData is List && locData.isNotEmpty) {
+          // Supabase sometimes returns joined data as array
+          locationMap = Map<String, dynamic>.from(locData.first as Map);
+        }
+      }
+      
+      // Parse stay_details - can be a Map or a List
+      Map<String, dynamic>? stayDetailsMap;
+      if (json['stay_details'] != null) {
+        final stayData = json['stay_details'];
+        if (stayData is Map) {
+          stayDetailsMap = Map<String, dynamic>.from(stayData);
+        } else if (stayData is List && stayData.isNotEmpty) {
+          stayDetailsMap = Map<String, dynamic>.from(stayData.first as Map);
+        }
+      }
+      
+      // Parse vehicle_details - can be a Map or a List
+      Map<String, dynamic>? vehicleDetailsMap;
+      if (json['vehicle_details'] != null) {
+        final vehicleData = json['vehicle_details'];
+        if (vehicleData is Map) {
+          vehicleDetailsMap = Map<String, dynamic>.from(vehicleData);
+        } else if (vehicleData is List && vehicleData.isNotEmpty) {
+          vehicleDetailsMap = Map<String, dynamic>.from(vehicleData.first as Map);
+        }
+      }
+      
+      // Parse activity_details - can be a Map or a List
+      Map<String, dynamic>? activityDetailsMap;
+      if (json['activity_details'] != null) {
+        final activityData = json['activity_details'];
+        if (activityData is Map) {
+          activityDetailsMap = Map<String, dynamic>.from(activityData);
+        } else if (activityData is List && activityData.isNotEmpty) {
+          activityDetailsMap = Map<String, dynamic>.from(activityData.first as Map);
+        }
+      }
+      
+      return Listing(
+        id: json['id'],
+        ownerId: json['owner_id']?.toString() ?? '',
+        category: json['category'] ?? 'stay',
+        title: json['title'] ?? '',
+        description: json['description'],
+        price: (json['price'] ?? 0).toDouble(),
+        status: json['status'] ?? 'draft',
+        availability: json['availability'],
+        location: Location.fromMap(locationMap),
+        stayDetails: stayDetailsMap != null 
+            ? Stay.fromMap({...stayDetailsMap, 'post_id': json['id'] ?? 0})
+            : null,
+        vehicleDetails: vehicleDetailsMap != null 
+            ? Vehicle.fromMap({...vehicleDetailsMap, 'post_id': json['id'] ?? 0})
+            : null,
+        activityDetails: activityDetailsMap != null 
+            ? Activity.fromMap({...activityDetailsMap, 'post_id': json['id'] ?? 0})
+            : null,
+        images: imageUrls,
+        createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
+        updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+      );
+    } catch (e) {
+      print('❌ Error parsing Listing.fromJson: $e');
+      print('📄 JSON data: $json');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -258,15 +335,57 @@ class ListingService {
   /// GET /api/listings/my/listings
   Future<ApiResponse<List<Listing>>> getMyListings() async {
     try {
+      print('🔍 Calling /api/listings/my/listings...');
       final response = await _apiClient.get(
         '${ApiConfig.listings}/my/listings',
         requiresAuth: true,
       );
-      final listings = (response['data'] as List<dynamic>)
-          .map((json) => Listing.fromJson(json))
-          .toList();
+      
+      print('📥 getMyListings response type: ${response.runtimeType}');
+      print('📥 getMyListings response: $response');
+      
+      // Handle different response structures
+      dynamic listingsData;
+      if (response is Map && response.containsKey('data')) {
+        print('📦 Response has "data" key');
+        listingsData = response['data'];
+        print('📦 Data type: ${listingsData.runtimeType}');
+      } else if (response is List) {
+        print('📦 Response is a List directly');
+        listingsData = response;
+      } else {
+        print('⚠️ Unexpected response structure: ${response.runtimeType}');
+        return ApiResponse.error('Unexpected response structure');
+      }
+      
+      if (listingsData is! List) {
+        print('⚠️ Data is not a list: ${listingsData.runtimeType}');
+        return ApiResponse.error('Expected list of listings');
+      }
+      
+      print('🔄 Parsing ${listingsData.length} listings...');
+      final List<Listing> listings = [];
+      for (int i = 0; i < listingsData.length; i++) {
+        try {
+          final json = listingsData[i];
+          print('  🔸 Item $i type: ${json.runtimeType}');
+          if (json is! Map) {
+            print('  ⚠️ Item $i is not a Map, skipping');
+            continue;
+          }
+          final listing = Listing.fromJson(Map<String, dynamic>.from(json));
+          listings.add(listing);
+          print('  ✅ Parsed listing: ${listing.title}');
+        } catch (e) {
+          print('  ❌ Error parsing item $i: $e');
+        }
+      }
+      
+      print('✅ Successfully parsed ${listings.length} listings');
       return ApiResponse.success(listings);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('❌ getMyListings error: $e');
+      print('❌ Stack trace: $stackTrace');
       return ApiResponse.error(e.toString());
     }
   }

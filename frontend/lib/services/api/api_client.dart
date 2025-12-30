@@ -105,12 +105,16 @@ class ApiClient {
 
   /// Handle network errors
   Never _handleError(dynamic error) {
-    if (error is SocketException) {
-      throw NetworkException('No internet connection');
+    print('🔴 Network error type: ${error.runtimeType}, message: $error');
+    
+    if (error is TimeoutException) {
+      throw TimeoutException('Request timed out - backend may be offline');
+    } else if (error is SocketException) {
+      throw NetworkException('Cannot connect to server. Make sure:\n1. Backend is running on port 5000\n2. You have internet connection\n3. Check your API configuration');
     } else if (error is HttpException) {
-      throw NetworkException('HTTP error occurred');
+      throw NetworkException('HTTP error: ${error.message}');
     } else if (error is FormatException) {
-      throw ApiException('Invalid response format');
+      throw ApiException('Invalid response format from server');
     } else if (error is ApiException) {
       throw error;
     } else {

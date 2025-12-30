@@ -151,12 +151,17 @@ class ListingSyncService implements Syncable {
     bool forceRefresh = false,
   }) async {
     print('📋 getListingsByCategory: $category, forceRefresh: $forceRefresh');
+    print('📋 isOnline: ${_connectivity.isOnline}');
     
     // Check category cache first (fast path - no network call)
     if (!forceRefresh && _categoryCache.containsKey(category)) {
       final cacheTime = _categoryCacheTime[category];
       if (cacheTime != null && DateTime.now().difference(cacheTime) < _cacheDuration) {
         print('📋 Returning cached data: ${_categoryCache[category]!.length} items');
+        final cachedItems = _categoryCache[category]!;
+        if (cachedItems.isNotEmpty) {
+          print('📋 First cached listing images: ${cachedItems.first.images}');
+        }
         return _categoryCache[category]!;
       }
     }
@@ -172,6 +177,10 @@ class ListingSyncService implements Syncable {
 
         if (result.isSuccess && result.data != null) {
           print('✅ Got ${result.data!.items.length} $category listings from backend');
+          // Debug: Show images from API result
+          for (var item in result.data!.items.take(2)) {
+            print('✅ Listing ${item.id} images: ${item.images}');
+          }
           _categoryCache[category] = result.data!.items;
           _categoryCacheTime[category] = DateTime.now();
           // Save to local DB in background
@@ -182,7 +191,10 @@ class ListingSyncService implements Syncable {
         }
       } catch (e) {
         debugPrint('Error fetching remote $category listings: $e');
+        print('❌ Exception fetching $category listings: $e');
       }
+    } else {
+      print('📴 Offline - skipping remote fetch');
     }
 
     // Fallback to local database
@@ -200,25 +212,41 @@ class ListingSyncService implements Syncable {
 
   /// Get listing by ID
   Future<Listing?> getListingById(int id, {bool forceRefresh = false}) async {
+    debugPrint('🔍 ListingSyncService.getListingById($id, forceRefresh: $forceRefresh)');
+    
     // Check cache first
     if (!forceRefresh) {
       final cached = _cachedListings.where((l) => l.id == id).firstOrNull;
-      if (cached != null) return cached;
+      if (cached != null) {
+        debugPrint('📦 Found in cache, images: ${cached.images.length}');
+        // If cached has no images, try to fetch fresh
+        if (cached.images.isEmpty) {
+          debugPrint('⚠️ Cached listing has no images, fetching fresh...');
+        } else {
+          return cached;
+        }
+      }
     }
 
     // Try remote
     if (await _connectivity.checkConnectivity()) {
       try {
+        debugPrint('🌐 Fetching from remote API...');
         final result = await _listingService.getListingById(id);
+        debugPrint('📥 API result: success=${result.isSuccess}, data=${result.data != null}');
         if (result.isSuccess && result.data != null) {
+          debugPrint('🖼️ Remote listing images: ${result.data!.images}');
           return result.data;
         }
       } catch (e) {
-        debugPrint('Error fetching listing $id: $e');
+        debugPrint('❌ Error fetching listing $id: $e');
       }
+    } else {
+      debugPrint('📴 No connectivity');
     }
 
     // Fallback to local
+    debugPrint('💾 Falling back to local database');
     final post = await _postRepository.getPostById(id);
     if (post != null) {
       return await _postToListing(post);

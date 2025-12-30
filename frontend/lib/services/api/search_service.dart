@@ -89,9 +89,22 @@ class SearchService {
         queryParams: params,
       );
 
+      // Debug: Print raw response to see what images look like
+      print('🔍 SearchService.search raw response: ${response['data']?.length ?? 0} items');
+      if (response['data'] != null && (response['data'] as List).isNotEmpty) {
+        final firstItem = (response['data'] as List).first;
+        print('🔍 First item images: ${firstItem['images']}');
+      }
+
       final listings = (response['data'] as List<dynamic>)
           .map((json) => Listing.fromJson(json))
           .toList();
+      
+      // Debug: Print parsed listings to check images
+      print('🔍 Parsed ${listings.length} listings');
+      for (var listing in listings.take(3)) {
+        print('🔍 Listing ${listing.id} images: ${listing.images.length} - ${listing.images}');
+      }
 
       final meta = response['meta'] ?? {};
 
