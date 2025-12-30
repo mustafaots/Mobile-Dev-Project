@@ -47,6 +47,7 @@ export interface SearchResult {
     city: string;
   };
   thumbnail_url: string | null;
+  images: { secure_url: string; sort_order: number }[];
   average_rating: number;
   review_count: number;
 }
@@ -123,6 +124,7 @@ class SearchService {
     // Transform results
     const results: SearchResult[] = (data ?? []).map((post: any) => {
       const images = post.post_images ?? [];
+      console.log(`🔍 Post ${post.id} has ${images.length} images:`, images.map((i: any) => i.secure_url));
       const sortedImages = images.sort((a: any, b: any) => a.sort_order - b.sort_order);
       const postRating = ratings.get(post.id) ?? { average: 0, count: 0 };
 
@@ -140,6 +142,10 @@ class SearchService {
           city: post.locations?.city ?? '',
         },
         thumbnail_url: sortedImages.length > 0 ? sortedImages[0].secure_url : null,
+        images: sortedImages.map((img: any) => ({
+          secure_url: img.secure_url,
+          sort_order: img.sort_order,
+        })),
         average_rating: postRating.average,
         review_count: postRating.count,
       };
@@ -295,6 +301,10 @@ class SearchService {
           city: post.locations?.city ?? '',
         },
         thumbnail_url: sortedImages.length > 0 ? sortedImages[0].secure_url : null,
+        images: sortedImages.map((img: any) => ({
+          secure_url: img.secure_url,
+          sort_order: img.sort_order,
+        })),
         average_rating: postRating.average,
         review_count: postRating.count,
       };
