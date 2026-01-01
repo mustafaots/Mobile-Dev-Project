@@ -209,6 +209,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recommended_title => 'Recommandé pour vous';
 
   @override
+  String get load_more => 'Charger plus';
+
+  @override
   String get day => 'jour';
 
   @override

@@ -204,6 +204,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recommended_title => 'موصى بها لك';
 
   @override
+  String get load_more => 'تحميل المزيد';
+
+  @override
   String get day => 'يوم';
 
   @override
