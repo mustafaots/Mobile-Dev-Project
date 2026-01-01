@@ -11,4 +11,8 @@ router.get('/me', authenticate, authController.profile);
 router.post('/reset-password', authController.resetPassword);
 router.post('/change-password', authenticate, authController.changePassword);
 
+// Email verification routes
+router.post('/email/verify', authenticate, authController.sendEmailVerification);
+router.get('/email/status', authenticate, authController.getEmailVerificationStatus);
+
 export default router;
