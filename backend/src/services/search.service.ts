@@ -75,7 +75,7 @@ class SearchService {
         locations!inner (wilaya, city),
         post_images (secure_url, sort_order)
       `, { count: 'exact' })
-      .eq('status', 'published');
+      .eq('status', 'active');
 
     // Category filter
     if (query.category) {
