@@ -1,6 +1,6 @@
 class Subscription {
   final int? id;
-  final int subscriberId;
+  final String subscriberId;
   final String plan; // 'free', 'monthly', 'yearly'
   final DateTime createdAt;
 
@@ -23,7 +23,7 @@ class Subscription {
   factory Subscription.fromMap(Map<String, dynamic> map) {
     return Subscription(
       id: map['id'],
-      subscriberId: map['subscriber_id'] ?? 0,
+      subscriberId: (map['subscriber_id'] ?? '').toString(),
       plan: map['plan'] ?? 'free',
       createdAt: map['created_at'] != null 
           ? DateTime.parse(map['created_at']) 
