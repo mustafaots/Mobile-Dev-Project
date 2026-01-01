@@ -9,12 +9,14 @@ class RegisterRequest {
   final String password;
   final String? firstName;
   final String? lastName;
+  final String? phone;
 
   RegisterRequest({
     required this.email,
     required this.password,
     this.firstName,
     this.lastName,
+    this.phone,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,6 +25,7 @@ class RegisterRequest {
       'password': password,
       if (firstName != null) 'first_name': firstName,
       if (lastName != null) 'last_name': lastName,
+      if (phone != null) 'phone': phone,
     };
   }
 }
@@ -250,4 +253,64 @@ class AuthService {
 
   /// Get current auth token
   String? get authToken => _apiClient.authToken;
+
+  // ========== Email Verification Methods ==========
+
+  /// Send email verification link
+  /// POST /auth/email/verify
+  Future<ApiResponse<EmailVerificationResult>> sendEmailVerification() async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.auth}/email/verify',
+        requiresAuth: true,
+      );
+      return ApiResponse.success(EmailVerificationResult.fromJson(response));
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  /// Get email verification status
+  /// GET /auth/email/status
+  Future<ApiResponse<EmailStatus>> getEmailVerificationStatus() async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.auth}/email/status',
+        requiresAuth: true,
+      );
+      return ApiResponse.success(EmailStatus.fromJson(response));
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+}
+
+/// Email verification result model
+class EmailVerificationResult {
+  final String message;
+  final bool alreadyVerified;
+
+  EmailVerificationResult({required this.message, this.alreadyVerified = false});
+
+  factory EmailVerificationResult.fromJson(Map<String, dynamic> json) {
+    return EmailVerificationResult(
+      message: json['message'] ?? '',
+      alreadyVerified: json['already_verified'] ?? false,
+    );
+  }
+}
+
+/// Email verification status model
+class EmailStatus {
+  final String? email;
+  final bool emailVerified;
+
+  EmailStatus({this.email, required this.emailVerified});
+
+  factory EmailStatus.fromJson(Map<String, dynamic> json) {
+    return EmailStatus(
+      email: json['email'],
+      emailVerified: json['email_verified'] ?? false,
+    );
+  }
 }
