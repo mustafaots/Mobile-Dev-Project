@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_state.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:convert';
 
 class ImageGallery extends StatelessWidget {
@@ -44,41 +45,64 @@ class ImageGallery extends StatelessWidget {
           }
 
           if (state is ImageGalleryLoaded) {
-            if (state.images.isEmpty) {
+            // Check if we have URL images (from API)
+            if (state.imageUrls.isNotEmpty) {
               return SizedBox(
                 height: 200,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.image_not_supported,
-                        size: 40,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(height: 8),
-                      Text('No images available'),
-                    ],
-                  ),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: state.imageUrls.length,
+                  itemBuilder: (context, index) {
+                    final imageUrl = state.imageUrls[index];
+                    return _buildNetworkImageCard(
+                      context,
+                      imageUrl,
+                      index,
+                      state.imageUrls.length,
+                    );
+                  },
                 ),
               );
             }
 
+            // Check if we have local Base64 images
+            if (state.images.isNotEmpty) {
+              return SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: state.images.length,
+                  itemBuilder: (context, index) {
+                    final image = state.images[index];
+                    return _buildBase64ImageCard(
+                      context,
+                      image,
+                      index,
+                      state.images.length,
+                    );
+                  },
+                ),
+              );
+            }
+
+            // No images available
             return SizedBox(
               height: 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: state.images.length,
-                itemBuilder: (context, index) {
-                  final image = state.images[index];
-                  return _buildImageCard(
-                    context,
-                    image,
-                    index,
-                    state.images.length,
-                  );
-                },
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image_not_supported,
+                      size: 40,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 8),
+                    Text('No images available'),
+                  ],
+                ),
               ),
             );
           }
@@ -92,7 +116,57 @@ class ImageGallery extends StatelessWidget {
     return _buildPlaceholderGallery();
   }
 
-  Widget _buildImageCard(context, image, int index, int totalImages) {
+  Widget _buildNetworkImageCard(BuildContext context, String imageUrl, int index, int totalImages) {
+    return Container(
+      width: 300,
+      margin: EdgeInsets.only(right: index < totalImages - 1 ? 12 : 0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(
+                color: Colors.grey[300],
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey[300],
+                child: Icon(Icons.error, color: Colors.red),
+              ),
+            ),
+            // Image count badge at top-right
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${index + 1}/$totalImages',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBase64ImageCard(context, image, int index, int totalImages) {
     // Try to decode Base64 image data
     ImageProvider imageProvider;
     try {

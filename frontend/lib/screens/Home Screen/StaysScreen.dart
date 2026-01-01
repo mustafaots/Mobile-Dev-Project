@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
-import 'package:easy_vacation/services/sync/sync_manager.dart';
+import 'package:easy_vacation/services/algorithms/featured_listings_algorithm.dart';
+import 'package:easy_vacation/services/algorithms/paginated_listings_algorithm.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,53 @@ class StaysScreen extends StatefulWidget {
 }
 
 class _StaysScreenState extends State<StaysScreen> {
-  late Future<List<Listing>> _staysFuture;
+  Future<List<Listing>>? _featuredFuture;
+  PaginatedListingsAlgorithm? _paginatedAlgorithm;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    // Force refresh to ensure we get the latest data with images
-    _staysFuture = SyncManager.instance.listings.getListingsByCategory('stay', forceRefresh: true);
+    _initializeData();
+  }
+
+  void _initializeData() {
+    // Fetch featured listings (5 random)
+    _featuredFuture = FeaturedListingsAlgorithm.instance.getFeaturedListings(
+      category: 'stay',
+      forceRefresh: true,
+    );
+    
+    // Initialize paginated algorithm for recommended section
+    // Use refresh() to reset and reload (in case of cached instance)
+    _paginatedAlgorithm = PaginatedListingsFactory.getForCategory('stay', pageSize: 5);
+    _paginatedAlgorithm!.addListener(_onPaginationUpdate);
+    _paginatedAlgorithm!.refresh(); // Use refresh instead of loadInitial to reset state
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _paginatedAlgorithm?.removeListener(_onPaginationUpdate);
+    super.dispose();
+  }
+
+  void _onPaginationUpdate() {
+    if (mounted) setState(() {});
+  }
+
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollUpdateNotification) {
+      final maxScroll = notification.metrics.maxScrollExtent;
+      final currentScroll = notification.metrics.pixels;
+      final threshold = 200.0;
+      
+      if (currentScroll >= maxScroll - threshold) {
+        print('📜 Near bottom: $currentScroll / $maxScroll - Loading more...');
+        _paginatedAlgorithm?.loadMore();
+      }
+    }
+    return false; // Don't consume the notification
   }
 
   /// Build image widget from Cloudinary URL or fallback
@@ -70,30 +111,42 @@ class _StaysScreenState extends State<StaysScreen> {
     final secondaryTextColor = context.secondaryTextColor;
     final loc = AppLocalizations.of(context)!;
 
+    // Show loading if not initialized yet
+    if (_featuredFuture == null || _paginatedAlgorithm == null) {
+      return Center(
+        child: CircularProgressIndicator(color: AppTheme.primaryColor),
+      );
+    }
+
     return FutureBuilder<List<Listing>>(
-      future: _staysFuture,  // Use cached future
+      future: _featuredFuture,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting && 
+            _paginatedAlgorithm!.isEmpty) {
           return Center(
             child: CircularProgressIndicator(color: AppTheme.primaryColor),
           );
         }
 
-        if (snapshot.hasData) {
-          final listings = snapshot.data!;
-          if (listings.length == 0) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_off, size: 80, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    loc.no_posts_yet,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: const Color.fromARGB(255, 85, 85, 85),
-                      fontWeight: FontWeight.w500,
+        final featuredListings = snapshot.data ?? [];
+        final recommendedListings = _paginatedAlgorithm!.listings;
+        
+        // Show empty state only if both are empty and not loading
+        if (featuredListings.isEmpty && 
+            recommendedListings.isEmpty && 
+            !_paginatedAlgorithm!.isLoading) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.search_off, size: 80, color: Colors.grey),
+                const SizedBox(height: 16),
+                Text(
+                  loc.no_posts_yet,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: const Color.fromARGB(255, 85, 85, 85),
+                    fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -101,44 +154,50 @@ class _StaysScreenState extends State<StaysScreen> {
             );
           }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  loc.stays_featured_title,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                    color: textColor,
+          return NotificationListener<ScrollNotification>(
+            onNotification: _onScrollNotification,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Featured Section (5 random listings, horizontal scroll)
+                if (featuredListings.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      loc.stays_featured_title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: textColor,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 240,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: listings.length,
-                  itemBuilder: (context, index) {
-                    final listing = listings[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => PostDetailsScreen(
-                              postId: listing.id,
-                              userId: widget.user_Id,
-                            ),
-                            transitionsBuilder: (_, animation, __, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 240,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: featuredListings.length,
+                      itemBuilder: (context, index) {
+                        final listing = featuredListings[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) => PostDetailsScreen(
+                                  postId: listing.id,
+                                  userId: widget.user_Id,
+                                ),
+                                transitionsBuilder: (_, animation, __, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
                             transitionDuration: const Duration(
                               milliseconds: 300,
                             ),
@@ -198,7 +257,10 @@ class _StaysScreenState extends State<StaysScreen> {
                   },
                 ),
               ),
+                ],
               const SizedBox(height: 30),
+              
+              // Recommended Section (paginated, 5 at a time)
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -213,89 +275,127 @@ class _StaysScreenState extends State<StaysScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: listings.length,
-                      itemBuilder: (context, index) {
-                        final listing = listings[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder: (_, __, ___) => PostDetailsScreen(
-                                  postId: listing.id,
-                                  userId: widget.user_Id,
-                                ),
-                                transitionsBuilder: (_, animation, __, child) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                                transitionDuration: const Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              AspectRatio(
-                                aspectRatio:
-                                    (MediaQuery.of(context).size.width - 40) /
-                                    200,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: _buildListingImage(listing, double.infinity, 200),
-                                ),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  listing.title,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
+                    
+                    // Paginated listings
+                    if (recommendedListings.isEmpty && _paginatedAlgorithm!.isLoading)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: recommendedListings.length,
+                        itemBuilder: (context, index) {
+                          final listing = recommendedListings[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (_, __, ___) => PostDetailsScreen(
+                                    postId: listing.id,
+                                    userId: widget.user_Id,
+                                  ),
+                                  transitionsBuilder: (_, animation, __, child) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                  transitionDuration: const Duration(
+                                    milliseconds: 300,
                                   ),
                                 ),
-                                subtitle: Text(
-                                  '${listing.price}${loc.dinars}/${loc.night}',
-                                  style: TextStyle(color: secondaryTextColor),
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio:
+                                      (MediaQuery.of(context).size.width - 40) /
+                                      200,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: _buildListingImage(listing, double.infinity, 200),
+                                  ),
                                 ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.star_border_outlined,
-                                      color: AppTheme.neutralColor,
+                                ListTile(
+                                  title: Text(
+                                    listing.title,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: textColor,
                                     ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '4.7',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: textColor,
+                                  ),
+                                  subtitle: Text(
+                                    '${listing.price}${loc.dinars}/${loc.night}',
+                                    style: TextStyle(color: secondaryTextColor),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.star_border_outlined,
+                                        color: AppTheme.neutralColor,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '4.7',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: textColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    
+                    // Load More Button
+                    if (_paginatedAlgorithm!.hasMore)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: _paginatedAlgorithm!.isLoading
+                            ? CircularProgressIndicator(color: AppTheme.primaryColor)
+                            : ElevatedButton(
+                                onPressed: () {
+                                  _paginatedAlgorithm!.loadMore();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.primaryColor,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Load More',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
                   ],
                 ),
               ),
             ],
-          );
-        } else {
-          return Center(child: Text("Couldn't get data"));
-        }
+          ),
+        ),
+      );
       },
     );
   }
