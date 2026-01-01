@@ -30,7 +30,7 @@ class SubscriptionRepository {
 
   /// Get latest subscription by subscriber
   Future<Subscription?> getLatestSubscriptionBySubscriber(
-    int subscriberId,
+    String subscriberId,
   ) async {
     final result = await db.query(
       'subscriptions',
@@ -44,7 +44,7 @@ class SubscriptionRepository {
 
   /// Get subscriptions by subscriber
   Future<List<Subscription>> getSubscriptionsBySubscriber(
-    int subscriberId,
+    String subscriberId,
   ) async {
     final results = await db.query(
       'subscriptions',
