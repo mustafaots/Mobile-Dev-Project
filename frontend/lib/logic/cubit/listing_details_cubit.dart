@@ -9,6 +9,7 @@ import 'package:easy_vacation/repositories/db_repositories/post_repository.dart'
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
+import 'package:easy_vacation/services/api/profile_service.dart';
 import 'listing_details_state.dart';
 import 'dummy_data.dart';
 
@@ -44,8 +45,17 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
         throw Exception('Post not found, using dummy data');
       }
 
-      // Load host info
+      // Load host info - first try local DB, then fall back to API
       host = await userRepository.getUserById(post.ownerId);
+      if (host == null) {
+        final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
+        if (apiResponse.isSuccess && apiResponse.data != null) {
+          host = apiResponse.data;
+          try {
+            await userRepository.insertUser(host!);
+          } catch (_) {}
+        }
+      }
 
       // Load reviews
       reviewsList = await reviewRepository.getReviewsByPostId(post.id!);

@@ -3,6 +3,7 @@ import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
+import 'package:easy_vacation/services/api/profile_service.dart';
 import 'host_info_state.dart';
 
 class HostInfoCubit extends Cubit<HostInfoState> {
@@ -27,12 +28,27 @@ class HostInfoCubit extends Cubit<HostInfoState> {
         return;
       }
 
-      // Fetch host/owner info
-      final host = await userRepository.getUserById(post.ownerId);
+      // Fetch host/owner info - first try local DB, then fall back to API
+      User? host = await userRepository.getUserById(post.ownerId);
       if (host == null) {
-        emit(const HostInfoError('Host not found'));
-        return;
+        // Try fetching from API if not found locally
+        final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
+        if (apiResponse.isSuccess && apiResponse.data != null) {
+          host = apiResponse.data;
+          // Optionally cache the user locally for future use
+          try {
+            await userRepository.insertUser(host!);
+          } catch (_) {
+            // Ignore cache errors
+          }
+        } else {
+          emit(const HostInfoError('Host not found'));
+          return;
+        }
       }
+
+      // At this point, host is guaranteed to be non-null
+      final User hostUser = host!;
 
       // Fetch reviews to calculate rating and count
       final reviews = await reviewRepository.getReviewsByPostId(postId);
@@ -46,7 +62,7 @@ class HostInfoCubit extends Cubit<HostInfoState> {
 
       emit(
         HostInfoLoaded(
-          host: host,
+          host: hostUser,
           post: post,
           reviewCount: reviewCount,
           rating: rating,
