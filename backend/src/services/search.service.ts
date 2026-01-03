@@ -61,25 +61,43 @@ class SearchService {
     const offset = query.offset ?? 0;
 
     // Build the base query
-    let dbQuery = supabase
-      .from('posts')
-      .select(`
-        id,
-        title,
-        description,
-        category,
-        price,
-        status,
-        owner_id,
-        created_at,
-        locations!inner (wilaya, city),
-        post_images (secure_url, sort_order)
-      `, { count: 'exact' })
-      .eq('status', 'active');
+    let dbQuery = supabase.from('posts').select(`
+      id,
+      title,
+      description,
+      category,
+      price,
+      status,
+      owner_id,
+      created_at,
+      locations!inner (wilaya, city),
+      post_images (secure_url, sort_order)
+    `, { count: 'exact' });
+
+    // Force inner join only if type filter exists
+    if (query.category === 'stay' && query.stay_type) {
+      dbQuery = dbQuery.select(`*, stays!inner (stay_type, area, bedrooms)`);
+      dbQuery = dbQuery.eq('stays.stay_type', query.stay_type);
+    } else if (query.category === 'vehicle' && query.vehicle_type) {
+      dbQuery = dbQuery.select(`*, vehicles!inner (vehicle_type, fuel_type, transmission, seats)`);
+      dbQuery = dbQuery.eq('vehicles.vehicle_type', query.vehicle_type);
+    } else if (query.category === 'activity' && query.activity_type) {
+      dbQuery = dbQuery.select(`*, activities!inner (activity_type)`);
+      dbQuery = dbQuery.eq('activities.activity_type', query.activity_type);
+    }
 
     // Category filter
     if (query.category) {
       dbQuery = dbQuery.eq('category', query.category);
+    }
+
+    // type filters
+    if (query.category === 'stay' && query.stay_type) {
+      dbQuery = dbQuery.eq('stays.stay_type', query.stay_type);
+    } else if (query.category === 'vehicle' && query.vehicle_type) {
+      dbQuery = dbQuery.eq('vehicles.vehicle_type', query.vehicle_type);
+    } else if (query.category === 'activity' && query.activity_type) {
+      dbQuery = dbQuery.eq('activities.activity_type', query.activity_type);
     }
 
     // Location filters
