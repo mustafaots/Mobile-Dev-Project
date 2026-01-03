@@ -48,10 +48,33 @@ class NotFoundException extends ApiException {
 
 /// Validation exceptions (400)
 class ValidationException extends ApiException {
-  final Map<String, dynamic>? errors;
+  final dynamic errors; // Can be Map<String, dynamic> or List<dynamic>
 
   ValidationException(String message, {this.errors})
       : super(message, statusCode: 400);
+  
+  /// Get a user-friendly error message from the validation errors
+  String get friendlyMessage {
+    if (errors == null) return message;
+    
+    if (errors is List) {
+      // Zod-style validation errors (array of error objects)
+      final errorList = errors as List;
+      final messages = errorList
+          .map((e) => e is Map ? (e['message'] ?? e.toString()) : e.toString())
+          .toList();
+      return messages.join(', ');
+    } else if (errors is Map) {
+      // Traditional field-based errors
+      final errorMap = errors as Map;
+      final messages = errorMap.entries
+          .map((e) => '${e.key}: ${e.value}')
+          .toList();
+      return messages.join(', ');
+    }
+    
+    return errors.toString();
+  }
 }
 
 /// Timeout exceptions

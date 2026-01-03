@@ -203,6 +203,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recommended_title => 'Recommended for You';
 
   @override
+  String get load_more => 'Load More';
+
+  @override
   String get day => 'day';
 
   @override

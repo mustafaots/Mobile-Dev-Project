@@ -67,6 +67,34 @@ class AuthController {
 
     res.json(result);
   });
+
+  /**
+   * Send email verification link
+   * POST /auth/email/verify
+   */
+  sendEmailVerification = asyncHandler(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    if (!user) {
+      throw new ApiError(401, 'Unauthorized.');
+    }
+
+    const result = await authService.sendEmailVerification(user.id);
+    res.json(result);
+  });
+
+  /**
+   * Get email verification status
+   * GET /auth/email/status
+   */
+  getEmailVerificationStatus = asyncHandler(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    if (!user) {
+      throw new ApiError(401, 'Unauthorized.');
+    }
+
+    const result = await authService.getEmailVerificationStatus(user.id);
+    res.json(result);
+  });
 }
 
 export const authController = new AuthController();

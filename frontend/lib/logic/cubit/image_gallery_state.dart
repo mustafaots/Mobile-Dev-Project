@@ -14,11 +14,24 @@ class ImageGalleryLoading extends ImageGalleryState {
 
 class ImageGalleryLoaded extends ImageGalleryState {
   final List<PostImage> images;
+  final List<String> imageUrls; // For remote Cloudinary URLs
 
-  const ImageGalleryLoaded({required this.images});
+  const ImageGalleryLoaded({
+    this.images = const [],
+    this.imageUrls = const [],
+  });
 
-  ImageGalleryLoaded copyWith({List<PostImage>? images}) {
-    return ImageGalleryLoaded(images: images ?? this.images);
+  bool get hasImages => images.isNotEmpty || imageUrls.isNotEmpty;
+  int get imageCount => imageUrls.isNotEmpty ? imageUrls.length : images.length;
+
+  ImageGalleryLoaded copyWith({
+    List<PostImage>? images,
+    List<String>? imageUrls,
+  }) {
+    return ImageGalleryLoaded(
+      images: images ?? this.images,
+      imageUrls: imageUrls ?? this.imageUrls,
+    );
   }
 }
 

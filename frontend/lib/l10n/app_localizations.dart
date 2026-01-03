@@ -484,6 +484,12 @@ abstract class AppLocalizations {
   /// **'Recommended for You'**
   String get recommended_title;
 
+  /// No description provided for @load_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Load More'**
+  String get load_more;
+
   /// No description provided for @day.
   ///
   /// In en, this message translates to:

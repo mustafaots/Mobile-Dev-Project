@@ -3,6 +3,7 @@ import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/EditProfileChangePassword.dart';
+import 'package:easy_vacation/services/api/auth_service.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
 import 'package:easy_vacation/services/sync/connectivity_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -27,11 +28,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   User? _user;
   bool _isLoading = true;
   bool _isSaving = false;
+  bool _emailVerified = false;
+  bool _isSendingVerification = false;
 
   @override
   void initState() {
     super.initState();
     _loadUser();
+    _loadEmailStatus();
+  }
+
+  Future<void> _loadEmailStatus() async {
+    final result = await AuthService.instance.getEmailVerificationStatus();
+    if (mounted && result.isSuccess && result.data != null) {
+      setState(() {
+        _emailVerified = result.data!.emailVerified;
+      });
+    }
   }
 
   Future<void> _loadUser() async {
@@ -291,6 +304,83 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
+                  // Email verification status/button
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _emailVerified ? Icons.verified : Icons.warning_amber_rounded,
+                          size: 18,
+                          color: _emailVerified ? AppTheme.successColor : AppTheme.neutralColor,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _emailVerified ? 'Email verified' : 'Email not verified',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: _emailVerified ? AppTheme.successColor : AppTheme.neutralColor,
+                            ),
+                          ),
+                        ),
+                        if (!_emailVerified)
+                          TextButton(
+                            onPressed: _isSendingVerification ? null : () async {
+                              setState(() => _isSendingVerification = true);
+                              
+                              final result = await AuthService.instance.sendEmailVerification();
+                              
+                              if (!mounted) return;
+                              setState(() => _isSendingVerification = false);
+                              
+                              if (result.isSuccess && result.data != null) {
+                                if (result.data!.alreadyVerified) {
+                                  setState(() => _emailVerified = true);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Email is already verified!'),
+                                      backgroundColor: AppTheme.successColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Verification email sent to ${_emailController.text}'),
+                                      backgroundColor: AppTheme.successColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(result.message ?? 'Failed to send verification email'),
+                                    backgroundColor: AppTheme.failureColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                );
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: AppTheme.primaryColor,
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            ),
+                            child: _isSendingVerification
+                                ? const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                  )
+                                : const Text('Verify Now'),
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
 
@@ -366,15 +456,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onTap: () {
                         // Navigate to notification settings
                       },
-                    ),
-                    _buildOptionTile(
-                      context: context,
-                      icon: Icons.privacy_tip,
-                      title: loc.editProfile_privacySettings,
-                      onTap: () {
-                        // Navigate to privacy settings
-                      },
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -503,7 +585,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              // Handle account deletion
+              _deleteAccount();
             },
             style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
             child: Text(AppLocalizations.of(context)!.delete),
@@ -511,5 +593,67 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _deleteAccount() async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(color: AppTheme.primaryColor),
+            const SizedBox(width: 20),
+            const Text('Deleting account...'),
+          ],
+        ),
+      ),
+    );
+
+    try {
+      final result = await ProfileService.instance.deleteAccount();
+      
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
+
+      if (result.isSuccess) {
+        // Clear local auth data
+        AuthService.instance.logout();
+        
+        if (!mounted) return;
+        
+        // Navigate to welcome screen and clear navigation stack
+        Navigator.pushNamedAndRemoveUntil(
+          context, 
+          '/', 
+          (route) => false,
+        );
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account deleted successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result.message ?? 'Failed to delete account'),
+            backgroundColor: AppTheme.failureColor,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: AppTheme.failureColor,
+        ),
+      );
+    }
   }
 }

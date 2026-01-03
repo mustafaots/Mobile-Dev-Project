@@ -9,6 +9,7 @@ class User {
   final bool isVerified;
   final String userType; // "tourist", "host", or "both"
   final bool isSuspended;
+  final bool phoneVerified;
 
   User({
     this.id,
@@ -21,6 +22,7 @@ class User {
     this.isVerified = false,
     this.userType = 'tourist',
     this.isSuspended = false,
+    this.phoneVerified = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -35,12 +37,14 @@ class User {
       'is_verified': isVerified ? 1 : 0,
       'user_type': userType,
       'is_suspended': isSuspended ? 1 : 0,
+      // Note: phone_verified is not stored locally, it comes from the API
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id']?.toString(),
+      // Handle both 'id' and 'user_id' from backend
+      id: (map['id'] ?? map['user_id'])?.toString(),
       username: map['username'] ?? map['email']?.toString().split('@').first ?? '',
       email: map['email'] ?? '',
       phoneNumber: map['phone_number'] ?? map['phone'],
@@ -50,6 +54,7 @@ class User {
       isVerified: map['is_verified'] == 1 || map['is_verified'] == true || map['email_confirmed_at'] != null,
       userType: map['user_type'] ?? 'tourist',
       isSuspended: map['is_suspended'] == 1 || map['is_suspended'] == true,
+      phoneVerified: map['phone_verified'] == 1 || map['phone_verified'] == true,
     );
   }
 

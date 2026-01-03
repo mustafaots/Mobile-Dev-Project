@@ -184,7 +184,9 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
   Future<String> getUserSub() async {
     final subRepo = appRepos['subscriptionRepo'] as SubscriptionRepository;
-    final p = await subRepo.getLatestSubscriptionBySubscriber(widget.userId ?? 1);
+    final userId = widget.userId?.toString() ?? '';
+    if (userId.isEmpty) return 'free';
+    final p = await subRepo.getLatestSubscriptionBySubscriber(userId);
     return p?.plan ?? "free";
   }
 
@@ -235,8 +237,11 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
 
     if (subscriptions[idx]['key'] == current) return false;
 
+    final userId = widget.userId?.toString() ?? '';
+    if (userId.isEmpty) return false;
+
     final newSub = Subscription(
-      subscriberId: widget.userId ?? 1,
+      subscriberId: userId,
       plan: subscriptions[idx]['key'],
       createdAt: DateTime.now(),
     );

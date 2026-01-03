@@ -144,4 +144,18 @@ class ProfileService {
       return ApiResponse.error(e.toString());
     }
   }
+
+  /// Get user by ID
+  /// 
+  /// GET /api/users/:id
+  Future<ApiResponse<User>> getUserById(String userId) async {
+    try {
+      final response = await _apiClient.get('${ApiConfig.users}/$userId');
+      final data = response['data'] ?? response;
+      final user = User.fromMap(data);
+      return ApiResponse.success(user);
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

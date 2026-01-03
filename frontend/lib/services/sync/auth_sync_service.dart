@@ -56,6 +56,7 @@ class AuthSyncService implements Syncable {
     required String password,
     String? firstName,
     String? lastName,
+    String? phone,
   }) async {
     _updateState(_currentState.copyWith(status: SyncStatus.syncing, message: 'Registering...'));
 
@@ -73,6 +74,7 @@ class AuthSyncService implements Syncable {
         password: password,
         firstName: firstName,
         lastName: lastName,
+        phone: phone,
       ));
 
       print('📝 Registration result: success=${result.isSuccess}, message=${result.message}');

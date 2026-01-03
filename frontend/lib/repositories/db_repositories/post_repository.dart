@@ -33,7 +33,7 @@ class PostRepository {
   }
 
   /// Get posts by owner
-  Future<List<Post>> getPostsByOwner(int ownerId) async {
+  Future<List<Post>> getPostsByOwner(String ownerId) async {
     final results = await db.query(
       'posts',
       where: 'owner_id = ?',

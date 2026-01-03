@@ -1,8 +1,13 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
+import 'package:easy_vacation/services/sync/listing_sync_service.dart';
+import 'package:easy_vacation/services/sync/connectivity_service.dart';
+import 'package:easy_vacation/repositories/db_repositories/sharedprefs_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
-import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/ListingsHistoryContent.dart';
+
+import 'package:easy_vacation/models/locations.model.dart';
+import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/ListingsHistoryContentV2.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/ListingsHistoryFilter.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
@@ -16,29 +21,79 @@ class ListingsHistory extends StatefulWidget {
 }
 
 class _ListingsHistoryState extends State<ListingsHistory> {
-  List<Post> _userPosts = [];
+  List<Listing> _userListings = [];
   bool _isLoading = true;
   String _currentFilter = 'all';
 
   @override
   void initState() {
     super.initState();
-    _loadUserPosts();
+    _loadUserListings();
   }
 
-  Future<void> _loadUserPosts() async {
+  Future<void> _loadUserListings() async {
     try {
       final currentUserId = await _getCurrentUserId();
+      
+      if (currentUserId == null || currentUserId.isEmpty) {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('User not authenticated')),
+          );
+        }
+        return;
+      }
+      
+      // Try to fetch from remote API first (includes Cloudinary images)
+      if (await ConnectivityService.instance.checkConnectivity()) {
+        try {
+          print('🌐 Fetching user listings from API...');
+          final syncService = await ListingSyncService.getInstance();
+          final listings = await syncService.getMyListings(forceRefresh: true);
+          
+          print('✅ Got ${listings.length} listings from API');
+          for (var l in listings) {
+            print('  📦 Listing ${l.id}: ${l.title}, images: ${l.images.length}');
+          }
+          
+          setState(() {
+            _userListings = listings;
+            _isLoading = false;
+          });
+          return;
+        } catch (e) {
+          print('⚠️ Error fetching from API: $e');
+        }
+      }
+      
+      // Fallback to local database
+      print('💾 Falling back to local database...');
       final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
       final posts = await postRepo.getPostsByOwner(currentUserId);
       
+      // Convert Posts to Listings (simplified - local posts won't have full details)
+      final listings = posts.map((post) => Listing(
+        id: post.id,
+        ownerId: post.ownerId,
+        category: post.category,
+        title: post.title,
+        description: post.description,
+        price: post.price,
+        status: post.status,
+        location: Location(wilaya: '', city: '', address: '', latitude: 0, longitude: 0),
+        images: [], // Local posts don't have Cloudinary URLs
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+      )).toList();
+      
       setState(() {
-        _userPosts = posts;
+        _userListings = listings;
         _isLoading = false;
       });
       
     } catch (e) {
-      print('❌ Error loading posts: $e');
+      print('❌ Error loading listings: $e');
       setState(() => _isLoading = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -48,23 +103,23 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     }
   }
 
-  Future<int> _getCurrentUserId() async {
-    // TODO: Implement actual user authentication
-    return 1; // Placeholder
+  Future<String?> _getCurrentUserId() async {
+    final sharedPrefsRepo = SharedPrefsRepository.getInstance();
+    return sharedPrefsRepo.getUserId();
   }
 
   void _handleFilterChange(String filter) {
     setState(() => _currentFilter = filter);
   }
 
-  void _handlePostRemoved(Post post) {
-    setState(() => _userPosts.removeWhere((p) => p.id == post.id));
+  void _handleListingRemoved(Listing listing) {
+    setState(() => _userListings.removeWhere((l) => l.id == listing.id));
   }
 
-  void _handlePostUpdated(Post updatedPost) {
+  void _handleListingUpdated(Listing updatedListing) {
     setState(() {
-      final index = _userPosts.indexWhere((p) => p.id == updatedPost.id);
-      if (index != -1) _userPosts[index] = updatedPost;
+      final index = _userListings.indexWhere((l) => l.id == updatedListing.id);
+      if (index != -1) _userListings[index] = updatedListing;
     });
   }
 
@@ -79,18 +134,18 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       body: SafeArea(
         child: Column(
           children: [
-            if (_userPosts.isNotEmpty)
+            if (_userListings.isNotEmpty)
               ListingsHistoryFilter(
                 currentFilter: _currentFilter,
                 onFilterChanged: _handleFilterChange,
               ),
             Expanded(
-              child: ListingsHistoryContent(
-                posts: _userPosts,
+              child: ListingsHistoryContentV2(
+                listings: _userListings,
                 isLoading: _isLoading,
                 currentFilter: _currentFilter,
-                onPostRemoved: _handlePostRemoved,
-                onPostUpdated: _handlePostUpdated,
+                onListingRemoved: _handleListingRemoved,
+                onListingUpdated: _handleListingUpdated,
               ),
             ),
           ],

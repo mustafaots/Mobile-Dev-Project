@@ -110,6 +110,7 @@ export interface User {
   user_id: UUID;
   first_name: string | null;
   last_name: string | null;
+  phone: string | null;
   is_verified: boolean;
   is_suspended: boolean;
 }

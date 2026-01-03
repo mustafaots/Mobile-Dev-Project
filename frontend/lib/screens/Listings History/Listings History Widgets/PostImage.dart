@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 class PostImage extends StatelessWidget {
   final Uint8List? imageBytes;
   final String? imagePath;
+  final String? imageUrl; // For Cloudinary URLs
   final String category;
 
   const PostImage({
     super.key,
     this.imageBytes,
     this.imagePath,
+    this.imageUrl,
     required this.category,
   });
 
@@ -20,7 +22,12 @@ class PostImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final postHelpers = PostHelpers(context);
     
-    // Try to show image from bytes first
+    // Try to show image from network URL first (Cloudinary)
+    if (imageUrl != null && imageUrl!.isNotEmpty && imageUrl!.startsWith('http')) {
+      return _buildImageFromUrl();
+    }
+    
+    // Try to show image from bytes
     if (imageBytes != null && imageBytes!.isNotEmpty) {
       return _buildImageFromBytes();
     }
@@ -32,6 +39,42 @@ class PostImage extends StatelessWidget {
     
     // If no image available, show placeholder
     return postHelpers.buildImagePlaceholder(category);
+  }
+
+  Widget _buildImageFromUrl() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
+      ),
+      child: Image.network(
+        imageUrl!,
+        width: double.infinity,
+        height: 200,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            height: 200,
+            width: double.infinity,
+            color: AppTheme.neutralColor.withOpacity(0.1),
+            child: Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                    : null,
+                strokeWidth: 2,
+                color: AppTheme.primaryColor,
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          print('❌ Error loading image from URL: $error');
+          return _buildErrorPlaceholder();
+        },
+      ),
+    );
   }
 
   Widget _buildImageFromBytes() {

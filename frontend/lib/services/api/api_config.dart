@@ -1,15 +1,22 @@
 /// API Configuration for connecting to the backend server
 class ApiConfig {
   // Base URL - change this to your backend server address
-  // For local development on Android emulator use: 10.0.2.2
-  // For local development on iOS simulator use: localhost
-  // For physical device with ADB reverse: use localhost (adb reverse tcp:5000 tcp:5000)
-  // For physical device on same network: use your computer's IP address
-  static const String baseUrl = 'http://localhost:5000/api';
+  // For Android emulator use: 10.0.2.2 (special alias for host machine)
+  // For iOS simulator use: localhost
+  // For physical device: use your computer's IP address
+
+  // ⚠️ UPDATE THIS IP ADDRESS to your PC's current WiFi IP ⚠️
+  static const String baseUrl = 'http://192.168.100.115:5000/api';
+
+  // iOS Simulator (uncomment to use)
+  // static const String baseUrl = 'http://localhost:5000/api';
+  
+  // Android Emulator (uncomment to use)
+  // static const String baseUrl = 'http://10.0.2.2:5000/api';
   
   // Alternative URLs for different environments
   static const String localUrl = 'http://localhost:5000';
-  static const String emulatorUrl = 'http://10.0.2.2:3000/api';
+  static const String emulatorUrl = 'http://10.0.2.2:5000/api';
   
   // Timeout durations
   static const Duration connectionTimeout = Duration(seconds: 30);

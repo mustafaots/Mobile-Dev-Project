@@ -160,7 +160,7 @@ class SyncManager {
   }
 
   /// Start automatic background sync
-  void startAutoSync({Duration interval = const Duration(minutes: 5)}) {
+  void startAutoSync({Duration interval = const Duration(seconds: 5)}) {
     stopAutoSync();
     _autoSyncTimer = Timer.periodic(interval, (_) {
       if (connectivity.isOnline) {
