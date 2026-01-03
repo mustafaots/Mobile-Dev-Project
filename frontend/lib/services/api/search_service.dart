@@ -68,6 +68,9 @@ class SearchService {
     String? city,
     double? minPrice,
     double? maxPrice,
+    String? stayType,
+    String? vehicleType,
+    String? activityType,
     int limit = 20,
     int offset = 0,
   }) async {
@@ -83,6 +86,9 @@ class SearchService {
       if (city != null) params['city'] = city;
       if (minPrice != null) params['min_price'] = minPrice;
       if (maxPrice != null) params['max_price'] = maxPrice;
+      if (stayType != null) params['stay_type'] = stayType;
+      if (vehicleType != null) params['vehicle_type'] = vehicleType;
+      if (activityType != null) params['activity_type'] = activityType;
 
       final response = await _apiClient.get(
         ApiConfig.search,
