@@ -31,6 +31,7 @@ export interface SearchQuery {
   // Sorting
   sort_by?: 'price' | 'rating' | 'created_at';
   sort_order?: 'asc' | 'desc';
+  availability_dates?: string[];
 }
 
 export interface SearchResult {
@@ -60,6 +61,42 @@ class SearchService {
     const limit = query.limit ?? 20;
     const offset = query.offset ?? 0;
 
+    // Create a new array of Date objects for the RPC
+    let availabilityDates: Date[] = [];
+
+    if (typeof query.availability_dates === 'string') {
+      try {
+        const parsed = JSON.parse(query.availability_dates);
+        availabilityDates = parsed.map((d: string) => new Date(d));
+      } catch (e) {
+        console.warn('Invalid availability_dates:', query.availability_dates);
+        availabilityDates = [];
+      }
+    } else if (Array.isArray(query.availability_dates)) {
+      availabilityDates = query.availability_dates.map((d: string) => new Date(d));
+    }
+
+    // Handle availability dates filter FIRST
+    let allowedIds: number[] | null = null;
+    if (availabilityDates.length > 0) {
+      const { data, error } = await supabase.rpc(
+        'filter_posts_by_available_dates',
+        {
+          requested_dates: availabilityDates,
+        }
+      );
+      if (error) {
+        throw new ApiError(500, 'Availability filtering failed', error.message);
+      }
+      
+      allowedIds = (data ?? []).map((r: any) => Number(r.id));
+      console.log(`🔍 Filtering by available post IDs:`, allowedIds);
+      
+      if (allowedIds === null || allowedIds.length === 0) {
+        return { results: [], total: 0 };
+      }
+    }
+
     // Build the base query
     let dbQuery = supabase.from('posts').select(`
       id,
@@ -73,6 +110,11 @@ class SearchService {
       locations!inner (wilaya, city),
       post_images (secure_url, sort_order)
     `, { count: 'exact' });
+
+
+    if(allowedIds && allowedIds.length > 0) {
+      dbQuery = dbQuery.in('id', allowedIds);
+    }
 
     // Force inner join only if type filter exists
     if (query.category === 'stay' && query.stay_type) {
@@ -89,15 +131,6 @@ class SearchService {
     // Category filter
     if (query.category) {
       dbQuery = dbQuery.eq('category', query.category);
-    }
-
-    // type filters
-    if (query.category === 'stay' && query.stay_type) {
-      dbQuery = dbQuery.eq('stays.stay_type', query.stay_type);
-    } else if (query.category === 'vehicle' && query.vehicle_type) {
-      dbQuery = dbQuery.eq('vehicles.vehicle_type', query.vehicle_type);
-    } else if (query.category === 'activity' && query.activity_type) {
-      dbQuery = dbQuery.eq('activities.activity_type', query.activity_type);
     }
 
     // Location filters

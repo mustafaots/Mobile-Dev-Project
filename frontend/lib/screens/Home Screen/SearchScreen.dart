@@ -32,6 +32,7 @@ class SearchScreen extends StatelessWidget {
       stayType: postCategory == 'stay' ? postType : null,
       vehicleType: postCategory == 'vehicle' ? postType : null,
       activityType: postCategory == 'activity' ? postType : null,
+      availabilityDates: date
     );
 
     if (!response.success) {
