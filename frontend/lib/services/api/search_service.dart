@@ -71,6 +71,7 @@ class SearchService {
     String? stayType,
     String? vehicleType,
     String? activityType,
+    List<DateTime>? availabilityDates,
     int limit = 20,
     int offset = 0,
   }) async {
@@ -89,6 +90,11 @@ class SearchService {
       if (stayType != null) params['stay_type'] = stayType;
       if (vehicleType != null) params['vehicle_type'] = vehicleType;
       if (activityType != null) params['activity_type'] = activityType;
+      if (availabilityDates != null && availabilityDates.isNotEmpty) {
+        params['availability_dates'] = availabilityDates
+            .map((d) => d.toIso8601String().split('T')[0]) // YYYY-MM-DD
+            .toList();
+      }
 
       final response = await _apiClient.get(
         ApiConfig.search,
