@@ -24,6 +24,7 @@ const searchQuerySchema = z.object({
   offset: z.coerce.number().int().min(0).optional(),
   sort_by: z.enum(['price', 'rating', 'created_at']).optional(),
   sort_order: z.enum(['asc', 'desc']).optional(),
+  availability_dates: z.union([z.array(z.string()),z.string(),]).optional(),
 });
 
 class SearchController {

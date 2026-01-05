@@ -68,9 +68,9 @@ class _StaysScreenState extends State<StaysScreen> {
 
   /// Build image widget from Cloudinary URL or fallback
   Widget _buildListingImage(Listing listing, double width, double height) {
-    print('🖼️ StaysScreen._buildListingImage for listing ${listing.id}: ${listing.images.length} images');
+    print(' StaysScreen._buildListingImage for listing ${listing.id}: ${listing.images.length} images');
     if (listing.images.isNotEmpty) {
-      print('🖼️ First image URL: ${listing.images.first}');
+      print(' First image URL: ${listing.images.first}');
     }
     
     // Check if listing has Cloudinary images

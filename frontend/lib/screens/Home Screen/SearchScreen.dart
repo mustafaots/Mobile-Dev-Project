@@ -148,6 +148,7 @@ class SearchScreen extends StatelessWidget {
                               const Icon(
                                 Icons.star_border_outlined,
                                 size: 20,
+                                color: AppTheme.neutralColor
                               ),
                               const SizedBox(width: 4),
                               Text(
