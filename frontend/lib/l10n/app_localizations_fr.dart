@@ -71,6 +71,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Veuillez entrer votre numéro de téléphone';
 
   @override
+  String get invalidPhoneFormat =>
+      'Le numéro doit commencer par 05, 06 ou 07 suivi de 8 chiffres';
+
+  @override
   String get pleaseEnterPassword => 'Veuillez entrer votre mot de passe';
 
   @override

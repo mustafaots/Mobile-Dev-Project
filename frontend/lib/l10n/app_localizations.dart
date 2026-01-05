@@ -220,6 +220,12 @@ abstract class AppLocalizations {
   /// **'Please enter your phone number'**
   String get pleaseEnterPhoneNumber;
 
+  /// No description provided for @invalidPhoneFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone must start with 05, 06, or 07 followed by 8 digits'**
+  String get invalidPhoneFormat;
+
   /// No description provided for @pleaseEnterPassword.
   ///
   /// In en, this message translates to:

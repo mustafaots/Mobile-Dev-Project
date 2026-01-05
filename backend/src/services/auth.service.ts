@@ -5,18 +5,52 @@ import { usersService } from './users.service';
 import { createClient } from '@supabase/supabase-js';
 
 class AuthService {
+  /**
+   * Convert local phone format (07/05/06...) to E.164 format for Supabase
+   * Example: 0774403073 -> +213774403073 (Algeria country code)
+   */
+  private formatPhoneToE164(phone: string | undefined): string | undefined {
+    if (!phone) return undefined;
+    
+    // If already in E.164 format, return as-is
+    if (phone.startsWith('+')) return phone;
+    
+    // Convert local format (07/05/06...) to E.164 with Algeria country code (+213)
+    // Remove leading 0 and add country code
+    if (phone.startsWith('0')) {
+      return '+213' + phone.substring(1);
+    }
+    
+    return phone;
+  }
+
   async register(payload: RegisterInput) {
     const { email, password, first_name, last_name, phone } = payload;
+
+    // Convert phone to E.164 format for Supabase
+    const e164Phone = this.formatPhoneToE164(phone);
 
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
-      phone: phone || undefined,
+      phone: e164Phone,
     });
 
     if (error || !data.user) {
       console.error('Supabase auth error:', error);
+      
+      // Handle specific error codes with user-friendly messages
+      if (error?.code === 'email_exists') {
+        throw new ApiError(409, 'An account with this email already exists. Please login or use a different email.');
+      }
+      if (error?.code === 'phone_exists') {
+        throw new ApiError(409, 'An account with this phone number already exists.');
+      }
+      if (error?.code === 'weak_password') {
+        throw new ApiError(400, 'Password is too weak. Please use a stronger password.');
+      }
+      
       throw new ApiError(400, 'Unable to create user account.', error?.message || 'Unknown error');
     }
 
@@ -24,7 +58,7 @@ class AuthService {
       user_id: data.user.id,
       first_name: first_name ?? null,
       last_name: last_name ?? null,
-      phone: phone ?? null,
+      // Note: phone is stored in Supabase Auth (auth.users), not in public.users table
       is_verified: false,
       is_suspended: false,
     });

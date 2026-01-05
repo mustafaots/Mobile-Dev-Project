@@ -70,6 +70,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterPhoneNumber => 'Please enter your phone number';
 
   @override
+  String get invalidPhoneFormat =>
+      'Phone must start with 05, 06, or 07 followed by 8 digits';
+
+  @override
   String get pleaseEnterPassword => 'Please enter your password';
 
   @override

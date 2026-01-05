@@ -20,6 +20,7 @@
     "emailAlreadyExists": "This email is already registered",
     "pleaseEnterEmail": "Please enter your email",
     "pleaseEnterPhoneNumber": "Please enter your phone number",
+    "invalidPhoneFormat": "Phone must start with 05, 06, or 07 followed by 8 digits",
     "pleaseEnterPassword": "Please enter your password",
     "passwordsDoNotMatch": "Passwords do not match",
     "signUp": "Sign Up",

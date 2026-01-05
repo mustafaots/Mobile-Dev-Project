@@ -160,6 +160,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (value == null || value.trim().isEmpty) {
                         return loc.pleaseEnterPhoneNumber;
                       }
+                      
+                      final phone = value.trim();
+                      // Format: 07, 05, or 06 followed by 8 digits (total 10 digits)
+                      if (!RegExp(r'^(07|05|06)\d{8}$').hasMatch(phone)) {
+                        return loc.invalidPhoneFormat;
+                      }
                       return null;
                     },
                   ),

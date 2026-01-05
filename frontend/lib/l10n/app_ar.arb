@@ -20,6 +20,7 @@
   "emailAlreadyExists": "هذا البريد الإلكتروني مسجل بالفعل",
   "pleaseEnterEmail": "يرجى إدخال بريدك الإلكتروني",
   "pleaseEnterPhoneNumber": "يرجى إدخال رقم هاتفك",
+  "invalidPhoneFormat": "يجب أن يبدأ الرقم بـ 05 أو 06 أو 07 متبوعًا بـ 8 أرقام",
   "pleaseEnterPassword": "يرجى إدخال كلمة المرور",
   "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
   "signUp": "إنشاء حساب",
