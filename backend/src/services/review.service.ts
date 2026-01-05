@@ -101,6 +101,51 @@ class ReviewManagementService {
     return this.getReviewById(review.id);
   }
 
+
+  // check if a user can add a review for a post
+  async canUserReviewPost(postId: number, userId: string): Promise<boolean> {
+    // Get post
+    const { data: post, error: postError } = await supabase
+      .from('posts')
+      .select('id, owner_id')
+      .eq('id', postId)
+      .single();
+
+    if (postError || !post) {
+      return false;
+    }
+
+    // User cannot review their own post
+    if (post.owner_id === userId) {
+      return false;
+    }
+
+    // Check if user already reviewed the post
+    const { data: existingReviews } = await supabase
+      .from('reviews')
+      .select('id')
+      .eq('post_id', postId)
+      .eq('reviewer_id', userId);
+
+    if (existingReviews && existingReviews.length > 0) {
+      return false;
+    }
+
+    // Check if user has a completed booking
+    const { data: bookings } = await supabase
+      .from('bookings')
+      .select('id')
+      .eq('post_id', postId)
+      .eq('client_id', userId)
+      .eq('status', 'completed');
+
+    if(bookings && bookings.length > 0) {
+      return false;
+    }
+
+    return true;
+  }
+
   /**
    * Get review by ID with user details
    */
