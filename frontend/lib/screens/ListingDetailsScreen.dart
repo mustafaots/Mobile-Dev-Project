@@ -1,4 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
@@ -11,6 +12,7 @@ import 'package:easy_vacation/logic/cubit/reviews_cubit.dart';
 import 'package:easy_vacation/logic/cubit/host_info_cubit.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
 import 'package:easy_vacation/logic/cubit/details_cubit.dart';
+import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -168,6 +170,55 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             vehicle: vehicle,
                             activity: activity,
                             cubit: context.read<DetailsCubit>(),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) =>
+                                        AddReviewScreen(
+                                          postId: widget.postId ?? 1,
+                                          reviewerId: widget.userId,
+                                          addReviewCubit: AddReviewCubit(
+                                            reviewRepository:
+                                                appRepos['reviewRepo'],
+                                          ),
+                                        ),
+                                    transitionsBuilder:
+                                        (_, animation, __, child) {
+                                          return FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          );
+                                        },
+                                    transitionDuration:
+                                        const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.primaryColor,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(double.infinity, 56),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                elevation: 2,
+                              ),
+                              child: Text(
+                                loc.notifications_addReviewNow,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                           ReviewsSection(
                             postId: post?.id,

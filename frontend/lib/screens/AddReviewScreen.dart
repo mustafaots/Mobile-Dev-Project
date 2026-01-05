@@ -71,7 +71,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const HomeScreen(),
+                  pageBuilder: (_, __, ___) => HomeScreen(userId: widget.reviewerId,),
                   transitionsBuilder: (_, animation, __, child) {
                     return FadeTransition(opacity: animation, child: child);
                   },

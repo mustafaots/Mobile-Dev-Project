@@ -69,7 +69,7 @@ class CreateReviewRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'listing_id': listingId,
+      'post_id': listingId,
       'rating': rating,
       if (comment != null) 'comment': comment,
     };
