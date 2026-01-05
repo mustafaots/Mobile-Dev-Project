@@ -140,6 +140,26 @@ class ReviewController {
       message: 'Review deleted successfully.',
     });
   });
+
+
+  // verify if user can add a review for a certain post
+  canReviewPost = asyncHandler(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    if (!user) {
+      throw new ApiError(401, 'Authentication required.');
+    }
+
+    const postId = parseInt(req.params.id, 10);
+    if (isNaN(postId)) {
+      throw new ApiError(400, 'Invalid post ID.');
+    }
+
+    const canReview = await reviewManagementService.canUserReviewPost(postId, user.id);
+    res.json({
+      success: true,
+      data: { canReview }, // boolean
+    });
+  });
 }
 
 export const reviewController = new ReviewController();

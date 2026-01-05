@@ -187,4 +187,21 @@ class ReviewService {
       return ApiResponse.error(e.toString());
     }
   }
+
+
+  // Check if user can add review for a certain post
+  Future<ApiResponse<bool>> canReviewPost(int postId) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConfig.reviews}/can-review/$postId',
+        requiresAuth: true,
+      );
+
+      final canReview = response['data']?['canReview'] as bool? ?? false;
+
+      return ApiResponse.success(canReview);
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

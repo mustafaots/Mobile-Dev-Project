@@ -11,6 +11,7 @@ router.get('/my', authenticate, reviewController.getMyReviews);
 router.post('/', authenticate, reviewController.create);
 router.patch('/:id', authenticate, reviewController.update);
 router.delete('/:id', authenticate, reviewController.delete);
+router.get('/can-review/:id', authenticate, reviewController.canReviewPost);
 
 // Attach CRUD router for basic read operations
 const crudRouter = buildCrudRouter(reviewsController);

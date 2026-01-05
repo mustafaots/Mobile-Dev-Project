@@ -13,6 +13,7 @@ import 'package:easy_vacation/logic/cubit/host_info_cubit.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
 import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
+import 'package:easy_vacation/services/api/review_service.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -34,6 +35,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   late BookingRepository _bookingRepository;
   List<DateTime> _selectedDates = [];
 
+  bool _canReview = false;
+  bool _checkingReviewPermission = true;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +46,18 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     } catch (e) {
       // Handle error
     }
+
+    // Check if user can review this post
+    _checkReviewPermission();
+  }
+
+  Future<void> _checkReviewPermission() async {
+    final postId = widget.postId ?? 1;
+    final result = await ReviewService.instance.canReviewPost(postId);
+    setState(() {
+      _canReview = result.isSuccess && result.data == true;
+      _checkingReviewPermission = false;
+    });
   }
 
   @override
@@ -172,54 +188,55 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             cubit: context.read<DetailsCubit>(),
                           ),
                           SizedBox(height: 10,),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (_, __, ___) =>
-                                        AddReviewScreen(
-                                          postId: widget.postId ?? 1,
-                                          reviewerId: widget.userId,
-                                          addReviewCubit: AddReviewCubit(
-                                            reviewRepository:
-                                                appRepos['reviewRepo'],
+                          if (!_checkingReviewPermission && _canReview)
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (_, __, ___) =>
+                                          AddReviewScreen(
+                                            postId: widget.postId ?? 1,
+                                            reviewerId: widget.userId,
+                                            addReviewCubit: AddReviewCubit(
+                                              reviewRepository:
+                                                  appRepos['reviewRepo'],
+                                            ),
                                           ),
-                                        ),
-                                    transitionsBuilder:
-                                        (_, animation, __, child) {
-                                          return FadeTransition(
-                                            opacity: animation,
-                                            child: child,
-                                          );
-                                        },
-                                    transitionDuration:
-                                        const Duration(
-                                          milliseconds: 300,
-                                        ),
+                                      transitionsBuilder:
+                                          (_, animation, __, child) {
+                                            return FadeTransition(
+                                              opacity: animation,
+                                              child: child,
+                                            );
+                                          },
+                                      transitionDuration:
+                                          const Duration(
+                                            milliseconds: 300,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppTheme.primaryColor,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size(double.infinity, 56),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppTheme.primaryColor,
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(double.infinity, 56),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  elevation: 2,
                                 ),
-                                elevation: 2,
-                              ),
-                              child: Text(
-                                loc.notifications_addReviewNow,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                child: Text(
+                                  loc.notifications_addReviewNow,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                           ReviewsSection(
                             postId: post?.id,
                             cubit: context.read<ReviewsCubit>(),

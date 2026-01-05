@@ -150,13 +150,6 @@ class ReviewsSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      loc.listingDetails_daysAgo(2),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: secondaryTextColor.withOpacity(0.7),
-                      ),
-                    ),
                   ],
                 ),
               ),
