@@ -1,3 +1,4 @@
+import 'package:easy_vacation/services/api/review_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/models/reviews.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
@@ -15,38 +16,42 @@ class AddReviewCubit extends Cubit<AddReviewState> {
     required int rating,
     String? comment,
   }) async {
-    // Validate inputs
     if (rating < 1 || rating > 5) {
       emit(const AddReviewValidationError('Rating must be between 1 and 5'));
       return;
     }
 
     if (comment != null && comment.trim().isEmpty && comment.isNotEmpty) {
-      emit(const AddReviewValidationError('Comment cannot be empty or whitespace only'));
+      emit(const AddReviewValidationError(
+        'Comment cannot be empty or whitespace only',
+      ));
       return;
     }
 
     emit(const AddReviewLoading());
 
     try {
-      final review = Review(
-        postId: postId,
-        reviewerId: reviewerId,
+      // Send to remote backend first
+      final request = CreateReviewRequest(
+        listingId: postId,
         rating: rating,
         comment: comment?.trim(),
-        createdAt: DateTime.now(),
       );
 
-      await reviewRepository.insertReview(review);
+      final response = await ReviewService.instance.createReview(request);
 
-      // Retrieve the inserted review to get its ID
-      final allReviews = await reviewRepository.getAllReviews();
-      final insertedReview = allReviews.lastWhere(
-        (r) => r.postId == postId && r.reviewerId == reviewerId && r.createdAt == review.createdAt,
-        orElse: () => review,
-      );
+      if (!response.success || response.data == null) {
+        emit(AddReviewFailure(response.message ?? 'Failed to submit review'));
+        return;
+      }
 
-      emit(AddReviewSuccess(insertedReview));
+      final remoteReview = response.data!;
+
+      // save to local database
+      await reviewRepository.insertReview(remoteReview);
+
+      // emit success with backend review
+      emit(AddReviewSuccess(remoteReview));
     } catch (e) {
       emit(AddReviewFailure('Failed to submit review: ${e.toString()}'));
     }
