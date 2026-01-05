@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_vacation/services/api/api_client.dart';
 import 'package:easy_vacation/services/api/api_config.dart';
 import 'package:easy_vacation/services/api/api_response.dart';
@@ -91,9 +93,11 @@ class SearchService {
       if (vehicleType != null) params['vehicle_type'] = vehicleType;
       if (activityType != null) params['activity_type'] = activityType;
       if (availabilityDates != null && availabilityDates.isNotEmpty) {
-        params['availability_dates'] = availabilityDates
-            .map((d) => d.toIso8601String().split('T')[0]) // YYYY-MM-DD
-            .toList();
+        params['availability_dates'] = jsonEncode(
+          availabilityDates
+              .map((d) => d.toIso8601String().split('T')[0])
+              .toList(),
+        );
       }
 
       final response = await _apiClient.get(

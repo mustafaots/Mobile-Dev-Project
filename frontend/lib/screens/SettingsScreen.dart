@@ -7,6 +7,7 @@ import 'package:easy_vacation/screens/Listings History/ListingsHistoryScreen.dar
 import 'package:easy_vacation/screens/LoginScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/widgets/change_language.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -168,6 +169,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     ),
                   ),
+
+                  // Language settings
+                  const SizedBox(height: 16),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 0),
+                    child: const LanguageSelector(),
+                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
