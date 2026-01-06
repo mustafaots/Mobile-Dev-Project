@@ -907,6 +907,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get edit => 'Edit';
+
+  @override
   String get forgotPassword_title => 'Forgot Password';
 
   @override

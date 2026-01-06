@@ -919,6 +919,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get save => 'Enregistrer';
 
   @override
+  String get edit => 'Modifier';
+
+  @override
   String get forgotPassword_title => 'Mot de passe oublié';
 
   @override

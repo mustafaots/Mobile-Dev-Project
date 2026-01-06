@@ -77,6 +77,53 @@ class AddReviewCubit extends Cubit<AddReviewState> {
     }
   }
 
+
+  /// Update an existing review (remote first, then local)
+  Future<void> updateReview({
+    required int reviewId,
+    int? rating,
+    String? comment,
+  }) async {
+    if (rating != null && (rating < 1 || rating > 5)) {
+      emit(const AddReviewValidationError('Rating must be between 1 and 5'));
+      return;
+    }
+
+    if (comment != null && comment.trim().isEmpty && comment.isNotEmpty) {
+      emit(const AddReviewValidationError(
+        'Comment cannot be empty or whitespace only',
+      ));
+      return;
+    }
+
+    emit(const AddReviewLoading());
+
+    try {
+      // Call the backend service
+      final response = await ReviewService.instance.updateReview(
+        reviewId,
+        rating: rating,
+        comment: comment?.trim(),
+      );
+
+      if (!response.success || response.data == null) {
+        emit(AddReviewFailure(response.message ?? 'Failed to update review'));
+        return;
+      }
+
+      final updatedReview = response.data!;
+
+      // Update local database
+      await reviewRepository.updateReview(reviewId, updatedReview);
+
+      // Success: reset state so UI can show snackbar or navigate
+      emit(AddReviewSuccess(updatedReview));
+    } catch (e) {
+      emit(AddReviewFailure('Failed to update review: ${e.toString()}'));
+    }
+  }
+
+
   /// Reset state to initial
   void reset() {
     emit(const AddReviewInitial());

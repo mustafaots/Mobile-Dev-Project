@@ -415,6 +415,7 @@
 
   "delete": "حذف",
   "save": "حفظ",
+  "edit": "تعديل",
 
   "forgotPassword_title": "نسيت كلمة المرور",
   "forgotPassword_instructions": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
