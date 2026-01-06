@@ -1,3 +1,6 @@
+import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
+import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
@@ -14,6 +17,7 @@ class ReviewsSection extends StatelessWidget {
   final Map<String, User>? reviewers;
   final int? postId;
   final ReviewsCubit? cubit;
+  final dynamic currentUserID;
 
   const ReviewsSection({
     super.key,
@@ -21,6 +25,7 @@ class ReviewsSection extends StatelessWidget {
     this.reviewers,
     this.postId,
     this.cubit,
+    this.currentUserID
   });
 
   void _navigateToProfile(
@@ -57,6 +62,62 @@ class ReviewsSection extends StatelessWidget {
     );
   }
 
+
+  Widget _buildReviewOptions({
+    required BuildContext context,
+    required VoidCallback onEdit,
+    required VoidCallback onDelete,
+  }) {
+    final secondaryTextColor = context.secondaryTextColor;
+    final textColor = context.textColor;
+    final cardColor = context.cardColor;
+
+    return PopupMenuButton<String>(
+      padding: EdgeInsets.zero,
+      splashRadius: 20,
+      icon: Icon(
+        Icons.more_vert,
+        size: 18,
+        color: secondaryTextColor,
+      ),
+      color: cardColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      elevation: 4,
+      onSelected: (value) {
+        if (value == 'edit') {
+          onEdit();
+        } else if (value == 'delete') {
+          onDelete();
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'edit',
+          child: Row(
+            children: [
+              Icon(
+                Icons.edit_outlined,
+                size: 18,
+                color: textColor,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                AppLocalizations.of(context)!.edit,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
   Widget _buildReviewItem(
     BuildContext context,
     String name,
@@ -65,10 +126,11 @@ class ReviewsSection extends StatelessWidget {
     int postsCount = 0,
     int reviewsCount = 0,
     String? profilePictureUrl,
+    String? reviewerId,
+    int? reviewId
   }) {
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
-    final loc = AppLocalizations.of(context)!;
 
     return GestureDetector(
       onTap: () {
@@ -126,21 +188,57 @@ class ReviewsSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          name,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: textColor,
+                    SizedBox(
+                      height: 44,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: textColor,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        _buildStarRating(rating),
-                      ],
+                          if (reviewerId == currentUserID)
+                            _buildReviewOptions(
+                              context: context,
+                              onEdit: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) => AddReviewScreen(
+                                      addReviewCubit: AddReviewCubit(
+                                        reviewRepository:
+                                            appRepos['reviewRepo'],
+                                      ),
+                                      postId: 1,
+                                      reviewerId: reviewerId,
+                                      reviewID: reviewId,
+                                      rating: rating,
+                                      comment: comment,
+                                    ),
+                                    transitionsBuilder: (_, animation, __, child) {
+                                      return FadeTransition(opacity: animation, child: child);
+                                    },
+                                    transitionDuration: const Duration(milliseconds: 300),
+                                  ),
+                                );
+                              },
+                              onDelete: () {},
+                            ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 6),
+
+                    _buildStarRating(rating),
+
+                    const SizedBox(height: 13),
+
                     Text(
                       comment,
                       style: TextStyle(
@@ -149,7 +247,6 @@ class ReviewsSection extends StatelessWidget {
                         height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 4),
                   ],
                 ),
               ),
@@ -253,10 +350,14 @@ class ReviewsSection extends StatelessWidget {
               final reviewer = state.reviewers[review.reviewerId];
               return _buildReviewItem(
                 context,
-                reviewer?.username ?? 'Unknown User',
+                ('${reviewer?.firstName ?? ''} ${reviewer?.lastName ?? ''}').trim().isEmpty
+                ? 'Unknown User'
+                : '${reviewer?.firstName ?? ''} ${reviewer?.lastName ?? ''}',
                 review.rating.toDouble(),
                 review.comment ?? '',
                 postsCount: 0,
+                reviewId: review.id ?? 1,
+                reviewerId: review.reviewerId,
                 reviewsCount: 0,
                 profilePictureUrl:
                     null, // Can be set if profile picture URL is added to User model

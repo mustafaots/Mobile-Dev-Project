@@ -13,12 +13,18 @@ class AddReviewScreen extends StatefulWidget {
   final int postId;
   final dynamic reviewerId;
   final AddReviewCubit addReviewCubit;
+  final int? reviewID;
+  final String? comment;
+  final double? rating;
 
   const AddReviewScreen({
     Key? key,
     required this.postId,
     required this.reviewerId,
     required this.addReviewCubit,
+    this.reviewID,
+    this.comment,
+    this.rating
   }) : super(key: key);
 
   @override
@@ -37,13 +43,21 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
 
   void _submitReview(BuildContext context) {
     if (_rating > 0 && _reviewController.text.trim().isNotEmpty) {
-      // Submit review using Cubit
-      context.read<AddReviewCubit>().submitReview(
-        postId: widget.postId,
-        reviewerId: widget.reviewerId.toString(),
-        rating: _rating,
-        comment: _reviewController.text.trim(),
-      );
+      if(widget.reviewID == null) {
+        // Submit review using Cubit
+        context.read<AddReviewCubit>().submitReview(
+          postId: widget.postId,
+          reviewerId: widget.reviewerId.toString(),
+          rating: _rating,
+          comment: _reviewController.text.trim(),
+        );
+      } else {
+        context.read<AddReviewCubit>().updateReview(
+          reviewId: widget.reviewID!,
+          comment: _reviewController.text.trim(),
+          rating: _rating,
+        );
+      }
     }
   }
 
@@ -118,6 +132,15 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.reviewID != null) {
+      _reviewController.text = widget.comment ?? '';
+      _rating =  widget.rating!.toInt();
+    }
   }
 
   @override

@@ -415,6 +415,7 @@
 
   "delete": "Supprimer",
   "save": "Enregistrer",
+  "edit": "Modifier",
 
   "forgotPassword_title": "Mot de passe oublié",
   "forgotPassword_instructions": "Entrez votre email pour réinitialiser votre mot de passe",

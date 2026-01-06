@@ -238,6 +238,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                               ),
                             ),
                           ReviewsSection(
+                            currentUserID: widget.userId,
                             postId: post?.id,
                             cubit: context.read<ReviewsCubit>(),
                           ),

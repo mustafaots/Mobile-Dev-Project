@@ -901,6 +901,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get save => 'حفظ';
 
   @override
+  String get edit => 'تعديل';
+
+  @override
   String get forgotPassword_title => 'نسيت كلمة المرور';
 
   @override
