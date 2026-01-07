@@ -75,3 +75,7 @@ class AddReviewValidationError extends AddReviewState {
   @override
   int get hashCode => error.hashCode;
 }
+
+class DeleteReviewSuccess extends AddReviewState {
+  const DeleteReviewSuccess();
+}

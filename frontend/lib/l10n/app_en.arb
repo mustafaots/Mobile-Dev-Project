@@ -636,5 +636,10 @@
 
 
     "selectDate_title": "Select Dates",
-    "confirm_button": "Confirm"
+    "confirm_button": "Confirm",
+
+    "updateReview_title": "Edit Your Review",
+    "addReview_updated": "Review Updated Successfully",
+    "reviewDeletedTitle": "Review deleted",
+    "reviewDeletedMessage": "Your review was deleted successfully."
 }

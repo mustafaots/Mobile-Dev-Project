@@ -35,6 +35,8 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   int _rating = 0;
   final TextEditingController _reviewController = TextEditingController();
 
+  bool _isDeleting = false;
+
   @override
   void dispose() {
     _reviewController.dispose();
@@ -61,34 +63,58 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
     }
   }
 
+  void _deleteReview(BuildContext context) {
+    setState(() {
+      _isDeleting = true;
+    });
+    context.read<AddReviewCubit>().deleteReview(
+      reviewId: widget.reviewID!,
+    );
+  }
+
   void _showSuccessDialog(BuildContext context, AppLocalizations loc) {
+    final String title;
+    final String message;
+
+    if (_isDeleting) {
+      title = loc.reviewDeletedTitle;
+      message = loc.reviewDeletedMessage;
+    } else if (widget.reviewID != null) {
+      title = loc.addReview_updated;
+      message = loc.addReview_thankYouFeedback;
+    } else {
+      title = loc.addReview_submitted;
+      message = loc.addReview_thankYouFeedback;
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: context.cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
-          loc.addReview_submitted,
+          title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: context.textColor,
           ),
         ),
         content: Text(
-          loc.addReview_thankYouFeedback,
+          message,
           style: TextStyle(color: context.secondaryTextColor),
         ),
         actions: [
           TextButton(
             onPressed: () {
+              _isDeleting = false; // reset flag
               Navigator.of(context).pop();
               Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => HomeScreen(userId: widget.reviewerId,),
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
+                  pageBuilder: (_, __, ___) =>
+                      HomeScreen(userId: widget.reviewerId),
+                  transitionsBuilder: (_, animation, __, child) =>
+                      FadeTransition(opacity: animation, child: child),
                   transitionDuration: const Duration(milliseconds: 300),
                 ),
               );
@@ -164,16 +190,25 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
       child: BlocListener<AddReviewCubit, AddReviewState>(
         listener: (context, state) {
           if (state is AddReviewSuccess) {
+            _isDeleting = false;
             _showSuccessDialog(context, loc);
+
+          } else if (state is DeleteReviewSuccess) {
+            _isDeleting = true;
+            _showSuccessDialog(context, loc);
+
           } else if (state is AddReviewFailure) {
+            _isDeleting = false;
             _showErrorDialog(context, state.message, loc);
+
           } else if (state is AddReviewValidationError) {
+            _isDeleting = false;
             _showErrorDialog(context, state.error, loc);
           }
         },
         child: Scaffold(
           backgroundColor: backgroundColor,
-          appBar: App_Bar(context, loc.addReview_title),
+          appBar: App_Bar(context, (widget.reviewID != null) ? loc.updateReview_title: loc.addReview_title),
           body: SafeArea(
             child: Column(
               children: [
@@ -375,6 +410,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 BlocBuilder<AddReviewCubit, AddReviewState>(
                   builder: (context, state) {
                     final isLoading = state is AddReviewLoading;
+
                     return Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -386,45 +422,87 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                           ),
                         ),
                       ),
-                      child: ElevatedButton(
-                        onPressed:
-                            isLoading ||
-                                (_rating == 0 ||
-                                    _reviewController.text.trim().isEmpty)
-                            ? null
-                            : () => _submitReview(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isLoading ||
-                                  (_rating == 0 ||
-                                      _reviewController.text.trim().isEmpty)
-                              ? secondaryTextColor.withOpacity(0.3)
-                              : AppTheme.primaryColor,
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(double.infinity, 56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 2,
-                        ),
-                        child: isLoading
-                            ? SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
+                      child: Row(
+                        children: [
+                          // SUBMIT BUTTON
+                          Expanded(
+                            flex: 7,
+                            child: ElevatedButton(
+                              onPressed: isLoading ||
+                                      (_rating == 0 ||
+                                          _reviewController.text.trim().isEmpty)
+                                  ? null
+                                  : () => _submitReview(context),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isLoading ||
+                                        (_rating == 0 ||
+                                            _reviewController.text.trim().isEmpty)
+                                    ? secondaryTextColor.withOpacity(0.3)
+                                    : AppTheme.primaryColor,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(double.infinity, 56),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              )
-                            : Text(
-                                loc.addReview_submitReview,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                elevation: 2,
                               ),
+                              child: (isLoading && !_isDeleting)
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  )
+                                : Text(
+                                    loc.addReview_submitReview,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                            ),
+                          ),
+
+                        if (widget.reviewID != null) const SizedBox(width: 12),
+
+                          // DELETE BUTTON
+                          if (widget.reviewID != null)
+                            Expanded(
+                              flex: 3,
+                              child: ElevatedButton(
+                                onPressed: isLoading
+                                    ? null
+                                    : () => _deleteReview(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red.shade600,
+                                  foregroundColor: Colors.white,
+                                  minimumSize: const Size(double.infinity, 55),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  elevation: 2,
+                                ),
+                                child: (isLoading && _isDeleting)
+                                  ? const SizedBox(
+                                      height: 22,
+                                      width: 22,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      ),
+                                    )
+                                  : Text(
+                                      loc.delete,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                              ),
+                            ),
+                        ],
                       ),
                     );
                   },

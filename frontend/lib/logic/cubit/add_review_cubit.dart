@@ -78,7 +78,7 @@ class AddReviewCubit extends Cubit<AddReviewState> {
   }
 
 
-  /// Update an existing review (remote first, then local)
+  /// Update an existing review
   Future<void> updateReview({
     required int reviewId,
     int? rating,
@@ -115,11 +115,31 @@ class AddReviewCubit extends Cubit<AddReviewState> {
 
       // Update local database
       await reviewRepository.updateReview(reviewId, updatedReview);
-
-      // Success: reset state so UI can show snackbar or navigate
       emit(AddReviewSuccess(updatedReview));
     } catch (e) {
       emit(AddReviewFailure('Failed to update review: ${e.toString()}'));
+    }
+  }
+
+
+  // delete a review
+  Future<void> deleteReview({
+    required int reviewId,
+  }) async {
+    emit(const AddReviewLoading());
+
+    try {
+      final response = await ReviewService.instance.deleteReview(reviewId);
+      if (!response.success) {
+        emit(AddReviewFailure(response.message ?? 'Failed to delete review'));
+        return;
+      }
+
+      // Update local database
+      await reviewRepository.deleteReview(reviewId);
+      emit(const DeleteReviewSuccess());
+    } catch (e) {
+      emit(AddReviewFailure('Failed to delete review: ${e.toString()}'));
     }
   }
 
