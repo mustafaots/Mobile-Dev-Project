@@ -20,37 +20,37 @@ class PostCreationService {
   Future<bool> createPost({
     required CreatePostData postData,
     required BuildContext context,
-    required String userId
+    required String userId,
   }) async {
     try {
       print('🚀 Starting post creation...');
-      
+
       // Check if we have internet connectivity
       final hasInternet = await ConnectivityService.instance.checkConnectivity();
-      
+
       if (hasInternet) {
         // Try to create on backend first (syncs to Supabase)
         print('📡 Creating post on backend...');
         final listing = await _createListingFromPostData(postData, userId);
-        
+
         // Debug: print the listing data being sent
         print('📦 Listing data: ${listing.toJson()}');
         print('📸 Images count: ${listing.images.length}');
-        
+
         final result = await ApiServiceLocator.listings.createListing(listing);
-        
+
         print('📨 API Result - success: ${result.isSuccess}, message: ${result.message}');
-        
+
         if (result.isSuccess && result.data != null) {
           print('✅ Post created on backend with ID: ${result.data!.id}');
-          
+
           // Also save locally for offline access
           await _saveLocalCopy(postData, userId, result.data!.id);
-          
+
           return true;
         } else {
           print('⚠️ Backend creation failed: ${result.message}');
-          
+
           // Show the actual error message
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +61,7 @@ class PostCreationService {
               ),
             );
           }
-          
+
           // Fall back to local-only creation
           return await _createLocalOnly(postData, userId, context);
         }
@@ -70,11 +70,10 @@ class PostCreationService {
         print('📴 Offline mode - creating locally only');
         return await _createLocalOnly(postData, userId, context);
       }
-      
     } catch (e, stackTrace) {
       print('❌ Error creating post: $e');
       print('❌ Stack trace: $stackTrace');
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -92,12 +91,12 @@ class PostCreationService {
   Future<Listing> _createListingFromPostData(CreatePostData postData, String userId) async {
     // Convert location
     final location = loc_model.Location.fromDetailsLocation(postData.location);
-    
+
     // Create category-specific details
     Stay? stayDetails;
     Vehicle? vehicleDetails;
     Activity? activityDetails;
-    
+
     switch (postData.category.toLowerCase()) {
       case 'stay':
         if (postData.stayDetails != null) {
@@ -133,27 +132,36 @@ class PostCreationService {
         }
         break;
     }
-    
+
     // Convert availability to JSON string
     String? availabilityJson;
     if (postData.availability.isNotEmpty) {
-      availabilityJson = postData.availability
-          .map((interval) => interval.toMap())
-          .toList()
-          .toString();
+      availabilityJson = jsonEncode(
+        postData.availability
+            .map(
+              (interval) => {
+                'startDate': interval.start.toIso8601String(),
+                'endDate': interval.end.toIso8601String(),
+              },
+            )
+            .toList(),
+      );
     }
-    
+
     // Convert images to base64 for Cloudinary upload
-    final List<String> base64Images = await _convertImagesToBase64(postData.imagePaths);
+    final List<String> base64Images = await _convertImagesToBase64(
+      postData.imagePaths,
+    );
     print('📸 Converted ${base64Images.length} images to base64');
-    
+
     return Listing(
       ownerId: userId,
       category: postData.category,
       title: postData.title,
       description: postData.description,
       price: postData.price,
-      status: 'active', // Use 'active' - valid enum values: active, draft, archived, suspended
+      status:
+          'active', // Use 'active' - valid enum values: active, draft, archived, suspended
       availability: availabilityJson,
       location: location,
       stayDetails: stayDetails,
@@ -162,31 +170,34 @@ class PostCreationService {
       images: base64Images, // Send base64 images for Cloudinary upload
     );
   }
-  
+
   /// Convert local image file paths to base64 strings for upload
   /// Images are compressed to reduce upload size
   Future<List<String>> _convertImagesToBase64(List<String> imagePaths) async {
     final List<String> base64Images = [];
-    
+
     for (final path in imagePaths) {
       try {
         final file = File(path);
         if (await file.exists()) {
           final bytes = await file.readAsBytes();
           final originalSize = bytes.length;
-          
+
           // Compress the image
           Uint8List compressedBytes = await _compressImage(bytes);
-          
+
           final base64String = base64Encode(compressedBytes);
-          
+
           // Create data URI format for Cloudinary (always JPEG after compression)
           final dataUri = 'data:image/jpeg;base64,$base64String';
           base64Images.add(dataUri);
-          
+
           final compressedSize = compressedBytes.length;
-          final savings = ((originalSize - compressedSize) / originalSize * 100).toStringAsFixed(1);
-          print('📸 Compressed image: $path (${originalSize ~/ 1024}KB → ${compressedSize ~/ 1024}KB, saved $savings%)');
+          final savings = ((originalSize - compressedSize) / originalSize * 100)
+              .toStringAsFixed(1);
+          print(
+            '📸 Compressed image: $path (${originalSize ~/ 1024}KB → ${compressedSize ~/ 1024}KB, saved $savings%)',
+          );
         } else {
           print('⚠️ Image file not found: $path');
         }
@@ -194,10 +205,10 @@ class PostCreationService {
         print('❌ Error converting image $path: $e');
       }
     }
-    
+
     return base64Images;
   }
-  
+
   /// Compress image to reduce file size
   Future<Uint8List> _compressImage(Uint8List bytes) async {
     try {
@@ -207,22 +218,24 @@ class PostCreationService {
         print('⚠️ Could not decode image, using original');
         return bytes;
       }
-      
+
       // Resize if too large (max 1920px on longest side)
       const maxDimension = 1920;
       img.Image resized;
-      
+
       if (image.width > maxDimension || image.height > maxDimension) {
         if (image.width > image.height) {
           resized = img.copyResize(image, width: maxDimension);
         } else {
           resized = img.copyResize(image, height: maxDimension);
         }
-        print('📐 Resized from ${image.width}x${image.height} to ${resized.width}x${resized.height}');
+        print(
+          '📐 Resized from ${image.width}x${image.height} to ${resized.width}x${resized.height}',
+        );
       } else {
         resized = image;
       }
-      
+
       // Encode as JPEG with 80% quality
       final compressed = img.encodeJpg(resized, quality: 80);
       return Uint8List.fromList(compressed);
@@ -233,12 +246,20 @@ class PostCreationService {
   }
 
   /// Save a local copy after successful backend creation
-  Future<void> _saveLocalCopy(CreatePostData postData, String userId, int? remoteId) async {
+  Future<void> _saveLocalCopy(
+    CreatePostData postData,
+    String userId,
+    int? remoteId,
+  ) async {
     try {
-      final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
-      final location = loc_model.Location.fromDetailsLocation(postData.location);
+      final postRepo = await RepoFactory.getRepository<PostRepository>(
+        'postRepo',
+      );
+      final location = loc_model.Location.fromDetailsLocation(
+        postData.location,
+      );
       final categoryObject = _createCategoryObject(postData);
-      
+
       final post = Post(
         id: remoteId, // Use the remote ID if available
         ownerId: userId,
@@ -255,7 +276,7 @@ class PostCreationService {
             .map((interval) => interval.toMap())
             .toList(),
       );
-      
+
       await postRepo.createCompletePost(
         post: post,
         location: location,
@@ -272,10 +293,16 @@ class PostCreationService {
   }
 
   /// Create post locally only (offline fallback)
-  Future<bool> _createLocalOnly(CreatePostData postData, String userId, BuildContext context) async {
+  Future<bool> _createLocalOnly(
+    CreatePostData postData,
+    String userId,
+    BuildContext context,
+  ) async {
     try {
-      final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
-      
+      final postRepo = await RepoFactory.getRepository<PostRepository>(
+        'postRepo',
+      );
+
       final post = Post(
         ownerId: userId,
         category: postData.category,
@@ -291,10 +318,12 @@ class PostCreationService {
             .map((interval) => interval.toMap())
             .toList(),
       );
-      
-      final location = loc_model.Location.fromDetailsLocation(postData.location);
+
+      final location = loc_model.Location.fromDetailsLocation(
+        postData.location,
+      );
       final categoryObject = _createCategoryObject(postData);
-      
+
       final postId = await postRepo.createCompletePost(
         post: post,
         location: location,
@@ -303,9 +332,9 @@ class PostCreationService {
         activity: categoryObject['activity'],
         vehicle: categoryObject['vehicle'],
       );
-      
+
       print('✅ Post created locally with ID: $postId (pending sync)');
-      
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -315,7 +344,7 @@ class PostCreationService {
           ),
         );
       }
-      
+
       return true;
     } catch (e) {
       print('❌ Local creation failed: $e');

@@ -17,8 +17,17 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
       // Fetch post from repository
       final post = await postRepository.getPostById(postId);
 
+      print('📅 AvailabilityCubit.loadAvailability($postId)');
+      print('📅 Post found: ${post != null}');
+      if (post != null) {
+        print('📅 Post.availability type: ${post.availability.runtimeType}');
+        print('📅 Post.availability value: ${post.availability}');
+        print('📅 Post.availability isEmpty: ${post.availability.isEmpty}');
+      }
+
       if (post == null) {
         // Fallback to default availability (next 365 days)
+        print('📅 Post is null, using default availability');
         _emitDefaultAvailability();
         return;
       }
@@ -28,8 +37,11 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
         post.availability,
       );
 
+      print('📅 Parsed intervals count: ${availableIntervals.length}');
+
       if (availableIntervals.isEmpty) {
         // If no availability data, use default (next 365 days)
+        print('📅 No intervals parsed, using default availability');
         availableIntervals = [
           DateInterval(
             DateTime.now(),
@@ -78,7 +90,8 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
           .map((interval) {
             try {
               final map = Map<String, dynamic>.from(interval as Map);
-              final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+              final startValue =
+                  map['startDate'] ?? map['start'] ?? map['start_date'];
               final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
 
               final startDate = _parseDate(startValue);
