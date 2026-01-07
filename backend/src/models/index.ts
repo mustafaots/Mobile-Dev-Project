@@ -2,6 +2,7 @@ export * from './shared';
 export * from './activities.model';
 export * from './bookings.model';
 export * from './locations.model';
+export * from './notifications.model';
 export * from './postImages.model';
 export * from './posts.model';
 export * from './reports.model';

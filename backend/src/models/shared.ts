@@ -19,6 +19,8 @@ export const jsonValueSchema: z.ZodType<Json> = z.lazy(() =>
   ])
 );
 
+export const jsonbSchema = jsonValueSchema;
+
 export const stayTypes = [
   'apartment',
   'villa',
