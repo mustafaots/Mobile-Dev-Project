@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/Listing%20Details%20Widgets/availability_section.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
+import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'availability_state.dart';
 
 class AvailabilityCubit extends Cubit<AvailabilityState> {
@@ -14,34 +16,65 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
   Future<void> loadAvailability(int postId) async {
     emit(const AvailabilityLoading());
     try {
-      // Fetch post from repository
+      // First try to get from local database
       final post = await postRepository.getPostById(postId);
 
-      print('📅 AvailabilityCubit.loadAvailability($postId)');
-      print('📅 Post found: ${post != null}');
-      if (post != null) {
-        print('📅 Post.availability type: ${post.availability.runtimeType}');
-        print('📅 Post.availability value: ${post.availability}');
-        print('📅 Post.availability isEmpty: ${post.availability.isEmpty}');
+      print('AvailabilityCubit.loadAvailability($postId)');
+      print(' Post found: ${post != null}');
+
+      List<DateInterval> availableIntervals = [];
+
+      // Try local data first
+      if (post != null && post.availability.isNotEmpty) {
+        print(' Using local availability data');
+        print(' Post.availability: ${post.availability}');
+        availableIntervals = _parseAvailabilityJson(post.availability);
       }
 
-      if (post == null) {
-        // Fallback to default availability (next 365 days)
-        print('📅 Post is null, using default availability');
-        _emitDefaultAvailability();
-        return;
+      // If local is empty, try fetching from API
+      if (availableIntervals.isEmpty) {
+        print(' Local availability empty, trying API...');
+        try {
+          final apiResult = await ApiServiceLocator.listings.getListingById(
+            postId,
+          );
+          if (apiResult.isSuccess && apiResult.data != null) {
+            final listing = apiResult.data!;
+            print(' API listing.availability: ${listing.availability}');
+            if (listing.availability != null &&
+                listing.availability!.isNotEmpty) {
+              availableIntervals = _parseAvailabilityJson(listing.availability);
+              print(
+                ' Parsed ${availableIntervals.length} intervals from API',
+              );
+
+              // Update local database with the availability data
+              if (post != null && availableIntervals.isNotEmpty) {
+                final updatedPost = post.copyWith(
+                  availability: availableIntervals
+                      .map(
+                        (interval) => {
+                          'startDate': interval.start,
+                          'endDate': interval.end,
+                        },
+                      )
+                      .toList(),
+                );
+                await postRepository.updatePost(postId, updatedPost);
+                print(' Updated local database with availability');
+              }
+            }
+          }
+        } catch (apiError) {
+          print(' API fetch failed: $apiError');
+        }
       }
 
-      // Parse availability JSON from post
-      List<DateInterval> availableIntervals = _parseAvailabilityJson(
-        post.availability,
-      );
-
-      print('📅 Parsed intervals count: ${availableIntervals.length}');
+      print(' Final intervals count: ${availableIntervals.length}');
 
       if (availableIntervals.isEmpty) {
-        // If no availability data, use default (next 365 days)
-        print('📅 No intervals parsed, using default availability');
+        // If still no availability data, use default (next 365 days)
+        print(' No intervals found, using default availability');
         availableIntervals = [
           DateInterval(
             DateTime.now(),
@@ -57,6 +90,7 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
         ),
       );
     } catch (e) {
+      print(' Error loading availability: $e');
       // Fallback to default availability on error
       _emitDefaultAvailability();
     }
