@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/Listing%20Details%20Widgets/availability_section.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
+import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'availability_state.dart';
 
 class AvailabilityCubit extends Cubit<AvailabilityState> {
@@ -14,22 +16,65 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
   Future<void> loadAvailability(int postId) async {
     emit(const AvailabilityLoading());
     try {
-      // Fetch post from repository
+      // First try to get from local database
       final post = await postRepository.getPostById(postId);
 
-      if (post == null) {
-        // Fallback to default availability (next 365 days)
-        _emitDefaultAvailability();
-        return;
+      print('AvailabilityCubit.loadAvailability($postId)');
+      print(' Post found: ${post != null}');
+
+      List<DateInterval> availableIntervals = [];
+
+      // Try local data first
+      if (post != null && post.availability.isNotEmpty) {
+        print(' Using local availability data');
+        print(' Post.availability: ${post.availability}');
+        availableIntervals = _parseAvailabilityJson(post.availability);
       }
 
-      // Parse availability JSON from post
-      List<DateInterval> availableIntervals = _parseAvailabilityJson(
-        post.availability,
-      );
+      // If local is empty, try fetching from API
+      if (availableIntervals.isEmpty) {
+        print(' Local availability empty, trying API...');
+        try {
+          final apiResult = await ApiServiceLocator.listings.getListingById(
+            postId,
+          );
+          if (apiResult.isSuccess && apiResult.data != null) {
+            final listing = apiResult.data!;
+            print(' API listing.availability: ${listing.availability}');
+            if (listing.availability != null &&
+                listing.availability!.isNotEmpty) {
+              availableIntervals = _parseAvailabilityJson(listing.availability);
+              print(
+                ' Parsed ${availableIntervals.length} intervals from API',
+              );
+
+              // Update local database with the availability data
+              if (post != null && availableIntervals.isNotEmpty) {
+                final updatedPost = post.copyWith(
+                  availability: availableIntervals
+                      .map(
+                        (interval) => {
+                          'startDate': interval.start,
+                          'endDate': interval.end,
+                        },
+                      )
+                      .toList(),
+                );
+                await postRepository.updatePost(postId, updatedPost);
+                print(' Updated local database with availability');
+              }
+            }
+          }
+        } catch (apiError) {
+          print(' API fetch failed: $apiError');
+        }
+      }
+
+      print(' Final intervals count: ${availableIntervals.length}');
 
       if (availableIntervals.isEmpty) {
-        // If no availability data, use default (next 365 days)
+        // If still no availability data, use default (next 365 days)
+        print(' No intervals found, using default availability');
         availableIntervals = [
           DateInterval(
             DateTime.now(),
@@ -45,6 +90,7 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
         ),
       );
     } catch (e) {
+      print(' Error loading availability: $e');
       // Fallback to default availability on error
       _emitDefaultAvailability();
     }
@@ -78,7 +124,8 @@ class AvailabilityCubit extends Cubit<AvailabilityState> {
           .map((interval) {
             try {
               final map = Map<String, dynamic>.from(interval as Map);
-              final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+              final startValue =
+                  map['startDate'] ?? map['start'] ?? map['start_date'];
               final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
 
               final startDate = _parseDate(startValue);

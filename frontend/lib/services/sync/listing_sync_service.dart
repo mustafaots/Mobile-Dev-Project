@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/locations.model.dart';
@@ -25,7 +26,7 @@ class ListingSyncService implements Syncable {
   // Cache for listings
   List<Listing> _cachedListings = [];
   DateTime? _lastFetchTime;
-  
+
   // Category-specific cache
   final Map<String, List<Listing>> _categoryCache = {};
   final Map<String, DateTime> _categoryCacheTime = {};
@@ -152,12 +153,15 @@ class ListingSyncService implements Syncable {
   }) async {
     print('📋 getListingsByCategory: $category, forceRefresh: $forceRefresh');
     print('📋 isOnline: ${_connectivity.isOnline}');
-    
+
     // Check category cache first (fast path - no network call)
     if (!forceRefresh && _categoryCache.containsKey(category)) {
       final cacheTime = _categoryCacheTime[category];
-      if (cacheTime != null && DateTime.now().difference(cacheTime) < _cacheDuration) {
-        print('📋 Returning cached data: ${_categoryCache[category]!.length} items');
+      if (cacheTime != null &&
+          DateTime.now().difference(cacheTime) < _cacheDuration) {
+        print(
+          '📋 Returning cached data: ${_categoryCache[category]!.length} items',
+        );
         final cachedItems = _categoryCache[category]!;
         if (cachedItems.isNotEmpty) {
           print('📋 First cached listing images: ${cachedItems.first.images}');
@@ -176,7 +180,9 @@ class ListingSyncService implements Syncable {
         );
 
         if (result.isSuccess && result.data != null) {
-          print('✅ Got ${result.data!.items.length} $category listings from backend');
+          print(
+            '✅ Got ${result.data!.items.length} $category listings from backend',
+          );
           // Debug: Show images from API result
           for (var item in result.data!.items.take(2)) {
             print('✅ Listing ${item.id} images: ${item.images}');
@@ -199,9 +205,11 @@ class ListingSyncService implements Syncable {
 
     // Fallback to local database
     print('📦 Falling back to local database...');
-    final localListings = await _getListingsFromLocal(ListingFilters(category: category));
+    final localListings = await _getListingsFromLocal(
+      ListingFilters(category: category),
+    );
     print('📦 Got ${localListings.length} local listings');
-    
+
     if (localListings.isNotEmpty) {
       _categoryCache[category] = localListings;
       _categoryCacheTime[category] = DateTime.now();
@@ -212,8 +220,10 @@ class ListingSyncService implements Syncable {
 
   /// Get listing by ID
   Future<Listing?> getListingById(int id, {bool forceRefresh = false}) async {
-    debugPrint('🔍 ListingSyncService.getListingById($id, forceRefresh: $forceRefresh)');
-    
+    debugPrint(
+      '🔍 ListingSyncService.getListingById($id, forceRefresh: $forceRefresh)',
+    );
+
     // Check cache first
     if (!forceRefresh) {
       final cached = _cachedListings.where((l) => l.id == id).firstOrNull;
@@ -233,7 +243,9 @@ class ListingSyncService implements Syncable {
       try {
         debugPrint('🌐 Fetching from remote API...');
         final result = await _listingService.getListingById(id);
-        debugPrint('📥 API result: success=${result.isSuccess}, data=${result.data != null}');
+        debugPrint(
+          '📥 API result: success=${result.isSuccess}, data=${result.data != null}',
+        );
         if (result.isSuccess && result.data != null) {
           debugPrint('🖼️ Remote listing images: ${result.data!.images}');
           return result.data;
@@ -494,6 +506,9 @@ class ListingSyncService implements Syncable {
 
   Future<void> _saveListingLocally(Listing listing) async {
     try {
+      print('📦 _saveListingLocally: id=${listing.id}, title=${listing.title}');
+      print('📦 Listing.availability: ${listing.availability}');
+
       // Save location first
       int locationId;
       final existingLocation = await _locationRepository.getLocationByAddress(
@@ -508,6 +523,12 @@ class ListingSyncService implements Syncable {
         locationId = await _locationRepository.insertLocation(listing.location);
       }
 
+      // Parse availability
+      final parsedAvailability = _parseAvailabilityFromListing(
+        listing.availability,
+      );
+      print('📦 Parsed availability: $parsedAvailability');
+
       // Save post
       final post = Post(
         id: listing.id,
@@ -520,6 +541,7 @@ class ListingSyncService implements Syncable {
         status: listing.status,
         createdAt: listing.createdAt ?? DateTime.now(),
         updatedAt: listing.updatedAt ?? DateTime.now(),
+        availability: parsedAvailability,
       );
 
       final existingPost = listing.id != null
@@ -530,6 +552,7 @@ class ListingSyncService implements Syncable {
       } else {
         await _postRepository.insertPost(post);
       }
+      print('📦 Post saved successfully');
     } catch (e) {
       debugPrint('Error saving listing locally: $e');
     }
@@ -578,6 +601,70 @@ class ListingSyncService implements Syncable {
   /// Invalidate cache to force refresh on next fetch
   void invalidateCache() {
     _lastFetchTime = null;
+  }
+
+  /// Parse availability JSON string from Listing to List<Map<String, DateTime>> for Post
+  List<Map<String, DateTime>> _parseAvailabilityFromListing(
+    String? availabilityJson,
+  ) {
+    if (availabilityJson == null || availabilityJson.isEmpty) {
+      return [];
+    }
+
+    try {
+      final decoded = jsonDecode(availabilityJson);
+      List<dynamic> intervals;
+
+      if (decoded is List) {
+        intervals = decoded;
+      } else if (decoded is Map<String, dynamic> &&
+          decoded['intervals'] is List) {
+        intervals = decoded['intervals'] as List<dynamic>;
+      } else {
+        return [];
+      }
+
+      return intervals
+          .map((interval) {
+            try {
+              final map = Map<String, dynamic>.from(interval as Map);
+              final startValue =
+                  map['startDate'] ?? map['start'] ?? map['start_date'];
+              final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
+
+              DateTime? parseDate(dynamic value) {
+                if (value is DateTime) return value;
+                if (value is String && value.isNotEmpty) {
+                  try {
+                    return DateTime.parse(value);
+                  } catch (_) {
+                    return null;
+                  }
+                }
+                return null;
+              }
+
+              final startDate = parseDate(startValue);
+              final endDate = parseDate(endValue);
+
+              if (startDate == null || endDate == null) {
+                return null;
+              }
+
+              return <String, DateTime>{
+                'startDate': startDate,
+                'endDate': endDate,
+              };
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<Map<String, DateTime>>()
+          .toList();
+    } catch (e) {
+      debugPrint('Error parsing availability: $e');
+      return [];
+    }
   }
 
   void dispose() {

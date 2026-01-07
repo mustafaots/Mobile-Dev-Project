@@ -34,12 +34,12 @@ class BookingRepository {
     return results.map((map) => Booking.fromMap(map)).toList();
   }
 
-  /// Get bookings by client ID
-  Future<List<Booking>> getBookingsByClientId(int clientId) async {
+  /// Get bookings by client ID (supports both String UUID and int)
+  Future<List<Booking>> getBookingsByClientId(dynamic clientId) async {
     final results = await db.query(
       'bookings',
       where: 'client_id = ?',
-      whereArgs: [clientId],
+      whereArgs: [clientId.toString()],
     );
     return results.map((map) => Booking.fromMap(map)).toList();
   }

@@ -12,11 +12,7 @@ class StayDetails {
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      'stay_type': stayType,
-      'area': area,
-      'bedrooms': bedrooms,
-    };
+    return {'stay_type': stayType, 'area': area, 'bedrooms': bedrooms};
   }
 
   factory StayDetails.fromMap(Map<String, dynamic> map) {
@@ -32,16 +28,10 @@ class ActivityDetails {
   final String activityType;
   final Map<String, dynamic> requirements;
 
-  ActivityDetails({
-    required this.activityType,
-    required this.requirements,
-  });
+  ActivityDetails({required this.activityType, required this.requirements});
 
   Map<String, dynamic> toMap() {
-    return {
-      'activity_type': activityType,
-      'requirements': requirements,
-    };
+    return {'activity_type': activityType, 'requirements': requirements};
   }
 
   factory ActivityDetails.fromMap(Map<String, dynamic> map) {
@@ -91,7 +81,7 @@ class VehicleDetails {
       fuelType: map['fuel_type'] ?? 'gasoline',
       transmission: map['transmission'] ?? false,
       seats: map['seats'] ?? 5,
-      features: map['features'] != null 
+      features: map['features'] != null
           ? Map<String, dynamic>.from(map['features']!)
           : null,
     );
@@ -102,15 +92,18 @@ class AvailabilityInterval {
   final DateTime start;
   final DateTime end;
 
-  AvailabilityInterval({
-    required this.start,
-    required this.end,
-  });
+  AvailabilityInterval({required this.start, required this.end});
 
+  /// Returns a map with DateTime values for use with Post model
   Map<String, DateTime> toMap() {
+    return {'startDate': start, 'endDate': end};
+  }
+
+  /// Returns a map with ISO string values for JSON serialization
+  Map<String, String> toJsonMap() {
     return {
-      'startDate': start,
-      'endDate': end,
+      'startDate': start.toIso8601String(),
+      'endDate': end.toIso8601String(),
     };
   }
 
@@ -136,12 +129,12 @@ class CreatePostData {
   final String priceRate; // 'day', 'week', 'month', 'hour'
   final Location location;
   final List<AvailabilityInterval> availability;
-  
+
   // Category-specific data
   final StayDetails? stayDetails;
   final ActivityDetails? activityDetails;
   final VehicleDetails? vehicleDetails;
-  
+
   // Images
   final List<String> imagePaths;
 

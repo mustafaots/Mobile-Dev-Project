@@ -1,7 +1,7 @@
 class Booking {
   final int? id;
   final int postId;
-  final int clientId;
+  final String clientId; // Changed to String for UUID support
   final String status; // 'confirmed', 'rejected', 'pending'
   final DateTime bookedAt;
   final DateTime startTime;
@@ -33,7 +33,7 @@ class Booking {
     return Booking(
       id: map['id'],
       postId: map['post_id'] ?? 0,
-      clientId: map['client_id'] ?? 0,
+      clientId: map['client_id']?.toString() ?? '',
       status: map['status'] ?? 'pending',
       bookedAt: map['booked_at'] != null 
           ? DateTime.parse(map['booked_at']) 
