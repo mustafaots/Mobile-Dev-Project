@@ -635,6 +635,10 @@
   "reloginHint": "Après avoir changé votre mot de passe, vous devrez peut-être vous reconnecter.",
 
   "selectDate_title": "Sélectionner les dates",
-  "confirm_button": "Confirmer"
+  "confirm_button": "Confirmer",
 
+  "updateReview_title": "Modifier votre avis",
+  "addReview_updated": "Avis mis à jour avec succès",
+  "reviewDeletedTitle": "Avis supprimé",
+  "reviewDeletedMessage": "Votre avis a été supprimé avec succès."
 }

@@ -636,6 +636,10 @@
   "reloginHint": "بعد تغيير كلمة المرور، قد يُطلب منك تسجيل الدخول مرة أخرى.",
 
   "selectDate_title": "اختر التواريخ",
-  "confirm_button": "تأكيد"
+  "confirm_button": "تأكيد",
 
+  "updateReview_title": "تحديث تقييمك",
+  "addReview_updated": "تم تحديث التقييم بنجاح",
+  "reviewDeletedTitle": "تم حذف التقييم",
+  "reviewDeletedMessage": "تم حذف تقييمك بنجاح."
 }

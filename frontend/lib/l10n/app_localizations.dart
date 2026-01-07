@@ -2811,6 +2811,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm_button;
+
+  /// No description provided for @updateReview_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Your Review'**
+  String get updateReview_title;
+
+  /// No description provided for @addReview_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Updated Successfully'**
+  String get addReview_updated;
+
+  /// No description provided for @reviewDeletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review deleted'**
+  String get reviewDeletedTitle;
+
+  /// No description provided for @reviewDeletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review was deleted successfully.'**
+  String get reviewDeletedMessage;
 }
 
 class _AppLocalizationsDelegate

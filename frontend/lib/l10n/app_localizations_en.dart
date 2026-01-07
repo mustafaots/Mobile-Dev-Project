@@ -1447,4 +1447,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm_button => 'Confirm';
+
+  @override
+  String get updateReview_title => 'Edit Your Review';
+
+  @override
+  String get addReview_updated => 'Review Updated Successfully';
+
+  @override
+  String get reviewDeletedTitle => 'Review deleted';
+
+  @override
+  String get reviewDeletedMessage => 'Your review was deleted successfully.';
 }

@@ -1437,4 +1437,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirm_button => 'تأكيد';
+
+  @override
+  String get updateReview_title => 'تحديث تقييمك';
+
+  @override
+  String get addReview_updated => 'تم تحديث التقييم بنجاح';
+
+  @override
+  String get reviewDeletedTitle => 'تم حذف التقييم';
+
+  @override
+  String get reviewDeletedMessage => 'تم حذف تقييمك بنجاح.';
 }
