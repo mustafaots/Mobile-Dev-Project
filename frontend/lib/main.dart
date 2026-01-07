@@ -14,6 +14,7 @@ import 'package:easy_vacation/utils/deep_link_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:easy_vacation/services/notification_service.dart'; // <-- our service
+import 'firebase_options.dart';
 
 late Map<String, dynamic> appRepos;
 
@@ -29,7 +30,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Firebase Initialization
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.init(); // initialize local notifications & FCM listeners
 

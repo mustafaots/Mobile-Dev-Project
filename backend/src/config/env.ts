@@ -8,6 +8,12 @@ const requiredVars = [
   'CLOUDINARY_CLOUD_NAME',
   'CLOUDINARY_API_KEY',
   'CLOUDINARY_API_SECRET',
+  'FIREBASE_PROJECT_ID',
+  'FIREBASE_PRIVATE_KEY_ID',
+  'FIREBASE_PRIVATE_KEY',
+  'FIREBASE_CLIENT_EMAIL',
+  'FIREBASE_CLIENT_ID',
+  'FIREBASE_CLIENT_X509_CERT_URL',
 ] as const;
 
 type RequiredVar = (typeof requiredVars)[number];
@@ -20,6 +26,12 @@ type EnvConfig = {
   cloudinaryCloudName: string;
   cloudinaryApiKey: string;
   cloudinaryApiSecret: string;
+  firebaseProjectId: string;
+  firebasePrivateKeyId: string;
+  firebasePrivateKey: string;
+  firebaseClientEmail: string;
+  firebaseClientId: string;
+  firebaseClientX509CertUrl: string;
 };
 
 const missingKeys = requiredVars.filter((key) => !process.env[key]);
@@ -38,6 +50,12 @@ const env: EnvConfig = {
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME as string,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY as string,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET as string,
+  firebaseProjectId: process.env.FIREBASE_PROJECT_ID as string,
+  firebasePrivateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID as string,
+  firebasePrivateKey: process.env.FIREBASE_PRIVATE_KEY as string,
+  firebaseClientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,
+  firebaseClientId: process.env.FIREBASE_CLIENT_ID as string,
+  firebaseClientX509CertUrl: process.env.FIREBASE_CLIENT_X509_CERT_URL as string,
 };
 
 export default env;

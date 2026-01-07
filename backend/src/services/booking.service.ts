@@ -1,6 +1,7 @@
 import supabase from '../config/supabase';
 import { ApiError } from '../utils/apiError';
 import { Post } from '../types';
+import { NotificationService } from './notification.service';
 
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
 
@@ -90,6 +91,31 @@ class BookingManagementService {
 
     if (createError || !booking) {
       throw new ApiError(500, 'Failed to create booking.', createError?.message);
+    }
+
+    // Send notification to post owner
+    try {
+      const bookingDetails = await this.getBookingById(booking.id);
+
+      // Format dates for display
+      const startDate = new Date(bookingDetails.start_time).toLocaleDateString();
+      const endDate = new Date(bookingDetails.end_time).toLocaleDateString();
+
+      await NotificationService.sendToUser(post.owner_id, {
+        title: 'New Booking Request',
+        body: `${bookingDetails.client.first_name || 'A user'} wants to book your "${post.title}" from ${startDate} to ${endDate}`,
+        data: {
+          type: 'booking_request',
+          booking_id: booking.id.toString(),
+          post_id: post.id.toString(),
+          client_id: bookingDetails.client.user_id,
+          start_date: startDate,
+          end_date: endDate,
+        },
+      });
+    } catch (notificationError) {
+      // Log notification error but don't fail the booking
+      console.error('Failed to send booking notification:', notificationError);
     }
 
     return this.getBookingById(booking.id);

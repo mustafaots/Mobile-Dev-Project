@@ -15,6 +15,7 @@ import listingsRouter from './listings.routes';
 import profileRouter from './profile.routes';
 import imagesRouter from './images.routes';
 import searchRouter from './search.routes';
+import notificationRouter from './notification.routes';
 import { profileController } from '../controllers/profile.controller';
 
 const router = Router();
@@ -27,6 +28,7 @@ router.use('/listings', listingsRouter);
 router.use('/profile', profileRouter);
 router.use('/images', imagesRouter);
 router.use('/search', searchRouter);
+router.use('/notifications', notificationRouter);
 
 // Public profile route
 router.get('/users/:id/profile', profileController.getPublicProfile);
