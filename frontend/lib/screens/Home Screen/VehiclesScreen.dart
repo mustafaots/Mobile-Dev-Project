@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
+import 'package:easy_vacation/shared/ui_widgets/listing_rating.dart';
 import 'package:easy_vacation/services/sync/sync_manager.dart';
-import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
           width: width,
           height: height,
           color: Colors.grey[200],
-          child: const Center(child: CircularProgressIndicator()),
+          child: const Center(child: AppProgressIndicator()),
         ),
         errorWidget: (context, url, error) => Image.asset(
           'assets/images/no_image.png',
@@ -67,7 +68,7 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(color: AppTheme.primaryColor),
+            child: AppProgressIndicator(),
           );
         }
 
@@ -164,24 +165,13 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                                 '${listing.price}${loc.dinars}/${loc.day}',
                                 style: TextStyle(color: secondaryTextColor),
                               ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.star_border_outlined,
-                                    color: AppTheme.neutralColor,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '4.5',
-                                    style: TextStyle(
+                              trailing: listing.id != null
+                                  ? ListingRating(
+                                      listingId: listing.id!,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: textColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                      textColor: textColor,
+                                    )
+                                  : null,
                             ),
                           ],
                         ),
@@ -255,24 +245,13 @@ class _VehiclesScreenState extends State<VehiclesScreen> {
                                   '${listing.price}${loc.dinars}/${loc.day}',
                                   style: TextStyle(color: secondaryTextColor),
                                 ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.star_border_outlined,
-                                      color: AppTheme.neutralColor,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      '4.7',
-                                      style: TextStyle(
+                                trailing: listing.id != null
+                                    ? ListingRating(
+                                        listingId: listing.id!,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                        textColor: textColor,
+                                      )
+                                    : null,
                               ),
                               const SizedBox(height: 20),
                             ],

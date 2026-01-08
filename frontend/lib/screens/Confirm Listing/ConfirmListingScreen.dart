@@ -1,6 +1,7 @@
 import 'package:easy_vacation/bloc/confirm_listing_cubit.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/screens/Confirm%20Listing/Confirm%20Listing%20Widgets/AgreementCheckbox.dart';
 import 'package:easy_vacation/screens/Confirm%20Listing/Confirm%20Listing%20Widgets/SubscriptionInfo.dart';
 import 'package:easy_vacation/screens/Home%20Screen/HomeScreen.dart';
@@ -226,8 +227,8 @@ class _ConfirmListingContent extends StatelessWidget {
             ? const SizedBox(
                 height: 20,
                 width: 20,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                child: AppProgressIndicator(
+                  color: Colors.white,
                   strokeWidth: 2,
                 ),
               )

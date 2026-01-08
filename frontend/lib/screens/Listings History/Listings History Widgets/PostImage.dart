@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:easy_vacation/screens/Listings%20History/PostHelpers.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class PostImage extends StatelessWidget {
@@ -59,12 +60,8 @@ class PostImage extends StatelessWidget {
             width: double.infinity,
             color: AppTheme.neutralColor.withOpacity(0.1),
             child: Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                    : null,
+              child: AppProgressIndicator(
                 strokeWidth: 2,
-                color: AppTheme.primaryColor,
               ),
             ),
           );

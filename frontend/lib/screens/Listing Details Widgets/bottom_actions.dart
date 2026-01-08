@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -187,7 +188,7 @@ class _BottomActionsState extends State<BottomActions> {
                     ? const SizedBox(
                         height: 24,
                         width: 24,
-                        child: CircularProgressIndicator(
+                        child: AppProgressIndicator(
                           color: Colors.white,
                           strokeWidth: 2,
                         ),

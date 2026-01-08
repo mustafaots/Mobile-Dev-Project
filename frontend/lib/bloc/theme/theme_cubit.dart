@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
+import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class ThemeCubit extends Cubit<ThemeData> {
@@ -40,6 +41,10 @@ class ThemeCubit extends Cubit<ThemeData> {
         foregroundColor: Colors.white,
         elevation: 0,
       ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: AppTheme.primaryColor,
+        circularTrackColor: AppTheme.primaryColor.withOpacity(0.2),
+      ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(color: Colors.black87),
         bodySmall: TextStyle(color: Color(0xFF6B7280)),
@@ -59,6 +64,10 @@ class ThemeCubit extends Cubit<ThemeData> {
         backgroundColor: Color.fromARGB(255, 36, 36, 36),
         foregroundColor: Colors.white,
         elevation: 0,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: AppTheme.primaryColor,
+        circularTrackColor: AppTheme.primaryColor.withOpacity(0.2),
       ),
       textTheme: const TextTheme(
         bodyMedium: TextStyle(color: Colors.white),

@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/models/subscriptions.model.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/repositories/db_repositories/subscription_repository.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -155,7 +156,7 @@ class PlanCard extends StatelessWidget {
                   ? const SizedBox(
                       height: 22,
                       width: 22,
-                      child: CircularProgressIndicator(
+                      child: AppProgressIndicator(
                         strokeWidth: 2.5,
                         color: Colors.white,
                       ),
@@ -292,7 +293,7 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                child: AppProgressIndicator(),
               );
             }
 

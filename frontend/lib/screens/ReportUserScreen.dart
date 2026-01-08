@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/models/reports.model.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/repositories/db_repositories/report_repository.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -297,11 +298,9 @@ class _ReportUserScreenState extends State<ReportUserScreen> {
                           ? SizedBox(
                               height: 20,
                               width: 20,
-                              child: CircularProgressIndicator(
+                              child: AppProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  backgroundColor,
-                                ),
+                                color: backgroundColor,
                               ),
                             )
                           : Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
@@ -219,7 +220,7 @@ class _LoadingState extends StatelessWidget {
         border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
       ),
       padding: const EdgeInsets.all(24),
-      child: const Center(child: CircularProgressIndicator()),
+      child: const Center(child: AppProgressIndicator()),
     );
   }
 }

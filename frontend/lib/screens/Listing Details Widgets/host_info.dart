@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/models/posts.model.dart' as post_model;
 import 'package:easy_vacation/logic/cubit/host_info_cubit.dart';
@@ -82,7 +83,7 @@ class HostInfo extends StatelessWidget {
                 ],
               ),
               child: Center(
-                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                child: AppProgressIndicator(),
               ),
             );
           }

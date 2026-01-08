@@ -1,6 +1,7 @@
 import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
@@ -316,7 +317,7 @@ class ReviewsSection extends StatelessWidget {
                 ],
               ),
               child: Center(
-                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                child: AppProgressIndicator(),
               ),
             );
           }

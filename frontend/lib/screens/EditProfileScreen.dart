@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/EditProfileChangePassword.dart';
 import 'package:easy_vacation/services/api/auth_service.dart';
@@ -221,7 +222,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return Scaffold(
         backgroundColor: backgroundColor,
         appBar: App_Bar(context, loc.editProfile_title),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const Center(child: AppProgressIndicator()),
       );
     }
 
@@ -374,7 +375,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 ? const SizedBox(
                                     width: 16,
                                     height: 16,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
+                                    child: AppProgressIndicator(strokeWidth: 2),
                                   )
                                 : const Text('Verify Now'),
                           ),
@@ -403,9 +404,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
+                          child: AppProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            color: Colors.white,
                           ),
                         )
                       : Text(
@@ -603,7 +604,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       builder: (context) => AlertDialog(
         content: Row(
           children: [
-            CircularProgressIndicator(color: AppTheme.primaryColor),
+            AppProgressIndicator(),
             const SizedBox(width: 20),
             const Text('Deleting account...'),
           ],

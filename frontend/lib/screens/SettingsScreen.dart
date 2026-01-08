@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/users.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/Listings History/ListingsHistoryScreen.dart';
@@ -128,9 +129,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           child: Center(
                             child: _isLoading
-                                ? CircularProgressIndicator(
+                                ? AppProgressIndicator(
                                     strokeWidth: 2,
-                                    color: AppTheme.primaryColor,
                                   )
                                 : Text(
                                     _getInitials(),

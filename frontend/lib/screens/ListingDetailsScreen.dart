@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
@@ -124,7 +125,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           builder: (context, state) {
             if (state is ListingDetailsLoading) {
               return Center(
-                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                child: AppProgressIndicator(),
               );
             }
 
@@ -260,7 +261,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
             }
 
             return Center(
-              child: CircularProgressIndicator(color: AppTheme.primaryColor),
+              child: AppProgressIndicator(),
             );
           },
         ),

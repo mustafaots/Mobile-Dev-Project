@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:convert';
@@ -22,7 +23,7 @@ class ImageGallery extends StatelessWidget {
           if (state is ImageGalleryLoading) {
             return SizedBox(
               height: 200,
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(child: AppProgressIndicator()),
             );
           }
 
@@ -150,7 +151,7 @@ class ImageGallery extends StatelessWidget {
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
                       color: Colors.grey[300],
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(child: AppProgressIndicator()),
                     ),
                     errorWidget: (context, url, error) => Container(
                       color: Colors.grey[300],
@@ -434,7 +435,7 @@ class _ImageOverlayState extends State<_ImageOverlay> {
         imageUrl: widget.imageUrls![index],
         fit: BoxFit.contain,
         placeholder: (context, url) => const Center(
-          child: CircularProgressIndicator(color: Colors.white),
+          child: AppProgressIndicator(color: Colors.white),
         ),
         errorWidget: (context, url, error) => const Icon(
           Icons.error,

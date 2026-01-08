@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_cubit.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_state.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
@@ -161,8 +162,7 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
                 child: const SizedBox(
                   height: 56,
                   child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppTheme.primaryColor,
+                    child: AppProgressIndicator(
                       strokeWidth: 2,
                     ),
                   ),
@@ -264,12 +264,9 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
                               ? SizedBox(
                                   width: 16,
                                   height: 16,
-                                  child: CircularProgressIndicator(
+                                  child: AppProgressIndicator(
                                     strokeWidth: 2,
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
-                                        ),
+                                    color: Colors.white,
                                   ),
                                 )
                               : const Icon(Icons.close, size: 16),

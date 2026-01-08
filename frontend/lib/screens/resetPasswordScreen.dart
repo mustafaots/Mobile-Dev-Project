@@ -1,6 +1,7 @@
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
 import 'package:easy_vacation/shared/secondary_styles.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/services/api/auth_service.dart';
@@ -185,7 +186,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ? const SizedBox(
                         height: 24,
                         width: 24,
-                        child: CircularProgressIndicator(
+                        child: AppProgressIndicator(
                           color: Colors.white,
                           strokeWidth: 2,
                         ),

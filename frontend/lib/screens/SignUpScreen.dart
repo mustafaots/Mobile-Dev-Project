@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/services/sync/sync_manager.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/shared_styles.dart';
@@ -280,9 +281,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(
+                        child: AppProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          color: Colors.white,
                         ),
                       )
                     : Text(loc.signUp, style: login_text_style),
