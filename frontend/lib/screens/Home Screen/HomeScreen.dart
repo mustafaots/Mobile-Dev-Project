@@ -360,6 +360,7 @@ class __HomeContentState extends State<_HomeContent> {
                   wilaya: selectedWilaya,
                   date: selectedDates,
                   postType: selectedType,
+                  user_id: widget.userId
                 )
               else screens[selectedIndex],
             ],
