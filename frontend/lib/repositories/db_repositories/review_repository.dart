@@ -1,11 +1,14 @@
+import 'package:easy_vacation/services/api/review_service.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../models/reviews.model.dart';
 
 /// Repository for managing review data
 class ReviewRepository {
   final Database db;
+  final ReviewService reviewService;
 
-  ReviewRepository(this.db);
+  ReviewRepository(this.db, {ReviewService? reviewService})
+    : reviewService = reviewService ?? ReviewService.instance;
 
   /// Insert a new review
   Future<int> insertReview(Review review) async {
@@ -26,12 +29,19 @@ class ReviewRepository {
 
   /// Get reviews by post ID
   Future<List<Review>> getReviewsByPostId(int postId) async {
-    final results = await db.query(
-      'reviews',
-      where: 'post_id = ?',
-      whereArgs: [postId],
-    );
-    return results.map((map) => Review.fromMap(map)).toList();
+    try {
+      // Try fetching from backend
+      final response = await reviewService.getReviewsForListing(postId);
+
+      if (response.isSuccess && response.data != null) {
+        final reviews = response.data!.map((item) => item.review).toList();
+        return reviews;
+      }
+    } catch (_) {}
+
+    // Fallback: fetch from local database
+    return await db.query('reviews', where: 'post_id = ?', whereArgs: [postId])
+        .then((results) => results.map((map) => Review.fromMap(map)).toList());
   }
 
   /// Get reviews by reviewer ID
