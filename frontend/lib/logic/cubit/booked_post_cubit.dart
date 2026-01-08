@@ -33,8 +33,16 @@ class BookedPostCubit extends Cubit<BookedPostState> {
   Future<void> loadPostDetails(int postId) async {
     emit(const BookedPostLoading());
     try {
-      final bookings = await bookingRepository.getAllBookings();
-      final booking = bookings.firstWhere((b) => b.postId == postId);
+      // First try to get booking from API via sync service
+      final syncService = await BookingSyncService.getInstance();
+      final myBookings = await syncService.getMyBookings(forceRefresh: true);
+
+      // Find the booking for this post
+      final bookingWithDetails = myBookings.firstWhere(
+        (bwd) => bwd.booking.postId == postId,
+        orElse: () => throw Exception('Booking not found in API'),
+      );
+      final booking = bookingWithDetails.booking;
 
       final bookingDates =
           '${booking.startTime.day}/${booking.startTime.month} - ${booking.endTime.day}/${booking.endTime.month}/${booking.endTime.year}';
