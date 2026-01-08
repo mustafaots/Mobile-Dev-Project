@@ -67,6 +67,38 @@ class _BottomActionsState extends State<BottomActions> {
       _isLoading = true;
     });
 
+    // Check if the user already has an active booking for this listing
+    try {
+      final syncService = await BookingSyncService.getInstance();
+      final myBookings = await syncService.getMyBookings();
+
+      final hasExistingBooking = myBookings.any((bookingDetails) {
+        final booking = bookingDetails.booking;
+        // Check if booking is for the same listing and has an active status
+        return booking.postId == widget.postId &&
+            (booking.status == 'pending' || booking.status == 'confirmed');
+      });
+
+      if (hasExistingBooking) {
+        setState(() {
+          _isLoading = false;
+        });
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'You already have an active booking for this listing.',
+              ),
+              backgroundColor: AppTheme.failureColor,
+            ),
+          );
+        }
+        return;
+      }
+    } catch (e) {
+      debugPrint('Error checking existing bookings: $e');
+    }
+
     try {
       // Sort selected dates
       final sortedDates = List<DateTime>.from(widget.selectedDates)..sort();
