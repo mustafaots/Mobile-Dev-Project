@@ -6,7 +6,7 @@ class ApiConfig {
   // For physical device: use your computer's IP address
 
   // ⚠️ UPDATE THIS IP ADDRESS to your PC's current WiFi IP ⚠️
-  static const String baseUrl = 'http://192.168.100.115:5000/api';
+  static const String baseUrl = 'http://10.242.215.199:5000/api';
 
   // iOS Simulator (uncomment to use)
   // static const String baseUrl = 'http://localhost:5000/api';
@@ -19,8 +19,8 @@ class ApiConfig {
   static const String emulatorUrl = 'http://10.0.2.2:5000/api';
   
   // Timeout durations
-  static const Duration connectionTimeout = Duration(seconds: 30);
-  static const Duration receiveTimeout = Duration(seconds: 30);
+  static const Duration connectionTimeout = Duration(seconds: 10);
+  static const Duration receiveTimeout = Duration(seconds: 10);
   
   // API Endpoints
   static const String auth = '/auth';
