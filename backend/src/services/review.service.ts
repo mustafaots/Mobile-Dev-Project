@@ -58,7 +58,7 @@ class ReviewManagementService {
       .select('*')
       .eq('post_id', input.post_id)
       .eq('client_id', input.user_id)
-      .eq('status', 'completed');
+      .eq('status', 'confirmed');
 
     if (!bookings || bookings.length === 0) {
       throw new ApiError(

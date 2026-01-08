@@ -12,6 +12,7 @@ class SearchScreen extends StatelessWidget {
   final double? price;
   final List<DateTime>? date;
   final String? wilaya;
+  final user_id;
 
   const SearchScreen({
     super.key,
@@ -20,6 +21,7 @@ class SearchScreen extends StatelessWidget {
     this.price,
     this.date,
     this.wilaya,
+    this.user_id
   });
 
   /// Fetch listings from Supabase via SearchService
@@ -87,7 +89,7 @@ class SearchScreen extends StatelessWidget {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (_, __, ___) =>
-                            PostDetailsScreen(postId: listing.id!),
+                            PostDetailsScreen(postId: listing.id!, userId: user_id,),
                         transitionsBuilder: (_, animation, __, child) =>
                             FadeTransition(opacity: animation, child: child),
                       ),
