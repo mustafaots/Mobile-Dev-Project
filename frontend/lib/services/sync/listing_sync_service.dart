@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:easy_vacation/models/posts.model.dart';
-import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
 import 'package:easy_vacation/services/sync/sync_state.dart';

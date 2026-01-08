@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/screens/Listing%20Details%20Widgets/availability_section.dart';
-import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'availability_state.dart';
 

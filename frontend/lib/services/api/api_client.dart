@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'api_config.dart';
 import 'api_exceptions.dart';
-import 'api_response.dart';
 
 /// HTTP Client for making API requests to the backend
 class ApiClient {

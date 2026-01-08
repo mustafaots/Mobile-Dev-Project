@@ -1,9 +1,5 @@
-
-
-import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
-import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 
 class EmptyState extends StatelessWidget {
@@ -19,7 +15,6 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secondaryTextColor = context.secondaryTextColor;
-    final loc = AppLocalizations.of(context)!;
 
     return Center(
       child: Padding(

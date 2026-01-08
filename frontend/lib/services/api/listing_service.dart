@@ -1,4 +1,3 @@
-import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';

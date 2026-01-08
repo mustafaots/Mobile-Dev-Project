@@ -71,7 +71,6 @@ class _ConfirmListingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
     final loc = AppLocalizations.of(context)!;
 
     return BlocListener<ConfirmListingCubit, ConfirmListingState>(

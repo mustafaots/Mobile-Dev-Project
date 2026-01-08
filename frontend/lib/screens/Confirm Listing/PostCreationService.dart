@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/details.model.dart';

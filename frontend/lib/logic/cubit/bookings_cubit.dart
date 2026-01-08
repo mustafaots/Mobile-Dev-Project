@@ -1,10 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:easy_vacation/models/bookings.model.dart';
-import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/services/sync/booking_sync_service.dart';
-import 'package:easy_vacation/services/api/booking_service.dart';
 import 'bookings_state.dart';
 
 class BookingsCubit extends Cubit<BookingsState> {
