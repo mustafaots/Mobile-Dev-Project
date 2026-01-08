@@ -1,5 +1,6 @@
 import 'package:easy_vacation/services/api/api_services.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
+import 'package:easy_vacation/services/api/notification_service.dart';
 
 /// Service locator and initializer for all API services
 /// 
@@ -15,6 +16,7 @@ class ApiServiceLocator {
   static ReviewService get reviews => ReviewService.instance;
   static ProfileService get profile => ProfileService.instance;
   static SearchService get search => SearchService.instance;
+  static NotificationService get notificationService => NotificationService.instance;
 
   /// Initialize all API services
   /// Should be called in main() before runApp()

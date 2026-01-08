@@ -10,3 +10,4 @@ export * from './subscriptions.service';
 export * from './users.service';
 export * from './vehicles.service';
 export * from './auth.service';
+export * from './notification.service';

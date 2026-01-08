@@ -133,3 +133,24 @@ export interface Vehicle {
   seats: number | null;
   features: Json;
 }
+
+export interface FCMToken {
+  id: UUID;
+  user_id: UUID;
+  fcm_token: string;
+  platform: string;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}
+
+export interface Notification {
+  id: UUID;
+  user_id: UUID;
+  title: string;
+  body: string;
+  data: Json;
+  type: string;
+  is_read: boolean;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}

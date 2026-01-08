@@ -10,3 +10,4 @@ export * from './subscriptions.controller';
 export * from './users.controller';
 export * from './vehicles.controller';
 export * from './auth.controller';
+export * from './notification.controller';

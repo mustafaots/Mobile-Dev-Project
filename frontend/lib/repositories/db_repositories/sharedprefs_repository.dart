@@ -12,6 +12,7 @@ class SharedPrefsRepository {
   static const String _authTokenKey = 'auth_token';
   static const String _refreshTokenKey = 'refresh_token';
   static const String _userIdKey = 'user_id';
+  static const String _fcmTokenKey = 'fcm_token';
 
   // Default values
   static const String _defaultTheme = 'light'; // 'light' or 'dark'
@@ -141,6 +142,19 @@ class SharedPrefsRepository {
     await _prefs.remove(_authTokenKey);
     await _prefs.remove(_refreshTokenKey);
     await _prefs.remove(_userIdKey);
+    await _prefs.remove(_fcmTokenKey); // Also clear FCM token on logout
+  }
+
+  /// ============= FCM TOKEN METHODS =============
+
+  /// Get stored FCM token
+  String? getFCMToken() {
+    return _prefs.getString(_fcmTokenKey);
+  }
+
+  /// Save FCM token
+  Future<bool> setFCMToken(String token) {
+    return _prefs.setString(_fcmTokenKey, token);
   }
 
   /// Check if user is logged in (has valid token)

@@ -6,6 +6,8 @@ import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/services/api/api_service_locator.dart';
+import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/SettingsScreen.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
@@ -27,14 +29,394 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     const SettingsScreen(),
   ];
 
+  List<Map<String, dynamic>> _notifications = [];
+  bool _isLoading = true;
+  bool _isLoadingMore = false;
+  int _currentPage = 1;
+  final int _limit = 20;
+  bool _hasMorePages = true;
+
+  // Theme colors (initialized in build method)
+  late Color textColor;
+  late Color secondaryTextColor;
+  late Color cardColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotifications();
+  }
+
+  Future<void> _loadNotifications({bool loadMore = false}) async {
+    if (loadMore && !_hasMorePages) return;
+
+    setState(() {
+      if (loadMore) {
+        _isLoadingMore = true;
+      } else {
+        _isLoading = true;
+        _currentPage = 1;
+        _notifications = [];
+      }
+    });
+
+    try {
+      final userId = SharedPrefsService.getUserId();
+      if (userId == null) {
+        setState(() {
+          _isLoading = false;
+          _isLoadingMore = false;
+        });
+        return;
+      }
+
+      final page = loadMore ? _currentPage + 1 : 1;
+      final response = await ApiServiceLocator.notificationService.getUserNotifications(
+        userId,
+        page: page,
+        limit: _limit,
+      );
+
+      if (response.isSuccess && response.data != null) {
+        final newNotifications = List<Map<String, dynamic>>.from(response.data!);
+
+        setState(() {
+          if (loadMore) {
+            _notifications.addAll(newNotifications);
+            _currentPage = page;
+          } else {
+            _notifications = newNotifications;
+          }
+
+          _hasMorePages = newNotifications.length == _limit;
+          _isLoading = false;
+          _isLoadingMore = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _isLoadingMore = false;
+        });
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load notifications')),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _isLoadingMore = false;
+      });
+      debugPrint('Error loading notifications: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading notifications')),
+      );
+    }
+  }
+
+  Future<void> _markAsRead(String notificationId) async {
+    try {
+      final userId = SharedPrefsService.getUserId();
+      if (userId == null) return;
+
+      final response = await ApiServiceLocator.notificationService.markAsRead(notificationId);
+
+      if (response.isSuccess) {
+        // Update local state
+        setState(() {
+          final index = _notifications.indexWhere((n) => n['id'] == notificationId);
+          if (index != -1) {
+            _notifications[index]['is_read'] = true;
+          }
+        });
+      }
+    } catch (e) {
+      debugPrint('Error marking notification as read: $e');
+    }
+  }
+
+  Future<void> _acceptBookingRequest(String? bookingId) async {
+    if (bookingId == null) return;
+
+    try {
+      final response = await ApiServiceLocator.notificationService.acceptBookingRequest(bookingId);
+
+      if (response.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Booking request accepted!')),
+        );
+        // Refresh notifications
+        _loadNotifications();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to accept booking: ${response.message}')),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error accepting booking request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error accepting booking request')),
+      );
+    }
+  }
+
+  Future<void> _rejectBookingRequest(String? bookingId) async {
+    if (bookingId == null) return;
+
+    try {
+      final response = await ApiServiceLocator.notificationService.rejectBookingRequest(bookingId);
+
+      if (response.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Booking request rejected')),
+        );
+        // Refresh notifications
+        _loadNotifications();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to reject booking: ${response.message}')),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error rejecting booking request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error rejecting booking request')),
+      );
+    }
+  }
+
+  Widget _buildNotificationCard(Map<String, dynamic> notification, int index) {
+    final data = notification['data'] ?? {};
+    final type = data['type'] ?? 'general';
+    final isRead = notification['is_read'] ?? false;
+
+    IconData getIconForType(String type) {
+      switch (type) {
+        case 'booking_request':
+          return Icons.event_note;
+        case 'booking_confirmed':
+          return Icons.event_available;
+        case 'booking_rejected':
+          return Icons.event_busy;
+        case 'booking_reminder':
+          return Icons.calendar_today;
+        case 'review_request':
+          return Icons.star;
+        case 'promotional':
+          return Icons.campaign;
+        default:
+          return Icons.notifications;
+      }
+    }
+
+    Color getColorForType(String type) {
+      switch (type) {
+        case 'booking_request':
+          return Colors.blue;
+        case 'booking_confirmed':
+          return AppTheme.primaryColor;
+        case 'booking_rejected':
+          return Colors.red;
+        case 'booking_reminder':
+          return Colors.orange;
+        case 'review_request':
+          return AppTheme.neutralColor;
+        case 'promotional':
+          return secondaryTextColor;
+        default:
+          return AppTheme.primaryColor;
+      }
+    }
+
+    return InkWell(
+      onTap: () async {
+        if (!isRead) {
+          await _markAsRead(notification['id']);
+        }
+        // Handle navigation based on notification type
+        _handleNotificationTap(notification);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isRead ? cardColor : AppTheme.primaryColor.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: !isRead ? Border.all(color: AppTheme.primaryColor.withOpacity(0.2), width: 1) : null,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: getColorForType(type).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                getIconForType(type),
+                color: getColorForType(type),
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    notification['title'] ?? '',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    notification['body'] ?? '',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: secondaryTextColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _formatTimestamp(notification['created_at']),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: secondaryTextColor.withOpacity(0.7),
+                    ),
+                  ),
+                  // Show accept/reject buttons for booking requests
+                  if (type == 'booking_request') ...[
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _acceptBookingRequest(data['booking_id']),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Accept',
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _rejectBookingRequest(data['booking_id']),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: const Text(
+                              'Reject',
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (data['image_url'] != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  data['image_url'],
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  cacheWidth: 64,
+                  cacheHeight: 64,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleNotificationTap(Map<String, dynamic> notification) {
+    final data = notification['data'] ?? {};
+    final type = data['type'];
+
+    switch (type) {
+      case 'booking_request':
+        // Don't navigate for booking requests - they have action buttons
+        break;
+      case 'booking_confirmed':
+      case 'booking_rejected':
+      case 'booking_reminder':
+        if (data['booking_id'] != null) {
+          // Navigate to booking details
+          // Navigator.pushNamed(context, '/booking-details', arguments: data['booking_id']);
+        }
+        break;
+      case 'review_request':
+        if (data['post_id'] != null) {
+          // Navigate to add review
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddReviewScreen(
+                postId: data['post_id'],
+                reviewerId: data['reviewer_id'] ?? 1,
+                addReviewCubit: AddReviewCubit(
+                  reviewRepository: appRepos['reviewRepo'],
+                ),
+              ),
+            ),
+          );
+        }
+        break;
+      // Add more cases as needed
+    }
+  }
+
+  String _formatTimestamp(String? timestamp) {
+    if (timestamp == null) return '';
+
+    try {
+      final dateTime = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final difference = now.difference(dateTime);
+
+      if (difference.inDays > 0) {
+        return '${difference.inDays} days ago';
+      } else if (difference.inHours > 0) {
+        return '${difference.inHours} hours ago';
+      } else if (difference.inMinutes > 0) {
+        return '${difference.inMinutes} minutes ago';
+      } else {
+        return 'Just now';
+      }
+    } catch (e) {
+      return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final dpr = MediaQuery.of(context).devicePixelRatio;
-    final imageCache = (64 * dpr).toInt();
     final backgroundColor = context.scaffoldBackgroundColor;
-    final textColor = context.textColor;
-    final secondaryTextColor = context.secondaryTextColor;
-    final cardColor = context.cardColor; // Add this
+    textColor = context.textColor;
+    secondaryTextColor = context.secondaryTextColor;
+    cardColor = context.cardColor;
     final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -45,369 +427,73 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           children: [
             // Notifications Content
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    // New Notifications Section
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        children: [
-                          Text(
-                            loc.notifications_new,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: textColor, // Changed to theme color
-                            ),
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _notifications.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.notifications_none,
+                                size: 64,
+                                color: secondaryTextColor.withOpacity(0.5),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'No notifications yet',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: secondaryTextColor,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'You\'ll see your notifications here',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: secondaryTextColor.withOpacity(0.7),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    // New Notifications Card
-                    Card(
-                      elevation: 2,
-                      color: cardColor, // Changed to theme color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            // Booking Confirmed Notification
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.primaryColor.withOpacity(
-                                      0.1,
-                                    ), // Lighter background
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.calendar_today,
-                                    color: AppTheme
-                                        .primaryColor, // Keep primary color for icon
-                                    size: 20,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        loc.notifications_bookingConfirmed,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color:
-                                              textColor, // Changed to theme color
+                        )
+                      : RefreshIndicator(
+                          onRefresh: () => _loadNotifications(),
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: _notifications.length + (_hasMorePages ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == _notifications.length) {
+                                // Load more indicator
+                                if (_isLoadingMore) {
+                                  return const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Center(child: CircularProgressIndicator()),
+                                  );
+                                } else {
+                                  // Load more button
+                                  return Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: ElevatedButton(
+                                      onPressed: () => _loadNotifications(loadMore: true),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppTheme.primaryColor,
+                                        foregroundColor: AppTheme.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(24),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        loc.notifications_bookingConfirmedMessage(
-                                          "Vintage VW Camper",
-                                          "Aug 15-20",
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        loc.notifications_hoursAgo(2),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    'https://lh3.googleusercontent.com/aida-public/AB6AXuCyYcTCco5b8pSsSzFeSMqRMtOpXUzWvTSrbeiPB3L_mrinvHgjpmUsJs78ZIVxOwzcGjdql-JKeLMtNdtwN-9syfIhqDb0Z0qQ0btp_S5c_BtO_rAcgl0y4QILhT5KWwGDusCnV1cIsTDV6pBGFcRqkYhJXPvfN0S0QeTWnvyZtZSDUeZY8xJjzmBFu-6hVnODJHtdqILS5WWXALcZ85PvREDxUjMCVNSrjs5wQ-Bg7iS0TUkUiy2Q-sDZkdxAZj9rzcR2d61AKho',
-                                    width: 64,
-                                    height: 64,
-                                    fit: BoxFit.cover,
-                                    cacheWidth: imageCache,
-                                    cacheHeight: imageCache,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              color: secondaryTextColor.withOpacity(0.3),
-                            ), // Changed to theme color
-                            // Review Request Notification
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppTheme.neutralColor.withOpacity(
-                                      0.1,
-                                    ), // Lighter background
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.star,
-                                    color: AppTheme
-                                        .neutralColor, // Keep neutral color for icon
-                                    size: 20,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        loc.notifications_shareExperience,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color:
-                                              textColor, // Changed to theme color
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        loc.notifications_reviewRequest(
-                                          "Lakeside Cabin Retreat",
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                              pageBuilder: (_, __, ___) =>
-                                                  AddReviewScreen(
-                                                    postId: 1,
-                                                    reviewerId: 1,
-                                                    addReviewCubit: AddReviewCubit(
-                                                      reviewRepository:
-                                                          appRepos['reviewRepo'],
-                                                    ),
-                                                  ),
-                                              transitionsBuilder:
-                                                  (_, animation, __, child) {
-                                                    return FadeTransition(
-                                                      opacity: animation,
-                                                      child: child,
-                                                    );
-                                                  },
-                                              transitionDuration:
-                                                  const Duration(
-                                                    milliseconds: 300,
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppTheme.primaryColor,
-                                          foregroundColor: AppTheme.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              24,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 8,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          loc.notifications_addReviewNow,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    'https://lh3.googleusercontent.com/aida-public/AB6AXuCwzap4neMqz4zBI4GnvZZ6CRfPG-r82fOYbN3pY9w43gvgVVWQ0vELKQtqfcDVLHMtb5mx4ogH0xsSZmcC9n1GZWRXJkvtRuPznCXqyun9P8DUaPP5cZpjMM3ixQ7B2Qf0Zslc3JzJez7iPSwi5q7C0BLVa2AdHwzsVCZS_ydJSMfzE0ifbNGR-teiaPENon9NTY9fMK_Fg18raQ8yhAkb0FiFeCiJCAwVSJNgqDlWl6skxHY9Gs3iA2rV-bAz6s_0qEY-IPIx5vA',
-                                    width: 64,
-                                    height: 64,
-                                    fit: BoxFit.cover,
-                                    cacheWidth: imageCache,
-                                    cacheHeight: imageCache,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    // Earlier Notifications Section
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        children: [
-                          Text(
-                            loc.notifications_earlier,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: textColor, // Changed to theme color
-                            ),
+                                      child: const Text('Load More'),
+                                    ),
+                                  );
+                                }
+                              }
+
+                              return _buildNotificationCard(_notifications[index], index);
+                            },
                           ),
-                        ],
-                      ),
-                    ),
-                    // Earlier Notifications Card
-                    Card(
-                      elevation: 2,
-                      color: cardColor, // Changed to theme color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            // Rental Reminder Notification
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: secondaryTextColor.withOpacity(
-                                      0.1,
-                                    ), // Lighter background using theme
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.directions_car,
-                                    size: 20,
-                                    color:
-                                        secondaryTextColor, // Changed to theme color
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        loc.notifications_rentalReminder(
-                                          "Fiat 500",
-                                          3,
-                                        ),
-                                        style: TextStyle(
-                                          color: textColor,
-                                        ), // Changed to theme color
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        loc.notifications_daysAgo(3),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Divider(
-                              color: secondaryTextColor.withOpacity(0.3),
-                            ), // Changed to theme color
-                            // Promotional Notification
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: secondaryTextColor.withOpacity(
-                                      0.1,
-                                    ), // Lighter background using theme
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.campaign,
-                                    size: 20,
-                                    color:
-                                        secondaryTextColor, // Changed to theme color
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        loc.notifications_newSummerDeals,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color:
-                                              textColor, // Changed to theme color
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        loc.notifications_promotionalMessage,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        loc.notifications_daysAgo(5),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color:
-                                              secondaryTextColor, // Changed to theme color
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),

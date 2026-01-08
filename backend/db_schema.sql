@@ -124,3 +124,38 @@ CREATE TABLE public.vehicles (
   CONSTRAINT vehicles_pkey PRIMARY KEY (post_id),
   CONSTRAINT vehicles_post_id_fkey FOREIGN KEY (post_id) REFERENCES public.posts(id)
 );
+
+-- FCM Tokens table for push notifications
+CREATE TABLE public.fcm_tokens (
+  id uuid DEFAULT gen_random_uuid() NOT NULL,
+  user_id uuid NOT NULL,
+  fcm_token text NOT NULL,
+  platform character varying DEFAULT 'mobile' CHECK (platform::text = ANY (ARRAY['mobile'::character varying, 'web'::character varying])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT fcm_tokens_pkey PRIMARY KEY (id),
+  CONSTRAINT fcm_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE,
+  CONSTRAINT fcm_tokens_user_token_unique UNIQUE (user_id, fcm_token)
+);
+
+-- Notifications table
+CREATE TABLE public.notifications (
+  id uuid DEFAULT gen_random_uuid() NOT NULL,
+  user_id uuid NOT NULL,
+  title character varying NOT NULL,
+  body text NOT NULL,
+  data jsonb DEFAULT '{}'::jsonb,
+  type character varying DEFAULT 'general',
+  is_read boolean DEFAULT false,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT notifications_pkey PRIMARY KEY (id),
+  CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE
+);
+
+-- Indexes for better performance
+CREATE INDEX idx_fcm_tokens_user_id ON public.fcm_tokens(user_id);
+CREATE INDEX idx_fcm_tokens_token ON public.fcm_tokens(fcm_token);
+CREATE INDEX idx_notifications_user_id ON public.notifications(user_id);
+CREATE INDEX idx_notifications_is_read ON public.notifications(is_read);
+CREATE INDEX idx_notifications_created_at ON public.notifications(created_at DESC);

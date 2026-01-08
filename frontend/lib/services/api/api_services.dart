@@ -24,3 +24,4 @@ export 'booking_service.dart';
 export 'review_service.dart';
 export 'profile_service.dart';
 export 'search_service.dart';
+export 'notification_service.dart';

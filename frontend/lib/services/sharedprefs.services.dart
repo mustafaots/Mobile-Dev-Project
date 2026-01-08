@@ -54,6 +54,10 @@ class SharedPrefsService {
   static Future<void> clearAuthData() => _repo.clearAuthData();
   static bool hasAuthToken() => _repo.hasAuthToken();
 
+  /// ============= FCM TOKEN METHODS =============
+  static String? getFCMToken() => _repo.getFCMToken();
+  static Future<bool> setFCMToken(String token) => _repo.setFCMToken(token);
+
   /// ============= UTILITY METHODS =============
   static Map<String, dynamic> getAllPreferences() => _repo.getAllPreferences();
   static Future<bool> clearAll() => _repo.clearAll();
