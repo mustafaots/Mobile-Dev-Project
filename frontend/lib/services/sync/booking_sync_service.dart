@@ -10,12 +10,13 @@ import 'package:easy_vacation/main.dart';
 /// Service for synchronizing bookings between remote and local
 class BookingSyncService implements Syncable {
   static BookingSyncService? _instance;
-  
+
   final BookingService _bookingService;
   final BookingRepository _bookingRepository;
   final ConnectivityService _connectivity;
-  
-  final StreamController<SyncState> _stateController = StreamController<SyncState>.broadcast();
+
+  final StreamController<SyncState> _stateController =
+      StreamController<SyncState>.broadcast();
   SyncState _currentState = const SyncState();
 
   // Cache for bookings
@@ -45,7 +46,7 @@ class BookingSyncService implements Syncable {
 
   /// Stream of sync state changes
   Stream<SyncState> get stateStream => _stateController.stream;
-  
+
   /// Current sync state
   SyncState get currentState => _currentState;
 
@@ -59,7 +60,9 @@ class BookingSyncService implements Syncable {
   }
 
   /// Get user's bookings (as client)
-  Future<List<BookingWithDetails>> getMyBookings({bool forceRefresh = false}) async {
+  Future<List<BookingWithDetails>> getMyBookings({
+    bool forceRefresh = false,
+  }) async {
     if (!forceRefresh && _myBookings.isNotEmpty && _lastFetchTime != null) {
       final cacheAge = DateTime.now().difference(_lastFetchTime!);
       if (cacheAge.inMinutes < 2) {
@@ -67,24 +70,33 @@ class BookingSyncService implements Syncable {
       }
     }
 
-    _updateState(_currentState.copyWith(status: SyncStatus.syncing, message: 'Loading bookings...'));
+    _updateState(
+      _currentState.copyWith(
+        status: SyncStatus.syncing,
+        message: 'Loading bookings...',
+      ),
+    );
 
     if (await _connectivity.checkConnectivity()) {
       try {
         final result = await _bookingService.getMyBookings();
-        
+
         if (result.isSuccess && result.data != null) {
           _myBookings = result.data!;
           _lastFetchTime = DateTime.now();
-          
-          // Save to local
-          await _saveBookingsLocally(result.data!.map((b) => b.booking).toList());
 
-          _updateState(_currentState.copyWith(
-            status: SyncStatus.success,
-            lastSyncTime: DateTime.now(),
-          ));
-          
+          // Save to local
+          await _saveBookingsLocally(
+            result.data!.map((b) => b.booking).toList(),
+          );
+
+          _updateState(
+            _currentState.copyWith(
+              status: SyncStatus.success,
+              lastSyncTime: DateTime.now(),
+            ),
+          );
+
           return _myBookings;
         }
       } catch (e) {
@@ -99,7 +111,9 @@ class BookingSyncService implements Syncable {
   }
 
   /// Get received bookings (as owner)
-  Future<List<BookingWithDetails>> getReceivedBookings({bool forceRefresh = false}) async {
+  Future<List<BookingWithDetails>> getReceivedBookings({
+    bool forceRefresh = false,
+  }) async {
     if (!forceRefresh && _receivedBookings.isNotEmpty) {
       return _receivedBookings;
     }
@@ -107,7 +121,7 @@ class BookingSyncService implements Syncable {
     if (await _connectivity.checkConnectivity()) {
       try {
         final result = await _bookingService.getReceivedBookings();
-        
+
         if (result.isSuccess && result.data != null) {
           _receivedBookings = result.data!;
           return _receivedBookings;
@@ -123,50 +137,64 @@ class BookingSyncService implements Syncable {
   /// Create a new booking
   Future<ApiResponse<Booking>> createBooking({
     required int listingId,
+    required String clientId,
     required DateTime startDate,
     required DateTime endDate,
     String? notes,
   }) async {
-    _updateState(_currentState.copyWith(status: SyncStatus.syncing, message: 'Creating booking...'));
+    _updateState(
+      _currentState.copyWith(
+        status: SyncStatus.syncing,
+        message: 'Creating booking...',
+      ),
+    );
 
     if (!await _connectivity.checkConnectivity()) {
       _updateState(_currentState.copyWith(status: SyncStatus.offline));
-      return ApiResponse.error('No internet connection. Please try again later.');
+      return ApiResponse.error(
+        'No internet connection. Please try again later.',
+      );
     }
 
     try {
-      final result = await _bookingService.createBooking(CreateBookingRequest(
-        listingId: listingId,
-        startDate: startDate,
-        endDate: endDate,
-        notes: notes,
-      ));
+      final result = await _bookingService.createBooking(
+        CreateBookingRequest(
+          postId: listingId,
+          clientId: clientId,
+          startTime: startDate,
+          endTime: endDate,
+          notes: notes,
+        ),
+      );
 
       if (result.isSuccess && result.data != null) {
         // Add to local
         await _bookingRepository.insertBooking(result.data!);
-        
+
         // Invalidate cache
         _lastFetchTime = null;
 
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.success,
-          lastSyncTime: DateTime.now(),
-          message: 'Booking created successfully',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.success,
+            lastSyncTime: DateTime.now(),
+            message: 'Booking created successfully',
+          ),
+        );
       } else {
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.error,
-          message: result.message,
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.error,
+            message: result.message,
+          ),
+        );
       }
 
       return result;
     } catch (e) {
-      _updateState(_currentState.copyWith(
-        status: SyncStatus.error,
-        message: e.toString(),
-      ));
+      _updateState(
+        _currentState.copyWith(status: SyncStatus.error, message: e.toString()),
+      );
       return ApiResponse.error(e.toString());
     }
   }
@@ -174,12 +202,14 @@ class BookingSyncService implements Syncable {
   /// Cancel a booking
   Future<ApiResponse<Booking>> cancelBooking(int id) async {
     if (!await _connectivity.checkConnectivity()) {
-      return ApiResponse.error('No internet connection. Please try again later.');
+      return ApiResponse.error(
+        'No internet connection. Please try again later.',
+      );
     }
 
     try {
       final result = await _bookingService.cancelBooking(id);
-      
+
       if (result.isSuccess) {
         _lastFetchTime = null; // Invalidate cache
       }
@@ -193,12 +223,14 @@ class BookingSyncService implements Syncable {
   /// Confirm a booking (owner only)
   Future<ApiResponse<Booking>> confirmBooking(int id) async {
     if (!await _connectivity.checkConnectivity()) {
-      return ApiResponse.error('No internet connection. Please try again later.');
+      return ApiResponse.error(
+        'No internet connection. Please try again later.',
+      );
     }
 
     try {
       final result = await _bookingService.confirmBooking(id);
-      
+
       if (result.isSuccess) {
         _lastFetchTime = null; // Invalidate cache
       }
@@ -212,12 +244,14 @@ class BookingSyncService implements Syncable {
   /// Complete a booking (owner only)
   Future<ApiResponse<Booking>> completeBooking(int id) async {
     if (!await _connectivity.checkConnectivity()) {
-      return ApiResponse.error('No internet connection. Please try again later.');
+      return ApiResponse.error(
+        'No internet connection. Please try again later.',
+      );
     }
 
     try {
       final result = await _bookingService.completeBooking(id);
-      
+
       if (result.isSuccess) {
         _lastFetchTime = null; // Invalidate cache
       }
@@ -231,8 +265,8 @@ class BookingSyncService implements Syncable {
   Future<void> _saveBookingsLocally(List<Booking> bookings) async {
     for (final booking in bookings) {
       try {
-        final existing = booking.id != null 
-            ? await _bookingRepository.getBookingById(booking.id!) 
+        final existing = booking.id != null
+            ? await _bookingRepository.getBookingById(booking.id!)
             : null;
         if (existing != null) {
           await _bookingRepository.updateBooking(booking.id!, booking);

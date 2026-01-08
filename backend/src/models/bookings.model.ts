@@ -12,22 +12,19 @@ export const bookingSchema = z.object({
   client_id: uuidSchema,
   status: nonEmptyString,
   booked_at: timestampSchema,
-  start_time: timestampSchema,
-  end_time: timestampSchema,
+  reservation: nonEmptyString, // JSON string like availability
 });
 
 export const bookingCreateSchema = z.object({
   post_id: numericIdSchema,
   client_id: uuidSchema,
-  start_time: timestampSchema,
-  end_time: timestampSchema,
+  reservation: nonEmptyString, // JSON string: [{"startDate": "...", "endDate": "..."}]
   status: nonEmptyString.optional(),
 });
 
 export const bookingUpdateSchema = z.object({
   status: nonEmptyString.optional(),
-  start_time: timestampSchema.optional(),
-  end_time: timestampSchema.optional(),
+  reservation: nonEmptyString.optional(),
 });
 
 export type BookingModel = z.infer<typeof bookingSchema>;

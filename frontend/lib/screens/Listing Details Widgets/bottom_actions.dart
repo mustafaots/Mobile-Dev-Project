@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/models/bookings.model.dart';
 import 'package:easy_vacation/screens/BookingsScreen.dart';
-import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
+import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 
 class BottomActions extends StatefulWidget {
   final int postId;
   final List<DateTime> selectedDates;
-  final BookingRepository bookingRepository;
   final dynamic currentUserId;
   final dynamic ownerId;
 
@@ -17,7 +15,6 @@ class BottomActions extends StatefulWidget {
     super.key,
     required this.postId,
     required this.selectedDates,
-    required this.bookingRepository,
     this.currentUserId,
     this.ownerId,
   });
@@ -47,9 +44,7 @@ class _BottomActionsState extends State<BottomActions> {
     if (widget.currentUserId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Please log in to book.',
-          ),
+          content: Text('Please log in to book.'),
           backgroundColor: AppTheme.failureColor,
         ),
       );
@@ -60,9 +55,7 @@ class _BottomActionsState extends State<BottomActions> {
     if (widget.ownerId != null && widget.ownerId == widget.currentUserId) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'You cannot book your own listing.',
-          ),
+          content: Text('You cannot book your own listing.'),
           backgroundColor: AppTheme.failureColor,
         ),
       );
@@ -79,21 +72,30 @@ class _BottomActionsState extends State<BottomActions> {
       final startDate = sortedDates.first;
       final endDate = sortedDates.last;
 
-      final booking = Booking(
-        postId: widget.postId,
-        clientId: widget.currentUserId!,
-        status: 'pending',
-        bookedAt: DateTime.now(),
-        startTime: startDate,
-        endTime: endDate,
+      // Use BookingSyncService to create booking (pushes to Supabase)
+      final syncService = await BookingSyncService.getInstance();
+      final result = await syncService.createBooking(
+        listingId: widget.postId,
+        clientId: widget.currentUserId.toString(),
+        startDate: startDate,
+        endDate: endDate,
       );
-
-      // Save to database
-      await widget.bookingRepository.insertBooking(booking);
 
       setState(() {
         _isLoading = false;
       });
+
+      if (!result.isSuccess) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result.message ?? 'Failed to create booking'),
+              backgroundColor: AppTheme.failureColor,
+            ),
+          );
+        }
+        return;
+      }
 
       // Show success and navigate
       if (context.mounted) {
@@ -110,7 +112,8 @@ class _BottomActionsState extends State<BottomActions> {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => BookingsScreen(userId: widget.currentUserId),
+            pageBuilder: (_, __, ___) =>
+                BookingsScreen(userId: widget.currentUserId),
             transitionsBuilder: (_, animation, __, child) {
               return SlideTransition(
                 position:

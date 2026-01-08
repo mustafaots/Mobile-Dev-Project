@@ -27,6 +27,7 @@ class BookingsScreen extends StatelessWidget {
         return BookingsCubit(
           bookingRepository: bookingRepository,
           postRepository: postRepository,
+          userId: userId,
         )..loadBookings();
       },
       child: _BookingsScreenContent(userId: userId),

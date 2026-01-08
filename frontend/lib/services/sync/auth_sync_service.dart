@@ -5,18 +5,20 @@ import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
 import 'package:easy_vacation/services/sync/sync_state.dart';
 import 'package:easy_vacation/services/sync/connectivity_service.dart';
+import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:easy_vacation/main.dart';
 
 /// Service for synchronizing user/auth data between remote and local
 class AuthSyncService implements Syncable {
   static AuthSyncService? _instance;
-  
+
   final AuthService _authService;
   final UserRepository _userRepository;
   final ConnectivityService _connectivity;
-  
-  final StreamController<SyncState> _stateController = StreamController<SyncState>.broadcast();
+
+  final StreamController<SyncState> _stateController =
+      StreamController<SyncState>.broadcast();
   SyncState _currentState = const SyncState();
 
   AuthSyncService._internal({
@@ -41,7 +43,7 @@ class AuthSyncService implements Syncable {
 
   /// Stream of sync state changes
   Stream<SyncState> get stateStream => _stateController.stream;
-  
+
   /// Current sync state
   SyncState get currentState => _currentState;
 
@@ -58,26 +60,37 @@ class AuthSyncService implements Syncable {
     String? lastName,
     String? phone,
   }) async {
-    _updateState(_currentState.copyWith(status: SyncStatus.syncing, message: 'Registering...'));
+    _updateState(
+      _currentState.copyWith(
+        status: SyncStatus.syncing,
+        message: 'Registering...',
+      ),
+    );
 
     // Check connectivity
     if (!await _connectivity.checkConnectivity()) {
       _updateState(_currentState.copyWith(status: SyncStatus.offline));
-      return ApiResponse.error('No internet connection. Please try again later.');
+      return ApiResponse.error(
+        'No internet connection. Please try again later.',
+      );
     }
 
     try {
       print('📝 Attempting registration for: $email');
       // Register on remote server
-      final result = await _authService.register(RegisterRequest(
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone,
-      ));
+      final result = await _authService.register(
+        RegisterRequest(
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+        ),
+      );
 
-      print('📝 Registration result: success=${result.isSuccess}, message=${result.message}');
+      print(
+        '📝 Registration result: success=${result.isSuccess}, message=${result.message}',
+      );
 
       if (result.isSuccess && result.data != null) {
         // Store user locally
@@ -91,27 +104,30 @@ class AuthSyncService implements Syncable {
           userId: user.id,
         );
 
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.success,
-          lastSyncTime: DateTime.now(),
-          message: 'Registration successful',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.success,
+            lastSyncTime: DateTime.now(),
+            message: 'Registration successful',
+          ),
+        );
       } else {
         print('📝 Registration failed: ${result.message}');
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.error,
-          message: result.message ?? 'Registration failed',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.error,
+            message: result.message ?? 'Registration failed',
+          ),
+        );
       }
 
       return result;
     } catch (e, stackTrace) {
       print('📝 Registration exception: $e');
       print('📝 Stack trace: $stackTrace');
-      _updateState(_currentState.copyWith(
-        status: SyncStatus.error,
-        message: e.toString(),
-      ));
+      _updateState(
+        _currentState.copyWith(status: SyncStatus.error, message: e.toString()),
+      );
       return ApiResponse.error(e.toString());
     }
   }
@@ -121,33 +137,43 @@ class AuthSyncService implements Syncable {
     required String email,
     required String password,
   }) async {
-    _updateState(_currentState.copyWith(status: SyncStatus.syncing, message: 'Logging in...'));
+    _updateState(
+      _currentState.copyWith(
+        status: SyncStatus.syncing,
+        message: 'Logging in...',
+      ),
+    );
 
     // Check connectivity
     if (!await _connectivity.checkConnectivity()) {
       // Try offline login
       final localUser = await _userRepository.getUserByEmail(email);
       if (localUser != null) {
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.offline,
-          message: 'Logged in offline',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.offline,
+            message: 'Logged in offline',
+          ),
+        );
         // Note: In a real app, you'd verify password hash here
-        return ApiResponse.success(AuthResult(
-          user: localUser,
-          accessToken: '', // No token in offline mode
-        ));
+        return ApiResponse.success(
+          AuthResult(
+            user: localUser,
+            accessToken: '', // No token in offline mode
+          ),
+        );
       }
       _updateState(_currentState.copyWith(status: SyncStatus.offline));
-      return ApiResponse.error('No internet connection and no cached user found.');
+      return ApiResponse.error(
+        'No internet connection and no cached user found.',
+      );
     }
 
     try {
       // Login on remote server
-      final result = await _authService.login(LoginRequest(
-        email: email,
-        password: password,
-      ));
+      final result = await _authService.login(
+        LoginRequest(email: email, password: password),
+      );
 
       if (result.isSuccess && result.data != null) {
         // Store/update user locally
@@ -161,24 +187,27 @@ class AuthSyncService implements Syncable {
           userId: user.id,
         );
 
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.success,
-          lastSyncTime: DateTime.now(),
-          message: 'Login successful',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.success,
+            lastSyncTime: DateTime.now(),
+            message: 'Login successful',
+          ),
+        );
       } else {
-        _updateState(_currentState.copyWith(
-          status: SyncStatus.error,
-          message: result.message ?? 'Login failed',
-        ));
+        _updateState(
+          _currentState.copyWith(
+            status: SyncStatus.error,
+            message: result.message ?? 'Login failed',
+          ),
+        );
       }
 
       return result;
     } catch (e) {
-      _updateState(_currentState.copyWith(
-        status: SyncStatus.error,
-        message: e.toString(),
-      ));
+      _updateState(
+        _currentState.copyWith(status: SyncStatus.error, message: e.toString()),
+      );
       return ApiResponse.error(e.toString());
     }
   }
@@ -252,10 +281,12 @@ class AuthSyncService implements Syncable {
         if (result.isSuccess && result.data != null) {
           print('📝 Session restored successfully');
           await _saveUserLocally(result.data!);
-          _updateState(_currentState.copyWith(
-            status: SyncStatus.success,
-            message: 'Session restored',
-          ));
+          _updateState(
+            _currentState.copyWith(
+              status: SyncStatus.success,
+              message: 'Session restored',
+            ),
+          );
           return result.data;
         } else {
           // Token is invalid, clear stored data
@@ -277,10 +308,12 @@ class AuthSyncService implements Syncable {
         final localUser = await _userRepository.getUserById(storedUserId);
         if (localUser != null) {
           print('📝 Restored session offline from local storage');
-          _updateState(_currentState.copyWith(
-            status: SyncStatus.offline,
-            message: 'Logged in offline',
-          ));
+          _updateState(
+            _currentState.copyWith(
+              status: SyncStatus.offline,
+              message: 'Logged in offline',
+            ),
+          );
           return localUser;
         }
       }
@@ -297,6 +330,15 @@ class AuthSyncService implements Syncable {
   Future<void> logout() async {
     await SharedPrefsService.clearAuthData();
     _authService.logout();
+
+    // Clear local bookings to prevent data leakage between accounts
+    try {
+      final bookingSyncService = await BookingSyncService.getInstance();
+      await bookingSyncService.clearLocalData();
+    } catch (e) {
+      debugPrint('Error clearing local bookings: $e');
+    }
+
     _updateState(const SyncState(status: SyncStatus.idle));
   }
 
