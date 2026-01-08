@@ -19,6 +19,7 @@ export interface BookingRecord {
   booked_at: string;
   start_time: string;
   end_time: string;
+  reservation?: string;  // JSON string from Supabase
 }
 
 export interface BookingWithDetails extends BookingRecord {
@@ -109,6 +110,23 @@ class BookingManagementService {
       throw new ApiError(404, 'Booking not found.');
     }
 
+    // Parse reservation JSON to get start_time and end_time
+    let startTime = '';
+    let endTime = '';
+    if (booking.reservation) {
+      try {
+        const reservation = typeof booking.reservation === 'string' 
+          ? JSON.parse(booking.reservation) 
+          : booking.reservation;
+        if (Array.isArray(reservation) && reservation.length > 0) {
+          startTime = reservation[0].startDate || reservation[0].start_date || '';
+          endTime = reservation[0].endDate || reservation[0].end_date || '';
+        }
+      } catch (e) {
+        console.error('Error parsing reservation JSON:', e);
+      }
+    }
+
     // Get post
     const { data: post } = await supabase
       .from('posts')
@@ -140,8 +158,9 @@ class BookingManagementService {
       client_id: booking.client_id,
       status: booking.status,
       booked_at: booking.booked_at,
-      start_time: booking.start_time,
-      end_time: booking.end_time,
+      start_time: startTime,
+      end_time: endTime,
+      reservation: booking.reservation,
       post,
       client: client ?? { user_id: booking.client_id, first_name: null, last_name: null },
       owner: owner ?? { user_id: post.owner_id, first_name: null, last_name: null },

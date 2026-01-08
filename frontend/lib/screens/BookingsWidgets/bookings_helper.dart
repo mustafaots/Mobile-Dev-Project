@@ -60,39 +60,47 @@ class BookingsHelper {
     List<Post> allPosts,
     String selectedFilter,
   ) {
+    // First, exclude cancelled bookings
+    final activeBookings = allBookings
+        .where((booking) => booking.status != 'cancelled')
+        .toList();
+
     List<Booking> filtered;
 
     if (selectedFilter == 'all') {
-      filtered = allBookings;
+      filtered = activeBookings;
     } else {
-      filtered = allBookings
+      filtered = activeBookings
           .where((booking) => booking.status == selectedFilter)
           .toList();
     }
 
-    return filtered.map((booking) {
-      // Find the corresponding post - use postId from booking
-      Post? post;
-      try {
-        post = allPosts.firstWhere((p) => p.id == booking.postId);
-      } catch (_) {
-        post = null;
-      }
+    return filtered
+        .map((booking) {
+          // Find the corresponding post - use postId from booking
+          Post? post;
+          try {
+            post = allPosts.firstWhere((p) => p.id == booking.postId);
+          } catch (_) {
+            post = null;
+          }
 
-      if (post == null) {
-        return null;
-      }
+          if (post == null) {
+            return null;
+          }
 
-      return {
-        'booking': booking,
-        'post': post,
-        'imagePath': post.contentUrl ?? 'assets/images/placeholder.jpg',
-        'status': booking.status,
-        'title': post.title,
-        'price': '${post.price} DZD',
-        'date':
-            '${booking.startTime.day}-${booking.endTime.day} ${getMonthName(booking.startTime.month)}, ${booking.startTime.year}',
-      };
-    }).whereType<Map<String, dynamic>>().toList();
+          return {
+            'booking': booking,
+            'post': post,
+            'imagePath': post.contentUrl ?? 'assets/images/placeholder.jpg',
+            'status': booking.status,
+            'title': post.title,
+            'price': '${post.price} DZD',
+            'date':
+                '${booking.startTime.day}-${booking.endTime.day} ${getMonthName(booking.startTime.month)}, ${booking.startTime.year}',
+          };
+        })
+        .whereType<Map<String, dynamic>>()
+        .toList();
   }
 }

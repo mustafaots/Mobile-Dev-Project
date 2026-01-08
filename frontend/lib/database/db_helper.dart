@@ -6,7 +6,7 @@ class DBHelper {
   static const _databaseName = "easy_vacation.db";
   static const _databaseVersion = 3; // INCREMENTED VERSION for UUID support
   static Database? _database;
-  
+
   static Future<Database> getDatabase() async {
     if (_database != null) return _database!;
 
@@ -57,7 +57,7 @@ class DBHelper {
   static Future<void> _createTables(Database db) async {
     // Enable foreign key constraints
     await db.execute('PRAGMA foreign_keys = ON');
-    
+
     // Create users table (with TEXT id for UUID support)
     await db.execute('''
       CREATE TABLE users (
@@ -152,8 +152,8 @@ class DBHelper {
       CREATE TABLE bookings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         post_id INTEGER NOT NULL,
-        client_id INTEGER NOT NULL,
-        status TEXT DEFAULT 'pending' CHECK(status IN ('confirmed', 'rejected', 'pending')),
+        client_id TEXT NOT NULL,
+        status TEXT DEFAULT 'pending' CHECK(status IN ('confirmed', 'rejected', 'pending', 'cancelled')),
         booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         end_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

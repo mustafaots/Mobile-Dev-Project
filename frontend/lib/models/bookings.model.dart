@@ -34,10 +34,27 @@ class Booking {
 
   /// For Supabase API (uses reservation JSON column like availability)
   Map<String, dynamic> toApiMap() {
+    // Normalize dates to noon UTC to avoid timezone day-boundary issues
+    final normalizedStart = DateTime.utc(
+      startTime.year,
+      startTime.month,
+      startTime.day,
+      12,
+      0,
+      0,
+    );
+    final normalizedEnd = DateTime.utc(
+      endTime.year,
+      endTime.month,
+      endTime.day,
+      12,
+      0,
+      0,
+    );
     final reservation = jsonEncode([
       {
-        'startDate': startTime.toUtc().toIso8601String(),
-        'endDate': endTime.toUtc().toIso8601String(),
+        'startDate': normalizedStart.toIso8601String(),
+        'endDate': normalizedEnd.toIso8601String(),
       },
     ]);
     return {

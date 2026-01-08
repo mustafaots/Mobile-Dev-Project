@@ -21,11 +21,28 @@ class CreateBookingRequest {
   });
 
   Map<String, dynamic> toJson() {
+    // Normalize dates to noon UTC to avoid timezone day-boundary issues
+    final normalizedStart = DateTime.utc(
+      startTime.year,
+      startTime.month,
+      startTime.day,
+      12,
+      0,
+      0,
+    );
+    final normalizedEnd = DateTime.utc(
+      endTime.year,
+      endTime.month,
+      endTime.day,
+      12,
+      0,
+      0,
+    );
     // Store dates as JSON in 'reservation' column (same format as availability)
     final reservation = jsonEncode([
       {
-        'startDate': startTime.toUtc().toIso8601String(),
-        'endDate': endTime.toUtc().toIso8601String(),
+        'startDate': normalizedStart.toIso8601String(),
+        'endDate': normalizedEnd.toIso8601String(),
         if (notes != null) 'notes': notes,
       },
     ]);
