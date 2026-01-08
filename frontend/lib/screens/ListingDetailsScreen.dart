@@ -1,6 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
-import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
@@ -32,7 +31,6 @@ class PostDetailsScreen extends StatefulWidget {
 }
 
 class _PostDetailsScreenState extends State<PostDetailsScreen> {
-  late BookingRepository _bookingRepository;
   List<DateTime> _selectedDates = [];
 
   bool _canReview = false;
@@ -41,11 +39,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    try {
-      _bookingRepository = appRepos['bookingRepo'] as BookingRepository;
-    } catch (e) {
-      // Handle error
-    }
 
     // Check if user can review this post
     _checkReviewPermission();
@@ -119,9 +112,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
               ..loadImages(widget.postId ?? 1);
           },
         ),
-        BlocProvider(
-          create: (context) => DetailsCubit(),
-        ),
+        BlocProvider(create: (context) => DetailsCubit()),
       ],
       child: Scaffold(
         appBar: App_Bar(
@@ -187,10 +178,13 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             activity: activity,
                             cubit: context.read<DetailsCubit>(),
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           if (!_checkingReviewPermission && _canReview)
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -212,10 +206,9 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                               child: child,
                                             );
                                           },
-                                      transitionDuration:
-                                          const Duration(
-                                            milliseconds: 300,
-                                          ),
+                                      transitionDuration: const Duration(
+                                        milliseconds: 300,
+                                      ),
                                     ),
                                   );
                                 },
@@ -258,7 +251,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                     BottomActions(
                       postId: post?.id ?? 0,
                       selectedDates: _selectedDates,
-                      bookingRepository: _bookingRepository,
                       currentUserId: widget.userId,
                       ownerId: post?.ownerId,
                     ),

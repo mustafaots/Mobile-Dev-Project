@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:easy_vacation/models/bookings.model.dart';
 import 'package:easy_vacation/services/api/api_client.dart';
 import 'package:easy_vacation/services/api/api_config.dart';
@@ -5,24 +6,33 @@ import 'package:easy_vacation/services/api/api_response.dart';
 
 /// Request model for creating a booking
 class CreateBookingRequest {
-  final int listingId;
-  final DateTime startDate;
-  final DateTime endDate;
+  final int postId;
+  final String clientId;
+  final DateTime startTime;
+  final DateTime endTime;
   final String? notes;
 
   CreateBookingRequest({
-    required this.listingId,
-    required this.startDate,
-    required this.endDate,
+    required this.postId,
+    required this.clientId,
+    required this.startTime,
+    required this.endTime,
     this.notes,
   });
 
   Map<String, dynamic> toJson() {
+    // Store dates as JSON in 'reservation' column (same format as availability)
+    final reservation = jsonEncode([
+      {
+        'startDate': startTime.toUtc().toIso8601String(),
+        'endDate': endTime.toUtc().toIso8601String(),
+        if (notes != null) 'notes': notes,
+      },
+    ]);
     return {
-      'listing_id': listingId,
-      'start_date': startDate.toIso8601String(),
-      'end_date': endDate.toIso8601String(),
-      if (notes != null) 'notes': notes,
+      'post_id': postId,
+      'client_id': clientId,
+      'reservation': reservation,
     };
   }
 }
@@ -71,7 +81,7 @@ class BookingService {
   }
 
   /// Get user's bookings (as client)
-  /// 
+  ///
   /// GET /api/bookings/my
   Future<ApiResponse<List<BookingWithDetails>>> getMyBookings() async {
     try {
@@ -79,9 +89,10 @@ class BookingService {
         '${ApiConfig.bookings}/my',
         requiresAuth: true,
       );
-      final bookings = (response['data'] as List<dynamic>? ?? response as List<dynamic>)
-          .map((json) => BookingWithDetails.fromJson(json))
-          .toList();
+      final bookings =
+          (response['data'] as List<dynamic>? ?? response as List<dynamic>)
+              .map((json) => BookingWithDetails.fromJson(json))
+              .toList();
       return ApiResponse.success(bookings);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -89,7 +100,7 @@ class BookingService {
   }
 
   /// Get bookings received (as owner)
-  /// 
+  ///
   /// GET /api/bookings/received
   Future<ApiResponse<List<BookingWithDetails>>> getReceivedBookings() async {
     try {
@@ -97,9 +108,10 @@ class BookingService {
         '${ApiConfig.bookings}/received',
         requiresAuth: true,
       );
-      final bookings = (response['data'] as List<dynamic>? ?? response as List<dynamic>)
-          .map((json) => BookingWithDetails.fromJson(json))
-          .toList();
+      final bookings =
+          (response['data'] as List<dynamic>? ?? response as List<dynamic>)
+              .map((json) => BookingWithDetails.fromJson(json))
+              .toList();
       return ApiResponse.success(bookings);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -107,9 +119,11 @@ class BookingService {
   }
 
   /// Create a new booking
-  /// 
+  ///
   /// POST /api/bookings
-  Future<ApiResponse<Booking>> createBooking(CreateBookingRequest request) async {
+  Future<ApiResponse<Booking>> createBooking(
+    CreateBookingRequest request,
+  ) async {
     try {
       final response = await _apiClient.post(
         ApiConfig.bookings,
@@ -124,7 +138,7 @@ class BookingService {
   }
 
   /// Get a specific booking by ID
-  /// 
+  ///
   /// GET /api/bookings/:id
   Future<ApiResponse<BookingWithDetails>> getBookingById(int id) async {
     try {
@@ -140,7 +154,7 @@ class BookingService {
   }
 
   /// Cancel a booking
-  /// 
+  ///
   /// POST /api/bookings/:id/cancel
   Future<ApiResponse<Booking>> cancelBooking(int id) async {
     try {
@@ -156,7 +170,7 @@ class BookingService {
   }
 
   /// Confirm a booking (owner only)
-  /// 
+  ///
   /// POST /api/bookings/:id/confirm
   Future<ApiResponse<Booking>> confirmBooking(int id) async {
     try {
@@ -172,7 +186,7 @@ class BookingService {
   }
 
   /// Complete a booking (owner only)
-  /// 
+  ///
   /// POST /api/bookings/:id/complete
   Future<ApiResponse<Booking>> completeBooking(int id) async {
     try {
