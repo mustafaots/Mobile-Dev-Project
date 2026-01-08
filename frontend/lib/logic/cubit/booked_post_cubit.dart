@@ -11,6 +11,7 @@ import 'package:easy_vacation/repositories/db_repositories/review_repository.dar
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
+import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'booked_post_state.dart';
 import 'dummy_data.dart';
 
@@ -48,7 +49,9 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       // Load host info - first try local DB, then fall back to API
       User? host = await userRepository.getUserById(post.ownerId);
       if (host == null) {
-        final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
+        final apiResponse = await ProfileService.instance.getUserById(
+          post.ownerId,
+        );
         if (apiResponse.isSuccess && apiResponse.data != null) {
           host = apiResponse.data;
           try {
@@ -194,13 +197,22 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       final booking = bookings.lastWhere((b) => b.postId == postId);
 
       if (booking.id != null) {
-        await bookingRepository.deleteBooking(booking.id!);
-        emit(const BookedPostCanceled('Booking canceled successfully'));
+        // Cancel booking in Supabase via sync service
+        final syncService = await BookingSyncService.getInstance();
+        final result = await syncService.cancelBooking(booking.id!);
+
+        if (result.isSuccess) {
+          // Also delete from local database
+          await bookingRepository.deleteBooking(booking.id!);
+          emit(const BookedPostCanceled('Booking canceled successfully'));
+        } else {
+          emit(BookedPostError(result.message ?? 'Failed to cancel booking'));
+        }
       } else {
         emit(const BookedPostError('Invalid booking ID'));
       }
     } catch (e) {
-      emit(const BookedPostError('Failed to cancel booking'));
+      emit(BookedPostError('Failed to cancel booking: ${e.toString()}'));
     }
   }
 }
