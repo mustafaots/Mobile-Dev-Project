@@ -73,18 +73,27 @@ class BookingCard extends StatelessWidget {
                   );
                 }
 
-                if (state is ImageGalleryLoaded && state.images.isNotEmpty) {
-                  final image = state.images.first;
+                if (state is ImageGalleryLoaded && state.hasImages) {
                   ImageProvider imageProvider;
 
-                  try {
-                    if (image.imageData.isEmpty) {
+                  // First try remote URLs (Cloudinary)
+                  if (state.imageUrls.isNotEmpty) {
+                    imageProvider = NetworkImage(state.imageUrls.first);
+                  }
+                  // Then try local base64 images
+                  else if (state.images.isNotEmpty) {
+                    final image = state.images.first;
+                    try {
+                      if (image.imageData.isEmpty) {
+                        imageProvider = AssetImage(imagePath);
+                      } else {
+                        final decodedBytes = base64Decode(image.imageData);
+                        imageProvider = MemoryImage(decodedBytes);
+                      }
+                    } catch (e) {
                       imageProvider = AssetImage(imagePath);
-                    } else {
-                      final decodedBytes = base64Decode(image.imageData);
-                      imageProvider = MemoryImage(decodedBytes);
                     }
-                  } catch (e) {
+                  } else {
                     imageProvider = AssetImage(imagePath);
                   }
 
