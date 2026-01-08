@@ -1,3 +1,5 @@
+import 'package:easy_vacation/services/api/api_client.dart';
+import 'package:easy_vacation/services/api/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/models/reviews.model.dart';
 import 'package:easy_vacation/models/users.model.dart';
@@ -22,11 +24,26 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       // Fetch reviewer info for each review
       Map<String, User> reviewersMap = {};
       for (var review in reviews) {
-        final reviewer = await userRepository.getUserById(review.reviewerId);
+        User? reviewer = await userRepository.getUserById(review.reviewerId);
+        
+        if (reviewer == null) {
+          try {
+            final response = await ApiClient.instance.get('/users/${review.reviewerId}');
+            reviewer = User.fromMap(response['data']);
+          } catch (_) {}
+        }
+
         if (reviewer != null) {
           reviewersMap[review.reviewerId] = reviewer;
         }
       }
+
+      final currentUserId = AuthService.instance.currentUser?.id;
+      reviews.sort((a, b) {
+        if (a.reviewerId == currentUserId) return -1; // current user's review comes first
+        if (b.reviewerId == currentUserId) return 1;  // other reviews move back
+        return 0;
+      });
 
       // Calculate average rating
       double averageRating = 0.0;

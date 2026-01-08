@@ -115,7 +115,7 @@ Future<void> exampleCreateBooking() async {
     return;
   }
 
-  final request = CreateBookingRequest(
+  /*final request = CreateBookingRequest(
     listingId: 1,
     startDate: DateTime.now().add(const Duration(days: 7)),
     endDate: DateTime.now().add(const Duration(days: 10)),
@@ -129,7 +129,7 @@ Future<void> exampleCreateBooking() async {
     print('Status: ${result.data!.status}');
   } else {
     print('Failed to create booking: ${result.message}');
-  }
+  }*/
 }
 
 /// Example: Leave a Review
