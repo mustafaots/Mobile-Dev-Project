@@ -641,5 +641,26 @@
   "updateReview_title": "تحديث تقييمك",
   "addReview_updated": "تم تحديث التقييم بنجاح",
   "reviewDeletedTitle": "تم حذف التقييم",
-  "reviewDeletedMessage": "تم حذف تقييمك بنجاح."
+  "reviewDeletedMessage": "تم حذف تقييمك بنجاح.",
+
+  "bookings_sent": "الحجوزات المرسلة",
+  "bookings_received": "الحجوزات المستلمة",
+  "bookings_sentSubtitle": "الحجوزات التي قمت بها لحجز العروض",
+  "bookings_receivedSubtitle": "طلبات الحجز من العملاء",
+  "bookings_accept": "قبول",
+  "bookings_reject": "رفض",
+  "bookings_acceptSuccess": "تم قبول الحجز بنجاح",
+  "bookings_rejectSuccess": "تم رفض الحجز بنجاح",
+  "bookings_noSentBookings": "لا توجد حجوزات مرسلة",
+  "bookings_noReceivedBookings": "لا توجد حجوزات مستلمة",
+  "bookings_sentEmptyMessage": "لم تقم بأي طلب حجز بعد.",
+  "bookings_receivedEmptyMessage": "لم يطلب أي عميل حجز عروضك بعد.",
+  "bookings_clientName": "العميل: {name}",
+  "@bookings_clientName": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  }
 }

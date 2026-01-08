@@ -640,5 +640,26 @@
   "updateReview_title": "Modifier votre avis",
   "addReview_updated": "Avis mis à jour avec succès",
   "reviewDeletedTitle": "Avis supprimé",
-  "reviewDeletedMessage": "Votre avis a été supprimé avec succès."
+  "reviewDeletedMessage": "Votre avis a été supprimé avec succès.",
+
+  "bookings_sent": "Réservations envoyées",
+  "bookings_received": "Réservations reçues",
+  "bookings_sentSubtitle": "Réservations que vous avez faites",
+  "bookings_receivedSubtitle": "Demandes de réservation des clients",
+  "bookings_accept": "Accepter",
+  "bookings_reject": "Refuser",
+  "bookings_acceptSuccess": "Réservation acceptée avec succès",
+  "bookings_rejectSuccess": "Réservation refusée avec succès",
+  "bookings_noSentBookings": "Aucune réservation envoyée",
+  "bookings_noReceivedBookings": "Aucune réservation reçue",
+  "bookings_sentEmptyMessage": "Vous n'avez pas encore fait de demande de réservation.",
+  "bookings_receivedEmptyMessage": "Aucun client n'a encore demandé à réserver vos annonces.",
+  "bookings_clientName": "Client : {name}",
+  "@bookings_clientName": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  }
 }

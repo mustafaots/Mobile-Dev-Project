@@ -641,5 +641,26 @@
     "updateReview_title": "Edit Your Review",
     "addReview_updated": "Review Updated Successfully",
     "reviewDeletedTitle": "Review deleted",
-    "reviewDeletedMessage": "Your review was deleted successfully."
+    "reviewDeletedMessage": "Your review was deleted successfully.",
+
+    "bookings_sent": "Sent Bookings",
+    "bookings_received": "Received Bookings",
+    "bookings_sentSubtitle": "Bookings you made to reserve listings",
+    "bookings_receivedSubtitle": "Booking requests from clients",
+    "bookings_accept": "Accept",
+    "bookings_reject": "Reject",
+    "bookings_acceptSuccess": "Booking accepted successfully",
+    "bookings_rejectSuccess": "Booking rejected successfully",
+    "bookings_noSentBookings": "No Sent Bookings",
+    "bookings_noReceivedBookings": "No Received Bookings",
+    "bookings_sentEmptyMessage": "You haven't made any booking requests yet.",
+    "bookings_receivedEmptyMessage": "No clients have requested to book your listings yet.",
+    "bookings_clientName": "Client: {name}",
+    "@bookings_clientName": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    }
 }

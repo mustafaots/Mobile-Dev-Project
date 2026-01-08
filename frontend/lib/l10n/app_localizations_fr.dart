@@ -1485,4 +1485,47 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reviewDeletedMessage => 'Votre avis a été supprimé avec succès.';
+
+  @override
+  String get bookings_sent => 'Réservations envoyées';
+
+  @override
+  String get bookings_received => 'Réservations reçues';
+
+  @override
+  String get bookings_sentSubtitle => 'Réservations que vous avez faites';
+
+  @override
+  String get bookings_receivedSubtitle => 'Demandes de réservation des clients';
+
+  @override
+  String get bookings_accept => 'Accepter';
+
+  @override
+  String get bookings_reject => 'Refuser';
+
+  @override
+  String get bookings_acceptSuccess => 'Réservation acceptée avec succès';
+
+  @override
+  String get bookings_rejectSuccess => 'Réservation refusée avec succès';
+
+  @override
+  String get bookings_noSentBookings => 'Aucune réservation envoyée';
+
+  @override
+  String get bookings_noReceivedBookings => 'Aucune réservation reçue';
+
+  @override
+  String get bookings_sentEmptyMessage =>
+      'Vous n\'avez pas encore fait de demande de réservation.';
+
+  @override
+  String get bookings_receivedEmptyMessage =>
+      'Aucun client n\'a encore demandé à réserver vos annonces.';
+
+  @override
+  String bookings_clientName(String name) {
+    return 'Client : $name';
+  }
 }

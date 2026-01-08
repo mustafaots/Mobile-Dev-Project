@@ -1449,4 +1449,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reviewDeletedMessage => 'تم حذف تقييمك بنجاح.';
+
+  @override
+  String get bookings_sent => 'الحجوزات المرسلة';
+
+  @override
+  String get bookings_received => 'الحجوزات المستلمة';
+
+  @override
+  String get bookings_sentSubtitle => 'الحجوزات التي قمت بها لحجز العروض';
+
+  @override
+  String get bookings_receivedSubtitle => 'طلبات الحجز من العملاء';
+
+  @override
+  String get bookings_accept => 'قبول';
+
+  @override
+  String get bookings_reject => 'رفض';
+
+  @override
+  String get bookings_acceptSuccess => 'تم قبول الحجز بنجاح';
+
+  @override
+  String get bookings_rejectSuccess => 'تم رفض الحجز بنجاح';
+
+  @override
+  String get bookings_noSentBookings => 'لا توجد حجوزات مرسلة';
+
+  @override
+  String get bookings_noReceivedBookings => 'لا توجد حجوزات مستلمة';
+
+  @override
+  String get bookings_sentEmptyMessage => 'لم تقم بأي طلب حجز بعد.';
+
+  @override
+  String get bookings_receivedEmptyMessage => 'لم يطلب أي عميل حجز عروضك بعد.';
+
+  @override
+  String bookings_clientName(String name) {
+    return 'العميل: $name';
+  }
 }

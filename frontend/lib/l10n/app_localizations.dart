@@ -2835,6 +2835,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your review was deleted successfully.'**
   String get reviewDeletedMessage;
+
+  /// No description provided for @bookings_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent Bookings'**
+  String get bookings_sent;
+
+  /// No description provided for @bookings_received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received Bookings'**
+  String get bookings_received;
+
+  /// No description provided for @bookings_sentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookings you made to reserve listings'**
+  String get bookings_sentSubtitle;
+
+  /// No description provided for @bookings_receivedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking requests from clients'**
+  String get bookings_receivedSubtitle;
+
+  /// No description provided for @bookings_accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get bookings_accept;
+
+  /// No description provided for @bookings_reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get bookings_reject;
+
+  /// No description provided for @bookings_acceptSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking accepted successfully'**
+  String get bookings_acceptSuccess;
+
+  /// No description provided for @bookings_rejectSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking rejected successfully'**
+  String get bookings_rejectSuccess;
+
+  /// No description provided for @bookings_noSentBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'No Sent Bookings'**
+  String get bookings_noSentBookings;
+
+  /// No description provided for @bookings_noReceivedBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'No Received Bookings'**
+  String get bookings_noReceivedBookings;
+
+  /// No description provided for @bookings_sentEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t made any booking requests yet.'**
+  String get bookings_sentEmptyMessage;
+
+  /// No description provided for @bookings_receivedEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No clients have requested to book your listings yet.'**
+  String get bookings_receivedEmptyMessage;
+
+  /// No description provided for @bookings_clientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Client: {name}'**
+  String bookings_clientName(String name);
 }
 
 class _AppLocalizationsDelegate

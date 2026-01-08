@@ -1,17 +1,10 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/logic/cubit/bookings_cubit.dart';
-import 'package:easy_vacation/logic/cubit/bookings_state.dart';
-import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
-import 'package:easy_vacation/models/bookings.model.dart';
-import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
-import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
-import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
-import 'package:easy_vacation/screens/BookingsWidgets/index.dart';
+import 'package:easy_vacation/screens/SentBookingsScreen.dart';
+import 'package:easy_vacation/screens/ReceivedBookingsScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/shared/themes.dart';
-import 'package:easy_vacation/main.dart';
 
 class BookingsScreen extends StatelessWidget {
   final dynamic userId;
@@ -19,114 +12,146 @@ class BookingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final bookingRepository = appRepos['bookingRepo'] as BookingRepository;
-        final postRepository = appRepos['postRepo'] as PostRepository;
-
-        return BookingsCubit(
-          bookingRepository: bookingRepository,
-          postRepository: postRepository,
-          userId: userId,
-        )..loadBookings();
-      },
-      child: _BookingsScreenContent(userId: userId),
-    );
-  }
-}
-
-class _BookingsScreenContent extends StatelessWidget {
-  final dynamic userId;
-  const _BookingsScreenContent({this.userId});
-
-  @override
-  Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final loc = AppLocalizations.of(context)!;
+    final textColor = context.textColor;
+    final secondaryTextColor = context.secondaryTextColor;
+    final cardColor = context.cardColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: App_Bar(context, loc.bookings_title),
-      body: BlocBuilder<BookingsCubit, BookingsState>(
-        builder: (context, state) {
-          if (state is BookingsLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: AppTheme.primaryColor),
-            );
-          }
-
-          if (state is BookingsError) {
-            return Center(child: Text(state.message));
-          }
-
-          if (state is BookingsLoaded) {
-            final filteredBookings = BookingsHelper.getFilteredBookings(
-              state.allBookings,
-              state.allPosts,
-              state.selectedFilter,
-            );
-
-            return SafeArea(
-              child: Column(
-                children: [
-                  // Filter chips
-                  BookingsFilterChips(selectedFilter: state.selectedFilter),
-
-                  // Bookings list
-                  Expanded(
-                    child: filteredBookings.isEmpty
-                        ? BookingsEmptyState(
-                            selectedFilter: state.selectedFilter,
-                            userId: userId,
-                          )
-                        : _buildBookingsList(context, filteredBookings),
-                  ),
-                ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Spacer(),
+              // Sent Bookings Card
+              _BookingNavigationCard(
+                icon: Icons.send_outlined,
+                title: loc.bookings_sent,
+                subtitle: loc.bookings_sentSubtitle,
+                color: AppTheme.primaryColor,
+                textColor: textColor,
+                secondaryTextColor: secondaryTextColor,
+                cardColor: cardColor,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SentBookingsScreen(userId: userId),
+                    ),
+                  );
+                },
               ),
-            );
-          }
-
-          return const SizedBox.shrink();
-        },
+              const SizedBox(height: 20),
+              // Received Bookings Card
+              _BookingNavigationCard(
+                icon: Icons.inbox_outlined,
+                title: loc.bookings_received,
+                subtitle: loc.bookings_receivedSubtitle,
+                color: Colors.green,
+                textColor: textColor,
+                secondaryTextColor: secondaryTextColor,
+                cardColor: cardColor,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReceivedBookingsScreen(),
+                    ),
+                  );
+                },
+              ),
+              const Spacer(flex: 2),
+            ],
+          ),
+        ),
       ),
     );
   }
+}
 
-  Widget _buildBookingsList(
-    BuildContext context,
-    List<Map<String, dynamic>> filteredBookings,
-  ) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: filteredBookings.map((bookingData) {
-          final postId = (bookingData['booking'] as Booking).postId;
+class _BookingNavigationCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color color;
+  final Color textColor;
+  final Color secondaryTextColor;
+  final Color cardColor;
+  final VoidCallback onTap;
 
-          return BlocProvider(
-            create: (context) {
-              final imagesRepository =
-                  appRepos['imageRepo'] as PostImagesRepository;
-              return ImageGalleryCubit(imagesRepository: imagesRepository)
-                ..loadImages(postId);
-            },
-            child: BookingCard(
-              imagePath: bookingData['imagePath'],
-              booking: bookingData['booking'],
-              status: BookingsHelper.getStatusLabel(
-                context,
-                bookingData['status'],
+  const _BookingNavigationCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.textColor,
+    required this.secondaryTextColor,
+    required this.cardColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: cardColor,
+      borderRadius: BorderRadius.circular(16),
+      elevation: 2,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  size: 30,
+                  color: color,
+                ),
               ),
-              statusColor: BookingsHelper.getStatusColor(bookingData['status']),
-              title: bookingData['title'],
-              price: bookingData['price'],
-              date: bookingData['date'],
-              postId: postId,
-              onRefresh: () {
-                context.read<BookingsCubit>().reloadBookings();
-              },
-            ),
-          );
-        }).toList(),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTheme.header2.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: secondaryTextColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 20,
+                color: secondaryTextColor,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
