@@ -122,6 +122,7 @@ class AvailabilityInterval {
 }
 
 class CreatePostData {
+  final int? id; // Null for new listings, set for edits
   final String category;
   final String title;
   final String description;
@@ -138,7 +139,10 @@ class CreatePostData {
   // Images
   final List<String> imagePaths;
 
+  bool get isEditing => id != null;
+
   CreatePostData({
+    this.id,
     required this.category,
     required this.title,
     required this.description,
@@ -154,6 +158,7 @@ class CreatePostData {
 
   Map<String, dynamic> toJson() {
     return {
+      if (id != null) 'id': id,
       'category': category,
       'title': title,
       'description': description,

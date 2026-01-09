@@ -7,6 +7,7 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/logic/cubit/availability_cubit.dart';
 import 'package:easy_vacation/logic/cubit/availability_state.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 
 class AvailabilitySection extends StatefulWidget {
   final String? availabilityJson;
@@ -183,7 +184,7 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
             ),
             child: Center(
               child: Text(
-                'Error: ${state.message}',
+                ErrorHelper.getLocalizedMessageFromString(state.message, context),
                 style: const TextStyle(color: Colors.red),
               ),
             ),

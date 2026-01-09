@@ -9,6 +9,7 @@ import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/DetailsSectionWidgets/detail_card.dart';
 import 'package:easy_vacation/screens/DetailsSectionWidgets/empty_details_state.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 
 class DetailsSection extends StatelessWidget {
   final Post? post;
@@ -68,7 +69,7 @@ class DetailsSection extends StatelessWidget {
                 }
 
                 if (state is DetailsError) {
-                  return _ErrorState(message: state.message);
+                  return _ErrorState(message: ErrorHelper.getLocalizedMessageFromString(state.message, context));
                 }
 
                 if (state is DetailsLoaded) {
@@ -150,7 +151,7 @@ class DetailsSection extends StatelessWidget {
                 }
 
                 if (state is DetailsError) {
-                  return _ErrorState(message: state.message);
+                  return _ErrorState(message: ErrorHelper.getLocalizedMessageFromString(state.message, context));
                 }
 
                 if (state is DetailsLoaded) {

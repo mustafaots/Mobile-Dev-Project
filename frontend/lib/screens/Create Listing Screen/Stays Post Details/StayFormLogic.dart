@@ -47,6 +47,7 @@ class StayFormController {
     );
     
     return CreatePostData(
+      id: existingData?.id, // Preserve id for editing
       category: 'stay',
       title: titleController.text,
       description: descriptionController.text,

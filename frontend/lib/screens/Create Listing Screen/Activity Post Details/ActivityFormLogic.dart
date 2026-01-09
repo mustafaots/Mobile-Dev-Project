@@ -100,6 +100,7 @@ class ActivityFormController {
     );
     
     return CreatePostData(
+      id: existingData?.id, // Preserve id for editing
       category: 'activity',
       title: titleController.text,
       description: descriptionController.text,
