@@ -29,6 +29,8 @@ export interface BookingWithDetails extends BookingRecord {
     user_id: string;
     first_name: string | null;
     last_name: string | null;
+    email: string | null;
+    phone: string | null;
   };
   owner: {
     user_id: string;
@@ -171,6 +173,19 @@ class BookingManagementService {
       .eq('user_id', booking.client_id)
       .single();
 
+    // Get client email and phone from auth
+    let clientEmail: string | null = null;
+    let clientPhone: string | null = null;
+    try {
+      const { data: authData } = await supabase.auth.admin.getUserById(booking.client_id);
+      if (authData?.user) {
+        clientEmail = authData.user.email ?? null;
+        clientPhone = authData.user.phone ?? null;
+      }
+    } catch (e) {
+      console.error('Failed to fetch client auth data:', e);
+    }
+
     // Get owner
     const { data: owner } = await supabase
       .from('users')
@@ -188,7 +203,13 @@ class BookingManagementService {
       end_time: endTime,
       reservation: booking.reservation,
       post,
-      client: client ?? { user_id: booking.client_id, first_name: null, last_name: null },
+      client: {
+        user_id: client?.user_id ?? booking.client_id,
+        first_name: client?.first_name ?? null,
+        last_name: client?.last_name ?? null,
+        email: clientEmail,
+        phone: clientPhone,
+      },
       owner: owner ?? { user_id: post.owner_id, first_name: null, last_name: null },
     };
   }

@@ -1502,4 +1502,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'Client: $name';
   }
+
+  @override
+  String get bookings_bookingDetails => 'Booking Details';
+
+  @override
+  String get bookings_listing => 'Listing';
+
+  @override
+  String get bookings_dates => 'Dates';
+
+  @override
+  String get bookings_totalPrice => 'Total Price';
+
+  @override
+  String get bookings_bookingId => 'Booking ID';
+
+  @override
+  String get bookings_clientContactInfo => 'Client Contact Info';
+
+  @override
+  String get bookings_clientEmail => 'Email';
+
+  @override
+  String get bookings_clientPhone => 'Phone';
+
+  @override
+  String get bookings_noContactInfo => 'No contact information available';
+
+  @override
+  String get close => 'Close';
 }

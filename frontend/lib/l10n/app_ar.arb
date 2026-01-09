@@ -662,5 +662,15 @@
               "type": "String"
           }
       }
-  }
+  },
+  "bookings_bookingDetails": "تفاصيل الحجز",
+  "bookings_listing": "العرض",
+  "bookings_dates": "التواريخ",
+  "bookings_totalPrice": "السعر الإجمالي",
+  "bookings_bookingId": "رقم الحجز",
+  "bookings_clientContactInfo": "معلومات الاتصال بالعميل",
+  "bookings_clientEmail": "البريد الإلكتروني",
+  "bookings_clientPhone": "رقم الهاتف",
+  "bookings_noContactInfo": "لا تتوفر معلومات الاتصال",
+  "close": "إغلاق"
 }
