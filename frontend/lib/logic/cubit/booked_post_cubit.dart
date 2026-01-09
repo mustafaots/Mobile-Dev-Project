@@ -5,12 +5,14 @@ import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/post_images.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'booked_post_state.dart';
 import 'dummy_data.dart';
@@ -74,6 +76,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       Vehicle? vehicle;
       Activity? activity;
       List<PostImage> postImages = [];
+      Location? location;
 
       final reviews = await reviewRepository.getReviewsByPostId(postId);
       reviewsList = reviews;
@@ -90,20 +93,73 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           .map((imageData) => PostImage.fromMap(imageData))
           .toList();
 
-      // Load category-specific details
+      // Load location from API
+      try {
+        final locationResponse = await ListingService.instance.getListingById(
+          postId,
+        );
+        if (locationResponse.isSuccess &&
+            locationResponse.data?.location != null) {
+          location = locationResponse.data!.location;
+        }
+      } catch (_) {}
+
+      // Load category-specific details - first try local DB, then fall back to API
       final category = (post.category).toLowerCase();
       switch (category) {
         case 'stay':
           stay = await postRepository.getStayByPostId(postId);
-          stay ??= DummyDataProvider.getDummyStayDetails(postId);
+          if (stay == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.stayDetails != null) {
+              stay = apiResponse.data!.stayDetails;
+              location ??= apiResponse.data!.location;
+              if (stay != null) {
+                try {
+                  await postRepository.insertStay(stay!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'vehicle':
           vehicle = await postRepository.getVehicleByPostId(postId);
-          vehicle ??= DummyDataProvider.getDummyVehicleDetails(postId);
+          if (vehicle == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.vehicleDetails != null) {
+              vehicle = apiResponse.data!.vehicleDetails;
+              location ??= apiResponse.data!.location;
+              if (vehicle != null) {
+                try {
+                  await postRepository.insertVehicle(vehicle!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'activity':
           activity = await postRepository.getActivityByPostId(postId);
-          activity ??= DummyDataProvider.getDummyActivityDetails(postId);
+          if (activity == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.activityDetails != null) {
+              activity = apiResponse.data!.activityDetails;
+              location ??= apiResponse.data!.location;
+              if (activity != null) {
+                try {
+                  await postRepository.insertActivity(activity!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
       }
 
@@ -119,6 +175,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           vehicle: vehicle,
           activity: activity,
           postImages: postImages,
+          location: location,
         ),
       );
     } catch (e) {
@@ -188,6 +245,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           vehicle: currentState.vehicle,
           activity: currentState.activity,
           postImages: currentState.postImages,
+          location: currentState.location,
         ),
       );
     } else {

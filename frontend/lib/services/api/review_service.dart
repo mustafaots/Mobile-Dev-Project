@@ -27,6 +27,23 @@ class ReviewWithDetails {
   }
 }
 
+/// Response model for canReviewPost
+class CanReviewResponse {
+  final bool canReview;
+  final ReviewWithDetails? existingReview;
+
+  CanReviewResponse({required this.canReview, this.existingReview});
+
+  factory CanReviewResponse.fromJson(Map<String, dynamic> json) {
+    return CanReviewResponse(
+      canReview: json['canReview'] as bool? ?? false,
+      existingReview: json['existingReview'] != null
+          ? ReviewWithDetails.fromJson(json['existingReview'])
+          : null,
+    );
+  }
+}
+
 /// Rating summary for a listing
 class RatingSummary {
   final double averageRating;
@@ -48,7 +65,8 @@ class RatingSummary {
     }
 
     return RatingSummary(
-      averageRating: (json['average'] ?? json['average_rating'] ?? 0).toDouble(),
+      averageRating: (json['average'] ?? json['average_rating'] ?? 0)
+          .toDouble(),
       totalReviews: json['total'] ?? json['total_reviews'] ?? 0,
       ratingDistribution: distribution,
     );
@@ -96,14 +114,19 @@ class ReviewService {
   }
 
   /// Get reviews for a listing (public)
-  /// 
+  ///
   /// GET /api/listings/:id/reviews
-  Future<ApiResponse<List<ReviewWithDetails>>> getReviewsForListing(int listingId) async {
+  Future<ApiResponse<List<ReviewWithDetails>>> getReviewsForListing(
+    int listingId,
+  ) async {
     try {
-      final response = await _apiClient.get('${ApiConfig.listings}/$listingId/reviews');
-      final reviews = (response['data'] as List<dynamic>? ?? response as List<dynamic>)
-          .map((json) => ReviewWithDetails.fromJson(json))
-          .toList();
+      final response = await _apiClient.get(
+        '${ApiConfig.listings}/$listingId/reviews',
+      );
+      final reviews =
+          (response['data'] as List<dynamic>? ?? response as List<dynamic>)
+              .map((json) => ReviewWithDetails.fromJson(json))
+              .toList();
       return ApiResponse.success(reviews);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -111,11 +134,13 @@ class ReviewService {
   }
 
   /// Get rating summary for a listing (public)
-  /// 
+  ///
   /// GET /api/listings/:id/ratings
   Future<ApiResponse<RatingSummary>> getRatingSummary(int listingId) async {
     try {
-      final response = await _apiClient.get('${ApiConfig.listings}/$listingId/ratings');
+      final response = await _apiClient.get(
+        '${ApiConfig.listings}/$listingId/ratings',
+      );
       final summary = RatingSummary.fromJson(response['data'] ?? response);
       return ApiResponse.success(summary);
     } catch (e) {
@@ -124,7 +149,7 @@ class ReviewService {
   }
 
   /// Get user's reviews
-  /// 
+  ///
   /// GET /api/reviews/my
   Future<ApiResponse<List<ReviewWithDetails>>> getMyReviews() async {
     try {
@@ -132,9 +157,10 @@ class ReviewService {
         '${ApiConfig.reviews}/my',
         requiresAuth: true,
       );
-      final reviews = (response['data'] as List<dynamic>? ?? response as List<dynamic>)
-          .map((json) => ReviewWithDetails.fromJson(json))
-          .toList();
+      final reviews =
+          (response['data'] as List<dynamic>? ?? response as List<dynamic>)
+              .map((json) => ReviewWithDetails.fromJson(json))
+              .toList();
       return ApiResponse.success(reviews);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -142,7 +168,7 @@ class ReviewService {
   }
 
   /// Create a review
-  /// 
+  ///
   /// POST /api/reviews
   Future<ApiResponse<Review>> createReview(CreateReviewRequest request) async {
     try {
@@ -159,9 +185,13 @@ class ReviewService {
   }
 
   /// Update a review
-  /// 
+  ///
   /// PATCH /api/reviews/:id
-  Future<ApiResponse<Review>> updateReview(int id, {int? rating, String? comment}) async {
+  Future<ApiResponse<Review>> updateReview(
+    int id, {
+    int? rating,
+    String? comment,
+  }) async {
     try {
       final body = <String, dynamic>{};
       if (rating != null) body['rating'] = rating;
@@ -180,32 +210,29 @@ class ReviewService {
   }
 
   /// Delete a review
-  /// 
+  ///
   /// DELETE /api/reviews/:id
   Future<ApiResponse<void>> deleteReview(int id) async {
     try {
-      await _apiClient.delete(
-        '${ApiConfig.reviews}/$id',
-        requiresAuth: true,
-      );
+      await _apiClient.delete('${ApiConfig.reviews}/$id', requiresAuth: true);
       return ApiResponse.success(null);
     } catch (e) {
       return ApiResponse.error(e.toString());
     }
   }
 
-
   // Check if user can add review for a certain post
-  Future<ApiResponse<bool>> canReviewPost(int postId) async {
+  // Returns canReview boolean and existingReview if user already has one
+  Future<ApiResponse<CanReviewResponse>> canReviewPost(int postId) async {
     try {
       final response = await _apiClient.get(
         '${ApiConfig.reviews}/can-review/$postId',
         requiresAuth: true,
       );
 
-      final canReview = response['data']?['canReview'] as bool? ?? false;
+      final result = CanReviewResponse.fromJson(response['data'] ?? response);
 
-      return ApiResponse.success(canReview);
+      return ApiResponse.success(result);
     } catch (e) {
       return ApiResponse.error(e.toString());
     }

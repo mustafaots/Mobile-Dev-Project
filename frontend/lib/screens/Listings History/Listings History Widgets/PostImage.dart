@@ -67,7 +67,6 @@ class PostImage extends StatelessWidget {
           );
         },
         errorBuilder: (context, error, stackTrace) {
-          print('❌ Error loading image from URL: $error');
           return _buildErrorPlaceholder();
         },
       ),
@@ -86,7 +85,6 @@ class PostImage extends StatelessWidget {
         height: 200,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          print('❌ Error displaying image from bytes: $error');
           return _buildErrorPlaceholder();
         },
       ),
@@ -107,7 +105,6 @@ class PostImage extends StatelessWidget {
           height: 200,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            print('❌ Error displaying image from file: $error');
             return _buildErrorPlaceholder();
           },
         ),

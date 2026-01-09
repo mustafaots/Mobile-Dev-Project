@@ -22,37 +22,22 @@ class PostCreationService {
     required String userId,
   }) async {
     try {
-      print('🚀 Starting post creation...');
-      print('📝 Title: "${postData.title}" (length: ${postData.title.length})');
-      print('📝 Description: "${postData.description}"');
-      print('📝 Category: ${postData.category}');
-      print('📝 Price: ${postData.price}');
-
       // Check if we have internet connectivity
       final hasInternet = await ConnectivityService.instance.checkConnectivity();
 
       if (hasInternet) {
         // Try to create on backend first (syncs to Supabase)
-        print('📡 Creating post on backend...');
         final listing = await _createListingFromPostData(postData, userId);
-
-        // Debug: print the listing data being sent
-        print('📦 Listing data: ${listing.toJson()}');
-        print('📸 Images count: ${listing.images.length}');
 
         final result = await ApiServiceLocator.listings.createListing(listing);
 
-        print('📨 API Result - success: ${result.isSuccess}, message: ${result.message}');
-
         if (result.isSuccess && result.data != null) {
-          print('✅ Post created on backend with ID: ${result.data!.id}');
 
           // Also save locally for offline access
           await _saveLocalCopy(postData, userId, result.data!.id);
 
           return true;
         } else {
-          print('⚠️ Backend creation failed: ${result.message}');
 
           // Show the actual error message
           if (context.mounted) {
@@ -70,12 +55,9 @@ class PostCreationService {
         }
       } else {
         // Offline mode - create locally only
-        print('📴 Offline mode - creating locally only');
         return await _createLocalOnly(postData, userId, context);
       }
-    } catch (e, stackTrace) {
-      print('❌ Error creating post: $e');
-      print('❌ Stack trace: $stackTrace');
+    } catch (e) {
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -155,7 +137,6 @@ class PostCreationService {
     final List<String> base64Images = await _convertImagesToBase64(
       postData.imagePaths,
     );
-    print('📸 Converted ${base64Images.length} images to base64');
 
     return Listing(
       ownerId: userId,
@@ -180,34 +161,21 @@ class PostCreationService {
     final List<String> base64Images = [];
 
     for (final path in imagePaths) {
-      try {
-        final file = File(path);
-        if (await file.exists()) {
-          final bytes = await file.readAsBytes();
-          final originalSize = bytes.length;
 
-          // Compress the image
-          Uint8List compressedBytes = await _compressImage(bytes);
+      final file = File(path);
+      if (await file.exists()) {
+        final bytes = await file.readAsBytes();
 
-          final base64String = base64Encode(compressedBytes);
+        // Compress the image
+        Uint8List compressedBytes = await _compressImage(bytes);
 
-          // Create data URI format for Cloudinary (always JPEG after compression)
-          final dataUri = 'data:image/jpeg;base64,$base64String';
-          base64Images.add(dataUri);
+        final base64String = base64Encode(compressedBytes);
 
-          final compressedSize = compressedBytes.length;
-          final savings = ((originalSize - compressedSize) / originalSize * 100)
-              .toStringAsFixed(1);
-          print(
-            '📸 Compressed image: $path (${originalSize ~/ 1024}KB → ${compressedSize ~/ 1024}KB, saved $savings%)',
-          );
-        } else {
-          print('⚠️ Image file not found: $path');
-        }
-      } catch (e) {
-        print('❌ Error converting image $path: $e');
-      }
-    }
+        // Create data URI format for Cloudinary (always JPEG after compression)
+        final dataUri = 'data:image/jpeg;base64,$base64String';
+        base64Images.add(dataUri);
+      };
+    };
 
     return base64Images;
   }
@@ -218,7 +186,6 @@ class PostCreationService {
       // Decode the image
       final image = img.decodeImage(bytes);
       if (image == null) {
-        print('⚠️ Could not decode image, using original');
         return bytes;
       }
 
@@ -232,9 +199,6 @@ class PostCreationService {
         } else {
           resized = img.copyResize(image, height: maxDimension);
         }
-        print(
-          '📐 Resized from ${image.width}x${image.height} to ${resized.width}x${resized.height}',
-        );
       } else {
         resized = image;
       }
@@ -243,7 +207,6 @@ class PostCreationService {
       final compressed = img.encodeJpg(resized, quality: 80);
       return Uint8List.fromList(compressed);
     } catch (e) {
-      print('⚠️ Compression failed, using original: $e');
       return bytes;
     }
   }
@@ -254,45 +217,39 @@ class PostCreationService {
     String userId,
     int? remoteId,
   ) async {
-    try {
-      final postRepo = await RepoFactory.getRepository<PostRepository>(
-        'postRepo',
-      );
-      final location = loc_model.Location.fromDetailsLocation(
-        postData.location,
-      );
-      final categoryObject = _createCategoryObject(postData);
+    final postRepo = await RepoFactory.getRepository<PostRepository>(
+      'postRepo',
+    );
+    final location = loc_model.Location.fromDetailsLocation(
+      postData.location,
+    );
+    final categoryObject = _createCategoryObject(postData);
 
-      final post = Post(
-        id: remoteId, // Use the remote ID if available
-        ownerId: userId,
-        category: postData.category,
-        title: postData.title,
-        description: postData.description,
-        price: postData.price,
-        locationId: 0,
-        status: 'active',
-        isPaid: false,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        availability: postData.availability
-            .map((interval) => interval.toMap())
-            .toList(),
-      );
+    final post = Post(
+      id: remoteId, // Use the remote ID if available
+      ownerId: userId,
+      category: postData.category,
+      title: postData.title,
+      description: postData.description,
+      price: postData.price,
+      locationId: 0,
+      status: 'active',
+      isPaid: false,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      availability: postData.availability
+          .map((interval) => interval.toMap())
+          .toList(),
+    );
 
-      await postRepo.createCompletePost(
-        post: post,
-        location: location,
-        imagePaths: postData.imagePaths,
-        stay: categoryObject['stay'],
-        activity: categoryObject['activity'],
-        vehicle: categoryObject['vehicle'],
-      );
-      print('💾 Local copy saved');
-    } catch (e) {
-      print('⚠️ Failed to save local copy: $e');
-      // Don't fail the overall operation if local save fails
-    }
+    await postRepo.createCompletePost(
+      post: post,
+      location: location,
+      imagePaths: postData.imagePaths,
+      stay: categoryObject['stay'],
+      activity: categoryObject['activity'],
+      vehicle: categoryObject['vehicle'],
+    );
   }
 
   /// Create post locally only (offline fallback)
@@ -302,41 +259,6 @@ class PostCreationService {
     BuildContext context,
   ) async {
     try {
-      final postRepo = await RepoFactory.getRepository<PostRepository>(
-        'postRepo',
-      );
-
-      final post = Post(
-        ownerId: userId,
-        category: postData.category,
-        title: postData.title,
-        description: postData.description,
-        price: postData.price,
-        locationId: 0,
-        status: 'pending_sync', // Mark as needing sync
-        isPaid: false,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        availability: postData.availability
-            .map((interval) => interval.toMap())
-            .toList(),
-      );
-
-      final location = loc_model.Location.fromDetailsLocation(
-        postData.location,
-      );
-      final categoryObject = _createCategoryObject(postData);
-
-      final postId = await postRepo.createCompletePost(
-        post: post,
-        location: location,
-        imagePaths: postData.imagePaths,
-        stay: categoryObject['stay'],
-        activity: categoryObject['activity'],
-        vehicle: categoryObject['vehicle'],
-      );
-
-      print('✅ Post created locally with ID: $postId (pending sync)');
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -350,7 +272,6 @@ class PostCreationService {
 
       return true;
     } catch (e) {
-      print('❌ Local creation failed: $e');
       return false;
     }
   }

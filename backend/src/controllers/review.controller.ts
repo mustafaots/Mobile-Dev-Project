@@ -154,10 +154,10 @@ class ReviewController {
       throw new ApiError(400, 'Invalid post ID.');
     }
 
-    const canReview = await reviewManagementService.canUserReviewPost(postId, user.id);
+    const result = await reviewManagementService.canUserReviewPost(postId, user.id);
     res.json({
       success: true,
-      data: { canReview }, // boolean
+      data: result, // { canReview: boolean, existingReview?: ReviewWithDetails }
     });
   });
 }

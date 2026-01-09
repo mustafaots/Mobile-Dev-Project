@@ -54,7 +54,6 @@ class _NotificationsClientScreenState extends State<NotificationsClientScreen> {
       setState(() {
         _isLoading = false;
       });
-      debugPrint('Error loading notifications: $e');
     }
   }
 
@@ -123,8 +122,7 @@ class _NotificationsClientScreenState extends State<NotificationsClientScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error accepting booking request: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error accepting booking request')),
       );
     }
@@ -148,7 +146,6 @@ class _NotificationsClientScreenState extends State<NotificationsClientScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error rejecting booking request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error rejecting booking request')),
       );

@@ -100,7 +100,7 @@ class _ReceivedBookingsScreenContent extends StatelessWidget {
   ) {
     if (filter == 'all') return bookings;
     return bookings.where((b) {
-      final status = b.booking.status?.toLowerCase() ?? '';
+      final status = b.booking.status.toLowerCase();
       return status == filter;
     }).toList();
   }

@@ -1,8 +1,6 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
-import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
-import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
@@ -39,7 +37,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
 
   bool _canReview = false;
   bool _checkingReviewPermission = true;
-  Location? _location;
 
   @override
   void initState() {
@@ -56,19 +53,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
       _canReview = result.isSuccess && result.data == true;
       _checkingReviewPermission = false;
     });
-  }
-
-  Future<void> _loadLocation(int postId) async {
-    try {
-      final response = await ApiServiceLocator.listings.getListingById(postId);
-      if (response.isSuccess && response.data != null && mounted) {
-        setState(() {
-          _location = response.data!.location;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error loading location: $e');
-    }
   }
 
   @override
@@ -141,15 +125,16 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         body: BlocBuilder<ListingDetailsCubit, ListingDetailsState>(
           builder: (context, state) {
             if (state is ListingDetailsLoading) {
-              return Center(
-                child: AppProgressIndicator(),
-              );
+              return Center(child: AppProgressIndicator());
             }
 
             if (state is ListingDetailsError) {
               return Center(
                 child: Text(
-                  ErrorHelper.getLocalizedMessageFromString(state.message, context),
+                  ErrorHelper.getLocalizedMessageFromString(
+                    state.message,
+                    context,
+                  ),
                 ),
               );
             }
@@ -160,12 +145,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
               final stay = state.stay;
               final vehicle = state.vehicle;
               final activity = state.activity;
+              final location = state.location;
               final loc = AppLocalizations.of(context)!;
-
-              // Load location if not already loaded
-              if (post != null && _location == null) {
-                Future.microtask(() => _loadLocation(post.id!));
-              }
 
               // Load details data into the cubit
               Future.microtask(() {
@@ -206,7 +187,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             cubit: context.read<DetailsCubit>(),
                           ),
                           SizedBox(height: 10),
-                          LocationMapSection(location: _location),
+                          LocationMapSection(location: location),
                           if (!_checkingReviewPermission && _canReview)
                             Container(
                               margin: const EdgeInsets.symmetric(
@@ -288,9 +269,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
               );
             }
 
-            return Center(
-              child: AppProgressIndicator(),
-            );
+            return Center(child: AppProgressIndicator());
           },
         ),
       ),

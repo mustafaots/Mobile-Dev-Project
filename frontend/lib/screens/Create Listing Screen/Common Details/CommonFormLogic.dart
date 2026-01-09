@@ -91,18 +91,15 @@ class CommonFormController {
   }
   
   Future<void> pickImage(ImageSource source) async {
-    try {
-      if (source == ImageSource.gallery) {
-        final List<XFile> images = await picker.pickMultiImage();
-        selectedImages.addAll(images);
-      } else {
-        final XFile? image = await picker.pickImage(source: source);
-        if (image != null) {
-          selectedImages.add(image);
-        }
+
+    if (source == ImageSource.gallery) {
+      final List<XFile> images = await picker.pickMultiImage();
+      selectedImages.addAll(images);
+    } else {
+      final XFile? image = await picker.pickImage(source: source);
+      if (image != null) {
+        selectedImages.add(image);
       }
-    } catch (e) {
-      print('Error picking image: $e');
     }
   }
   

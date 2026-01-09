@@ -677,5 +677,7 @@
   "bookings_clientEmail": "E-mail",
   "bookings_clientPhone": "Téléphone",
   "bookings_noContactInfo": "Aucune information de contact disponible",
-  "close": "Fermer"
+  "close": "Fermer",
+  "reviews_cannotReview": "Vous ne pouvez évaluer que les annonces pour lesquelles vous avez une réservation confirmée",
+  "common_somethingWrong": "Une erreur s'est produite. Veuillez réessayer."
 }
