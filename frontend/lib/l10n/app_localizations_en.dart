@@ -1532,4 +1532,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close => 'Close';
+
+  @override
+  String get reviews_cannotReview =>
+      'You can only review listings you have a confirmed booking for';
+
+  @override
+  String get common_somethingWrong => 'Something went wrong. Please try again.';
 }

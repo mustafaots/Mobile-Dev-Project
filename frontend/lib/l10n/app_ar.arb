@@ -672,5 +672,7 @@
   "bookings_clientEmail": "البريد الإلكتروني",
   "bookings_clientPhone": "رقم الهاتف",
   "bookings_noContactInfo": "لا تتوفر معلومات الاتصال",
-  "close": "إغلاق"
+  "close": "إغلاق",
+  "reviews_cannotReview": "يمكنك فقط تقييم العروض التي لديك حجز مؤكد لها",
+  "common_somethingWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
 }

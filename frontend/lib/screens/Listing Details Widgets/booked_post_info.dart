@@ -4,12 +4,16 @@ import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_cubit.dart';
 import 'package:easy_vacation/logic/cubit/booked_post_state.dart';
+import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/screens/BookingsWidgets/bookings_helper.dart';
+import 'package:easy_vacation/screens/AddReviewScreen.dart';
+import 'package:easy_vacation/services/sharedprefs.services.dart';
+import 'package:easy_vacation/services/api/review_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/main.dart';
@@ -230,7 +234,33 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (bookingStatus != 'rejected')
+                    // Show Add Review button for confirmed bookings
+                    if (bookingStatus == 'confirmed')
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: ElevatedButton.icon(
+                          onPressed: () => _navigateToAddReview(context),
+                          icon: const Icon(Icons.rate_review, size: 16),
+                          label: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.notifications_addReviewNow,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    // Show Cancel button for pending bookings only
+                    if (bookingStatus == 'pending')
                       Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: ElevatedButton.icon(
@@ -271,6 +301,98 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
 
           return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+
+  Future<void> _navigateToAddReview(BuildContext context) async {
+    final loc = AppLocalizations.of(context)!;
+
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: AppProgressIndicator()),
+    );
+
+    try {
+      // Check if user can add a review or has an existing review
+      final response = await ReviewService.instance.canReviewPost(postId);
+
+      if (!context.mounted) return;
+      Navigator.of(context).pop(); // Close loading dialog
+
+      if (response.isSuccess && response.data != null) {
+        final result = response.data!;
+        final userId = SharedPrefsService.getUserId() ?? '';
+
+        if (result.canReview) {
+          // User can add a new review
+          _openReviewScreen(context, userId, null, null, null);
+        } else if (result.existingReview != null) {
+          // User already has a review - open edit mode
+          final review = result.existingReview!;
+          _openReviewScreen(
+            context,
+            userId,
+            review.review.id,
+            review.review.rating.toDouble(),
+            review.review.comment,
+          );
+        } else {
+          // User cannot review (not owner check or no confirmed booking)
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loc.reviews_cannotReview),
+              backgroundColor: AppTheme.failureColor,
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.message ?? loc.common_somethingWrong),
+            backgroundColor: AppTheme.failureColor,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Close loading dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            backgroundColor: AppTheme.failureColor,
+          ),
+        );
+      }
+    }
+  }
+
+  void _openReviewScreen(
+    BuildContext context,
+    dynamic userId,
+    int? reviewId,
+    double? rating,
+    String? comment,
+  ) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => AddReviewScreen(
+          postId: postId,
+          reviewerId: userId,
+          addReviewCubit: AddReviewCubit(
+            reviewRepository: appRepos['reviewRepo'],
+          ),
+          reviewID: reviewId,
+          rating: rating,
+          comment: comment,
+        ),
+        transitionsBuilder: (_, animation, __, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 300),
       ),
     );
   }

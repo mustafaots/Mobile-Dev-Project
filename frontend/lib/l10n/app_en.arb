@@ -672,5 +672,7 @@
     "bookings_clientEmail": "Email",
     "bookings_clientPhone": "Phone",
     "bookings_noContactInfo": "No contact information available",
-    "close": "Close"
+    "close": "Close",
+    "reviews_cannotReview": "You can only review listings you have a confirmed booking for",
+    "common_somethingWrong": "Something went wrong. Please try again."
 }
