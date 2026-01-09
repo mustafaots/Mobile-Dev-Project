@@ -4,6 +4,7 @@ import 'package:easy_vacation/services/api/search_service.dart';
 import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/shared/ui_widgets/listing_rating.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -147,19 +148,14 @@ class SearchScreen extends StatelessWidget {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
-                                Icons.star_border_outlined,
-                                size: 20,
-                                color: AppTheme.neutralColor
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '4.7',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: textColor,
+                              const SizedBox(width: 1),
+                              if (listing.id != null) ...[
+                                ListingRating(
+                                  listingId: listing.id!,
+                                  fontSize: 16,
+                                  textColor: textColor,
                                 ),
-                              ),
+                              ],
                             ],
                           ),
                         ],
