@@ -81,12 +81,18 @@ class ReviewService {
   static ReviewService? _instance;
   final ApiClient _apiClient;
 
-  ReviewService._internal() : _apiClient = ApiClient.instance;
+  ReviewService._internal({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient.instance;
 
   /// Get singleton instance
   static ReviewService get instance {
     _instance ??= ReviewService._internal();
     return _instance!;
+  }
+
+  /// Public constructor for testing with a custom ApiClient
+  factory ReviewService.test(ApiClient apiClient) {
+    return ReviewService._internal(apiClient: apiClient);
   }
 
   /// Get reviews for a listing (public)
