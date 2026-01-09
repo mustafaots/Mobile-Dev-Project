@@ -7,8 +7,8 @@ import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/DetailsSectionWidgets/detail_card.dart';
-import 'package:easy_vacation/screens/DetailsSectionWidgets/empty_details_state.dart';
+import 'package:easy_vacation/screens/Listing%20Details%20Widgets/DetailsSectionWidgets/detail_card.dart';
+import 'package:easy_vacation/screens/Listing%20Details%20Widgets/DetailsSectionWidgets/empty_details_state.dart';
 
 class DetailsSection extends StatelessWidget {
   final Post? post;
