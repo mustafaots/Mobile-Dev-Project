@@ -1528,4 +1528,35 @@ class AppLocalizationsFr extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'Client : $name';
   }
+
+  @override
+  String get bookings_bookingDetails => 'Détails de la réservation';
+
+  @override
+  String get bookings_listing => 'Annonce';
+
+  @override
+  String get bookings_dates => 'Dates';
+
+  @override
+  String get bookings_totalPrice => 'Prix total';
+
+  @override
+  String get bookings_bookingId => 'ID de réservation';
+
+  @override
+  String get bookings_clientContactInfo => 'Coordonnées du client';
+
+  @override
+  String get bookings_clientEmail => 'E-mail';
+
+  @override
+  String get bookings_clientPhone => 'Téléphone';
+
+  @override
+  String get bookings_noContactInfo =>
+      'Aucune information de contact disponible';
+
+  @override
+  String get close => 'Fermer';
 }

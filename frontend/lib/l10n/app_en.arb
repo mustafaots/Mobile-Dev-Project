@@ -662,5 +662,15 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "bookings_bookingDetails": "Booking Details",
+    "bookings_listing": "Listing",
+    "bookings_dates": "Dates",
+    "bookings_totalPrice": "Total Price",
+    "bookings_bookingId": "Booking ID",
+    "bookings_clientContactInfo": "Client Contact Info",
+    "bookings_clientEmail": "Email",
+    "bookings_clientPhone": "Phone",
+    "bookings_noContactInfo": "No contact information available",
+    "close": "Close"
 }

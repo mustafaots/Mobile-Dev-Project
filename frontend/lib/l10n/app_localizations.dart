@@ -2913,6 +2913,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Client: {name}'**
   String bookings_clientName(String name);
+
+  /// No description provided for @bookings_bookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookings_bookingDetails;
+
+  /// No description provided for @bookings_listing.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing'**
+  String get bookings_listing;
+
+  /// No description provided for @bookings_dates.
+  ///
+  /// In en, this message translates to:
+  /// **'Dates'**
+  String get bookings_dates;
+
+  /// No description provided for @bookings_totalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Price'**
+  String get bookings_totalPrice;
+
+  /// No description provided for @bookings_bookingId.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking ID'**
+  String get bookings_bookingId;
+
+  /// No description provided for @bookings_clientContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Client Contact Info'**
+  String get bookings_clientContactInfo;
+
+  /// No description provided for @bookings_clientEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get bookings_clientEmail;
+
+  /// No description provided for @bookings_clientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get bookings_clientPhone;
+
+  /// No description provided for @bookings_noContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'No contact information available'**
+  String get bookings_noContactInfo;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate

@@ -1490,4 +1490,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'العميل: $name';
   }
+
+  @override
+  String get bookings_bookingDetails => 'تفاصيل الحجز';
+
+  @override
+  String get bookings_listing => 'العرض';
+
+  @override
+  String get bookings_dates => 'التواريخ';
+
+  @override
+  String get bookings_totalPrice => 'السعر الإجمالي';
+
+  @override
+  String get bookings_bookingId => 'رقم الحجز';
+
+  @override
+  String get bookings_clientContactInfo => 'معلومات الاتصال بالعميل';
+
+  @override
+  String get bookings_clientEmail => 'البريد الإلكتروني';
+
+  @override
+  String get bookings_clientPhone => 'رقم الهاتف';
+
+  @override
+  String get bookings_noContactInfo => 'لا تتوفر معلومات الاتصال';
+
+  @override
+  String get close => 'إغلاق';
 }
