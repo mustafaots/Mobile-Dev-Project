@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
+import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostImage.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -254,11 +255,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final imageUrl = listing.images.isNotEmpty ? listing.images.first : null;
     print('🖼️ ProfileScreen ListingCard ${listing.id}: imageUrl = $imageUrl');
 
+    // Get the actual logged-in user's ID, not the profile owner's ID
+    final currentUserId = SharedPrefsService.getUserId();
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PostDetailsScreen(postId: listing.id, userId: widget.userId)),
+          MaterialPageRoute(builder: (context) => PostDetailsScreen(postId: listing.id, userId: currentUserId)),
         );
       },
       child: Container(
