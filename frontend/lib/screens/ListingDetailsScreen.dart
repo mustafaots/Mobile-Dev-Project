@@ -50,7 +50,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     final postId = widget.postId ?? 1;
     final result = await ReviewService.instance.canReviewPost(postId);
     setState(() {
-      _canReview = result.isSuccess && result.data == true;
+      _canReview = result.isSuccess && result.data!.canReview == true;
       _checkingReviewPermission = false;
     });
   }
