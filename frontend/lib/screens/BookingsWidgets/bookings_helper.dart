@@ -103,4 +103,10 @@ class BookingsHelper {
         .whereType<Map<String, dynamic>>()
         .toList();
   }
+
+  /// Format date range for display
+  static String formatDateRange(DateTime? start, DateTime? end) {
+    if (start == null || end == null) return '';
+    return '${start.day}-${end.day} ${getMonthName(start.month)}, ${start.year}';
+  }
 }

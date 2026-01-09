@@ -9,6 +9,7 @@ import 'package:easy_vacation/repositories/db_repositories/post_repository.dart'
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
+import 'package:easy_vacation/screens/BookingsWidgets/bookings_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/main.dart';
@@ -50,33 +51,6 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
     this.onBookingCanceled,
   });
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'confirmed':
-        return AppTheme.successColor;
-      case 'pending':
-        return AppTheme.neutralColor;
-      case 'rejected':
-        return AppTheme.failureColor;
-      default:
-        return AppTheme.neutralColor;
-    }
-  }
-
-  String _getStatusLabel(BuildContext context, String status) {
-    final loc = AppLocalizations.of(context)!;
-    switch (status) {
-      case 'confirmed':
-        return loc.bookings_confirmed;
-      case 'pending':
-        return loc.bookings_pending;
-      case 'rejected':
-        return loc.bookings_rejected;
-      default:
-        return status;
-    }
-  }
-
   Future<void> _handleCancelBooking(BuildContext context) async {
     final loc = AppLocalizations.of(context)!;
 
@@ -95,12 +69,9 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(loc.common_yes),
-             style: TextButton.styleFrom(
-              foregroundColor: AppTheme.failureColor,
-          ),)
+            style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
+          ),
         ],
-       
-
       ),
     );
 
@@ -166,11 +137,7 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
                 ),
                 child: const SizedBox(
                   height: 56,
-                  child: Center(
-                    child: AppProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                  ),
+                  child: Center(child: AppProgressIndicator(strokeWidth: 2)),
                 ),
               ),
             );
@@ -236,22 +203,27 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: _getStatusColor(
+                              color: BookingsHelper.getStatusColor(
                                 bookingStatus,
                               ).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: _getStatusColor(
+                                color: BookingsHelper.getStatusColor(
                                   bookingStatus,
                                 ).withOpacity(0.3),
                               ),
                             ),
                             child: Text(
-                              _getStatusLabel(context, bookingStatus),
+                              BookingsHelper.getStatusLabel(
+                                context,
+                                bookingStatus,
+                              ),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: _getStatusColor(bookingStatus),
+                                color: BookingsHelper.getStatusColor(
+                                  bookingStatus,
+                                ),
                               ),
                             ),
                           ),
