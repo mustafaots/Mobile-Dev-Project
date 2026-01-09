@@ -8,6 +8,8 @@ import 'package:easy_vacation/repositories/db_repositories/post_repository.dart'
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/screens/BookingsWidgets/index.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -51,13 +53,17 @@ class _SentBookingsScreenContent extends StatelessWidget {
       body: BlocBuilder<BookingsCubit, BookingsState>(
         builder: (context, state) {
           if (state is BookingsLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: AppTheme.primaryColor),
+            return const Center(
+              child: AppProgressIndicator(),
             );
           }
 
           if (state is BookingsError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                ErrorHelper.getLocalizedMessageFromString(state.message, context),
+              ),
+            );
           }
 
           if (state is BookingsLoaded) {
@@ -130,10 +136,16 @@ class _SentBookingsScreenContent extends StatelessWidget {
     BuildContext context,
     List<Map<String, dynamic>> filteredBookings,
   ) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: filteredBookings.map((bookingData) {
+    return RefreshIndicator(
+      color: AppTheme.primaryColor,
+      onRefresh: () async {
+        context.read<BookingsCubit>().reloadBookings();
+      },
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filteredBookings.length,
+        itemBuilder: (context, index) {
+          final bookingData = filteredBookings[index];
           final postId = (bookingData['booking'] as Booking).postId;
 
           return BlocProvider(
@@ -160,7 +172,7 @@ class _SentBookingsScreenContent extends StatelessWidget {
               },
             ),
           );
-        }).toList(),
+        },
       ),
     );
   }
