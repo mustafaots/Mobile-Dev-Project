@@ -137,9 +137,9 @@ class ReviewManagementService {
       .select('id')
       .eq('post_id', postId)
       .eq('client_id', userId)
-      .eq('status', 'completed');
+      .eq('status', 'confirmed');
 
-    if(bookings && bookings.length > 0) {
+    if(!bookings || bookings.length == 0) {
       return false;
     }
 
