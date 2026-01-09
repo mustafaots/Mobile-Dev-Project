@@ -6,6 +6,8 @@ import 'package:easy_vacation/repositories/db_repositories/images_repository.dar
 import 'package:easy_vacation/services/api/booking_service.dart';
 import 'package:easy_vacation/screens/BookingsWidgets/index.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
+import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/shared/themes.dart';
@@ -38,13 +40,17 @@ class _ReceivedBookingsScreenContent extends StatelessWidget {
       body: BlocBuilder<ReceivedBookingsCubit, ReceivedBookingsState>(
         builder: (context, state) {
           if (state is ReceivedBookingsLoading) {
-            return Center(
-              child: CircularProgressIndicator(color: AppTheme.primaryColor),
+            return const Center(
+              child: AppProgressIndicator(),
             );
           }
 
           if (state is ReceivedBookingsError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                ErrorHelper.getLocalizedMessageFromString(state.message, context),
+              ),
+            );
           }
 
           if (state is ReceivedBookingsLoaded ||
@@ -132,6 +138,7 @@ class _ReceivedBookingsScreenContent extends StatelessWidget {
     int? actionInProgress,
   ) {
     return RefreshIndicator(
+      color: AppTheme.primaryColor,
       onRefresh: () async {
         context.read<ReceivedBookingsCubit>().reloadBookings();
       },
