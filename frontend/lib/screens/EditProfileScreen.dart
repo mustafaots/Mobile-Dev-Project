@@ -449,14 +449,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         );
                       },
-                    ),
-                    _buildOptionTile(
-                      context: context,
-                      icon: Icons.notifications,
-                      title: loc.editProfile_notificationSettings,
-                      onTap: () {
-                        // Navigate to notification settings
-                      },
                     )
                   ],
                 ),

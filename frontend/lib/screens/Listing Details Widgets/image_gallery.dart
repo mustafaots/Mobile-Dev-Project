@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
 import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/logic/cubit/image_gallery_state.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -37,7 +38,7 @@ class ImageGallery extends StatelessWidget {
                     Icon(Icons.error_outline, size: 40, color: Colors.red),
                     SizedBox(height: 8),
                     Text(
-                      'Error: ${state.message}',
+                      ErrorHelper.getLocalizedMessageFromString(state.message, context),
                       style: TextStyle(color: Colors.red),
                     ),
                   ],
