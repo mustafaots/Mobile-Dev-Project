@@ -5,6 +5,7 @@ import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/post_images.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
@@ -40,6 +41,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
       Vehicle? vehicle;
       Activity? activity;
       List<PostImage> postImages = [];
+      Location? location;
 
       // If no post found, use dummy data
       if (post == null) {
@@ -79,6 +81,17 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
           .map((imageData) => PostImage.fromMap(imageData))
           .toList();
 
+      // Load location from API
+      try {
+        final locationResponse = await ListingService.instance.getListingById(
+          post.id!,
+        );
+        if (locationResponse.isSuccess &&
+            locationResponse.data?.location != null) {
+          location = locationResponse.data!.location;
+        }
+      } catch (_) {}
+
       // Load category-specific details - first try local DB, then fall back to API
       final category = (post.category).toLowerCase();
       switch (category) {
@@ -92,6 +105,8 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.stayDetails != null) {
               stay = apiResponse.data!.stayDetails;
+              // Also get location if not already loaded
+              location ??= apiResponse.data!.location;
               // Save to local DB for future use
               if (stay != null) {
                 try {
@@ -111,6 +126,8 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.vehicleDetails != null) {
               vehicle = apiResponse.data!.vehicleDetails;
+              // Also get location if not already loaded
+              location ??= apiResponse.data!.location;
               // Save to local DB for future use
               if (vehicle != null) {
                 try {
@@ -130,6 +147,8 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.activityDetails != null) {
               activity = apiResponse.data!.activityDetails;
+              // Also get location if not already loaded
+              location ??= apiResponse.data!.location;
               // Save to local DB for future use
               if (activity != null) {
                 try {
@@ -151,6 +170,7 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
           vehicle: vehicle,
           activity: activity,
           postImages: postImages,
+          location: location,
         ),
       );
     } catch (e) {

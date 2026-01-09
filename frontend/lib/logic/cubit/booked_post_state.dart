@@ -5,6 +5,7 @@ import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/post_images.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 
 abstract class BookedPostState {
   const BookedPostState();
@@ -29,6 +30,7 @@ class BookedPostLoaded extends BookedPostState {
   final Vehicle? vehicle;
   final Activity? activity;
   final List<PostImage> postImages;
+  final Location? location;
 
   const BookedPostLoaded({
     this.post,
@@ -41,6 +43,7 @@ class BookedPostLoaded extends BookedPostState {
     this.vehicle,
     this.activity,
     this.postImages = const [],
+    this.location,
   });
 
   // CopyWith method for easier state updates
@@ -55,6 +58,7 @@ class BookedPostLoaded extends BookedPostState {
     Vehicle? vehicle,
     Activity? activity,
     List<PostImage>? postImages,
+    Location? location,
   }) {
     return BookedPostLoaded(
       post: post ?? this.post,
@@ -67,6 +71,7 @@ class BookedPostLoaded extends BookedPostState {
       vehicle: vehicle ?? this.vehicle,
       activity: activity ?? this.activity,
       postImages: postImages ?? this.postImages,
+      location: location ?? this.location,
     );
   }
 }
@@ -82,6 +87,7 @@ class BookedPostCanceling extends BookedPostState {
   final Vehicle? vehicle;
   final Activity? activity;
   final List<PostImage> postImages;
+  final Location? location;
 
   const BookedPostCanceling({
     this.post,
@@ -94,6 +100,7 @@ class BookedPostCanceling extends BookedPostState {
     this.vehicle,
     this.activity,
     this.postImages = const [],
+    this.location,
   });
 }
 
