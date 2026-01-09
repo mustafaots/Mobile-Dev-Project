@@ -12,6 +12,7 @@ import 'package:easy_vacation/repositories/db_repositories/images_repository.dar
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 
 class BookedPostBottomInfo extends StatelessWidget {
   final int postId;
@@ -84,15 +85,32 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(loc.bookings_cancelBooking),
-        content: Text(loc.bookings_cancelConfirmation),
+        backgroundColor: AppTheme.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Text(
+          loc.bookings_cancelBooking,
+          style: TextStyle(
+            color: AppTheme.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        content: Text(
+          loc.bookings_cancelConfirmation,
+          style: TextStyle(
+            color: AppTheme.darkGrey,
+            fontSize: 14,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(loc.common_no),
             style: TextButton.styleFrom(foregroundColor: AppTheme.primaryColor),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(loc.common_yes),
              style: TextButton.styleFrom(
@@ -139,7 +157,7 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
         } else if (state is BookedPostError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.message),
+              content: Text(ErrorHelper.getLocalizedMessageFromString(state.message, context)),
               backgroundColor: AppTheme.failureColor,
             ),
           );

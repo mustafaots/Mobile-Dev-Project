@@ -25,17 +25,49 @@ class PostActionsService {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(loc.listingHistory_deletePost),
-        content: Text(loc.listingHistory_deletePostConfirm(post.title)),
+        backgroundColor: AppTheme.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: Text(
+          loc.listingHistory_deletePost,
+          style: TextStyle(
+            color: AppTheme.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        content: Text(
+          loc.listingHistory_deletePostConfirm(post.title),
+          style: TextStyle(
+            color: AppTheme.darkGrey,
+            fontSize: 14,
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(loc.profile_cancel),
+            style: TextButton.styleFrom(
+              foregroundColor: AppTheme.grey,
+            ),
+            child: Text(
+              loc.profile_cancel,
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(foregroundColor: AppTheme.failureColor),
-            child: Text(loc.delete),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.failureColor,
+              foregroundColor: AppTheme.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              loc.delete,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ],
       ),

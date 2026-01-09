@@ -5,10 +5,8 @@ import 'package:easy_vacation/services/sync/connectivity_service.dart';
 import 'package:easy_vacation/repositories/db_repositories/sharedprefs_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/repo_factory.dart';
-
 import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/ListingsHistoryContentV2.dart';
-import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/ListingsHistoryFilter.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +21,6 @@ class ListingsHistory extends StatefulWidget {
 class _ListingsHistoryState extends State<ListingsHistory> {
   List<Listing> _userListings = [];
   bool _isLoading = true;
-  String _currentFilter = 'all';
 
   @override
   void initState() {
@@ -48,14 +45,8 @@ class _ListingsHistoryState extends State<ListingsHistory> {
       // Try to fetch from remote API first (includes Cloudinary images)
       if (await ConnectivityService.instance.checkConnectivity()) {
         try {
-          print('🌐 Fetching user listings from API...');
           final syncService = await ListingSyncService.getInstance();
           final listings = await syncService.getMyListings(forceRefresh: true);
-          
-          print('✅ Got ${listings.length} listings from API');
-          for (var l in listings) {
-            print('  📦 Listing ${l.id}: ${l.title}, images: ${l.images.length}');
-          }
           
           setState(() {
             _userListings = listings;
@@ -67,8 +58,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
         }
       }
       
-      // Fallback to local database
-      print('💾 Falling back to local database...');
       final postRepo = await RepoFactory.getRepository<PostRepository>('postRepo');
       final posts = await postRepo.getPostsByOwner(currentUserId);
       
@@ -108,10 +97,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     return sharedPrefsRepo.getUserId();
   }
 
-  void _handleFilterChange(String filter) {
-    setState(() => _currentFilter = filter);
-  }
-
   void _handleListingRemoved(Listing listing) {
     setState(() => _userListings.removeWhere((l) => l.id == listing.id));
   }
@@ -131,25 +116,12 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: App_Bar(context, loc.listingHistory_title),
-      body: SafeArea(
-        child: Column(
-          children: [
-            if (_userListings.isNotEmpty)
-              ListingsHistoryFilter(
-                currentFilter: _currentFilter,
-                onFilterChanged: _handleFilterChange,
-              ),
-            Expanded(
-              child: ListingsHistoryContentV2(
-                listings: _userListings,
-                isLoading: _isLoading,
-                currentFilter: _currentFilter,
-                onListingRemoved: _handleListingRemoved,
-                onListingUpdated: _handleListingUpdated,
-              ),
-            ),
-          ],
-        ),
+      body: ListingsHistoryContentV2(
+        listings: _userListings,
+        isLoading: _isLoading,
+        currentFilter: 'all',
+        onListingRemoved: _handleListingRemoved,
+        onListingUpdated: _handleListingUpdated,
       ),
     );
   }

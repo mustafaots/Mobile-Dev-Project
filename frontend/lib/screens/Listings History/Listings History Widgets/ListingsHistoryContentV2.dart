@@ -43,7 +43,7 @@ class ListingsHistoryContentV2 extends StatelessWidget {
 
   Widget _buildListingsList(List<Listing> listings, BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
       itemCount: listings.length,
       itemBuilder: (context, index) => ListingCard(
         listing: listings[index],
