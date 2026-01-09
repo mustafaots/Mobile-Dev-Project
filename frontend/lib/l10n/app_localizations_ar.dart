@@ -1111,6 +1111,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get price_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
+  String get price_error_positive => 'يجب أن يكون السعر رقماً موجباً';
+
+  @override
   String get area_label => 'المساحة (م²)';
 
   @override
@@ -1120,6 +1123,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get area_error_invalid => 'يرجى إدخال رقم صالح';
 
   @override
+  String get area_error_positive => 'يجب أن تكون المساحة رقماً موجباً';
+
+  @override
   String get bedrooms_label => 'عدد الغرف';
 
   @override
@@ -1127,6 +1133,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get bedrooms_error_invalid => 'يرجى إدخال رقم صالح';
+
+  @override
+  String get bedrooms_error_positive => 'يجب أن يكون عدد الغرف رقماً موجباً';
 
   @override
   String get form_error_fill_all => 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح';

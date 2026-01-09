@@ -1119,6 +1119,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get price_error_invalid => 'Please enter a valid number';
 
   @override
+  String get price_error_positive => 'Price must be a positive number';
+
+  @override
   String get area_label => 'Area (m²)';
 
   @override
@@ -1128,6 +1131,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get area_error_invalid => 'Please enter a valid number';
 
   @override
+  String get area_error_positive => 'Area must be a positive number';
+
+  @override
   String get bedrooms_label => 'Number of Bedrooms';
 
   @override
@@ -1135,6 +1141,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bedrooms_error_invalid => 'Please enter a valid number';
+
+  @override
+  String get bedrooms_error_positive =>
+      'Number of bedrooms must be a positive number';
 
   @override
   String get form_error_fill_all => 'Please fill all required fields correctly';

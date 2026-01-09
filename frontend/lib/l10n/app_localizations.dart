@@ -2182,6 +2182,12 @@ abstract class AppLocalizations {
   /// **'Please enter a valid number'**
   String get price_error_invalid;
 
+  /// No description provided for @price_error_positive.
+  ///
+  /// In en, this message translates to:
+  /// **'Price must be a positive number'**
+  String get price_error_positive;
+
   /// No description provided for @area_label.
   ///
   /// In en, this message translates to:
@@ -2200,6 +2206,12 @@ abstract class AppLocalizations {
   /// **'Please enter a valid number'**
   String get area_error_invalid;
 
+  /// No description provided for @area_error_positive.
+  ///
+  /// In en, this message translates to:
+  /// **'Area must be a positive number'**
+  String get area_error_positive;
+
   /// No description provided for @bedrooms_label.
   ///
   /// In en, this message translates to:
@@ -2217,6 +2229,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a valid number'**
   String get bedrooms_error_invalid;
+
+  /// No description provided for @bedrooms_error_positive.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of bedrooms must be a positive number'**
+  String get bedrooms_error_positive;
 
   /// No description provided for @form_error_fill_all.
   ///

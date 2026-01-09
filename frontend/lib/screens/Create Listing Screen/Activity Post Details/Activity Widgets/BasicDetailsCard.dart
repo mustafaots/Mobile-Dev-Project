@@ -87,8 +87,12 @@ class BasicDetailsCard extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return loc.price_error_required;
                     }
-                    if (double.tryParse(value) == null) {
+                    final parsed = double.tryParse(value);
+                    if (parsed == null) {
                       return loc.price_error_invalid;
+                    }
+                    if (parsed <= 0) {
+                      return loc.price_error_positive;
                     }
                     return null;
                   },
