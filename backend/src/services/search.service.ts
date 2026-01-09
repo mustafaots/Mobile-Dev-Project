@@ -108,7 +108,10 @@ class SearchService {
       owner_id,
       created_at,
       locations!inner (wilaya, city),
-      post_images (secure_url, sort_order)
+      post_images (secure_url, sort_order),
+      stays (stay_type, area, bedrooms),
+      vehicles (vehicle_type, fuel_type, transmission, seats),
+      activities (activity_type)
     `, { count: 'exact' });
 
 
@@ -116,15 +119,12 @@ class SearchService {
       dbQuery = dbQuery.in('id', allowedIds);
     }
 
-    // Force inner join only if type filter exists
+    // Filter by type
     if (query.category === 'stay' && query.stay_type) {
-      dbQuery = dbQuery.select(`*, stays!inner (stay_type, area, bedrooms)`);
       dbQuery = dbQuery.eq('stays.stay_type', query.stay_type);
     } else if (query.category === 'vehicle' && query.vehicle_type) {
-      dbQuery = dbQuery.select(`*, vehicles!inner (vehicle_type, fuel_type, transmission, seats)`);
       dbQuery = dbQuery.eq('vehicles.vehicle_type', query.vehicle_type);
     } else if (query.category === 'activity' && query.activity_type) {
-      dbQuery = dbQuery.select(`*, activities!inner (activity_type)`);
       dbQuery = dbQuery.eq('activities.activity_type', query.activity_type);
     }
 
