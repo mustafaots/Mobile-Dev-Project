@@ -206,6 +206,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                             cubit: context.read<DetailsCubit>(),
                           ),
                           SizedBox(height: 10),
+                          LocationMapSection(location: _location),
                           if (!_checkingReviewPermission && _canReview)
                             Container(
                               margin: const EdgeInsets.symmetric(
@@ -257,7 +258,6 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                 ),
                               ),
                             ),
-                          LocationMapSection(location: _location),
                           ReviewsSection(
                             currentUserID: widget.userId,
                             postId: post?.id,
