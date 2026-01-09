@@ -673,8 +673,7 @@
   "bookings_clientEmail": "البريد الإلكتروني",
   "bookings_clientPhone": "رقم الهاتف",
   "bookings_noContactInfo": "لا تتوفر معلومات الاتصال",
-  "close": "إغلاق"
-  },
+  "close": "إغلاق",
 
   "error_networkTimeout": "انتهت مهلة الاتصال. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
   "error_noConnection": "تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.",
