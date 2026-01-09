@@ -61,6 +61,9 @@ class BookingWithDetails {
   final String? listingCategory;
   final String? ownerName;
   final String? clientName;
+  final String? clientId;
+  final String? clientEmail;
+  final String? clientPhone;
   final double? totalPrice;
 
   BookingWithDetails({
@@ -69,17 +72,50 @@ class BookingWithDetails {
     this.listingCategory,
     this.ownerName,
     this.clientName,
+    this.clientId,
+    this.clientEmail,
+    this.clientPhone,
     this.totalPrice,
   });
 
   factory BookingWithDetails.fromJson(Map<String, dynamic> json) {
+    // Extract client info from nested client object if available
+    String? clientName;
+    String? clientId;
+    String? clientEmail;
+    String? clientPhone;
+    if (json['client'] != null) {
+      final client = json['client'];
+      final firstName = client['first_name'] ?? '';
+      final lastName = client['last_name'] ?? '';
+      clientName = '$firstName $lastName'.trim();
+      if (clientName.isEmpty) clientName = null;
+      clientId = client['user_id'];
+      clientEmail = client['email'];
+      clientPhone = client['phone'];
+    } else {
+      clientName = json['client_name'];
+      clientId = json['client_id'];
+      clientEmail = json['client_email'];
+      clientPhone = json['client_phone'];
+    }
+
     return BookingWithDetails(
       booking: Booking.fromMap(json),
-      listingTitle: json['listing_title'] ?? json['post_title'],
-      listingCategory: json['listing_category'] ?? json['category'],
+      listingTitle:
+          json['listing_title'] ?? json['post']?['title'] ?? json['post_title'],
+      listingCategory:
+          json['listing_category'] ??
+          json['post']?['category'] ??
+          json['category'],
       ownerName: json['owner_name'],
-      clientName: json['client_name'],
-      totalPrice: (json['total_price'] ?? json['price'])?.toDouble(),
+      clientName: clientName,
+      clientId: clientId,
+      clientEmail: clientEmail,
+      clientPhone: clientPhone,
+      totalPrice:
+          (json['total_price'] ?? json['post']?['price'] ?? json['price'])
+              ?.toDouble(),
     );
   }
 }
