@@ -98,7 +98,7 @@ class SearchService {
     }
 
     // Build the base query
-    let dbQuery = supabase.from('posts').select(`
+    let selectStr = `
       id,
       title,
       description,
@@ -108,11 +108,19 @@ class SearchService {
       owner_id,
       created_at,
       locations!inner (wilaya, city),
-      post_images (secure_url, sort_order),
-      stays (stay_type, area, bedrooms),
-      vehicles (vehicle_type, fuel_type, transmission, seats),
-      activities (activity_type)
-    `, { count: 'exact' });
+      post_images (secure_url, sort_order)
+    `;
+
+    if (query.category === 'stay') selectStr += ', stays!inner (stay_type, area, bedrooms)';
+    else selectStr += ', stays (stay_type, area, bedrooms)';
+
+    if (query.category === 'vehicle') selectStr += ', vehicles!inner (vehicle_type, fuel_type, transmission, seats)';
+    else selectStr += ', vehicles (vehicle_type, fuel_type, transmission, seats)';
+
+    if (query.category === 'activity') selectStr += ', activities!inner (activity_type)';
+    else selectStr += ', activities (activity_type)';
+
+    let dbQuery = supabase.from('posts').select(selectStr, { count: 'exact' });
 
 
     if(allowedIds && allowedIds.length > 0) {
