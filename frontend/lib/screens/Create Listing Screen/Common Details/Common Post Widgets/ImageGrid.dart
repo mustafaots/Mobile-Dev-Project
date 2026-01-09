@@ -2,6 +2,7 @@ import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ImageGrid extends StatelessWidget {
   final List<XFile> selectedImages;
@@ -16,6 +17,10 @@ class ImageGrid extends StatelessWidget {
     required this.onAddImage,
     required this.categoryColor,
   }) : super(key: key);
+
+  bool _isNetworkUrl(String path) {
+    return path.startsWith('http://') || path.startsWith('https://');
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -26,17 +31,37 @@ class ImageGrid extends StatelessWidget {
         ...selectedImages.asMap().entries.map((entry) {
           final index = entry.key;
           final image = entry.value;
+          final isNetworkImage = _isNetworkUrl(image.path);
           
           return Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.file(
-                  File(image.path),
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
+                child: isNetworkImage
+                    ? CachedNetworkImage(
+                        imageUrl: image.path,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.grey[200],
+                          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.error),
+                        ),
+                      )
+                    : Image.file(
+                        File(image.path),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
               ),
               Positioned(
                 top: 4,

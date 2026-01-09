@@ -46,42 +46,19 @@ class ListingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Listing Image
-          Stack(
-            children: [
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                ),
-                child: PostImage(
-                  imageUrl: imageUrl,
-                  category: listing.category,
-                ),
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
               ),
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: postHelpers.getStatusColor(listing.status),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    postHelpers.getStatusText(listing.status),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: backgroundColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
+            child: PostImage(
+              imageUrl: imageUrl,
+              category: listing.category,
+            ),
           ),
           // Listing Content
           Padding(
@@ -141,18 +118,12 @@ class ListingCard extends StatelessWidget {
                 _buildCategoryDetails(context, postHelpers),
                 const SizedBox(height: 8),
                 // Price
-                Row(
-                  children: [
-                    Icon(Icons.monetization_on, size: 16, color: AppTheme.successColor),
-                    const SizedBox(width: 4),
-                    Text('${listing.price} DA',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.successColor,
-                        )),
-                  ],
-                ),
+                Text('${listing.price} DA',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                    )),
                 const SizedBox(height: 8),
                 // Description
                 if (listing.description != null && listing.description!.isNotEmpty)

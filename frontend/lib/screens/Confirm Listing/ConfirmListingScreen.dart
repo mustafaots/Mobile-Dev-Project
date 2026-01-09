@@ -8,6 +8,7 @@ import 'package:easy_vacation/screens/Home%20Screen/HomeScreen.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,7 +83,7 @@ class _ConfirmListingContent extends StatelessWidget {
         } else if (state is ConfirmListingError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error: ${state.message}'),
+              content: Text(ErrorHelper.getLocalizedMessageFromString(state.message, context)),
               backgroundColor: AppTheme.failureColor,
             ),
           );

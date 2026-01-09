@@ -395,6 +395,7 @@
       }
   },
   "listingHistory_postDeleted": "Publication supprimée avec succès",
+  "listingHistory_postUpdated": "Publication mise à jour avec succès",
   "listingHistory_postPublished": "Publication publiée avec succès",
   "listingHistory_postArchived": "Publication archivée",
   
@@ -662,6 +663,11 @@
           }
       }
   },
+
+  "error_networkTimeout": "Délai de connexion dépassé. Veuillez vérifier votre connexion et réessayer.",
+  "error_noConnection": "Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet.",
+  "error_serverError": "Erreur du serveur. Veuillez réessayer plus tard.",
+  "error_unknownError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
   "bookings_bookingDetails": "Détails de la réservation",
   "bookings_listing": "Annonce",
   "bookings_dates": "Dates",

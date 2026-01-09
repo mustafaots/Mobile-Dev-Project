@@ -151,8 +151,9 @@ class ListingController {
    */
   getByOwner = asyncHandler(async (req: Request, res: Response) => {
     const { ownerId } = req.params;
+    // Don't filter by status - show all owner's listings
     const { listings } = await listingService.searchListings(
-      { owner_id: ownerId, status: 'published' },
+      { owner_id: ownerId },
       100,
       0
     );

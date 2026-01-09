@@ -13,6 +13,7 @@ import 'package:easy_vacation/repositories/db_repositories/images_repository.dar
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/themes.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/main.dart';
@@ -108,7 +109,11 @@ class _BookedPostScreenContent extends StatelessWidget {
             }
 
             if (state is BookedPostError) {
-              return Center(child: Text(state.message));
+              return Center(
+                child: Text(
+                  ErrorHelper.getLocalizedMessageFromString(state.message, context),
+                ),
+              );
             }
 
             if (state is BookedPostLoaded) {

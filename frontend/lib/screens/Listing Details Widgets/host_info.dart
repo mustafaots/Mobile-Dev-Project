@@ -9,6 +9,7 @@ import 'package:easy_vacation/logic/cubit/host_info_state.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/screens/ProfileScreen.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 
 class HostInfo extends StatelessWidget {
   final User? host;
@@ -21,8 +22,6 @@ class HostInfo extends StatelessWidget {
   void _navigateToProfile(
     BuildContext context, {
     required User? hostData,
-    required int postsCount,
-    required int reviewsCount,
   }) {
     Navigator.push(
       context,
@@ -32,8 +31,7 @@ class HostInfo extends StatelessWidget {
           firstName: hostData?.firstName,
           lastName: hostData?.lastName,
           email: hostData?.email,
-          postsCount: postsCount,
-          reviewsCount: reviewsCount,
+          userId: hostData?.id,
         ),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
@@ -105,7 +103,7 @@ class HostInfo extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'Error: ${state.message}',
+                  ErrorHelper.getLocalizedMessageFromString(state.message, context),
                   style: const TextStyle(color: Colors.red),
                 ),
               ),
@@ -187,8 +185,6 @@ class HostInfo extends StatelessWidget {
                   _navigateToProfile(
                     context,
                     hostData: hostData,
-                    postsCount: 24,
-                    reviewsCount: reviewCount,
                   );
                 },
                 child: Container(

@@ -216,8 +216,12 @@ class ListingService {
         images:post_images(*)
       `,
         { count: 'exact' }
-      )
-      .eq('status', filters.status ?? 'active');
+      );
+
+    // Only filter by status if explicitly provided
+    if (filters.status) {
+      query = query.eq('status', filters.status);
+    }
 
     if (filters.category) {
       query = query.eq('category', filters.category);

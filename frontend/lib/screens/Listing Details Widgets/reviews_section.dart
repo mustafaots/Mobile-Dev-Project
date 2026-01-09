@@ -2,6 +2,7 @@ import 'package:easy_vacation/logic/cubit/add_review_cubit.dart';
 import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/AddReviewScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
+import 'package:easy_vacation/utils/error_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
@@ -32,16 +33,14 @@ class ReviewsSection extends StatelessWidget {
   void _navigateToProfile(
     BuildContext context, {
     required String userName,
-    required int postsCount,
-    required int reviewsCount,
+    String? reviewerId,
   }) {
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => ProfileScreen(
           userName: userName,
-          postsCount: postsCount,
-          reviewsCount: reviewsCount,
+          userId: reviewerId,
         ),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
@@ -138,8 +137,7 @@ class ReviewsSection extends StatelessWidget {
         _navigateToProfile(
           context,
           userName: name,
-          postsCount: postsCount,
-          reviewsCount: reviewsCount,
+          reviewerId: reviewerId,
         );
       },
       child: Container(
@@ -339,7 +337,7 @@ class ReviewsSection extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  'Error: ${state.message}',
+                  ErrorHelper.getLocalizedMessageFromString(state.message, context),
                   style: const TextStyle(color: Colors.red),
                 ),
               ),

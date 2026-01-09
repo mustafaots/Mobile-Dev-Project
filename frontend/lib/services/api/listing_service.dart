@@ -154,7 +154,7 @@ class Listing {
     };
 
     if (id != null) map['id'] = id;
-    if (description != null) map['description'] = description;
+    if (description != null && description!.isNotEmpty) map['description'] = description;
     if (status.isNotEmpty) map['status'] = status;
     if (availability != null) map['availability'] = availability;
     if (images.isNotEmpty) map['images'] = images;
@@ -169,15 +169,21 @@ class Listing {
     }
 
     if (vehicleDetails != null) {
-      map['vehicle_details'] = {
+      final vehicleMap = <String, dynamic>{
         'vehicle_type': vehicleDetails!.vehicleType,
-        'model': vehicleDetails!.model,
-        'year': vehicleDetails!.year,
-        'fuel_type': vehicleDetails!.fuelType,
-        'transmission': vehicleDetails!.transmission,
-        'seats': vehicleDetails!.seats,
-        'features': vehicleDetails!.features,
       };
+      // Only include optional fields if they have values
+      if (vehicleDetails!.model != null && vehicleDetails!.model!.isNotEmpty) {
+        vehicleMap['model'] = vehicleDetails!.model;
+      }
+      if (vehicleDetails!.year != null) vehicleMap['year'] = vehicleDetails!.year;
+      if (vehicleDetails!.fuelType != null && vehicleDetails!.fuelType!.isNotEmpty) {
+        vehicleMap['fuel_type'] = vehicleDetails!.fuelType;
+      }
+      if (vehicleDetails!.transmission != null) vehicleMap['transmission'] = vehicleDetails!.transmission;
+      if (vehicleDetails!.seats != null) vehicleMap['seats'] = vehicleDetails!.seats;
+      if (vehicleDetails!.features != null) vehicleMap['features'] = vehicleDetails!.features;
+      map['vehicle_details'] = vehicleMap;
     }
 
     if (activityDetails != null) {
@@ -317,7 +323,7 @@ class ListingService {
   /// Get listings by owner ID (public)
   /// 
   /// GET /api/listings/owner/:ownerId
-  Future<ApiResponse<List<Listing>>> getListingsByOwner(int ownerId) async {
+  Future<ApiResponse<List<Listing>>> getListingsByOwner(String ownerId) async {
     try {
       final response = await _apiClient.get('${ApiConfig.listings}/owner/$ownerId');
       final listings = (response['data'] as List<dynamic>)

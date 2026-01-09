@@ -23,6 +23,10 @@ class PostCreationService {
   }) async {
     try {
       print('🚀 Starting post creation...');
+      print('📝 Title: "${postData.title}" (length: ${postData.title.length})');
+      print('📝 Description: "${postData.description}"');
+      print('📝 Category: ${postData.category}');
+      print('📝 Price: ${postData.price}');
 
       // Check if we have internet connectivity
       final hasInternet = await ConnectivityService.instance.checkConnectivity();

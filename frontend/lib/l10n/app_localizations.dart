@@ -1672,6 +1672,12 @@ abstract class AppLocalizations {
   /// **'Post deleted successfully'**
   String get listingHistory_postDeleted;
 
+  /// No description provided for @listingHistory_postUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Post updated successfully'**
+  String get listingHistory_postUpdated;
+
   /// No description provided for @listingHistory_postPublished.
   ///
   /// In en, this message translates to:
@@ -2913,6 +2919,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Client: {name}'**
   String bookings_clientName(String name);
+
+  /// No description provided for @error_networkTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Network timeout. Please check your connection and try again.'**
+  String get error_networkTimeout;
+
+  /// No description provided for @error_noConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect to server. Please check your internet connection.'**
+  String get error_noConnection;
+
+  /// No description provided for @error_serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error. Please try again later.'**
+  String get error_serverError;
+
+  /// No description provided for @error_unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. Please try again.'**
+  String get error_unknownError;
 
   /// No description provided for @bookings_bookingDetails.
   ///

@@ -98,7 +98,7 @@ class SearchService {
     }
 
     // Build the base query
-    let dbQuery = supabase.from('posts').select(`
+    let selectStr = `
       id,
       title,
       description,
@@ -109,22 +109,30 @@ class SearchService {
       created_at,
       locations!inner (wilaya, city),
       post_images (secure_url, sort_order)
-    `, { count: 'exact' });
+    `;
+
+    if (query.category === 'stay') selectStr += ', stays!inner (stay_type, area, bedrooms)';
+    else selectStr += ', stays (stay_type, area, bedrooms)';
+
+    if (query.category === 'vehicle') selectStr += ', vehicles!inner (vehicle_type, fuel_type, transmission, seats)';
+    else selectStr += ', vehicles (vehicle_type, fuel_type, transmission, seats)';
+
+    if (query.category === 'activity') selectStr += ', activities!inner (activity_type)';
+    else selectStr += ', activities (activity_type)';
+
+    let dbQuery = supabase.from('posts').select(selectStr, { count: 'exact' });
 
 
     if(allowedIds && allowedIds.length > 0) {
       dbQuery = dbQuery.in('id', allowedIds);
     }
 
-    // Force inner join only if type filter exists
+    // Filter by type
     if (query.category === 'stay' && query.stay_type) {
-      dbQuery = dbQuery.select(`*, stays!inner (stay_type, area, bedrooms)`);
       dbQuery = dbQuery.eq('stays.stay_type', query.stay_type);
     } else if (query.category === 'vehicle' && query.vehicle_type) {
-      dbQuery = dbQuery.select(`*, vehicles!inner (vehicle_type, fuel_type, transmission, seats)`);
       dbQuery = dbQuery.eq('vehicles.vehicle_type', query.vehicle_type);
     } else if (query.category === 'activity' && query.activity_type) {
-      dbQuery = dbQuery.select(`*, activities!inner (activity_type)`);
       dbQuery = dbQuery.eq('activities.activity_type', query.activity_type);
     }
 

@@ -66,6 +66,7 @@ class VehicleFormController {
     );
     
     return CreatePostData(
+      id: existingData?.id, // Preserve id for editing
       category: 'vehicle',
       title: titleController.text,
       description: descriptionController.text,

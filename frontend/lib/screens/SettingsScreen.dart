@@ -6,6 +6,7 @@ import 'package:easy_vacation/main.dart';
 import 'package:easy_vacation/screens/EditProfileScreen.dart';
 import 'package:easy_vacation/screens/Listings History/ListingsHistoryScreen.dart';
 import 'package:easy_vacation/screens/LoginScreen.dart';
+import 'package:easy_vacation/screens/ProfileScreen.dart';
 import 'package:easy_vacation/screens/SubscriptionPlanScreen.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/widgets/change_language.dart';
@@ -107,41 +108,58 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
 
                   // Profile Section
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: cardColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppTheme.primaryColor.withOpacity(0.1),
-                            border: Border.all(
-                              color: AppTheme.primaryColor.withOpacity(0.3),
-                              width: 2,
+                  GestureDetector(
+                    onTap: () {
+                      if (_user != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                              userName: _user!.username,
+                              firstName: _user!.firstName,
+                              lastName: _user!.lastName,
+                              email: _user!.email,
+                              userId: _user!.id,
                             ),
                           ),
-                          child: Center(
-                            child: _isLoading
-                                ? AppProgressIndicator(
-                                    strokeWidth: 2,
-                                  )
-                                : Text(
-                                    _getInitials(),
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppTheme.primaryColor,
+                        );
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              border: Border.all(
+                                color: AppTheme.primaryColor.withOpacity(0.3),
+                                width: 2,
+                              ),
+                            ),
+                            child: Center(
+                              child: _isLoading
+                                  ? AppProgressIndicator(
+                                      strokeWidth: 2,
+                                    )
+                                  : Text(
+                                      _getInitials(),
+                                      style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.primaryColor,
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
-                        ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
@@ -168,6 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                  ),
                   ),
 
                   // Language settings
