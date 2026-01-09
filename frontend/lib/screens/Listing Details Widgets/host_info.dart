@@ -157,7 +157,6 @@ class HostInfo extends StatelessWidget {
     final hostName = _getHostFullName(hostData);
     final hostEmail = hostData?.email ?? 'N/A';
     final hostPhone = hostData?.phoneNumber ?? 'N/A';
-    final price = postData?.price ?? 0;
     final hostInitials = _getInitials(hostData);
 
     return Container(
