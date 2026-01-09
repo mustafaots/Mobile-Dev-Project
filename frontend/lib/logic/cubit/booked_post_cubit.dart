@@ -11,6 +11,7 @@ import 'package:easy_vacation/repositories/db_repositories/review_repository.dar
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/sync/booking_sync_service.dart';
 import 'booked_post_state.dart';
 import 'dummy_data.dart';
@@ -90,20 +91,59 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           .map((imageData) => PostImage.fromMap(imageData))
           .toList();
 
-      // Load category-specific details
+      // Load category-specific details - first try local DB, then fall back to API
       final category = (post.category).toLowerCase();
       switch (category) {
         case 'stay':
           stay = await postRepository.getStayByPostId(postId);
-          stay ??= DummyDataProvider.getDummyStayDetails(postId);
+          if (stay == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.stayDetails != null) {
+              stay = apiResponse.data!.stayDetails;
+              if (stay != null) {
+                try {
+                  await postRepository.insertStay(stay!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'vehicle':
           vehicle = await postRepository.getVehicleByPostId(postId);
-          vehicle ??= DummyDataProvider.getDummyVehicleDetails(postId);
+          if (vehicle == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.vehicleDetails != null) {
+              vehicle = apiResponse.data!.vehicleDetails;
+              if (vehicle != null) {
+                try {
+                  await postRepository.insertVehicle(vehicle!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'activity':
           activity = await postRepository.getActivityByPostId(postId);
-          activity ??= DummyDataProvider.getDummyActivityDetails(postId);
+          if (activity == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              postId,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.activityDetails != null) {
+              activity = apiResponse.data!.activityDetails;
+              if (activity != null) {
+                try {
+                  await postRepository.insertActivity(activity!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
       }
 
