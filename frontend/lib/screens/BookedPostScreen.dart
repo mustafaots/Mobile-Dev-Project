@@ -111,7 +111,10 @@ class _BookedPostScreenContent extends StatelessWidget {
             if (state is BookedPostError) {
               return Center(
                 child: Text(
-                  ErrorHelper.getLocalizedMessageFromString(state.message, context),
+                  ErrorHelper.getLocalizedMessageFromString(
+                    state.message,
+                    context,
+                  ),
                 ),
               );
             }
@@ -122,6 +125,7 @@ class _BookedPostScreenContent extends StatelessWidget {
               final stay = state.stay;
               final vehicle = state.vehicle;
               final activity = state.activity;
+              final location = state.location;
               final loc = AppLocalizations.of(context)!;
 
               // Load details data into the cubit
@@ -161,6 +165,8 @@ class _BookedPostScreenContent extends StatelessWidget {
                           activity: activity,
                           cubit: context.read<DetailsCubit>(),
                         ),
+                        const SizedBox(height: 10),
+                        LocationMapSection(location: location),
                         ReviewsSection(
                           postId: post?.id,
                           cubit: context.read<ReviewsCubit>(),

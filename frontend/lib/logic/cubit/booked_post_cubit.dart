@@ -5,6 +5,7 @@ import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/models/post_images.model.dart';
+import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/booking_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/post_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/review_repository.dart';
@@ -75,6 +76,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
       Vehicle? vehicle;
       Activity? activity;
       List<PostImage> postImages = [];
+      Location? location;
 
       final reviews = await reviewRepository.getReviewsByPostId(postId);
       reviewsList = reviews;
@@ -91,6 +93,17 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           .map((imageData) => PostImage.fromMap(imageData))
           .toList();
 
+      // Load location from API
+      try {
+        final locationResponse = await ListingService.instance.getListingById(
+          postId,
+        );
+        if (locationResponse.isSuccess &&
+            locationResponse.data?.location != null) {
+          location = locationResponse.data!.location;
+        }
+      } catch (_) {}
+
       // Load category-specific details - first try local DB, then fall back to API
       final category = (post.category).toLowerCase();
       switch (category) {
@@ -103,6 +116,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.stayDetails != null) {
               stay = apiResponse.data!.stayDetails;
+              location ??= apiResponse.data!.location;
               if (stay != null) {
                 try {
                   await postRepository.insertStay(stay!);
@@ -120,6 +134,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.vehicleDetails != null) {
               vehicle = apiResponse.data!.vehicleDetails;
+              location ??= apiResponse.data!.location;
               if (vehicle != null) {
                 try {
                   await postRepository.insertVehicle(vehicle!);
@@ -137,6 +152,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
             if (apiResponse.isSuccess &&
                 apiResponse.data?.activityDetails != null) {
               activity = apiResponse.data!.activityDetails;
+              location ??= apiResponse.data!.location;
               if (activity != null) {
                 try {
                   await postRepository.insertActivity(activity!);
@@ -159,6 +175,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           vehicle: vehicle,
           activity: activity,
           postImages: postImages,
+          location: location,
         ),
       );
     } catch (e) {
@@ -228,6 +245,7 @@ class BookedPostCubit extends Cubit<BookedPostState> {
           vehicle: currentState.vehicle,
           activity: currentState.activity,
           postImages: currentState.postImages,
+          location: currentState.location,
         ),
       );
     } else {
