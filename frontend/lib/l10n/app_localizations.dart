@@ -3003,6 +3003,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @reviews_cannotReview.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only review listings you have a confirmed booking for'**
+  String get reviews_cannotReview;
+
+  /// No description provided for @common_somethingWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get common_somethingWrong;
 }
 
 class _AppLocalizationsDelegate

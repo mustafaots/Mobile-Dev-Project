@@ -41,7 +41,10 @@ class ReceivedBookingCard extends StatelessWidget {
     final isPending = status == 'pending';
 
     // Format date
-    final date = _formatDateRange(booking.startTime, booking.endTime);
+    final date = BookingsHelper.formatDateRange(
+      booking.startTime,
+      booking.endTime,
+    );
     final price = bookingWithDetails.totalPrice != null
         ? '${bookingWithDetails.totalPrice!.toStringAsFixed(0)} DZD'
         : '';
@@ -297,10 +300,5 @@ class ReceivedBookingCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDateRange(DateTime? start, DateTime? end) {
-    if (start == null || end == null) return '';
-    return '${start.day}-${end.day} ${BookingsHelper.getMonthName(start.month)}, ${start.year}';
   }
 }

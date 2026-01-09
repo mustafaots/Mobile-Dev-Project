@@ -7,6 +7,8 @@ import 'package:easy_vacation/models/vehicles.model.dart';
 import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/logic/cubit/details_cubit.dart';
 import 'package:easy_vacation/l10n/app_localizations.dart';
+import 'package:easy_vacation/screens/Listing%20Details%20Widgets/DetailsSectionWidgets/detail_card.dart';
+import 'package:easy_vacation/screens/Listing%20Details%20Widgets/DetailsSectionWidgets/empty_details_state.dart';
 import 'package:easy_vacation/screens/DetailsSectionWidgets/detail_card.dart';
 import 'package:easy_vacation/screens/DetailsSectionWidgets/empty_details_state.dart';
 import 'package:easy_vacation/utils/error_helper.dart';
@@ -123,89 +125,7 @@ class DetailsSection extends StatelessWidget {
       );
     }
 
-    // Fallback: Create cubit internally
-    return BlocProvider(
-      create: (context) => DetailsCubit()
-        ..loadDetails(
-          post: post,
-          category: category,
-          stay: stay,
-          vehicle: vehicle,
-          activity: activity,
-          loc: loc,
-        ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Details List
-            BlocBuilder<DetailsCubit, DetailsState>(
-              builder: (context, state) {
-                if (isLoading) {
-                  return const _LoadingState();
-                }
-
-                if (state is DetailsLoading) {
-                  return const _LoadingState();
-                }
-
-                if (state is DetailsError) {
-                  return _ErrorState(message: ErrorHelper.getLocalizedMessageFromString(state.message, context));
-                }
-
-                if (state is DetailsLoaded) {
-                  final details = state.allDetails;
-
-                  if (details.isEmpty) {
-                    return EmptyDetailsState(
-                      onRetry: () {
-                        context.read<DetailsCubit>().loadDetails(
-                          post: post,
-                          category: category,
-                          stay: stay,
-                          vehicle: vehicle,
-                          activity: activity,
-                          loc: loc,
-                        );
-                      },
-                    );
-                  }
-
-                  return Column(
-                    children: [
-                      ...details
-                          .map(
-                            (detail) => DetailCard(
-                              label: detail['label'] as String,
-                              value: detail['value'] as String,
-                              icon: detail['icon'] as String,
-                            ),
-                          )
-                          .toList(),
-                      // Add Price Display
-                      if (state.price != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: DetailCard(
-                            label: state.priceUnit ?? '',
-                            value: '${state.price?.toStringAsFixed(2)} DZD',
-                            icon: 'attach_money',
-                          ),
-                        ),
-                    ],
-                  );
-                }
-
-                return const SizedBox.shrink();
-              },
-            ),
-
-            
-          ],
-        ),
-      )
-    );
+    return const SizedBox.shrink();
   }
 }
 

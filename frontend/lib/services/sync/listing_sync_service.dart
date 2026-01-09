@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:easy_vacation/models/posts.model.dart';
+import 'package:easy_vacation/models/stays.model.dart';
+import 'package:easy_vacation/models/vehicles.model.dart';
+import 'package:easy_vacation/models/activities.model.dart';
 import 'package:easy_vacation/repositories/db_repositories/db_repo.dart';
 import 'package:easy_vacation/services/api/api_services.dart';
 import 'package:easy_vacation/services/sync/sync_state.dart';
@@ -552,6 +555,72 @@ class ListingSyncService implements Syncable {
         await _postRepository.insertPost(post);
       }
       print('📦 Post saved successfully');
+
+      // Save category-specific details
+      if (listing.id != null) {
+        final category = listing.category.toLowerCase();
+        switch (category) {
+          case 'stay':
+            if (listing.stayDetails != null) {
+              final stay = Stay(
+                postId: listing.id!,
+                stayType: listing.stayDetails!.stayType,
+                area: listing.stayDetails!.area,
+                bedrooms: listing.stayDetails!.bedrooms,
+              );
+              final existingStay = await _postRepository.getStayByPostId(
+                listing.id!,
+              );
+              if (existingStay != null) {
+                await _postRepository.updateStay(listing.id!, stay);
+              } else {
+                await _postRepository.insertStay(stay);
+              }
+              print(' Stay details saved');
+            }
+            break;
+          case 'vehicle':
+            if (listing.vehicleDetails != null) {
+              final vehicle = Vehicle(
+                postId: listing.id!,
+                vehicleType: listing.vehicleDetails!.vehicleType,
+                model: listing.vehicleDetails!.model,
+                year: listing.vehicleDetails!.year,
+                fuelType: listing.vehicleDetails!.fuelType,
+                transmission: listing.vehicleDetails!.transmission,
+                seats: listing.vehicleDetails!.seats,
+                features: listing.vehicleDetails!.features,
+              );
+              final existingVehicle = await _postRepository.getVehicleByPostId(
+                listing.id!,
+              );
+              if (existingVehicle != null) {
+                await _postRepository.updateVehicle(listing.id!, vehicle);
+              } else {
+                await _postRepository.insertVehicle(vehicle);
+              }
+              print(' Vehicle details saved');
+            }
+            break;
+          case 'activity':
+            if (listing.activityDetails != null) {
+              final activity = Activity(
+                postId: listing.id!,
+                activityType: listing.activityDetails!.activityType,
+                requirements: listing.activityDetails!.requirements,
+              );
+              final existingActivity = await _postRepository
+                  .getActivityByPostId(listing.id!);
+              if (existingActivity != null) {
+                await _postRepository.updateActivity(listing.id!, activity);
+              } else {
+                await _postRepository.insertActivity(activity);
+              }
+              print(' Activity details saved');
+            }
+            break;
+        }
+      }
     } catch (e) {
       debugPrint('Error saving listing locally: $e');
     }

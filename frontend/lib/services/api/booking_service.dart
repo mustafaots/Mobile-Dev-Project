@@ -127,6 +127,9 @@ class BookingService {
 
   BookingService._internal() : _apiClient = ApiClient.instance;
 
+  /// Test constructor for dependency injection
+  BookingService.test(this._apiClient);
+
   /// Get singleton instance
   static BookingService get instance {
     _instance ??= BookingService._internal();

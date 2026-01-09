@@ -10,6 +10,7 @@ import 'package:easy_vacation/repositories/db_repositories/review_repository.dar
 import 'package:easy_vacation/repositories/db_repositories/user_repository.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/services/api/profile_service.dart';
+import 'package:easy_vacation/services/api/listing_service.dart';
 import 'listing_details_state.dart';
 import 'dummy_data.dart';
 
@@ -48,7 +49,9 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
       // Load host info - first try local DB, then fall back to API
       host = await userRepository.getUserById(post.ownerId);
       if (host == null) {
-        final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
+        final apiResponse = await ProfileService.instance.getUserById(
+          post.ownerId,
+        );
         if (apiResponse.isSuccess && apiResponse.data != null) {
           host = apiResponse.data;
           try {
@@ -76,20 +79,65 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
           .map((imageData) => PostImage.fromMap(imageData))
           .toList();
 
-      // Load category-specific details
+      // Load category-specific details - first try local DB, then fall back to API
       final category = (post.category).toLowerCase();
       switch (category) {
         case 'stay':
           stay = await postRepository.getStayByPostId(post.id!);
-          stay ??= DummyDataProvider.getDummyStayDetails(post.id!);
+          // If not in local DB, try to fetch from API
+          if (stay == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              post.id!,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.stayDetails != null) {
+              stay = apiResponse.data!.stayDetails;
+              // Save to local DB for future use
+              if (stay != null) {
+                try {
+                  await postRepository.insertStay(stay!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'vehicle':
           vehicle = await postRepository.getVehicleByPostId(post.id!);
-          vehicle ??= DummyDataProvider.getDummyVehicleDetails(post.id!);
+          // If not in local DB, try to fetch from API
+          if (vehicle == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              post.id!,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.vehicleDetails != null) {
+              vehicle = apiResponse.data!.vehicleDetails;
+              // Save to local DB for future use
+              if (vehicle != null) {
+                try {
+                  await postRepository.insertVehicle(vehicle!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
         case 'activity':
           activity = await postRepository.getActivityByPostId(post.id!);
-          activity ??= DummyDataProvider.getDummyActivityDetails(post.id!);
+          // If not in local DB, try to fetch from API
+          if (activity == null) {
+            final apiResponse = await ListingService.instance.getListingById(
+              post.id!,
+            );
+            if (apiResponse.isSuccess &&
+                apiResponse.data?.activityDetails != null) {
+              activity = apiResponse.data!.activityDetails;
+              // Save to local DB for future use
+              if (activity != null) {
+                try {
+                  await postRepository.insertActivity(activity!);
+                } catch (_) {}
+              }
+            }
+          }
           break;
       }
 

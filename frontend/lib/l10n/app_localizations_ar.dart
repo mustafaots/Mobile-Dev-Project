@@ -1537,4 +1537,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get close => 'إغلاق';
+
+  @override
+  String get reviews_cannotReview =>
+      'يمكنك فقط تقييم العروض التي لديك حجز مؤكد لها';
+
+  @override
+  String get common_somethingWrong => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
 }

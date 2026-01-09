@@ -103,7 +103,8 @@ class ReviewManagementService {
 
 
   // check if a user can add a review for a post
-  async canUserReviewPost(postId: number, userId: string): Promise<boolean> {
+  // Returns canReview boolean and existingReview if user already has one
+  async canUserReviewPost(postId: number, userId: string): Promise<{ canReview: boolean; existingReview?: ReviewWithDetails }> {
     // Get post
     const { data: post, error: postError } = await supabase
       .from('posts')
@@ -112,38 +113,40 @@ class ReviewManagementService {
       .single();
 
     if (postError || !post) {
-      return false;
+      return { canReview: false };
     }
 
     // User cannot review their own post
     if (post.owner_id === userId) {
-      return false;
+      return { canReview: false };
     }
 
     // Check if user already reviewed the post
     const { data: existingReviews } = await supabase
       .from('reviews')
-      .select('id')
+      .select('*')
       .eq('post_id', postId)
       .eq('reviewer_id', userId);
 
     if (existingReviews && existingReviews.length > 0) {
-      return false;
+      // Return existing review for editing
+      const existingReview = await this.getReviewById(existingReviews[0].id);
+      return { canReview: false, existingReview };
     }
 
-    // Check if user has a completed booking
+    // Check if user has a confirmed booking
     const { data: bookings } = await supabase
       .from('bookings')
       .select('id')
       .eq('post_id', postId)
       .eq('client_id', userId)
-      .eq('status', 'completed');
+      .eq('status', 'confirmed');
 
-    if(bookings && bookings.length > 0) {
-      return false;
+    if(!bookings || bookings.length === 0) {
+      return { canReview: false };
     }
 
-    return true;
+    return { canReview: true };
   }
 
   /**

@@ -1579,4 +1579,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get close => 'Fermer';
+
+  @override
+  String get reviews_cannotReview =>
+      'Vous ne pouvez évaluer que les annonces pour lesquelles vous avez une réservation confirmée';
+
+  @override
+  String get common_somethingWrong =>
+      'Une erreur s\'est produite. Veuillez réessayer.';
 }
