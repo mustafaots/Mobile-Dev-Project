@@ -90,12 +90,17 @@ class _BookedPostBottomInfoContent extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(loc.common_no),
+            style: TextButton.styleFrom(foregroundColor: AppTheme.primaryColor),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(loc.common_yes),
-          ),
+             style: TextButton.styleFrom(
+              foregroundColor: AppTheme.failureColor,
+          ),)
         ],
+       
+
       ),
     );
 
