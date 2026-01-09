@@ -395,6 +395,7 @@
       }
   },
   "listingHistory_postDeleted": "تم حذف المشاركة بنجاح",
+  "listingHistory_postUpdated": "تم تحديث المشاركة بنجاح",
   "listingHistory_postPublished": "تم نشر المشاركة بنجاح",
   "listingHistory_postArchived": "تم أرشفة المشاركة",
   
@@ -673,4 +674,10 @@
   "bookings_clientPhone": "رقم الهاتف",
   "bookings_noContactInfo": "لا تتوفر معلومات الاتصال",
   "close": "إغلاق"
+  },
+
+  "error_networkTimeout": "انتهت مهلة الاتصال. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+  "error_noConnection": "تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.",
+  "error_serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
+  "error_unknownError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
 }

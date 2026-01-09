@@ -394,6 +394,7 @@
         }
     },
     "listingHistory_postDeleted": "Post deleted successfully",
+    "listingHistory_postUpdated": "Post updated successfully",
     "listingHistory_postPublished": "Post published successfully",
     "listingHistory_postArchived": "Post archived",
     
@@ -662,6 +663,12 @@
                 "type": "String"
             }
         }
+    },
+
+    "error_networkTimeout": "Network timeout. Please check your connection and try again.",
+    "error_noConnection": "Unable to connect to server. Please check your internet connection.",
+    "error_serverError": "Server error. Please try again later.",
+    "error_unknownError": "An unexpected error occurred. Please try again."
     },
     "bookings_bookingDetails": "Booking Details",
     "bookings_listing": "Listing",

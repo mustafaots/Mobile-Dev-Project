@@ -852,6 +852,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get listingHistory_postDeleted => 'Post deleted successfully';
 
   @override
+  String get listingHistory_postUpdated => 'Post updated successfully';
+
+  @override
   String get listingHistory_postPublished => 'Post published successfully';
 
   @override
@@ -1502,6 +1505,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'Client: $name';
   }
+
+  @override
+  String get error_networkTimeout =>
+      'Network timeout. Please check your connection and try again.';
+
+  @override
+  String get error_noConnection =>
+      'Unable to connect to server. Please check your internet connection.';
+
+  @override
+  String get error_serverError => 'Server error. Please try again later.';
+
+  @override
+  String get error_unknownError =>
+      'An unexpected error occurred. Please try again.';
 
   @override
   String get bookings_bookingDetails => 'Booking Details';

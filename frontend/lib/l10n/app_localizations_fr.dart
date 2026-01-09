@@ -862,6 +862,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get listingHistory_postDeleted => 'Publication supprimée avec succès';
 
   @override
+  String get listingHistory_postUpdated =>
+      'Publication mise à jour avec succès';
+
+  @override
   String get listingHistory_postPublished => 'Publication publiée avec succès';
 
   @override
@@ -1528,6 +1532,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'Client : $name';
   }
+
+  @override
+  String get error_networkTimeout =>
+      'Délai de connexion dépassé. Veuillez vérifier votre connexion et réessayer.';
+
+  @override
+  String get error_noConnection =>
+      'Impossible de se connecter au serveur. Veuillez vérifier votre connexion internet.';
+
+  @override
+  String get error_serverError =>
+      'Erreur du serveur. Veuillez réessayer plus tard.';
+
+  @override
+  String get error_unknownError =>
+      'Une erreur inattendue s\'est produite. Veuillez réessayer.';
 
   @override
   String get bookings_bookingDetails => 'Détails de la réservation';

@@ -846,6 +846,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get listingHistory_postDeleted => 'تم حذف المشاركة بنجاح';
 
   @override
+  String get listingHistory_postUpdated => 'تم تحديث المشاركة بنجاح';
+
+  @override
   String get listingHistory_postPublished => 'تم نشر المشاركة بنجاح';
 
   @override
@@ -1490,6 +1493,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String bookings_clientName(String name) {
     return 'العميل: $name';
   }
+
+  @override
+  String get error_networkTimeout =>
+      'انتهت مهلة الاتصال. يرجى التحقق من اتصالك والمحاولة مرة أخرى.';
+
+  @override
+  String get error_noConnection =>
+      'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.';
+
+  @override
+  String get error_serverError => 'خطأ في الخادم. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get error_unknownError => 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
 
   @override
   String get bookings_bookingDetails => 'تفاصيل الحجز';
