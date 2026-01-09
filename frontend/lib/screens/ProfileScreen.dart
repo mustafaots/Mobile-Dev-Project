@@ -70,22 +70,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserListings() async {
     if (widget.userId == null) {
-      print('❌ ProfileScreen: userId is null');
       setState(() => _isLoading = false);
       return;
     }
 
     try {
-      print('🔍 ProfileScreen: Loading listings for user ${widget.userId}');
       final listingService = ApiServiceLocator.listings;
       final response = await listingService.getListingsByOwner(widget.userId!);
       
-      print('📥 ProfileScreen: Response success=${response.success}, data count=${response.data?.length ?? 0}');
       
       if (response.success && response.data != null) {
-        for (var listing in response.data!) {
-          print('📦 Listing ${listing.id}: ${listing.title}, images: ${listing.images.length} - ${listing.images}');
-        }
+
         if (mounted) {
           setState(() {
             _userListings = response.data!;
@@ -93,13 +88,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           });
         }
       } else {
-        print('❌ ProfileScreen: API error -');
         if (mounted) {
           setState(() => _isLoading = false);
         }
       }
     } catch (e) {
-      print('❌ ProfileScreen: Exception - $e');
       if (mounted) {
         setState(() => _isLoading = false);
       }
@@ -253,7 +246,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildListingCard(Listing listing, BuildContext context, Color textColor, Color secondaryTextColor) {
     final imageUrl = listing.images.isNotEmpty ? listing.images.first : null;
-    print('🖼️ ProfileScreen ListingCard ${listing.id}: imageUrl = $imageUrl');
 
     // Get the actual logged-in user's ID, not the profile owner's ID
     final currentUserId = SharedPrefsService.getUserId();

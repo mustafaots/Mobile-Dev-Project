@@ -61,7 +61,6 @@ class _StaysScreenState extends State<StaysScreen> {
       final threshold = 200.0;
       
       if (currentScroll >= maxScroll - threshold) {
-        print('📜 Near bottom: $currentScroll / $maxScroll - Loading more...');
         _paginatedAlgorithm?.loadMore();
       }
     }
@@ -70,10 +69,6 @@ class _StaysScreenState extends State<StaysScreen> {
 
   /// Build image widget from Cloudinary URL or fallback
   Widget _buildListingImage(Listing listing, double width, double height) {
-    print(' StaysScreen._buildListingImage for listing ${listing.id}: ${listing.images.length} images');
-    if (listing.images.isNotEmpty) {
-      print(' First image URL: ${listing.images.first}');
-    }
     
     // Check if listing has Cloudinary images
     if (listing.images.isNotEmpty) {

@@ -1,7 +1,6 @@
 import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostImage.dart';
 import 'package:easy_vacation/screens/Listings%20History/PostHelpers.dart';
-import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +26,6 @@ class ListingCard extends StatelessWidget {
     // Get first image URL from listing
     final imageUrl = listing.images.isNotEmpty ? listing.images.first : null;
     
-    print('🖼️ ListingCard ${listing.id}: imageUrl = $imageUrl, images count = ${listing.images.length}');
-
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(

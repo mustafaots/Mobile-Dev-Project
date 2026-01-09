@@ -505,7 +505,6 @@ class __HomeContentState extends State<_HomeContent> {
         selectedWilaya = result;
         changedWilaya = selectedWilaya != null;
       });
-      print("Selected wilaya: $result");
     }
   }
 
@@ -621,7 +620,6 @@ class __HomeContentState extends State<_HomeContent> {
         selectedDates = result;
         changedDate = selectedDates!.isNotEmpty;
       });
-      print("Selected dates: $selectedDates");
     }
   }
 
@@ -722,7 +720,6 @@ class __HomeContentState extends State<_HomeContent> {
         selectedPrice = double.parse(result);
         changedPrice = selectedPrice != null;
       });
-      print("Entered price: $result");
     }
   }
 
@@ -813,7 +810,6 @@ class __HomeContentState extends State<_HomeContent> {
         selectedType = result;
         changedType = selectedType != null;
       });
-      print("Selected type: $result");
     }
   }
 

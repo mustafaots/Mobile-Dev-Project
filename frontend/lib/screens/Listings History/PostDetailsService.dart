@@ -12,49 +12,35 @@ class PostDetailsService {
     try {
       Map<String, dynamic> details = {'post': post};
       
-      print('📋 PostDetailsService: Getting details for post ${post.id}');
       
       // Try to get from remote first if online (includes Cloudinary image URLs)
       final isOnline = await ConnectivityService.instance.checkConnectivity();
-      print('📶 Connectivity: $isOnline');
       
       if (isOnline) {
-        try {
-          final syncService = await ListingSyncService.getInstance();
-          print('🔄 Fetching listing ${post.id} from remote...');
-          final listing = await syncService.getListingById(post.id!);
+        final syncService = await ListingSyncService.getInstance();
+        final listing = await syncService.getListingById(post.id!);
+        
+        
+        if (listing != null) {
           
-          print('📦 Remote listing result: ${listing != null ? "found" : "null"}');
+          // Use remote data with Cloudinary URLs
+          details['location'] = listing.location;
+          details['stay_details'] = listing.stayDetails;
+          details['activity_details'] = listing.activityDetails;
+          details['vehicle_details'] = listing.vehicleDetails;
           
-          if (listing != null) {
-            print('🖼️ Listing images count: ${listing.images.length}');
-            print('🖼️ Listing images: ${listing.images}');
-            
-            // Use remote data with Cloudinary URLs
-            details['location'] = listing.location;
-            details['stay_details'] = listing.stayDetails;
-            details['activity_details'] = listing.activityDetails;
-            details['vehicle_details'] = listing.vehicleDetails;
-            
-            // Get first image URL from Cloudinary
-            if (listing.images.isNotEmpty) {
-              details['first_image_url'] = listing.images.first;
-              print('🌐 Using Cloudinary image: ${listing.images.first}');
-            } else {
-              print('⚠️ No images in listing');
-            }
-            
-            return details;
+          // Get first image URL from Cloudinary
+          if (listing.images.isNotEmpty) {
+            details['first_image_url'] = listing.images.first;
           }
-        } catch (e) {
-          print('⚠️ Error fetching from remote, falling back to local: $e');
+          
+          return details;
         }
       }
       
       // Fallback to local database
       return await _getLocalPostDetails(post, details);
     } catch (e) {
-      print('❌ Error getting post details: $e');
       return {'post': post};
     }
   }
@@ -96,20 +82,14 @@ class PostDetailsService {
     PostImagesRepository imageRepo,
     PostRepository postRepo,
   ) async {
-    print('🔍 Looking for image for post ${post.id}');
     final imageMap = await imageRepo.getImageByPostId(post.id!);
     
     if (imageMap != null && imageMap['image'] != null) {
-      print('✅ Found image in PostImagesRepository');
       details['first_image_bytes'] = _convertToUint8List(imageMap['image']);
     } else {
-      print('⚠️  No image found in PostImagesRepository');
       final postImage = await postRepo.getPostImageByPostId(post.id!);
       if (postImage != null) {
-        print('✅ Found image path in PostRepository: ${postImage.imageData}');
         details['first_image_path'] = postImage.imageData;
-      } else {
-        print('❌ No image found anywhere for post ${post.id}');
       }
     }
   }

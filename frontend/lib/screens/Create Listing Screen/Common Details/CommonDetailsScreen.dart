@@ -120,12 +120,6 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
 
     final updatedPostData = _formController.updatePostData(widget.postData);
     
-    // Debug logging
-    print('📋 CommonDetailsScreen _submitForm:');
-    print('   Title: "${updatedPostData.title}" (length: ${updatedPostData.title.length})');
-    print('   isEditing: ${updatedPostData.isEditing}');
-    print('   Original postData title: "${widget.postData.title}"');
-    
     // If editing, update the listing directly
     if (updatedPostData.isEditing) {
       _updateListing(updatedPostData);

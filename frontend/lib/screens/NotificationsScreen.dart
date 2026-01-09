@@ -107,31 +107,26 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         _isLoading = false;
         _isLoadingMore = false;
       });
-      debugPrint('Error loading notifications: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error loading notifications')),
       );
     }
   }
 
   Future<void> _markAsRead(String notificationId) async {
-    try {
-      final userId = SharedPrefsService.getUserId();
-      if (userId == null) return;
+    final userId = SharedPrefsService.getUserId();
+    if (userId == null) return;
 
-      final response = await ApiServiceLocator.notificationService.markAsRead(notificationId);
+    final response = await ApiServiceLocator.notificationService.markAsRead(notificationId);
 
-      if (response.isSuccess) {
-        // Update local state
-        setState(() {
-          final index = _notifications.indexWhere((n) => n['id'] == notificationId);
-          if (index != -1) {
-            _notifications[index]['is_read'] = true;
-          }
-        });
-      }
-    } catch (e) {
-      debugPrint('Error marking notification as read: $e');
+    if (response.isSuccess) {
+      // Update local state
+      setState(() {
+        final index = _notifications.indexWhere((n) => n['id'] == notificationId);
+        if (index != -1) {
+          _notifications[index]['is_read'] = true;
+        }
+      });
     }
   }
 
@@ -153,7 +148,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error accepting booking request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error accepting booking request')),
       );
@@ -178,7 +172,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error rejecting booking request: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error rejecting booking request')),
       );

@@ -44,7 +44,6 @@ class _PostCardState extends State<PostCard> {
         _isLoadingDetails = false;
       });
     } catch (e) {
-      print('❌ Error loading post details: $e');
       setState(() => _isLoadingDetails = false);
     }
   }

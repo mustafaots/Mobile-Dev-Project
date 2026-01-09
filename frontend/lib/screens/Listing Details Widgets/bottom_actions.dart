@@ -42,16 +42,12 @@ class _BottomActionsState extends State<BottomActions> {
   bool _isDeleting = false;
 
   bool get _isOwner {
-    debugPrint('🔍 BottomActions: currentUserId=${widget.currentUserId}, ownerId=${widget.ownerId}');
-    debugPrint('🔍 BottomActions: currentUserId type=${widget.currentUserId.runtimeType}, ownerId type=${widget.ownerId.runtimeType}');
     if (widget.currentUserId == null || widget.ownerId == null) {
-      debugPrint('🔍 BottomActions: returning false - one is null');
       return false;
     }
     final currentId = widget.currentUserId.toString().trim();
     final ownerId = widget.ownerId.toString().trim();
     final isOwner = currentId == ownerId;
-    debugPrint('🔍 BottomActions: comparing "$currentId" == "$ownerId" = $isOwner');
     return isOwner;
   }
 
@@ -140,14 +136,10 @@ class _BottomActionsState extends State<BottomActions> {
     // Parse availability from JSON string
     List<AvailabilityInterval> availabilityList = [];
     if (listing.availability != null && listing.availability!.isNotEmpty) {
-      try {
-        final parsed = jsonDecode(listing.availability!) as List<dynamic>;
-        availabilityList = parsed.map((item) {
-          return AvailabilityInterval.fromMap(Map<String, dynamic>.from(item));
-        }).toList();
-      } catch (e) {
-        print('Error parsing availability: $e');
-      }
+      final parsed = jsonDecode(listing.availability!) as List<dynamic>;
+      availabilityList = parsed.map((item) {
+        return AvailabilityInterval.fromMap(Map<String, dynamic>.from(item));
+      }).toList();
     }
     
     // Convert Stay details
@@ -322,37 +314,33 @@ class _BottomActionsState extends State<BottomActions> {
       _isLoading = true;
     });
 
-    // Check if the user already has an active booking for this listing
-    try {
-      final syncService = await BookingSyncService.getInstance();
-      final myBookings = await syncService.getMyBookings();
+    final syncService = await BookingSyncService.getInstance();
+    final myBookings = await syncService.getMyBookings();
 
-      final hasExistingBooking = myBookings.any((bookingDetails) {
-        final booking = bookingDetails.booking;
-        // Check if booking is for the same listing and has an active status
-        return booking.postId == widget.postId &&
-            (booking.status == 'pending' || booking.status == 'confirmed');
+    final hasExistingBooking = myBookings.any((bookingDetails) {
+      final booking = bookingDetails.booking;
+      // Check if booking is for the same listing and has an active status
+      return booking.postId == widget.postId &&
+          (booking.status == 'pending' || booking.status == 'confirmed');
+    });
+
+    if (hasExistingBooking) {
+      setState(() {
+        _isLoading = false;
       });
-
-      if (hasExistingBooking) {
-        setState(() {
-          _isLoading = false;
-        });
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'You already have an active booking for this listing.',
-              ),
-              backgroundColor: AppTheme.failureColor,
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'You already have an active booking for this listing.',
             ),
-          );
-        }
-        return;
+            backgroundColor: AppTheme.failureColor,
+          ),
+        );
       }
-    } catch (e) {
-      debugPrint('Error checking existing bookings: $e');
+      return;
     }
+
 
     try {
       // Sort selected dates
@@ -444,7 +432,6 @@ class _BottomActionsState extends State<BottomActions> {
     
     // Debug: check ownership status
     final isOwnerCheck = _isOwner;
-    debugPrint('🔍 BottomActions BUILD: isOwner=$isOwnerCheck');
 
     return Positioned(
       bottom: 0,

@@ -55,50 +55,46 @@ class _AvailabilitySectionState extends State<AvailabilitySection> {
       return;
     }
 
-    try {
-      final decoded = jsonDecode(widget.availabilityJson!);
-      List<dynamic> intervals;
+    final decoded = jsonDecode(widget.availabilityJson!);
+    List<dynamic> intervals;
 
-      if (decoded is Map<String, dynamic> && decoded['intervals'] is List) {
-        intervals = decoded['intervals'] as List<dynamic>;
-      } else if (decoded is List) {
-        intervals = decoded;
-      } else {
-        return;
+    if (decoded is Map<String, dynamic> && decoded['intervals'] is List) {
+      intervals = decoded['intervals'] as List<dynamic>;
+    } else if (decoded is List) {
+      intervals = decoded;
+    } else {
+      return;
+    }
+
+    final availableIntervals = intervals
+        .map((interval) {
+          try {
+            final map = Map<String, dynamic>.from(interval as Map);
+            final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
+            final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
+
+            final startDate = _parseDate(startValue);
+            final endDate = _parseDate(endValue);
+
+            if (startDate == null || endDate == null) return null;
+            return DateInterval(startDate, endDate);
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<DateInterval>()
+        .toList();
+
+    if (availableIntervals.isNotEmpty) {
+      // Manually emit the state if not already loaded
+      if (_availabilityCubit.state is AvailabilityInitial) {
+        _availabilityCubit.emit(
+          AvailabilityLoaded(
+            availableIntervals: availableIntervals,
+            selectedDates: const {},
+          ),
+        );
       }
-
-      final availableIntervals = intervals
-          .map((interval) {
-            try {
-              final map = Map<String, dynamic>.from(interval as Map);
-              final startValue = map['startDate'] ?? map['start'] ?? map['start_date'];
-              final endValue = map['endDate'] ?? map['end'] ?? map['end_date'];
-
-              final startDate = _parseDate(startValue);
-              final endDate = _parseDate(endValue);
-
-              if (startDate == null || endDate == null) return null;
-              return DateInterval(startDate, endDate);
-            } catch (_) {
-              return null;
-            }
-          })
-          .whereType<DateInterval>()
-          .toList();
-
-      if (availableIntervals.isNotEmpty) {
-        // Manually emit the state if not already loaded
-        if (_availabilityCubit.state is AvailabilityInitial) {
-          _availabilityCubit.emit(
-            AvailabilityLoaded(
-              availableIntervals: availableIntervals,
-              selectedDates: const {},
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint('Error parsing availability JSON: $e');
     }
   }
 
