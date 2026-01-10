@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:easy_vacation/models/locations.model.dart';
 import 'package:easy_vacation/models/stays.model.dart';
 import 'package:easy_vacation/models/vehicles.model.dart';
@@ -531,22 +535,59 @@ class ListingService {
   /// POST /api/listings/:id/images
   Future<ApiResponse<List<String>>> uploadImages(int id, List<String> filePaths) async {
     try {
-      final images = <String>[];
+      final base64Images = <String>[];
       
+      // Convert file paths to base64
       for (final path in filePaths) {
-        final response = await _apiClient.uploadFile(
-          '${ApiConfig.listings}/$id/images',
-          filePath: path,
-          fieldName: 'image',
-          requiresAuth: true,
-        );
-        if (response['data'] != null && response['data']['url'] != null) {
-          images.add(response['data']['url']);
+        final file = File(path);
+        if (await file.exists()) {
+          final bytes = await file.readAsBytes();
+          
+          // Compress image if needed
+          Uint8List compressedBytes = bytes;
+          try {
+            final compressed = await FlutterImageCompress.compressWithList(
+              bytes,
+              minWidth: 1920,
+              minHeight: 1080,
+              quality: 85,
+              format: CompressFormat.jpeg,
+            );
+            compressedBytes = compressed;
+          } catch (e) {
+            print('⚠️ Image compression failed, using original: $e');
+          }
+          
+          final base64String = base64Encode(compressedBytes);
+          base64Images.add('data:image/jpeg;base64,$base64String');
+        }
+      }
+      
+      if (base64Images.isEmpty) {
+        return ApiResponse.error('No valid images to upload');
+      }
+
+      final response = await _apiClient.post(
+        '${ApiConfig.listings}/$id/images',
+        body: {'images': base64Images},
+        requiresAuth: true,
+      );
+
+      final uploadedUrls = <String>[];
+      if (response['data'] != null) {
+        final data = response['data'];
+        if (data is List) {
+          for (final img in data) {
+            if (img is Map && img['secure_url'] != null) {
+              uploadedUrls.add(img['secure_url'].toString());
+            }
+          }
         }
       }
 
-      return ApiResponse.success(images);
+      return ApiResponse.success(uploadedUrls);
     } catch (e) {
+      print('❌ uploadImages error: $e');
       return ApiResponse.error(e.toString());
     }
   }
