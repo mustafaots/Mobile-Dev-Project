@@ -10,12 +10,12 @@ class VehicleFormController {
   final TextEditingController yearController = TextEditingController();
   final TextEditingController seatsController = TextEditingController();
   
-  String selectedPriceRate = 'day';
+  // Static rate for vehicles - always per day
+  final String priceRate = 'day';
   String? selectedVehicleType;
   String? selectedFuelType;
   bool isAutomaticTransmission = false;
   
-  final List<String> priceRates = ['hour', 'day', 'week', 'month'];
   final List<String> vehicleTypes = ['car', 'motorcycle', 'bicycle', 'boat', 'scooter'];
   final List<String> fuelTypes = ['gasoline', 'diesel', 'electric', 'hybrid'];
   
@@ -28,7 +28,7 @@ class VehicleFormController {
     titleController.text = data.title;
     descriptionController.text = data.description;
     priceController.text = data.price.toString();
-    selectedPriceRate = data.priceRate;
+    // priceRate is static 'day' for vehicles, no need to load from data
     
     if (data.vehicleDetails != null) {
       final vehicle = data.vehicleDetails!;
@@ -71,7 +71,7 @@ class VehicleFormController {
       title: titleController.text,
       description: descriptionController.text,
       price: double.parse(priceController.text),
-      priceRate: selectedPriceRate,
+      priceRate: priceRate, // Static 'day' for vehicles
       location: existingData?.location ?? Location(wilaya: '', city: '', address: '', latitude: 0, longitude: 0),
       availability: existingData?.availability ?? [],
       imagePaths: existingData?.imagePaths ?? [],

@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/posts.model.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostCardMenu.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostCardSkeleton.dart';
@@ -158,12 +159,12 @@ class _PostCardState extends State<PostCard> {
                 if (categoryDetails != null)
                   postHelpers.buildCategoryDetails(categoryDetails, widget.post.category),
                 const SizedBox(height: 8),
-                // Price
+                // Price with static rate based on category
                 Row(
                   children: [
                     Icon(Icons.monetization_on, size: 16, color: AppTheme.successColor),
                     const SizedBox(width: 4),
-                    Text('${widget.post.price} DA',
+                    Text('${widget.post.price} DA/${_getRateLabel(context)}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -224,5 +225,20 @@ class _PostCardState extends State<PostCard> {
       imageUrl: imageUrl,
       category: category,
     );
+  }
+
+  /// Get static rate label based on category
+  String _getRateLabel(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    switch (widget.post.category.toLowerCase()) {
+      case 'stay':
+        return loc.details_pricePerNight;
+      case 'activity':
+        return loc.details_pricePerPerson;
+      case 'vehicle':
+        return loc.details_pricePerDay;
+      default:
+        return loc.details_pricePerDay;
+    }
   }
 }

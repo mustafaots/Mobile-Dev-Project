@@ -89,11 +89,6 @@ class _VehicleDetailsScreenState extends State<VehicleDetailsScreen> {
                     textColor: textColor,
                     secondaryTextColor: secondaryTextColor,
                     cardColor: cardColor,
-                    onRateChanged: (value) {
-                      setState(() {
-                        _formController.selectedPriceRate = value!;
-                      });
-                    },
                     onVehicleTypeChanged: (value) {
                       setState(() {
                         _formController.selectedVehicleType = value;

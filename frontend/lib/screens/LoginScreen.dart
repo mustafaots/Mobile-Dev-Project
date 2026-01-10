@@ -9,7 +9,6 @@ import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/FormField.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -285,30 +284,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Divider(color: secondaryTextColor, thickness: 1),
                 ),
               ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // Single Google Sign In Button
-            InkWell(
-              onTap: () {},
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: context.cardColor,
-                  border: Border.all(
-                    color: context.secondaryTextColor.withOpacity(0.3),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  FontAwesomeIcons.google,
-                  color: context.secondaryTextColor,
-                  size: 20,
-                ),
-              ),
             ),
           ],
         ),

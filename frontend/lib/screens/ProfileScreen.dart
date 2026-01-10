@@ -246,6 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildListingCard(Listing listing, BuildContext context, Color textColor, Color secondaryTextColor) {
     final imageUrl = listing.images.isNotEmpty ? listing.images.first : null;
+    final loc = AppLocalizations.of(context)!;
 
     // Get the actual logged-in user's ID, not the profile owner's ID
     final currentUserId = SharedPrefsService.getUserId();
@@ -290,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Text(listing.category.toUpperCase(), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
                         ),
                         const Spacer(),
-                        Text('${listing.price.toStringAsFixed(0)} DA', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
+                        Text('${listing.price.toStringAsFixed(0)} DA/${_getRateLabel(listing.category, loc)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.primaryColor)),
                       ],
                     ),
                   ],
@@ -303,6 +304,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  
+  /// Get static rate label based on category
+  String _getRateLabel(String category, AppLocalizations loc) {
+    switch (category.toLowerCase()) {
+      case 'stay':
+        return loc.details_pricePerNight;
+      case 'activity':
+        return loc.details_pricePerPerson;
+      case 'vehicle':
+        return loc.details_pricePerDay;
+      default:
+        return loc.details_pricePerDay;
+    }
+  }
 }
 

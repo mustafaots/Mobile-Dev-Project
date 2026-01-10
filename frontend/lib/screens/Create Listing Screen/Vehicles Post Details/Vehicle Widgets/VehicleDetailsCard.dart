@@ -11,7 +11,6 @@ class VehicleDetailsCard extends StatelessWidget {
   final Color textColor;
   final Color secondaryTextColor;
   final Color cardColor;
-  final ValueChanged<String?> onRateChanged;
   final ValueChanged<String?> onVehicleTypeChanged;
   final ValueChanged<String?> onFuelTypeChanged;
   final ValueChanged<bool> onTransmissionChanged;
@@ -22,7 +21,6 @@ class VehicleDetailsCard extends StatelessWidget {
     required this.textColor,
     required this.secondaryTextColor,
     required this.cardColor,
-    required this.onRateChanged,
     required this.onVehicleTypeChanged,
     required this.onFuelTypeChanged,
     required this.onTransmissionChanged,
@@ -165,75 +163,26 @@ class VehicleDetailsCard extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Price and Rate (using shared RateDropdown)
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: buildFormField(
-                  context,
-                  controller: formController.priceController,
-                  label: loc.price_label,
-                  icon: Icons.money,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return loc.price_error_required;
-                    }
-                    final parsed = double.tryParse(value);
-                    if (parsed == null) {
-                      return loc.price_error_invalid;
-                    }
-                    if (parsed <= 0) {
-                      return loc.price_error_positive;
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: cardColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: secondaryTextColor.withOpacity(0.3),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: DropdownButtonFormField<String>(
-                      value: formController.selectedPriceRate,
-                      decoration: InputDecoration(
-                        labelText: loc.rate_label,
-                        labelStyle: TextStyle(color: secondaryTextColor),
-                        border: InputBorder.none,
-                        icon: Icon(Icons.schedule, color: secondaryTextColor),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                      ),
-                      items: formController.priceRates.map((rate) {
-                        return DropdownMenuItem<String>(
-                          value: rate,
-                          child: Text('/$rate', style: TextStyle(color: textColor)),
-                        );
-                      }).toList(),
-                      onChanged: onRateChanged,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return loc.rate_error;
-                        }
-                        return null;
-                      },
-                      style: TextStyle(color: textColor),
-                      dropdownColor: cardColor,
-                      icon: Icon(Icons.arrow_drop_down, color: secondaryTextColor),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          // Price (rate is static 'per day' for vehicles)
+          buildFormField(
+            context,
+            controller: formController.priceController,
+            label: loc.price_label,
+            icon: Icons.money,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return loc.price_error_required;
+              }
+              final parsed = double.tryParse(value);
+              if (parsed == null) {
+                return loc.price_error_invalid;
+              }
+              if (parsed <= 0) {
+                return loc.price_error_positive;
+              }
+              return null;
+            },
+            keyboardType: TextInputType.number,
           ),
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/RateDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/Stay%20Widgets/StayTypeDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Stays%20Post%20Details/StayFormLogic.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ class StayDetailsCard extends StatelessWidget {
   final Color textColor;
   final Color secondaryTextColor;
   final Color cardColor;
-  final ValueChanged<String?> onRateChanged;
   final ValueChanged<String?> onStayTypeChanged;
   
   const StayDetailsCard({
@@ -20,7 +18,6 @@ class StayDetailsCard extends StatelessWidget {
     required this.textColor,
     required this.secondaryTextColor,
     required this.cardColor,
-    required this.onRateChanged,
     required this.onStayTypeChanged,
   }) : super(key: key);
   
@@ -126,45 +123,26 @@ class StayDetailsCard extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Price and Rate
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: buildFormField(
-                  context,
-                  controller: formController.priceController,
-                  label: loc.price_label,
-                  icon: Icons.money,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return loc.price_error_required;
-                    }
-                    final parsed = double.tryParse(value);
-                    if (parsed == null) {
-                      return loc.price_error_invalid;
-                    }
-                    if (parsed <= 0) {
-                      return loc.price_error_positive;
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                flex: 1,
-                child: RateDropdown(
-                  value: formController.selectedPriceRate,
-                  priceRates: formController.priceRates,
-                  onChanged: onRateChanged,
-                  textColor: textColor,
-                  secondaryTextColor: secondaryTextColor,
-                  cardColor: cardColor
-                ),
-              ),
-            ],
+          // Price (rate is static 'per night' for stays)
+          buildFormField(
+            context,
+            controller: formController.priceController,
+            label: loc.price_label,
+            icon: Icons.money,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return loc.price_error_required;
+              }
+              final parsed = double.tryParse(value);
+              if (parsed == null) {
+                return loc.price_error_invalid;
+              }
+              if (parsed <= 0) {
+                return loc.price_error_positive;
+              }
+              return null;
+            },
+            keyboardType: TextInputType.number,
           ),
         ],
       ),

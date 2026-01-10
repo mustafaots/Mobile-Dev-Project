@@ -135,7 +135,7 @@ class SearchScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '${listing.price} ${loc.dinars}',
+                                  '${listing.price} ${loc.dinars}/${_getRateLabel(listing.category, loc)}',
                                   style: TextStyle(
                                     color: secondaryTextColor,
                                     fontSize: 14,
@@ -178,6 +178,20 @@ class SearchScreen extends StatelessWidget {
       width: double.infinity,
       fit: BoxFit.cover,
     );
+  }
+
+  /// Get static rate label based on category
+  String _getRateLabel(String category, AppLocalizations loc) {
+    switch (category.toLowerCase()) {
+      case 'stay':
+        return loc.details_pricePerNight;
+      case 'activity':
+        return loc.details_pricePerPerson;
+      case 'vehicle':
+        return loc.details_pricePerDay;
+      default:
+        return loc.details_pricePerDay;
+    }
   }
 
   /// Empty search results UI

@@ -9,10 +9,10 @@ class StayFormController {
   final TextEditingController areaController = TextEditingController();
   final TextEditingController bedroomsController = TextEditingController();
   
-  String selectedPriceRate = 'day';
+  // Static rate for stays - always per night
+  final String priceRate = 'night';
   String? selectedStayType;
   
-  final List<String> priceRates = ['hour', 'day', 'week', 'month'];
   final List<String> stayTypes = ['apartment', 'villa', 'house', 'room', 'chalet'];
   
   void loadExistingData(CreatePostData? data) {
@@ -21,7 +21,7 @@ class StayFormController {
     titleController.text = data.title;
     descriptionController.text = data.description;
     priceController.text = data.price.toString();
-    selectedPriceRate = data.priceRate;
+    // priceRate is static 'night' for stays, no need to load from data
     
     if (data.stayDetails != null) {
       selectedStayType = data.stayDetails!.stayType;
@@ -52,7 +52,7 @@ class StayFormController {
       title: titleController.text,
       description: descriptionController.text,
       price: double.parse(priceController.text),
-      priceRate: selectedPriceRate,
+      priceRate: priceRate, // Static 'night' for stays
       location: existingData?.location ?? Location(wilaya: '', city: '', address: '', latitude: 0, longitude: 0),
       availability: existingData?.availability ?? [],
       imagePaths: existingData?.imagePaths ?? [],

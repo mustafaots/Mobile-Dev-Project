@@ -97,11 +97,6 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                     textColor: textColor,
                     secondaryTextColor: secondaryTextColor,
                     cardColor: cardColor,
-                    onRateChanged: (value) {
-                      setState(() {
-                        _formController.selectedPriceRate = value!;
-                      });
-                    },
                     onActivityTypeChanged: (value) {
                       setState(() {
                         _formController.selectedActivityType = value;

@@ -89,11 +89,6 @@ class _StayDetailsScreenState extends State<StayDetailsScreen> {
                     textColor: textColor,
                     secondaryTextColor: secondaryTextColor,
                     cardColor: cardColor,
-                    onRateChanged: (value) {
-                      setState(() {
-                        _formController.selectedPriceRate = value!;
-                      });
-                    },
                     onStayTypeChanged: (value) {
                       setState(() {
                         _formController.selectedStayType = value;

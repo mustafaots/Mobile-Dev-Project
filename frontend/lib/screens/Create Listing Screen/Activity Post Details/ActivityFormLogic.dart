@@ -15,9 +15,9 @@ class ActivityFormController {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController groupSizeController = TextEditingController();
 
-  String selectedPriceRate = ''; // Empty string - user must select
+  // Static rate for activities - always per person
+  final String priceRate = 'person';
 
-  final List<String> priceRates = ['hour', 'day', 'week', 'month'];
   final List<String> activityTypes = [
     'cultural',
     'sport',
@@ -48,8 +48,7 @@ class ActivityFormController {
     titleController.text = data.title;
     descriptionController.text = data.description;
     priceController.text = data.price.toString();
-    selectedPriceRate = data.priceRate;
-
+    
     if (data.activityDetails != null) {
       final activityType = data.activityDetails!.activityType.toLowerCase();
       selectedActivityType = activityTypes.contains(activityType)
@@ -92,7 +91,6 @@ class ActivityFormController {
     return titleController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         priceController.text.isNotEmpty &&
-        selectedPriceRate.isNotEmpty &&
         selectedActivityType != null &&
         minAgeController.text.isNotEmpty &&
         equipmentController.text.isNotEmpty &&
@@ -113,7 +111,7 @@ class ActivityFormController {
       title: titleController.text,
       description: descriptionController.text,
       price: double.parse(priceController.text),
-      priceRate: selectedPriceRate,
+      priceRate: priceRate, // Static 'person' for activities
       location:
           existingData?.location ??
           Location(
