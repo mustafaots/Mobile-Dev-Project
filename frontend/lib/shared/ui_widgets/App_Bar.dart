@@ -3,8 +3,18 @@ import 'package:flutter/material.dart';
 AppBar App_Bar(BuildContext context, String title) {
   final theme = Theme.of(context);
   final appBarTheme = theme.appBarTheme;
+  final canPop = Navigator.canPop(context);
   
   return AppBar(
+    leading: canPop
+        ? IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: appBarTheme.foregroundColor ?? appBarTheme.iconTheme?.color,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        : null,
     title: Text(
       title,
       style: TextStyle(

@@ -21,6 +21,7 @@ class ListingsHistory extends StatefulWidget {
 class _ListingsHistoryState extends State<ListingsHistory> {
   List<Listing> _userListings = [];
   bool _isLoading = true;
+  String? _currentUserId;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
   Future<void> _loadUserListings() async {
     try {
       final currentUserId = await _getCurrentUserId();
+      _currentUserId = currentUserId;
       
       if (currentUserId == null || currentUserId.isEmpty) {
         setState(() => _isLoading = false);
@@ -97,17 +99,6 @@ class _ListingsHistoryState extends State<ListingsHistory> {
     return sharedPrefsRepo.getUserId();
   }
 
-  void _handleListingRemoved(Listing listing) {
-    setState(() => _userListings.removeWhere((l) => l.id == listing.id));
-  }
-
-  void _handleListingUpdated(Listing updatedListing) {
-    setState(() {
-      final index = _userListings.indexWhere((l) => l.id == updatedListing.id);
-      if (index != -1) _userListings[index] = updatedListing;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
@@ -120,8 +111,7 @@ class _ListingsHistoryState extends State<ListingsHistory> {
         listings: _userListings,
         isLoading: _isLoading,
         currentFilter: 'all',
-        onListingRemoved: _handleListingRemoved,
-        onListingUpdated: _handleListingUpdated,
+        userId: _currentUserId,
       ),
     );
   }

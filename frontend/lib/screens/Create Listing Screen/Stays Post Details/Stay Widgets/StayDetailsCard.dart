@@ -44,9 +44,15 @@ class StayDetailsCard extends StatelessWidget {
             controller: formController.titleController,
             label: loc.field_title,
             icon: Icons.title_outlined,
-            validator: (value) => value == null || value.trim().isEmpty
-                ? loc.field_title_error
-                : null,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return loc.field_title_error;
+              }
+              if (value.trim().length < 3) {
+                return loc.field_title_min_length;
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16),
 

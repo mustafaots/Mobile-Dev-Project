@@ -14,8 +14,12 @@ class ActivityDetailsScreen extends StatefulWidget {
   final CreatePostData? existingData;
   final dynamic userId;
 
-  const ActivityDetailsScreen({required this.userId, this.existingData, super.key});
-  
+  const ActivityDetailsScreen({
+    required this.userId,
+    this.existingData,
+    super.key,
+  });
+
   @override
   State<ActivityDetailsScreen> createState() => _ActivityDetailsScreenState();
 }
@@ -23,37 +27,40 @@ class ActivityDetailsScreen extends StatefulWidget {
 class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
   final ActivityFormController _formController = ActivityFormController();
-  
+
   @override
   void initState() {
     super.initState();
     _formController.loadExistingData(widget.existingData);
   }
-  
+
   @override
   void dispose() {
     _formController.dispose();
     super.dispose();
   }
-  
+
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.form_error_fill_all),
+        ),
       );
       return;
     }
-    
+
     final postData = _formController.createPostData(widget.existingData);
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CommonDetailsScreen(userId: widget.userId, postData: postData),
+        builder: (context) =>
+            CommonDetailsScreen(userId: widget.userId, postData: postData),
       ),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
@@ -61,7 +68,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
     final loc = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       appBar: App_Bar(context, loc.activity_details_title),
       backgroundColor: backgroundColor,
@@ -75,9 +82,9 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
               textColor: textColor,
               secondaryTextColor: secondaryTextColor,
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Form
             Form(
               key: _formKey,
@@ -95,10 +102,15 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                         _formController.selectedPriceRate = value!;
                       });
                     },
+                    onActivityTypeChanged: (value) {
+                      setState(() {
+                        _formController.selectedActivityType = value;
+                      });
+                    },
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Requirements Section Widget
                   RequirementSection(
                     formController: _formController,
@@ -107,9 +119,9 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                     cardColor: cardColor,
                     onUpdate: () => setState(() {}),
                   ),
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Continue Button
                   SizedBox(
                     width: double.infinity,
@@ -125,7 +137,9 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> {
                         ),
                         elevation: 2,
                       ),
-                      onPressed: _formController.validateForm() ? _submitForm : null,
+                      onPressed: _formController.validateForm()
+                          ? _submitForm
+                          : null,
                       child: Text(
                         loc.continue_button,
                         style: TextStyle(

@@ -8,16 +8,14 @@ class ListingsHistoryContentV2 extends StatelessWidget {
   final List<Listing> listings;
   final bool isLoading;
   final String currentFilter;
-  final Function(Listing) onListingRemoved;
-  final Function(Listing) onListingUpdated;
+  final String? userId;
 
   const ListingsHistoryContentV2({
     super.key,
     required this.listings,
     required this.isLoading,
     required this.currentFilter,
-    required this.onListingRemoved,
-    required this.onListingUpdated,
+    this.userId,
   });
 
   @override
@@ -47,8 +45,7 @@ class ListingsHistoryContentV2 extends StatelessWidget {
       itemCount: listings.length,
       itemBuilder: (context, index) => ListingCard(
         listing: listings[index],
-        onListingRemoved: onListingRemoved,
-        onListingUpdated: onListingUpdated,
+        userId: userId,
       ),
     );
   }

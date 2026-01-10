@@ -10,7 +10,8 @@ class BasicDetailsCard extends StatelessWidget {
   final Color secondaryTextColor;
   final Color cardColor;
   final ValueChanged<String?> onRateChanged;
-  
+  final ValueChanged<String?> onActivityTypeChanged;
+
   const BasicDetailsCard({
     Key? key,
     required this.formController,
@@ -18,12 +19,13 @@ class BasicDetailsCard extends StatelessWidget {
     required this.secondaryTextColor,
     required this.cardColor,
     required this.onRateChanged,
+    required this.onActivityTypeChanged,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -40,12 +42,18 @@ class BasicDetailsCard extends StatelessWidget {
             controller: formController.titleController,
             label: loc.field_title,
             icon: Icons.title_outlined,
-            validator: (value) => value == null || value.trim().isEmpty
-                ? loc.field_title_error
-                : null,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return loc.field_title_error;
+              }
+              if (value.trim().length < 3) {
+                return loc.field_title_min_length;
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 16),
-          
+
           buildFormField(
             context,
             controller: formController.descriptionController,
@@ -57,19 +65,42 @@ class BasicDetailsCard extends StatelessWidget {
             maxLines: 3,
           ),
           const SizedBox(height: 16),
-          
-          // Activity Type
-          buildFormField(
-            context,
-            controller: formController.activityTypeController,
-            label: loc.activity_type_label,
-            icon: Icons.hiking,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return loc.activity_type_error;
-              }
-              return null;
-            },
+
+          // Activity Type Dropdown
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: cardColor,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: secondaryTextColor.withOpacity(0.3)),
+            ),
+            child: DropdownButtonFormField<String>(
+              value: formController.selectedActivityType,
+              decoration: InputDecoration(
+                labelText: loc.activity_type_label,
+                labelStyle: TextStyle(color: secondaryTextColor),
+                border: InputBorder.none,
+                prefixIcon: Icon(Icons.hiking, color: secondaryTextColor),
+              ),
+              dropdownColor: cardColor,
+              style: TextStyle(color: textColor),
+              items: formController.activityTypes.map((type) {
+                return DropdownMenuItem<String>(
+                  value: type,
+                  child: Text(
+                    type[0].toUpperCase() + type.substring(1),
+                    style: TextStyle(color: textColor),
+                  ),
+                );
+              }).toList(),
+              onChanged: onActivityTypeChanged,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return loc.activity_type_error;
+                }
+                return null;
+              },
+            ),
           ),
           const SizedBox(height: 16),
 

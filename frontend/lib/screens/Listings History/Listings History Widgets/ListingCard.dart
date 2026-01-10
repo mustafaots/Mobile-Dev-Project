@@ -1,19 +1,18 @@
 import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostImage.dart';
 import 'package:easy_vacation/screens/Listings%20History/PostHelpers.dart';
+import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
 
 class ListingCard extends StatelessWidget {
   final Listing listing;
-  final Function(Listing) onListingRemoved;
-  final Function(Listing) onListingUpdated;
+  final String? userId;
 
   const ListingCard({
     super.key,
     required this.listing,
-    required this.onListingRemoved,
-    required this.onListingUpdated,
+    this.userId,
   });
 
   @override
@@ -26,80 +25,67 @@ class ListingCard extends StatelessWidget {
     // Get first image URL from listing
     final imageUrl = listing.images.isNotEmpty ? listing.images.first : null;
     
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: textColor.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostDetailsScreen(
+              postId: listing.id,
+              userId: userId,
+            ),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Listing Image
-          Container(
-            height: 200,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: textColor.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Listing Image
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+              ),
+              child: PostImage(
+                imageUrl: imageUrl,
+                category: listing.category,
               ),
             ),
-            child: PostImage(
-              imageUrl: imageUrl,
-              category: listing.category,
-            ),
-          ),
-          // Listing Content
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title and Menu
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        listing.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: textColor,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+            // Listing Content
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Text(
+                    listing.title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
-                    PopupMenuButton<String>(
-                      icon: Icon(Icons.more_vert, color: secondaryTextColor),
-                      onSelected: (value) {
-                        if (value == 'delete') {
-                          onListingRemoved(listing);
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 'delete',
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, color: Colors.red),
-                              SizedBox(width: 8),
-                              Text('Delete'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 const SizedBox(height: 8),
                 // Location
                 Row(
@@ -164,7 +150,7 @@ class ListingCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ) );
   }
 
   Widget _buildCategoryDetails(BuildContext context, PostHelpers postHelpers) {
