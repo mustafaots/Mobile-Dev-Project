@@ -48,13 +48,17 @@ class Listing {
 
   factory Listing.fromJson(Map<String, dynamic> json) {
     try {
-      print('🏠 Listing.fromJson parsing id=${json['id']}, images=${json['images']}');
-      
+      print(
+        '🏠 Listing.fromJson parsing id=${json['id']}, images=${json['images']}',
+      );
+
       // Parse images - can be array of strings (URLs) or array of image objects with secure_url
       List<String> imageUrls = [];
       if (json['images'] != null) {
         final imagesData = json['images'];
-        print('🏠 imagesData type: ${imagesData.runtimeType}, value: $imagesData');
+        print(
+          '🏠 imagesData type: ${imagesData.runtimeType}, value: $imagesData',
+        );
         if (imagesData is List) {
           for (var img in imagesData) {
             print('🏠 Processing image: type=${img.runtimeType}, value=$img');
@@ -63,7 +67,10 @@ class Listing {
             } else if (img is Map) {
               // Image object from post_images table - handle both Map<String, dynamic> and Map<dynamic, dynamic>
               final imgMap = Map<String, dynamic>.from(img);
-              final url = imgMap['secure_url'] ?? imgMap['url'] ?? imgMap['content_url'];
+              final url =
+                  imgMap['secure_url'] ??
+                  imgMap['url'] ??
+                  imgMap['content_url'];
               print('🏠 Extracted URL: $url');
               if (url != null) {
                 imageUrls.add(url.toString());
@@ -73,7 +80,7 @@ class Listing {
         }
       }
       print('🏠 Final imageUrls: $imageUrls');
-      
+
       // Parse location - can be a Map or a List (from Supabase join)
       Map<String, dynamic> locationMap = {};
       if (json['location'] != null) {
@@ -85,7 +92,7 @@ class Listing {
           locationMap = Map<String, dynamic>.from(locData.first as Map);
         }
       }
-      
+
       // Parse stay_details - can be a Map or a List
       Map<String, dynamic>? stayDetailsMap;
       if (json['stay_details'] != null) {
@@ -96,7 +103,7 @@ class Listing {
           stayDetailsMap = Map<String, dynamic>.from(stayData.first as Map);
         }
       }
-      
+
       // Parse vehicle_details - can be a Map or a List
       Map<String, dynamic>? vehicleDetailsMap;
       if (json['vehicle_details'] != null) {
@@ -104,10 +111,12 @@ class Listing {
         if (vehicleData is Map) {
           vehicleDetailsMap = Map<String, dynamic>.from(vehicleData);
         } else if (vehicleData is List && vehicleData.isNotEmpty) {
-          vehicleDetailsMap = Map<String, dynamic>.from(vehicleData.first as Map);
+          vehicleDetailsMap = Map<String, dynamic>.from(
+            vehicleData.first as Map,
+          );
         }
       }
-      
+
       // Parse activity_details - can be a Map or a List
       Map<String, dynamic>? activityDetailsMap;
       if (json['activity_details'] != null) {
@@ -115,10 +124,12 @@ class Listing {
         if (activityData is Map) {
           activityDetailsMap = Map<String, dynamic>.from(activityData);
         } else if (activityData is List && activityData.isNotEmpty) {
-          activityDetailsMap = Map<String, dynamic>.from(activityData.first as Map);
+          activityDetailsMap = Map<String, dynamic>.from(
+            activityData.first as Map,
+          );
         }
       }
-      
+
       return Listing(
         id: json['id'],
         ownerId: json['owner_id']?.toString() ?? '',
@@ -129,18 +140,28 @@ class Listing {
         status: json['status'] ?? 'draft',
         availability: json['availability'],
         location: Location.fromMap(locationMap),
-        stayDetails: stayDetailsMap != null 
+        stayDetails: stayDetailsMap != null
             ? Stay.fromMap({...stayDetailsMap, 'post_id': json['id'] ?? 0})
             : null,
-        vehicleDetails: vehicleDetailsMap != null 
-            ? Vehicle.fromMap({...vehicleDetailsMap, 'post_id': json['id'] ?? 0})
+        vehicleDetails: vehicleDetailsMap != null
+            ? Vehicle.fromMap({
+                ...vehicleDetailsMap,
+                'post_id': json['id'] ?? 0,
+              })
             : null,
-        activityDetails: activityDetailsMap != null 
-            ? Activity.fromMap({...activityDetailsMap, 'post_id': json['id'] ?? 0})
+        activityDetails: activityDetailsMap != null
+            ? Activity.fromMap({
+                ...activityDetailsMap,
+                'post_id': json['id'] ?? 0,
+              })
             : null,
         images: imageUrls,
-        createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-        updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : null,
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : null,
       );
     } catch (e) {
       print('❌ Error parsing Listing.fromJson: $e');
@@ -158,7 +179,8 @@ class Listing {
     };
 
     if (id != null) map['id'] = id;
-    if (description != null && description!.isNotEmpty) map['description'] = description;
+    if (description != null && description!.isNotEmpty)
+      map['description'] = description;
     if (status.isNotEmpty) map['status'] = status;
     if (availability != null) map['availability'] = availability;
     if (images.isNotEmpty) map['images'] = images;
@@ -180,13 +202,18 @@ class Listing {
       if (vehicleDetails!.model != null && vehicleDetails!.model!.isNotEmpty) {
         vehicleMap['model'] = vehicleDetails!.model;
       }
-      if (vehicleDetails!.year != null) vehicleMap['year'] = vehicleDetails!.year;
-      if (vehicleDetails!.fuelType != null && vehicleDetails!.fuelType!.isNotEmpty) {
+      if (vehicleDetails!.year != null)
+        vehicleMap['year'] = vehicleDetails!.year;
+      if (vehicleDetails!.fuelType != null &&
+          vehicleDetails!.fuelType!.isNotEmpty) {
         vehicleMap['fuel_type'] = vehicleDetails!.fuelType;
       }
-      if (vehicleDetails!.transmission != null) vehicleMap['transmission'] = vehicleDetails!.transmission;
-      if (vehicleDetails!.seats != null) vehicleMap['seats'] = vehicleDetails!.seats;
-      if (vehicleDetails!.features != null) vehicleMap['features'] = vehicleDetails!.features;
+      if (vehicleDetails!.transmission != null)
+        vehicleMap['transmission'] = vehicleDetails!.transmission;
+      if (vehicleDetails!.seats != null)
+        vehicleMap['seats'] = vehicleDetails!.seats;
+      if (vehicleDetails!.features != null)
+        vehicleMap['features'] = vehicleDetails!.features;
       map['vehicle_details'] = vehicleMap;
     }
 
@@ -229,7 +256,7 @@ class ListingFilters {
 
   Map<String, dynamic> toQueryParams() {
     final params = <String, dynamic>{};
-    
+
     if (category != null) params['category'] = category;
     if (wilaya != null) params['wilaya'] = wilaya;
     if (city != null) params['city'] = city;
@@ -285,9 +312,11 @@ class ListingService {
   }
 
   /// Search/filter listings (public)
-  /// 
+  ///
   /// GET /api/listings
-  Future<ApiResponse<PaginatedResponse<Listing>>> searchListings([ListingFilters? filters]) async {
+  Future<ApiResponse<PaginatedResponse<Listing>>> searchListings([
+    ListingFilters? filters,
+  ]) async {
     try {
       final response = await _apiClient.get(
         ApiConfig.listings,
@@ -299,20 +328,22 @@ class ListingService {
           .toList();
 
       final meta = response['meta'] ?? {};
-      
-      return ApiResponse.success(PaginatedResponse(
-        items: listings,
-        total: meta['total'] ?? listings.length,
-        limit: meta['limit'] ?? filters?.limit ?? 20,
-        offset: meta['offset'] ?? filters?.offset ?? 0,
-      ));
+
+      return ApiResponse.success(
+        PaginatedResponse(
+          items: listings,
+          total: meta['total'] ?? listings.length,
+          limit: meta['limit'] ?? filters?.limit ?? 20,
+          offset: meta['offset'] ?? filters?.offset ?? 0,
+        ),
+      );
     } catch (e) {
       return ApiResponse.error(e.toString());
     }
   }
 
   /// Get a single listing by ID (public)
-  /// 
+  ///
   /// GET /api/listings/:id
   Future<ApiResponse<Listing>> getListingById(int id) async {
     try {
@@ -325,11 +356,13 @@ class ListingService {
   }
 
   /// Get listings by owner ID (public)
-  /// 
+  ///
   /// GET /api/listings/owner/:ownerId
   Future<ApiResponse<List<Listing>>> getListingsByOwner(String ownerId) async {
     try {
-      final response = await _apiClient.get('${ApiConfig.listings}/owner/$ownerId');
+      final response = await _apiClient.get(
+        '${ApiConfig.listings}/owner/$ownerId',
+      );
       final listings = (response['data'] as List<dynamic>)
           .map((json) => Listing.fromJson(json))
           .toList();
@@ -340,7 +373,7 @@ class ListingService {
   }
 
   /// Get current user's listings (authenticated)
-  /// 
+  ///
   /// GET /api/listings/my/listings
   Future<ApiResponse<List<Listing>>> getMyListings() async {
     try {
@@ -349,10 +382,10 @@ class ListingService {
         '${ApiConfig.listings}/my/listings',
         requiresAuth: true,
       );
-      
+
       print('📥 getMyListings response type: ${response.runtimeType}');
       print('📥 getMyListings response: $response');
-      
+
       // Handle different response structures
       dynamic listingsData;
       if (response is Map && response.containsKey('data')) {
@@ -366,12 +399,12 @@ class ListingService {
         print('⚠️ Unexpected response structure: ${response.runtimeType}');
         return ApiResponse.error('Unexpected response structure');
       }
-      
+
       if (listingsData is! List) {
         print('⚠️ Data is not a list: ${listingsData.runtimeType}');
         return ApiResponse.error('Expected list of listings');
       }
-      
+
       print('🔄 Parsing ${listingsData.length} listings...');
       final List<Listing> listings = [];
       for (int i = 0; i < listingsData.length; i++) {
@@ -389,7 +422,7 @@ class ListingService {
           print('  ❌ Error parsing item $i: $e');
         }
       }
-      
+
       print('✅ Successfully parsed ${listings.length} listings');
       return ApiResponse.success(listings);
     } catch (e, stackTrace) {
@@ -400,22 +433,22 @@ class ListingService {
   }
 
   /// Create a new listing (authenticated)
-  /// 
+  ///
   /// POST /api/listings
   Future<ApiResponse<Listing>> createListing(Listing listing) async {
     try {
       print('🔑 Auth token present: ${_apiClient.isAuthenticated}');
       print('📤 Sending to: ${ApiConfig.listings}');
-      
+
       final body = listing.toJson();
       print('📤 Body: $body');
-      
+
       final response = await _apiClient.post(
         ApiConfig.listings,
         body: body,
         requiresAuth: true,
       );
-      
+
       print('📥 Response: $response');
       final createdListing = Listing.fromJson(response['data'] ?? response);
       return ApiResponse.success(createdListing);
@@ -430,7 +463,7 @@ class ListingService {
   }
 
   /// Update an existing listing (authenticated)
-  /// 
+  ///
   /// PATCH /api/listings/:id
   Future<ApiResponse<Listing>> updateListing(int id, Listing listing) async {
     try {
@@ -447,14 +480,11 @@ class ListingService {
   }
 
   /// Delete a listing (authenticated)
-  /// 
+  ///
   /// DELETE /api/listings/:id
   Future<ApiResponse<void>> deleteListing(int id) async {
     try {
-      await _apiClient.delete(
-        '${ApiConfig.listings}/$id',
-        requiresAuth: true,
-      );
+      await _apiClient.delete('${ApiConfig.listings}/$id', requiresAuth: true);
       return ApiResponse.success(null);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -462,7 +492,7 @@ class ListingService {
   }
 
   /// Publish a listing (authenticated)
-  /// 
+  ///
   /// POST /api/listings/:id/publish
   Future<ApiResponse<Listing>> publishListing(int id) async {
     try {
@@ -478,7 +508,7 @@ class ListingService {
   }
 
   /// Unpublish a listing (authenticated)
-  /// 
+  ///
   /// POST /api/listings/:id/unpublish
   Future<ApiResponse<Listing>> unpublishListing(int id) async {
     try {
@@ -494,9 +524,10 @@ class ListingService {
   }
 
   /// Get listing availability (public)
-  /// 
+  ///
   /// GET /api/listings/:id/availability
-  Future<ApiResponse<Map<String, dynamic>>> checkAvailability(int id, {
+  Future<ApiResponse<Map<String, dynamic>>> checkAvailability(
+    int id, {
     DateTime? startDate,
     DateTime? endDate,
   }) async {
@@ -516,14 +547,18 @@ class ListingService {
   }
 
   /// Get unavailable dates for a listing (public)
-  /// 
+  ///
   /// GET /api/listings/:id/unavailable-dates
   Future<ApiResponse<List<DateTime>>> getUnavailableDates(int id) async {
     try {
-      final response = await _apiClient.get('${ApiConfig.listings}/$id/unavailable-dates');
-      final dates = (response['data'] as List<dynamic>?)
-          ?.map((d) => DateTime.parse(d.toString()))
-          .toList() ?? [];
+      final response = await _apiClient.get(
+        '${ApiConfig.listings}/$id/unavailable-dates',
+      );
+      final dates =
+          (response['data'] as List<dynamic>?)
+              ?.map((d) => DateTime.parse(d.toString()))
+              .toList() ??
+          [];
       return ApiResponse.success(dates);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -531,18 +566,21 @@ class ListingService {
   }
 
   /// Upload images to a listing (authenticated)
-  /// 
+  ///
   /// POST /api/listings/:id/images
-  Future<ApiResponse<List<String>>> uploadImages(int id, List<String> filePaths) async {
+  Future<ApiResponse<List<String>>> uploadImages(
+    int id,
+    List<String> filePaths,
+  ) async {
     try {
       final base64Images = <String>[];
-      
+
       // Convert file paths to base64
       for (final path in filePaths) {
         final file = File(path);
         if (await file.exists()) {
           final bytes = await file.readAsBytes();
-          
+
           // Compress image if needed
           Uint8List compressedBytes = bytes;
           try {
@@ -557,12 +595,12 @@ class ListingService {
           } catch (e) {
             print('⚠️ Image compression failed, using original: $e');
           }
-          
+
           final base64String = base64Encode(compressedBytes);
           base64Images.add('data:image/jpeg;base64,$base64String');
         }
       }
-      
+
       if (base64Images.isEmpty) {
         return ApiResponse.error('No valid images to upload');
       }
@@ -588,6 +626,52 @@ class ListingService {
       return ApiResponse.success(uploadedUrls);
     } catch (e) {
       print('❌ uploadImages error: $e');
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  /// Delete an image by ID (authenticated)
+  ///
+  /// DELETE /api/images/:id
+  Future<ApiResponse<void>> deleteImage(int imageId) async {
+    try {
+      await _apiClient.delete('/images/$imageId', requiresAuth: true);
+      return ApiResponse.success(null);
+    } catch (e) {
+      print('❌ deleteImage error: $e');
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  /// Delete an image by URL - finds the image ID first (authenticated)
+  ///
+  /// This is useful when you only have the URL and need to delete
+  Future<ApiResponse<void>> deleteImageByUrl(
+    int postId,
+    String imageUrl,
+  ) async {
+    try {
+      // Get all images for this post
+      final response = await _apiClient.get(
+        '${ApiConfig.listings}/$postId/images',
+      );
+
+      final images = response['data'] as List<dynamic>?;
+      if (images == null) {
+        return ApiResponse.error('No images found');
+      }
+
+      // Find the image with matching URL
+      for (final img in images) {
+        if (img is Map && img['secure_url'] == imageUrl) {
+          final imageId = img['id'] as int;
+          return deleteImage(imageId);
+        }
+      }
+
+      return ApiResponse.error('Image not found');
+    } catch (e) {
+      print('❌ deleteImageByUrl error: $e');
       return ApiResponse.error(e.toString());
     }
   }

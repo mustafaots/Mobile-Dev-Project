@@ -8,14 +8,17 @@ class CommonFormController {
   final TextEditingController wilayaController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  
+
   final ImagePicker picker = ImagePicker();
   List<XFile> selectedImages = [];
-  
+
+  /// URLs of images that were removed and need to be deleted from the backend
+  List<String> removedImageUrls = [];
+
   double? selectedLatitude;
   double? selectedLongitude;
   List<AvailabilityInterval> availabilityIntervals = [];
-  
+
   /// All 58 Algerian wilayas in English (sorted alphabetically)
   final List<String> wilayas = [
     'Adrar',
@@ -74,7 +77,7 @@ class CommonFormController {
     'Tlemcen',
     'Touggourt',
   ];
-  
+
   void loadExistingData(CreatePostData postData) {
     if (postData.location.wilaya.isNotEmpty) {
       wilayaController.text = postData.location.wilaya;
@@ -83,15 +86,15 @@ class CommonFormController {
       selectedLatitude = postData.location.latitude;
       selectedLongitude = postData.location.longitude;
     }
-    
-    availabilityIntervals = List.from(postData.availability);
-    selectedImages = postData.imagePaths
-        .map((path) => XFile(path))
-        .toList();
-  }
-  
-  Future<void> pickImage(ImageSource source) async {
 
+    availabilityIntervals = List.from(postData.availability);
+
+    // Clear and repopulate images (modify in place to preserve reference)
+    selectedImages.clear();
+    selectedImages.addAll(postData.imagePaths.map((path) => XFile(path)));
+  }
+
+  Future<void> pickImage(ImageSource source) async {
     if (source == ImageSource.gallery) {
       final List<XFile> images = await picker.pickMultiImage();
       selectedImages.addAll(images);
@@ -102,15 +105,34 @@ class CommonFormController {
       }
     }
   }
-  
+
   void removeImage(int index) {
-    selectedImages.removeAt(index);
+    print(
+      '📸 removeImage called with index: $index, list length: ${selectedImages.length}',
+    );
+    if (index >= 0 && index < selectedImages.length) {
+      final removedImage = selectedImages[index];
+      final path = removedImage.path;
+
+      // Track removed URLs for backend deletion
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        removedImageUrls.add(path);
+        print('📸 Added to removedImageUrls: $path');
+      }
+
+      final newList = List<XFile>.from(selectedImages);
+      newList.removeAt(index);
+      selectedImages = newList;
+      print('📸 After removal, list length: ${selectedImages.length}');
+    } else {
+      print('📸 Index out of bounds!');
+    }
   }
-  
+
   void removeAvailabilityInterval(int index) {
     availabilityIntervals.removeAt(index);
   }
-  
+
   bool validateForm() {
     return wilayaController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
@@ -120,7 +142,7 @@ class CommonFormController {
         availabilityIntervals.isNotEmpty &&
         selectedImages.isNotEmpty;
   }
-  
+
   CreatePostData updatePostData(CreatePostData originalPostData) {
     return CreatePostData(
       id: originalPostData.id, // Preserve id for editing
@@ -143,7 +165,7 @@ class CommonFormController {
       vehicleDetails: originalPostData.vehicleDetails,
     );
   }
-  
+
   void dispose() {
     wilayaController.dispose();
     cityController.dispose();

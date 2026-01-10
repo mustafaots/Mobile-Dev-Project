@@ -15,10 +15,6 @@ class ActivityFormController {
   final TextEditingController durationController = TextEditingController();
   final TextEditingController groupSizeController = TextEditingController();
 
-  final TextEditingController customKeyController = TextEditingController();
-  final TextEditingController customValueController = TextEditingController();
-
-  final List<MapEntry<String, String>> customRequirements = [];
   String selectedPriceRate = ''; // Empty string - user must select
 
   final List<String> priceRates = ['hour', 'day', 'week', 'month'];
@@ -79,40 +75,17 @@ class ActivityFormController {
           requirements['duration_hours']?.toString() ?? '';
       groupSizeController.text =
           requirements['max_group_size']?.toString() ?? '';
-
-      customRequirements.clear();
-      requirements.forEach((key, value) {
-        if (!_isStandardRequirement(key)) {
-          customRequirements.add(MapEntry(key, value.toString()));
-        }
-      });
     }
   }
 
-  bool _isStandardRequirement(String key) {
-    return [
-      'min_age',
-      'equipment',
-      'experience_level',
-      'duration_hours',
-      'max_group_size',
-    ].contains(key);
-  }
-
   Map<String, dynamic> buildRequirementsJson() {
-    final requirements = <String, dynamic>{
+    return <String, dynamic>{
       'min_age': int.tryParse(minAgeController.text) ?? 18,
       'equipment': equipmentController.text,
       'experience_level': experienceController.text,
       'duration_hours': double.tryParse(durationController.text) ?? 2.0,
       'max_group_size': int.tryParse(groupSizeController.text) ?? 10,
     };
-
-    for (final req in customRequirements) {
-      requirements[req.key] = req.value;
-    }
-
-    return requirements;
   }
 
   bool validateForm() {
@@ -167,7 +140,5 @@ class ActivityFormController {
     experienceController.dispose();
     durationController.dispose();
     groupSizeController.dispose();
-    customKeyController.dispose();
-    customValueController.dispose();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/ActivityFormLogic.dart';
-import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/CustomRequirementWidget.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/EquipmentDropdown.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/Activity%20Post%20Details/Activity%20Widgets/ExperienceDropdown.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ class RequirementSection extends StatelessWidget {
   final Color secondaryTextColor;
   final Color cardColor;
   final VoidCallback onUpdate;
-  
+
   const RequirementSection({
     Key? key,
     required this.formController,
@@ -22,7 +21,7 @@ class RequirementSection extends StatelessWidget {
     required this.cardColor,
     required this.onUpdate,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,11 +49,11 @@ class RequirementSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // Minimum Age Row
           _buildMinAgeRow(context),
           const SizedBox(height: 16),
-          
+
           // Equipment Dropdown
           EquipmentDropdown(
             controller: formController.equipmentController,
@@ -68,7 +67,7 @@ class RequirementSection extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          
+
           // Experience Dropdown
           ExperienceDropdown(
             controller: formController.experienceController,
@@ -82,28 +81,18 @@ class RequirementSection extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          
+
           // Duration Row
           _buildDurationRow(context),
           const SizedBox(height: 16),
-          
+
           // Group Size Row
           _buildGroupSizeRow(context),
-          const SizedBox(height: 24),
-          
-          // Custom Requirements
-          CustomRequirementWidget(
-            formController: formController,
-            textColor: textColor,
-            secondaryTextColor: secondaryTextColor,
-            cardColor: cardColor,
-            onUpdate: onUpdate,
-          ),
         ],
       ),
     );
   }
-  
+
   Widget _buildMinAgeRow(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Row(
@@ -133,15 +122,17 @@ class RequirementSection extends StatelessWidget {
             children: [
               Text(loc.year_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text(loc.minimum_age_required, 
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                loc.minimum_age_required,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ),
       ],
     );
   }
-  
+
   Widget _buildDurationRow(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Row(
@@ -171,15 +162,17 @@ class RequirementSection extends StatelessWidget {
             children: [
               Text(loc.hours_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text(loc.duration_description, 
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                loc.duration_description,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ),
       ],
     );
   }
-  
+
   Widget _buildGroupSizeRow(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Row(
@@ -209,8 +202,10 @@ class RequirementSection extends StatelessWidget {
             children: [
               Text(loc.persons_label, style: TextStyle(color: Colors.grey)),
               SizedBox(height: 8),
-              Text(loc.max_participants, 
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                loc.max_participants,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ),

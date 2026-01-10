@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:easy_vacation/models/locations.model.dart';
 
 class StayDetails {
@@ -35,9 +36,19 @@ class ActivityDetails {
   }
 
   factory ActivityDetails.fromMap(Map<String, dynamic> map) {
+    Map<String, dynamic> requirements = {};
+    final rawRequirements = map['requirements'];
+    if (rawRequirements != null) {
+      if (rawRequirements is String) {
+        requirements = Map<String, dynamic>.from(jsonDecode(rawRequirements));
+      } else if (rawRequirements is Map) {
+        requirements = Map<String, dynamic>.from(rawRequirements);
+      }
+    }
+
     return ActivityDetails(
       activityType: map['activity_type'] ?? '',
-      requirements: Map<String, dynamic>.from(map['requirements'] ?? {}),
+      requirements: requirements,
     );
   }
 }
@@ -81,7 +92,11 @@ class VehicleDetails {
       if (featuresData is String) {
         // From SQLite or serialized - stored as JSON string
         try {
-          final decoded = featuresData.isNotEmpty ? (featuresData.startsWith('{') || featuresData.startsWith('[') ? featuresData : null) : null;
+          final decoded = featuresData.isNotEmpty
+              ? (featuresData.startsWith('{') || featuresData.startsWith('[')
+                    ? featuresData
+                    : null)
+              : null;
           if (decoded != null) {
             final parsed = Map<String, dynamic>.from({});
             // Try to parse as JSON
@@ -100,7 +115,10 @@ class VehicleDetails {
         parsedFeatures = Map<String, dynamic>.from(featuresData);
       } else if (featuresData is List) {
         // From API - as a List, convert to map with index keys
-        parsedFeatures = {for (int i = 0; i < featuresData.length; i++) i.toString(): featuresData[i]};
+        parsedFeatures = {
+          for (int i = 0; i < featuresData.length; i++)
+            i.toString(): featuresData[i],
+        };
       }
     }
 

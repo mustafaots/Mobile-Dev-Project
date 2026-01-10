@@ -331,9 +331,14 @@ class ListingService {
       }
     }
 
-    // Handle new images
+    // Handle new images - only upload base64 images, skip URLs
     if (updates.images && updates.images.length > 0) {
-      await imageService.uploadImages(postId, updates.images);
+      const newImages = updates.images.filter(img => 
+        !img.startsWith('http://') && !img.startsWith('https://')
+      );
+      if (newImages.length > 0) {
+        await imageService.uploadImages(postId, newImages);
+      }
     }
 
     return this.getListingById(postId);

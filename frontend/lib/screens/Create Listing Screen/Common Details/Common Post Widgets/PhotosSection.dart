@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_vacation/shared/themes.dart';
 
-class PhotosSection extends StatelessWidget {
+class PhotosSection extends StatefulWidget {
   final CommonFormController formController;
   final Color textColor;
   final Color secondaryTextColor;
   final Color cardColor;
   final Color categoryColor;
   final VoidCallback onUpdate;
-  
+
   const PhotosSection({
     Key? key,
     required this.formController,
@@ -22,7 +22,12 @@ class PhotosSection extends StatelessWidget {
     required this.categoryColor,
     required this.onUpdate,
   }) : super(key: key);
-  
+
+  @override
+  State<PhotosSection> createState() => _PhotosSectionState();
+}
+
+class _PhotosSectionState extends State<PhotosSection> {
   Future<void> _showImageSourceBottomSheet(BuildContext context) async {
     showModalBottomSheet(
       context: context,
@@ -46,12 +51,15 @@ class PhotosSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ListTile(
-                  leading: Icon(Icons.photo_library, color: AppTheme.primaryColor),
+                  leading: Icon(
+                    Icons.photo_library,
+                    color: AppTheme.primaryColor,
+                  ),
                   title: Text(AppLocalizations.of(context)!.gallery_option),
                   onTap: () async {
                     Navigator.pop(context);
-                    await formController.pickImage(ImageSource.gallery);
-                    onUpdate();
+                    await widget.formController.pickImage(ImageSource.gallery);
+                    widget.onUpdate();
                   },
                 ),
                 ListTile(
@@ -59,8 +67,8 @@ class PhotosSection extends StatelessWidget {
                   title: Text(AppLocalizations.of(context)!.camera_option),
                   onTap: () async {
                     Navigator.pop(context);
-                    await formController.pickImage(ImageSource.camera);
-                    onUpdate();
+                    await widget.formController.pickImage(ImageSource.camera);
+                    widget.onUpdate();
                   },
                 ),
               ],
@@ -70,7 +78,7 @@ class PhotosSection extends StatelessWidget {
       },
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -78,27 +86,30 @@ class PhotosSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: cardColor,
+        color: widget.cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: secondaryTextColor.withOpacity(0.2)),
+        border: Border.all(color: widget.secondaryTextColor.withOpacity(0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.photo_library_outlined,
-                  color: categoryColor, size: 20),
+              Icon(
+                Icons.photo_library_outlined,
+                color: widget.categoryColor,
+                size: 20,
+              ),
               const SizedBox(width: 8),
               Text(
                 loc.photos_section_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
-                  color: textColor,
+                  color: widget.textColor,
                 ),
               ),
-              if (formController.selectedImages.isNotEmpty) ...[
+              if (widget.formController.selectedImages.isNotEmpty) ...[
                 const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -106,15 +117,15 @@ class PhotosSection extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: categoryColor.withOpacity(0.1),
+                    color: widget.categoryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${formController.selectedImages.length}',
+                    '${widget.formController.selectedImages.length}',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: categoryColor,
+                      color: widget.categoryColor,
                     ),
                   ),
                 ),
@@ -124,20 +135,19 @@ class PhotosSection extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             loc.photos_description,
-            style: TextStyle(
-              fontSize: 14,
-              color: secondaryTextColor,
-            ),
+            style: TextStyle(fontSize: 14, color: widget.secondaryTextColor),
           ),
           const SizedBox(height: 16),
           ImageGrid(
-            selectedImages: formController.selectedImages,
+            key: ValueKey(widget.formController.selectedImages.length),
+            selectedImages: widget.formController.selectedImages,
             onRemoveImage: (index) {
-              formController.removeImage(index);
-              onUpdate();
+              widget.formController.removeImage(index);
+              setState(() {});
+              widget.onUpdate();
             },
             onAddImage: () => _showImageSourceBottomSheet(context),
-            categoryColor: categoryColor,
+            categoryColor: widget.categoryColor,
           ),
         ],
       ),

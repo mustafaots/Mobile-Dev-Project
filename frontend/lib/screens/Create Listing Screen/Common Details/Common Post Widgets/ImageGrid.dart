@@ -9,7 +9,7 @@ class ImageGrid extends StatelessWidget {
   final Function(int) onRemoveImage;
   final VoidCallback onAddImage;
   final Color categoryColor;
-  
+
   const ImageGrid({
     Key? key,
     required this.selectedImages,
@@ -21,7 +21,7 @@ class ImageGrid extends StatelessWidget {
   bool _isNetworkUrl(String path) {
     return path.startsWith('http://') || path.startsWith('https://');
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -32,61 +32,75 @@ class ImageGrid extends StatelessWidget {
           final index = entry.key;
           final image = entry.value;
           final isNetworkImage = _isNetworkUrl(image.path);
-          
-          return Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: isNetworkImage
-                    ? CachedNetworkImage(
-                        imageUrl: image.path,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
+
+          return SizedBox(
+            width: 100,
+            height: 100,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: isNetworkImage
+                      ? CachedNetworkImage(
+                          imageUrl: image.path,
                           width: 100,
                           height: 100,
-                          color: Colors.grey[200],
-                          child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                        ),
-                        errorWidget: (context, url, error) => Container(
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey[200],
+                            child: const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.error),
+                          ),
+                        )
+                      : Image.file(
+                          File(image.path),
                           width: 100,
                           height: 100,
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.error),
+                          fit: BoxFit.cover,
                         ),
-                      )
-                    : Image.file(
-                        File(image.path),
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
+                ),
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        print('🗑️ Removing image at index: $index');
+                        onRemoveImage(index);
+                      },
+                      borderRadius: BorderRadius.circular(14),
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
-              ),
-              Positioned(
-                top: 4,
-                right: 4,
-                child: GestureDetector(
-                  onTap: () => onRemoveImage(index),
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 16,
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }).toList(),
-        
+
         InkWell(
           onTap: onAddImage,
           borderRadius: BorderRadius.circular(12),
@@ -105,11 +119,7 @@ class ImageGrid extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.add_a_photo,
-                  color: categoryColor,
-                  size: 28,
-                ),
+                Icon(Icons.add_a_photo, color: categoryColor, size: 28),
                 const SizedBox(height: 4),
                 Text(
                   AppLocalizations.of(context)!.add_button,

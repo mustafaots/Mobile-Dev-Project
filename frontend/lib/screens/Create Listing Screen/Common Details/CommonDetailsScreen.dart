@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/models/locations.model.dart' as loc_model;
@@ -19,14 +20,17 @@ import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/MapLocationPicker.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
-
-
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class CommonDetailsScreen extends StatefulWidget {
   final CreatePostData postData;
   final dynamic userId;
 
-  const CommonDetailsScreen({required this.userId, required this.postData, super.key});
+  const CommonDetailsScreen({
+    required this.userId,
+    required this.postData,
+    super.key,
+  });
 
   @override
   State<CommonDetailsScreen> createState() => _CommonDetailsScreenState();
@@ -35,19 +39,19 @@ class CommonDetailsScreen extends StatefulWidget {
 class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
   final CommonFormController _formController = CommonFormController();
-  
+
   @override
   void initState() {
     super.initState();
     _formController.loadExistingData(widget.postData);
   }
-  
+
   @override
   void dispose() {
     _formController.dispose();
     super.dispose();
   }
-  
+
   Future<void> _selectLocationOnMap() async {
     final result = await Navigator.push(
       context,
@@ -66,7 +70,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
       });
     }
   }
-  
+
   Future<void> _addAvailabilityInterval() async {
     final DateTimeRange? range = await showDateRangePicker(
       context: context,
@@ -92,34 +96,31 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         range.start.month,
         range.start.day,
       );
-      
-      final endDate = DateTime(
-        range.end.year,
-        range.end.month,
-        range.end.day,
-      );
+
+      final endDate = DateTime(range.end.year, range.end.month, range.end.day);
 
       setState(() {
-        _formController.availabilityIntervals.add(AvailabilityInterval(
-          start: startDate,
-          end: endDate,
-        ));
+        _formController.availabilityIntervals.add(
+          AvailabilityInterval(start: startDate, end: endDate),
+        );
       });
     }
   }
-  
+
   bool _isUpdating = false;
 
   void _submitForm() {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.form_error_fill_all)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.form_error_fill_all),
+        ),
       );
       return;
     }
 
     final updatedPostData = _formController.updatePostData(widget.postData);
-    
+
     // If editing, update the listing directly
     if (updatedPostData.isEditing) {
       _updateListing(updatedPostData);
@@ -128,7 +129,10 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ConfirmListingScreen(userId: widget.userId, postData: updatedPostData),
+          builder: (context) => ConfirmListingScreen(
+            userId: widget.userId,
+            postData: updatedPostData,
+          ),
         ),
       );
     }
@@ -136,14 +140,16 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
 
   Future<void> _updateListing(CreatePostData postData) async {
     if (_isUpdating) return;
-    
+
     setState(() => _isUpdating = true);
-    
+
     final loc = AppLocalizations.of(context)!;
-    
+
     try {
       // Convert location
-      final location = loc_model.Location.fromDetailsLocation(postData.location);
+      final location = loc_model.Location.fromDetailsLocation(
+        postData.location,
+      );
 
       // Create category-specific details
       Stay? stayDetails;
@@ -201,6 +207,54 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         );
       }
 
+      // Delete removed images from the backend first
+      if (_formController.removedImageUrls.isNotEmpty) {
+        print(
+          '🗑️ Deleting ${_formController.removedImageUrls.length} images from backend',
+        );
+        for (final imageUrl in _formController.removedImageUrls) {
+          print('🗑️ Deleting image: $imageUrl');
+          final deleteResult = await ApiServiceLocator.listings
+              .deleteImageByUrl(postData.id!, imageUrl);
+          if (!deleteResult.isSuccess) {
+            print('⚠️ Failed to delete image: ${deleteResult.message}');
+          }
+        }
+        // Clear the list after deletion
+        _formController.removedImageUrls.clear();
+      }
+
+      // Separate existing URLs from new local images and convert new ones to base64
+      final List<String> imagesToSend = [];
+      for (final path in postData.imagePaths) {
+        if (path.startsWith('http://') || path.startsWith('https://')) {
+          // Existing URL - keep as is
+          imagesToSend.add(path);
+        } else {
+          // New local file - convert to base64
+          final file = File(path);
+          if (await file.exists()) {
+            final bytes = await file.readAsBytes();
+            // Compress image
+            try {
+              final compressed = await FlutterImageCompress.compressWithList(
+                bytes,
+                minWidth: 1920,
+                minHeight: 1080,
+                quality: 85,
+                format: CompressFormat.jpeg,
+              );
+              final base64String = base64Encode(compressed);
+              imagesToSend.add('data:image/jpeg;base64,$base64String');
+            } catch (e) {
+              // If compression fails, use original
+              final base64String = base64Encode(bytes);
+              imagesToSend.add('data:image/jpeg;base64,$base64String');
+            }
+          }
+        }
+      }
+
       // Create the listing object for update
       final listing = Listing(
         id: postData.id,
@@ -215,10 +269,13 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         stayDetails: stayDetails,
         vehicleDetails: vehicleDetails,
         activityDetails: activityDetails,
-        images: postData.imagePaths,
+        images: imagesToSend,
       );
 
-      final result = await ApiServiceLocator.listings.updateListing(postData.id!, listing);
+      final result = await ApiServiceLocator.listings.updateListing(
+        postData.id!,
+        listing,
+      );
 
       if (!mounted) return;
 
@@ -257,7 +314,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
       }
     }
   }
-  
+
   Color get _categoryColor {
     switch (widget.postData.category) {
       case 'stay':
@@ -270,7 +327,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         return AppTheme.primaryColor;
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = context.scaffoldBackgroundColor;
@@ -278,7 +335,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
     final secondaryTextColor = context.secondaryTextColor;
     final cardColor = context.cardColor;
     final loc = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       appBar: App_Bar(context, loc.appbar_complete_listing),
       backgroundColor: backgroundColor,
@@ -293,9 +350,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
               textColor: textColor,
               secondaryTextColor: secondaryTextColor,
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Photos Section
             PhotosSection(
               formController: _formController,
@@ -305,9 +362,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
               categoryColor: _categoryColor,
               onUpdate: () => setState(() {}),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Location Section
             LocationSection(
               formController: _formController,
@@ -318,9 +375,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
               onSelectLocation: _selectLocationOnMap,
               formKey: _formKey,
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Availability Section
             AvailabilitySection(
               formController: _formController,
@@ -331,15 +388,16 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
               onAddAvailability: _addAvailabilityInterval,
               onUpdate: () => setState(() {}),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Submit Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: (_formController.validateForm() && !_isUpdating)
+                  backgroundColor:
+                      (_formController.validateForm() && !_isUpdating)
                       ? _categoryColor
                       : _categoryColor.withOpacity(0.5),
                   foregroundColor: Colors.white,
@@ -349,7 +407,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                   ),
                   elevation: 2,
                 ),
-                onPressed: (_formController.validateForm() && !_isUpdating) ? _submitForm : null,
+                onPressed: (_formController.validateForm() && !_isUpdating)
+                    ? _submitForm
+                    : null,
                 child: _isUpdating
                     ? const SizedBox(
                         width: 24,
@@ -360,7 +420,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                         ),
                       )
                     : Text(
-                        widget.postData.isEditing ? loc.listingHistory_editPost : loc.submit_button,
+                        widget.postData.isEditing
+                            ? loc.listingHistory_editPost
+                            : loc.submit_button,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -368,7 +430,7 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
                       ),
               ),
             ),
-            
+
             const SizedBox(height: 20),
           ],
         ),

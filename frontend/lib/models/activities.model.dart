@@ -23,12 +23,20 @@ class Activity {
   }
 
   factory Activity.fromMap(Map<String, dynamic> map) {
+    Map<String, dynamic> requirements = {};
+    final rawRequirements = map['requirements'];
+    if (rawRequirements != null) {
+      if (rawRequirements is String) {
+        requirements = Map<String, dynamic>.from(jsonDecode(rawRequirements));
+      } else if (rawRequirements is Map) {
+        requirements = Map<String, dynamic>.from(rawRequirements);
+      }
+    }
+
     return Activity(
       postId: map['post_id'] ?? 0,
       activityType: map['activity_type'] ?? '',
-      requirements: map['requirements'] != null
-          ? Map<String, dynamic>.from(jsonDecode(map['requirements']))
-          : {},
+      requirements: requirements,
     );
   }
 
