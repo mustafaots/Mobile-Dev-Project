@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/models/details.model.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
@@ -12,6 +13,7 @@ class SubscriptionInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final cardColor = context.cardColor;
     final textColor = context.textColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -37,8 +39,7 @@ class SubscriptionInfo extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  //loc.confirmListing_payPerPost,
-                  'Pay Per Post',
+                  loc.confirmListing_payPerPost,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -48,26 +49,28 @@ class SubscriptionInfo extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             // Benefits list
             _buildBenefitItem(
               context,
               Icons.check_circle,
-              //loc.confirmListing_oneTimePayment,
-              'One-time payment for this listing'
+              loc.confirmListing_oneTimePayment,
             ),
             _buildBenefitItem(
               context,
               Icons.check_circle,
-              //loc.confirmListing_noSubscriptionRequired,
-              'No subscription required'
+              loc.confirmListing_noSubscriptionRequired,
             ),
             _buildBenefitItem(
               context,
               Icons.check_circle,
-              //loc.confirmListing_payOnlyForThisPost,
-              'Pay only for this post'
-            ),      
+              loc.confirmListing_payOnlyForThisPost,
+            ),
+            _buildBenefitItem(
+              context,
+              Icons.check_circle,
+              loc.confirmListing_amountToPay('500'),
+            ),
           ],
         ),
       ),
@@ -76,7 +79,7 @@ class SubscriptionInfo extends StatelessWidget {
 
   Widget _buildBenefitItem(BuildContext context, IconData icon, String text) {
     final textColor = context.textColor;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(

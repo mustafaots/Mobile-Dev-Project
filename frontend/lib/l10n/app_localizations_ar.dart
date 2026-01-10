@@ -1557,4 +1557,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get common_somethingWrong => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get confirmListing_payPerPost => 'الدفع لكل إعلان';
+
+  @override
+  String get confirmListing_oneTimePayment => 'دفع لمرة واحدة لهذا الإعلان';
+
+  @override
+  String get confirmListing_noSubscriptionRequired => 'لا يتطلب اشتراك';
+
+  @override
+  String get confirmListing_payOnlyForThisPost => 'ادفع فقط مقابل هذا الإعلان';
+
+  @override
+  String confirmListing_amountToPay(String amount) {
+    return 'المبلغ الواجب دفعه: $amount دج';
+  }
+
+  @override
+  String get confirmListing_payPerPostAgreement =>
+      'أوافق على دفع المبلغ الإجمالي وأفهم أن هذا الدفع يتم مرة واحدة لهذا الإعلان فقط.';
+
+  @override
+  String get confirmListing_termsAndConditions =>
+      'بالمتابعة، فإنك توافق على شروط الخدمة وسياسة الخصوصية الخاصة بنا';
+
+  @override
+  String get confirmListing_reviewAndPay =>
+      'راجع إعلانك وأكمل عملية الدفع لنشره';
+
+  @override
+  String get confirmListing_postYourListing => 'انشر إعلانك';
 }

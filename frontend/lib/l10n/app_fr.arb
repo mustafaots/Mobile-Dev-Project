@@ -683,5 +683,23 @@
   "bookings_noContactInfo": "Aucune information de contact disponible",
   "close": "Fermer",
   "reviews_cannotReview": "Vous ne pouvez évaluer que les annonces pour lesquelles vous avez une réservation confirmée",
-  "common_somethingWrong": "Une erreur s'est produite. Veuillez réessayer."
+  "common_somethingWrong": "Une erreur s'est produite. Veuillez réessayer.",
+
+
+  "confirmListing_payPerPost": "Paiement par annonce",
+  "confirmListing_oneTimePayment": "Paiement unique pour cette annonce",
+  "confirmListing_noSubscriptionRequired": "Aucun abonnement requis",
+  "confirmListing_payOnlyForThisPost": "Payez uniquement pour cette annonce",
+  "confirmListing_amountToPay": "Montant à payer : {amount} DZD",
+  "@confirmListing_amountToPay": {
+        "placeholders": {
+            "amount": {
+                "type": "String"
+            }
+        }
+    },
+    "confirmListing_payPerPostAgreement": "J’accepte de payer le montant total et je comprends qu’il s’agit d’un paiement unique pour cette annonce uniquement.",
+    "confirmListing_termsAndConditions": "En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité",
+    "confirmListing_reviewAndPay": "Vérifiez votre annonce et finalisez le paiement pour la publier",
+    "confirmListing_postYourListing": "Publier votre annonce"
 }

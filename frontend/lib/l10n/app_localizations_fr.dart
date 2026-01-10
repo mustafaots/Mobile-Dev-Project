@@ -1601,4 +1601,38 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get common_somethingWrong =>
       'Une erreur s\'est produite. Veuillez réessayer.';
+
+  @override
+  String get confirmListing_payPerPost => 'Paiement par annonce';
+
+  @override
+  String get confirmListing_oneTimePayment =>
+      'Paiement unique pour cette annonce';
+
+  @override
+  String get confirmListing_noSubscriptionRequired => 'Aucun abonnement requis';
+
+  @override
+  String get confirmListing_payOnlyForThisPost =>
+      'Payez uniquement pour cette annonce';
+
+  @override
+  String confirmListing_amountToPay(String amount) {
+    return 'Montant à payer : $amount DZD';
+  }
+
+  @override
+  String get confirmListing_payPerPostAgreement =>
+      'J’accepte de payer le montant total et je comprends qu’il s’agit d’un paiement unique pour cette annonce uniquement.';
+
+  @override
+  String get confirmListing_termsAndConditions =>
+      'En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité';
+
+  @override
+  String get confirmListing_reviewAndPay =>
+      'Vérifiez votre annonce et finalisez le paiement pour la publier';
+
+  @override
+  String get confirmListing_postYourListing => 'Publier votre annonce';
 }

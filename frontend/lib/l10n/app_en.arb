@@ -685,5 +685,23 @@
     "bookings_noContactInfo": "No contact information available",
     "close": "Close",
     "reviews_cannotReview": "You can only review listings you have a confirmed booking for",
-    "common_somethingWrong": "Something went wrong. Please try again."
+    "common_somethingWrong": "Something went wrong. Please try again.",
+
+    "confirmListing_payPerPost": "Pay Per Post",
+    "confirmListing_oneTimePayment": "One-time payment for this listing",
+    "confirmListing_noSubscriptionRequired": "No subscription required",
+    "confirmListing_payOnlyForThisPost": "Pay only for this post",
+    "confirmListing_amountToPay": "Amount to pay: {amount} DZD",
+    "@confirmListing_amountToPay": {
+        "placeholders": {
+            "amount": {
+                "type": "String"
+            }
+        }
+    },
+
+    "confirmListing_payPerPostAgreement": "I agree to pay the total amount and understand this is a one-time payment for this listing only.",
+    "confirmListing_termsAndConditions": "By proceeding, you agree to our Terms of Service and Privacy Policy",
+    "confirmListing_reviewAndPay": "Review your listing and complete payment to publish",
+    "confirmListing_postYourListing": "Post Your Listing"
 }

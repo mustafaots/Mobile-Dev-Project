@@ -1570,4 +1570,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get common_somethingWrong => 'Something went wrong. Please try again.';
+
+  @override
+  String get confirmListing_payPerPost => 'Pay Per Post';
+
+  @override
+  String get confirmListing_oneTimePayment =>
+      'One-time payment for this listing';
+
+  @override
+  String get confirmListing_noSubscriptionRequired =>
+      'No subscription required';
+
+  @override
+  String get confirmListing_payOnlyForThisPost => 'Pay only for this post';
+
+  @override
+  String confirmListing_amountToPay(String amount) {
+    return 'Amount to pay: $amount DZD';
+  }
+
+  @override
+  String get confirmListing_payPerPostAgreement =>
+      'I agree to pay the total amount and understand this is a one-time payment for this listing only.';
+
+  @override
+  String get confirmListing_termsAndConditions =>
+      'By proceeding, you agree to our Terms of Service and Privacy Policy';
+
+  @override
+  String get confirmListing_reviewAndPay =>
+      'Review your listing and complete payment to publish';
+
+  @override
+  String get confirmListing_postYourListing => 'Post Your Listing';
 }

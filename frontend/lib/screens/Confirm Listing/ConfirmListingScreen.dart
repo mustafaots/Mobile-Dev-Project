@@ -175,7 +175,7 @@ class _ConfirmListingContent extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Review your listing and complete payment to publish',
+          loc.confirmListing_reviewAndPay,
           style: TextStyle(
             fontSize: 16,
             color: secondaryTextColor,
@@ -239,7 +239,7 @@ class _ConfirmListingContent extends StatelessWidget {
                   Icon(Icons.rocket_launch, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    'Post Your Listing',
+                    AppLocalizations.of(context)!.confirmListing_postYourListing,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

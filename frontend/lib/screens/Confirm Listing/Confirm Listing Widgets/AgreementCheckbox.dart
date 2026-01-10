@@ -1,3 +1,4 @@
+import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:easy_vacation/shared/theme_helper.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class AgreementCheckbox extends StatelessWidget {
     final cardColor = context.cardColor;
     final textColor = context.textColor;
     final secondaryTextColor = context.secondaryTextColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -62,8 +64,7 @@ class AgreementCheckbox extends StatelessWidget {
                 GestureDetector(
                   onTap: () => onChanged(!agreed),
                   child: Text(
-                    //loc.confirmListing_payPerPostAgreement,
-                    'I agree to pay the total amount and understand this is a one-time payment for this listing only.',
+                    loc.confirmListing_payPerPostAgreement,
                     style: TextStyle(
                       fontSize: 14,
                       color: textColor,
@@ -74,8 +75,7 @@ class AgreementCheckbox extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  //loc.confirmListing_termsAndConditions,
-                  'By proceeding, you agree to our Terms of Service and Privacy Policy',
+                  loc.confirmListing_termsAndConditions,
                   style: TextStyle(
                     fontSize: 12,
                     color: secondaryTextColor,

@@ -3039,6 +3039,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get common_somethingWrong;
+
+  /// No description provided for @confirmListing_payPerPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Per Post'**
+  String get confirmListing_payPerPost;
+
+  /// No description provided for @confirmListing_oneTimePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time payment for this listing'**
+  String get confirmListing_oneTimePayment;
+
+  /// No description provided for @confirmListing_noSubscriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription required'**
+  String get confirmListing_noSubscriptionRequired;
+
+  /// No description provided for @confirmListing_payOnlyForThisPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay only for this post'**
+  String get confirmListing_payOnlyForThisPost;
+
+  /// No description provided for @confirmListing_amountToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to pay: {amount} DZD'**
+  String confirmListing_amountToPay(String amount);
+
+  /// No description provided for @confirmListing_payPerPostAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to pay the total amount and understand this is a one-time payment for this listing only.'**
+  String get confirmListing_payPerPostAgreement;
+
+  /// No description provided for @confirmListing_termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'By proceeding, you agree to our Terms of Service and Privacy Policy'**
+  String get confirmListing_termsAndConditions;
+
+  /// No description provided for @confirmListing_reviewAndPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your listing and complete payment to publish'**
+  String get confirmListing_reviewAndPay;
+
+  /// No description provided for @confirmListing_postYourListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Post Your Listing'**
+  String get confirmListing_postYourListing;
 }
 
 class _AppLocalizationsDelegate

@@ -683,5 +683,22 @@
   "error_networkTimeout": "انتهت مهلة الاتصال. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
   "error_noConnection": "تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.",
   "error_serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
-  "error_unknownError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  "error_unknownError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+
+    "confirmListing_payPerPost": "الدفع لكل إعلان",
+  "confirmListing_oneTimePayment": "دفع لمرة واحدة لهذا الإعلان",
+  "confirmListing_noSubscriptionRequired": "لا يتطلب اشتراك",
+  "confirmListing_payOnlyForThisPost": "ادفع فقط مقابل هذا الإعلان",
+  "confirmListing_amountToPay": "المبلغ الواجب دفعه: {amount} دج",
+  "@confirmListing_amountToPay": {
+        "placeholders": {
+            "amount": {
+                "type": "String"
+            }
+        }
+    },
+    "confirmListing_payPerPostAgreement": "أوافق على دفع المبلغ الإجمالي وأفهم أن هذا الدفع يتم مرة واحدة لهذا الإعلان فقط.",
+    "confirmListing_termsAndConditions": "بالمتابعة، فإنك توافق على شروط الخدمة وسياسة الخصوصية الخاصة بنا",
+    "confirmListing_reviewAndPay": "راجع إعلانك وأكمل عملية الدفع لنشره",
+    "confirmListing_postYourListing": "انشر إعلانك"
 }
