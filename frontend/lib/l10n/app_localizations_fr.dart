@@ -313,6 +313,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get field_title_error => 'Veuillez ajouter un titre';
 
   @override
+  String get field_title_min_length =>
+      'Le titre doit contenir au moins 3 caractères';
+
+  @override
   String get field_description => 'Description';
 
   @override
