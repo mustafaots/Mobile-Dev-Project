@@ -4,6 +4,7 @@ import 'package:easy_vacation/screens/Home Screen/HomeScreen.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'package:easy_vacation/services/sync/sync_manager.dart';
+import 'package:easy_vacation/services/sync/background_sync_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_vacation/bloc/theme/theme_cubit.dart';
@@ -31,23 +32,34 @@ void main() async {
 
   // Initialize all repositories
   appRepos = await RepoFactory.getRepositories();
-  
+
   // Initialize SharedPreferences service
   await SharedPrefsService.init();
 
   // Firebase Initialization
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.init(); // initialize local notifications & FCM listeners
-  
+
   // Initialize API services for backend connection
   await ApiServiceLocator.init();
-  
+
   // Initialize sync manager for remote/local data synchronization
   await SyncManager.instance.init();
-  
+
+  // Initialize background sync service
+  await BackgroundSyncService.instance.init();
+
+  // Start foreground sync with 1-second interval (works when app is open)
+  BackgroundSyncService.instance.startForegroundSync(
+    interval: const Duration(seconds: 1),
+  );
+
+  // Register periodic background sync (minimum 15 min on Android when app is closed)
+  await BackgroundSyncService.instance.registerPeriodicSync(
+    frequency: const Duration(minutes: 15),
+  );
+
   runApp(const MainApp());
 }
 
@@ -72,7 +84,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     _loadSavedSettings();
-    
+
     // Defer session check to after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       DeepLinkHandler.init(context);
@@ -88,6 +100,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void dispose() {
     DeepLinkHandler.dispose();
+    BackgroundSyncService.instance.dispose();
     super.dispose();
   }
 
@@ -100,7 +113,7 @@ class _MainAppState extends State<MainApp> {
 
   Future<void> _checkStoredSession() async {
     final user = await SyncManager.instance.auth.tryRestoreSession();
-    
+
     if (user != null) {
       setState(() {
         _initialScreen = HomeScreen(userId: user.id);
@@ -110,8 +123,9 @@ class _MainAppState extends State<MainApp> {
       final isFirstLaunch = SharedPrefsService.isFirstLaunch();
       SharedPrefsService.setFirstLaunchCompleted();
       setState(() {
-        _initialScreen =
-            isFirstLaunch ? const WelcomeScreen() : const SignUpScreen();
+        _initialScreen = isFirstLaunch
+            ? const WelcomeScreen()
+            : const SignUpScreen();
         _isCheckingSession = false;
       });
     }
@@ -129,11 +143,7 @@ class _MainAppState extends State<MainApp> {
     if (_isCheckingSession) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
+        home: Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 
@@ -149,11 +159,7 @@ class _MainAppState extends State<MainApp> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('en'),
-              Locale('fr'),
-              Locale('ar'),
-            ],
+            supportedLocales: const [Locale('en'), Locale('fr'), Locale('ar')],
             locale: _locale,
             debugShowCheckedModeBanner: false,
             title: 'Easy Vacation',
