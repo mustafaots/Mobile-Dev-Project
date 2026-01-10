@@ -297,27 +297,46 @@ class SearchService {
 
   /**
    * Get featured/popular listings
+   * Returns 5 random posts from the top 10 highest rated posts
    */
-  async getFeaturedListings(limit = 10): Promise<SearchResult[]> {
-    // Get posts with most bookings or reviews
-    const { data: popularPosts } = await supabase
-      .from('reviews')
-      .select('post_id')
-      .order('created_at', { ascending: false })
-      .limit(100);
+  async getFeaturedListings(limit = 5): Promise<SearchResult[]> {
+    // Get all posts with their average ratings
+    const { data: allPosts } = await supabase
+      .from('posts')
+      .select('id')
+      .eq('status', 'published');
 
-    const postCounts = new Map<number, number>();
-    (popularPosts ?? []).forEach((r) => {
-      postCounts.set(r.post_id, (postCounts.get(r.post_id) ?? 0) + 1);
-    });
+    if (!allPosts || allPosts.length === 0) {
+      // No posts yet, return empty
+      return [];
+    }
 
-    const sortedPostIds = Array.from(postCounts.entries())
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, limit)
-      .map(([id]) => id);
+    const allPostIds = allPosts.map((p) => p.id);
+    const ratings = await this.getPostRatings(allPostIds);
 
-    if (sortedPostIds.length === 0) {
-      // No reviews yet, return recent listings
+    // Sort posts by average rating (descending) and get top 10
+    const sortedByRating = allPostIds
+      .map((id) => ({
+        id,
+        rating: ratings.get(id)?.average ?? 0,
+        reviewCount: ratings.get(id)?.count ?? 0,
+      }))
+      .sort((a, b) => {
+        // Primary sort by rating, secondary by review count
+        if (b.rating !== a.rating) return b.rating - a.rating;
+        return b.reviewCount - a.reviewCount;
+      })
+      .slice(0, 10);
+
+    // If we have fewer than 10 posts, use all of them
+    const top10Ids = sortedByRating.map((p) => p.id);
+
+    // Randomly select up to 'limit' posts from the top 10
+    const shuffled = [...top10Ids].sort(() => Math.random() - 0.5);
+    const selectedIds = shuffled.slice(0, Math.min(limit, shuffled.length));
+
+    if (selectedIds.length === 0) {
+      // Fallback: return recent listings
       const { results } = await this.search({ limit, sort_by: 'created_at', sort_order: 'desc' });
       return results;
     }
@@ -336,10 +355,8 @@ class SearchService {
         locations (wilaya, city),
         post_images (secure_url, sort_order)
       `)
-      .in('id', sortedPostIds)
+      .in('id', selectedIds)
       .eq('status', 'published');
-
-    const ratings = await this.getPostRatings(sortedPostIds);
 
     return (data ?? []).map((post: any) => {
       const images = post.post_images ?? [];
