@@ -29,18 +29,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize all repositories
+  appRepos = await RepoFactory.getRepositories();
+  
+  // Initialize SharedPreferences service
+  await SharedPrefsService.init();
+
   // Firebase Initialization
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await NotificationService.init(); // initialize local notifications & FCM listeners
-
-  // Initialize all repositories
-  appRepos = await RepoFactory.getRepositories();
-  
-  // Initialize SharedPreferences service
-  await SharedPrefsService.init();
   
   // Initialize API services for backend connection
   await ApiServiceLocator.init();
