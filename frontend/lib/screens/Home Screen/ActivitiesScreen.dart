@@ -162,7 +162,7 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
                                 ),
                               ),
                               subtitle: Text(
-                                "${listing.price}${loc.dinars}/hour",
+                                "${listing.price}${loc.dinars}/${loc.person}",
                                 style: TextStyle(color: secondaryTextColor),
                               ),
                               trailing: listing.id != null

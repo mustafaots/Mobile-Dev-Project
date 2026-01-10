@@ -3093,6 +3093,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Post Your Listing'**
   String get confirmListing_postYourListing;
+
+  /// No description provided for @person.
+  ///
+  /// In en, this message translates to:
+  /// **'person'**
+  String get person;
 }
 
 class _AppLocalizationsDelegate

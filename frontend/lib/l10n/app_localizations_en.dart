@@ -1604,4 +1604,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmListing_postYourListing => 'Post Your Listing';
+
+  @override
+  String get person => 'person';
 }

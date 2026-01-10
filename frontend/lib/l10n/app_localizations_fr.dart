@@ -1635,4 +1635,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get confirmListing_postYourListing => 'Publier votre annonce';
+
+  @override
+  String get person => 'personne';
 }

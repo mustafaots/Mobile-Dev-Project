@@ -701,5 +701,6 @@
     "confirmListing_payPerPostAgreement": "J’accepte de payer le montant total et je comprends qu’il s’agit d’un paiement unique pour cette annonce uniquement.",
     "confirmListing_termsAndConditions": "En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité",
     "confirmListing_reviewAndPay": "Vérifiez votre annonce et finalisez le paiement pour la publier",
-    "confirmListing_postYourListing": "Publier votre annonce"
+    "confirmListing_postYourListing": "Publier votre annonce",
+    "person": "personne"
 }

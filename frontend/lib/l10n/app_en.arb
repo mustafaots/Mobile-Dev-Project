@@ -703,5 +703,6 @@
     "confirmListing_payPerPostAgreement": "I agree to pay the total amount and understand this is a one-time payment for this listing only.",
     "confirmListing_termsAndConditions": "By proceeding, you agree to our Terms of Service and Privacy Policy",
     "confirmListing_reviewAndPay": "Review your listing and complete payment to publish",
-    "confirmListing_postYourListing": "Post Your Listing"
+    "confirmListing_postYourListing": "Post Your Listing",
+    "person": "person"
 }

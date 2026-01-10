@@ -700,5 +700,6 @@
     "confirmListing_payPerPostAgreement": "أوافق على دفع المبلغ الإجمالي وأفهم أن هذا الدفع يتم مرة واحدة لهذا الإعلان فقط.",
     "confirmListing_termsAndConditions": "بالمتابعة، فإنك توافق على شروط الخدمة وسياسة الخصوصية الخاصة بنا",
     "confirmListing_reviewAndPay": "راجع إعلانك وأكمل عملية الدفع لنشره",
-    "confirmListing_postYourListing": "انشر إعلانك"
+    "confirmListing_postYourListing": "انشر إعلانك",
+    "person": "شخص"
 }

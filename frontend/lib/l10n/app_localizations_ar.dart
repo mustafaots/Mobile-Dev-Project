@@ -1589,4 +1589,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirmListing_postYourListing => 'انشر إعلانك';
+
+  @override
+  String get person => 'شخص';
 }
