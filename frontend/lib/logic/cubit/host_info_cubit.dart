@@ -60,12 +60,14 @@ class HostInfoCubit extends Cubit<HostInfoState> {
         rating = sum / reviews.length;
       }
 
+      double roundedRating = (rating * 10).roundToDouble() / 10;
+
       emit(
         HostInfoLoaded(
           host: hostUser,
           post: post,
           reviewCount: reviewCount,
-          rating: rating,
+          rating: roundedRating,
         ),
       );
     } catch (e) {

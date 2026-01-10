@@ -345,7 +345,7 @@ class ReviewsSection extends StatelessWidget {
           }
 
           if (state is ReviewsLoaded) {
-            final displayedReviews = state.reviews.take(2).map((review) {
+            final displayedReviews = state.reviews.take(5).map((review) {
               final reviewer = state.reviewers[review.reviewerId];
               return _buildReviewItem(
                 context,
