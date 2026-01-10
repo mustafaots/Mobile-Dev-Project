@@ -99,6 +99,7 @@
   "form_listingDetails": "تفاصيل الإعلان",
   "field_title": "العنوان",
   "field_title_error": "يرجى إضافة عنوان",
+  "field_title_min_length": "يجب أن يحتوي العنوان على 3 أحرف على الأقل",
   "field_description": "الوصف",
   "field_description_error": "يرجى إضافة وصف",
   "field_price": "السعر",

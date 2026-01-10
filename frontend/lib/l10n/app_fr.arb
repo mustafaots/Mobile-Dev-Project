@@ -99,6 +99,7 @@
   "form_listingDetails": "Détails de l'annonce",
   "field_title": "Titre",
   "field_title_error": "Veuillez ajouter un titre",
+  "field_title_min_length": "Le titre doit contenir au moins 3 caractères",
   "field_description": "Description",
   "field_description_error": "Veuillez ajouter une description",
   "field_price": "Prix",

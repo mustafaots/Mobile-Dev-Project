@@ -100,6 +100,7 @@
     "form_listingDetails": "Listing Details",
     "field_title": "Title",
     "field_title_error": "Please add a title",
+    "field_title_min_length": "Title must be at least 3 characters",
     "field_description": "Description",
     "field_description_error": "Please add a description",
     "field_price": "Price",

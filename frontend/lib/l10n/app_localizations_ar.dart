@@ -307,6 +307,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get field_title_error => 'يرجى إضافة عنوان';
 
   @override
+  String get field_title_min_length =>
+      'يجب أن يحتوي العنوان على 3 أحرف على الأقل';
+
+  @override
   String get field_description => 'الوصف';
 
   @override

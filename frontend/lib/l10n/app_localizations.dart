@@ -688,6 +688,12 @@ abstract class AppLocalizations {
   /// **'Please add a title'**
   String get field_title_error;
 
+  /// No description provided for @field_title_min_length.
+  ///
+  /// In en, this message translates to:
+  /// **'Title must be at least 3 characters'**
+  String get field_title_min_length;
+
   /// No description provided for @field_description.
   ///
   /// In en, this message translates to:
