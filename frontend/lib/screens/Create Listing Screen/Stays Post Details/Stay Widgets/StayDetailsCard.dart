@@ -65,17 +65,6 @@ class StayDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Stay Type
-          StayTypeDropdown(
-            value: formController.selectedStayType,
-            stayTypes: formController.stayTypes,
-            onChanged: onStayTypeChanged,
-            textColor: textColor,
-            secondaryTextColor: secondaryTextColor,
-            cardColor: cardColor,
-          ),
-          const SizedBox(height: 16),
-
           // Area
           buildFormField(
             context,
@@ -123,11 +112,11 @@ class StayDetailsCard extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Price (rate is static 'per night' for stays)
+          // Price (per night for stays)
           buildFormField(
             context,
             controller: formController.priceController,
-            label: loc.price_label,
+            label: '${loc.price_label} (${loc.details_pricePerNight})',
             icon: Icons.money,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -143,6 +132,18 @@ class StayDetailsCard extends StatelessWidget {
               return null;
             },
             keyboardType: TextInputType.number,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Stay Type (dropdown at the bottom)
+          StayTypeDropdown(
+            value: formController.selectedStayType,
+            stayTypes: formController.stayTypes,
+            onChanged: onStayTypeChanged,
+            textColor: textColor,
+            secondaryTextColor: secondaryTextColor,
+            cardColor: cardColor,
           ),
         ],
       ),

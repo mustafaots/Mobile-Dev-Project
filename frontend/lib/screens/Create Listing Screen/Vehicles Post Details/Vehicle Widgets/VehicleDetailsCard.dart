@@ -70,17 +70,6 @@ class VehicleDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Vehicle Type
-          VehicleTypeDropdown(
-            value: formController.selectedVehicleType,
-            vehicleTypes: formController.vehicleTypes,
-            onChanged: onVehicleTypeChanged,
-            textColor: textColor,
-            secondaryTextColor: secondaryTextColor,
-            cardColor: cardColor,
-          ),
-          const SizedBox(height: 16),
-
           // Model
           buildFormField(
             context,
@@ -119,17 +108,6 @@ class VehicleDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Fuel Type
-          FuelTypeDropdown(
-            value: formController.selectedFuelType,
-            fuelTypes: formController.fuelTypes,
-            onChanged: onFuelTypeChanged,
-            textColor: textColor,
-            secondaryTextColor: secondaryTextColor,
-            cardColor: cardColor,
-          ),
-          const SizedBox(height: 16),
-
           // Transmission
           TransmissionSelector(
             isAutomatic: formController.isAutomaticTransmission,
@@ -163,11 +141,11 @@ class VehicleDetailsCard extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Price (rate is static 'per day' for vehicles)
+          // Price (per day for vehicles)
           buildFormField(
             context,
             controller: formController.priceController,
-            label: loc.price_label,
+            label: '${loc.price_label} (${loc.details_pricePerDay})',
             icon: Icons.money,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -183,6 +161,29 @@ class VehicleDetailsCard extends StatelessWidget {
               return null;
             },
             keyboardType: TextInputType.number,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Vehicle Type (dropdown at the bottom)
+          VehicleTypeDropdown(
+            value: formController.selectedVehicleType,
+            vehicleTypes: formController.vehicleTypes,
+            onChanged: onVehicleTypeChanged,
+            textColor: textColor,
+            secondaryTextColor: secondaryTextColor,
+            cardColor: cardColor,
+          ),
+          const SizedBox(height: 16),
+
+          // Fuel Type (dropdown at the bottom)
+          FuelTypeDropdown(
+            value: formController.selectedFuelType,
+            fuelTypes: formController.fuelTypes,
+            onChanged: onFuelTypeChanged,
+            textColor: textColor,
+            secondaryTextColor: secondaryTextColor,
+            cardColor: cardColor,
           ),
         ],
       ),

@@ -63,7 +63,31 @@ class BasicDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Activity Type Dropdown
+          // Price (per person for activities)
+          buildFormField(
+            context,
+            controller: formController.priceController,
+            label: '${loc.price_label} (${loc.details_pricePerPerson})',
+            icon: Icons.money,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return loc.price_error_required;
+              }
+              final parsed = double.tryParse(value);
+              if (parsed == null) {
+                return loc.price_error_invalid;
+              }
+              if (parsed <= 0) {
+                return loc.price_error_positive;
+              }
+              return null;
+            },
+            keyboardType: TextInputType.number,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Activity Type Dropdown (at the bottom)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
@@ -98,29 +122,6 @@ class BasicDetailsCard extends StatelessWidget {
                 return null;
               },
             ),
-          ),
-          const SizedBox(height: 16),
-
-          // Price (rate is static 'per person' for activities)
-          buildFormField(
-            context,
-            controller: formController.priceController,
-            label: loc.price_label,
-            icon: Icons.money,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return loc.price_error_required;
-              }
-              final parsed = double.tryParse(value);
-              if (parsed == null) {
-                return loc.price_error_invalid;
-              }
-              if (parsed <= 0) {
-                return loc.price_error_positive;
-              }
-              return null;
-            },
-            keyboardType: TextInputType.number,
           ),
         ],
       ),
