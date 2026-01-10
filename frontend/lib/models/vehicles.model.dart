@@ -38,17 +38,41 @@ class Vehicle {
   }
 
   factory Vehicle.fromMap(Map<String, dynamic> map) {
+    // Parse features - can be a JSON string (from SQLite), a Map, a List, or null
+    Map<String, dynamic>? parsedFeatures;
+    if (map['features'] != null) {
+      final featuresData = map['features'];
+      if (featuresData is String) {
+        // From SQLite - stored as JSON string
+        try {
+          final decoded = jsonDecode(featuresData);
+          if (decoded is Map) {
+            parsedFeatures = Map<String, dynamic>.from(decoded);
+          } else if (decoded is List) {
+            // Convert list to map with index keys
+            parsedFeatures = {for (int i = 0; i < decoded.length; i++) i.toString(): decoded[i]};
+          }
+        } catch (_) {
+          parsedFeatures = null;
+        }
+      } else if (featuresData is Map) {
+        // From API - already a Map
+        parsedFeatures = Map<String, dynamic>.from(featuresData);
+      } else if (featuresData is List) {
+        // From API - as a List, convert to map
+        parsedFeatures = {for (int i = 0; i < featuresData.length; i++) i.toString(): featuresData[i]};
+      }
+    }
+
     return Vehicle(
       postId: map['post_id'] ?? 0,
       vehicleType: map['vehicle_type'] ?? '',
       model: map['model'] ?? '',
       year: map['year'] ?? DateTime.now().year,
       fuelType: map['fuel_type'] ?? 'gasoline',
-      transmission: map['transmission'] == 1,
+      transmission: map['transmission'] == 1 || map['transmission'] == true,
       seats: map['seats'] ?? 5,
-      features: map['features'] != null
-          ? Map<String, dynamic>.from(jsonDecode(map['features']!))
-          : null,
+      features: parsedFeatures,
     );
   }
 
