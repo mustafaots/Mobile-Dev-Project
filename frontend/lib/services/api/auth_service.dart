@@ -137,7 +137,9 @@ class AuthService {
       final authResult = AuthResult.fromJson(response);
       
       // Store token and user
+      print('🔑 Login - Setting token: ${authResult.accessToken.isNotEmpty ? "YES" : "NO"}');
       _apiClient.setAuthToken(authResult.accessToken);
+      print('🔑 Login - Token now in ApiClient: ${_apiClient.authToken != null}');
       _currentUser = authResult.user;
 
       return ApiResponse.success(authResult);
@@ -260,12 +262,15 @@ class AuthService {
   /// POST /auth/email/verify
   Future<ApiResponse<EmailVerificationResult>> sendEmailVerification() async {
     try {
+      print('📧 sendEmailVerification - Token available: ${_apiClient.authToken != null}');
+      print('📧 sendEmailVerification - Token: ${_apiClient.authToken?.substring(0, 20)}...');
       final response = await _apiClient.post(
         '${ApiConfig.auth}/email/verify',
         requiresAuth: true,
       );
       return ApiResponse.success(EmailVerificationResult.fromJson(response));
     } catch (e) {
+      print('📧 sendEmailVerification error: $e');
       return ApiResponse.error(e.toString());
     }
   }
@@ -279,6 +284,20 @@ class AuthService {
         requiresAuth: true,
       );
       return ApiResponse.success(EmailStatus.fromJson(response));
+    } catch (e) {
+      return ApiResponse.error(e.toString());
+    }
+  }
+
+  /// Confirm email verification - call after user clicks verification link
+  /// POST /auth/email/confirm
+  Future<ApiResponse<EmailVerificationResult>> confirmEmailVerification() async {
+    try {
+      final response = await _apiClient.post(
+        '${ApiConfig.auth}/email/confirm',
+        requiresAuth: true,
+      );
+      return ApiResponse.success(EmailVerificationResult.fromJson(response));
     } catch (e) {
       return ApiResponse.error(e.toString());
     }

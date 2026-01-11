@@ -83,6 +83,20 @@ class AuthController {
   });
 
   /**
+   * Confirm email verification - call this after user clicks verification link
+   * POST /auth/email/confirm
+   */
+  confirmEmailVerification = asyncHandler(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    if (!user) {
+      throw new ApiError(401, 'Unauthorized.');
+    }
+
+    const result = await authService.confirmEmailVerification(user.id);
+    res.json(result);
+  });
+
+  /**
    * Get email verification status
    * GET /auth/email/status
    */

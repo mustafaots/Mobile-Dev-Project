@@ -33,6 +33,8 @@ class AuthService {
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
+      // Set to true so Supabase allows login. We track actual verification status
+      // via is_verified field in the users table
       email_confirm: true,
       phone: e164Phone,
     });
@@ -182,15 +184,25 @@ class AuthService {
       throw new ApiError(400, 'User does not have an email address.');
     }
 
-    // Check if already verified
-    if (userData.user.email_confirmed_at) {
+    // Check if already verified in our users table
+    const { data: profileData } = await supabase
+      .from('users')
+      .select('is_verified')
+      .eq('user_id', userId)
+      .single();
+
+    if (profileData?.is_verified) {
       return { message: 'Email is already verified.', already_verified: true };
     }
 
-    // Send verification email using Supabase's resend functionality
-    const { error } = await supabase.auth.resend({
-      type: 'signup',
+    // Send magic link email
+    // Note: Customize the "Magic Link" template in Supabase Dashboard to say "Verify your email"
+    const { error } = await supabase.auth.signInWithOtp({
       email,
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: 'easyvacation://email-verified',
+      }
     });
 
     if (error) {
@@ -201,18 +213,51 @@ class AuthService {
   }
 
   /**
-   * Get email verification status
+   * Confirm email verification - updates is_verified in users table
+   */
+  async confirmEmailVerification(userId: string) {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ is_verified: true })
+      .eq('user_id', userId)
+      .select()
+      .single();
+
+    if (error) {
+      throw new ApiError(500, 'Failed to confirm email verification.', error.message);
+    }
+
+    return { 
+      message: 'Email verified successfully.',
+      is_verified: true 
+    };
+  }
+
+  /**
+   * Get email verification status from our own users table
    */
   async getEmailVerificationStatus(userId: string) {
-    const { data, error } = await supabase.auth.admin.getUserById(userId);
+    // Get user email from Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
 
-    if (error || !data.user) {
+    if (authError || !authData.user) {
       throw new ApiError(404, 'User not found.');
     }
 
+    // Get verification status from our users table
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('is_verified')
+      .eq('user_id', userId)
+      .single();
+
+    if (userError) {
+      throw new ApiError(404, 'User profile not found.');
+    }
+
     return {
-      email: data.user.email ?? null,
-      email_verified: !!data.user.email_confirmed_at,
+      email: authData.user.email ?? null,
+      email_verified: userData.is_verified ?? false,
     };
   }
 }

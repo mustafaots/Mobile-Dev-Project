@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:easy_vacation/main.dart';
+import 'package:easy_vacation/services/api/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import '../screens/resetPasswordScreen.dart';
@@ -45,38 +46,89 @@ class DeepLinkHandler {
   static void _handleUri(Uri uri, BuildContext context) {
     print("===============================");
     print("=== Handling URI: $uri ===");
+    print("=== Host: ${uri.host} ===");
+    print("=== Fragment: ${uri.fragment} ===");
     print("===============================");
 
-    // -------------------------------
-    // Check host (reset-password)
-    // -------------------------------
-    if (uri.host == 'reset-password') {
-      // Supabase sends token in the fragment (#access_token=...)
-      final fragment = uri.fragment; // everything after #
-      final params = fragment.isNotEmpty ? Uri.splitQueryString(fragment) : {};
-      final token = params['access_token'];
+    // Parse the fragment to get type and token
+    final fragment = uri.fragment;
+    final params = fragment.isNotEmpty ? Uri.splitQueryString(fragment) : {};
+    final token = params['access_token'];
+    final type = params['type'];
 
-      print("===============================");
-      print("=== Found reset-password host ===");
-      print("=== Fragment: $fragment ===");
-      print("=== Token: $token ===");
-      print("===============================");
+    print("=== Type: $type ===");
+    print("=== Token exists: ${token != null} ===");
 
+    // -------------------------------
+    // Check by type parameter first (more reliable)
+    // -------------------------------
+    if (type == 'recovery') {
+      // Password reset flow
+      print("=== Type is recovery - going to reset password ===");
       if (token != null) {
-        // Navigate to ResetPasswordScreen on the next frame
         navigator_key.currentState?.push(
           MaterialPageRoute(
             builder: (_) => ResetPasswordScreen(token: token),
           ),
         );
+      }
+      return;
+    }
+    
+    if (type == 'magiclink') {
+      // Email verification flow
+      print("=== Type is magiclink - confirming email verification ===");
+      _confirmEmailVerification(context);
+      return;
+    }
+
+    // -------------------------------
+    // Fallback: Check by host
+    // -------------------------------
+    if (uri.host == 'reset-password') {
+      print("=== Found reset-password host ===");
+      if (token != null) {
+        navigator_key.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => ResetPasswordScreen(token: token),
+          ),
+        );
+      }
+    } else if (uri.host == 'email-verified') {
+      print("=== Found email-verified host ===");
+      _confirmEmailVerification(context);
+    } else {
+      print("=== URI does not match any known pattern ===");
+    }
+  }
+
+  /// Confirm email verification with the backend
+  static Future<void> _confirmEmailVerification(BuildContext context) async {
+    try {
+      final result = await AuthService.instance.confirmEmailVerification();
+      
+      if (result.isSuccess) {
+        print("===============================");
+        print("=== Email verified successfully ===");
+        print("===============================");
+        
+        // Show success message
+        if (navigator_key.currentContext != null) {
+          ScaffoldMessenger.of(navigator_key.currentContext!).showSnackBar(
+            const SnackBar(
+              content: Text('Email verified successfully!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
       } else {
         print("===============================");
-        print("=== Token is null ===");
+        print("=== Email verification failed: ${result.message} ===");
         print("===============================");
       }
-    } else {
+    } catch (e) {
       print("===============================");
-      print("=== URI does not contain reset-password host ===");
+      print("=== Email verification error: $e ===");
       print("===============================");
     }
   }

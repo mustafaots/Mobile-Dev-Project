@@ -37,8 +37,11 @@ class ApiServiceLocator {
         await SharedPrefsService.init();
       }
 
-      // Get stored token (you'll need to add this to SharedPrefsService)
-      // For now, we'll skip this - you can implement token storage later
+      // Get stored token and restore it to ApiClient
+      final storedToken = SharedPrefsService.getAuthToken();
+      if (storedToken != null && storedToken.isNotEmpty) {
+        ApiClient.instance.setAuthToken(storedToken);
+      }
       
     } catch (e) {
       // Silently fail - user will need to login again

@@ -228,17 +228,24 @@ class ProfileService {
   }
 
   /**
-   * Delete account
+   * Delete account - removes user from both public.users and auth.users
    */
   async deleteAccount(userId: string): Promise<void> {
-    // Note: This should also handle cleanup in a real app
-    const { error } = await supabase
+    // First, delete from public.users table (profile data)
+    const { error: profileError } = await supabase
       .from('users')
       .delete()
       .eq('user_id', userId);
 
-    if (error) {
-      throw new ApiError(500, 'Failed to delete account.', error.message);
+    if (profileError) {
+      throw new ApiError(500, 'Failed to delete account profile.', profileError.message);
+    }
+
+    // Then, delete from Supabase auth.users table
+    const { error: authError } = await supabase.auth.admin.deleteUser(userId);
+
+    if (authError) {
+      throw new ApiError(500, 'Failed to delete auth account.', authError.message);
     }
   }
 }

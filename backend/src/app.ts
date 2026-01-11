@@ -13,6 +13,10 @@ app.get('/healthz', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/kaithheathcheck ', (_req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.use('/api', routes);
 app.use(notFoundHandler);
 app.use(errorHandler);
