@@ -266,25 +266,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-
-            const SizedBox(height: 25),
-
-            // Divider with "Or Continue With"
-            Row(
-              children: [
-                Expanded(child: Divider(color: AppTheme.grey, thickness: 1)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    loc.orContinueWith,
-                    style: TextStyle(fontSize: 12, color: secondaryTextColor),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(color: secondaryTextColor, thickness: 1),
-                ),
-              ],
-            ),
           ],
         ),
       ),
