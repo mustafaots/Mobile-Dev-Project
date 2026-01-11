@@ -6,7 +6,7 @@ class ApiConfig {
   // For physical device: use your computer's IP address
 
   // ⚠️ UPDATE THIS IP ADDRESS to your PC's current WiFi IP ⚠️
-  static const String baseUrl = 'http://10.73.49.199:5000/api';
+  static const String baseUrl = 'https://easyvacationbackend-danilouakli5272-uajk5qwb.leapcell.dev/api';
 
   // iOS Simulator (uncomment to use)
   // static const String baseUrl = 'http://localhost:5000/api';
