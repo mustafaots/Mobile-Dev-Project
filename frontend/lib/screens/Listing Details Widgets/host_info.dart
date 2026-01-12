@@ -273,15 +273,6 @@ class HostInfo extends StatelessWidget {
                     hostPhone,
                     secondaryTextColor,
                   ),
-                  if (hostData.isVerified) ...[
-                    const SizedBox(height: 8),
-                    _buildDetailRow(
-                      Icons.verified,
-                      'Verification',
-                      'Verified',
-                      Colors.green,
-                    ),
-                  ],
                 ],
               ),
             ),

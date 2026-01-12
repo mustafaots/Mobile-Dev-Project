@@ -51,7 +51,8 @@ class User {
       firstName: map['first_name'] ?? map['user_metadata']?['first_name'],
       lastName: map['last_name'] ?? map['user_metadata']?['last_name'],
       createdAt: _parseDateTime(map['created_at']),
-      isVerified: map['is_verified'] == 1 || map['is_verified'] == true || map['email_confirmed_at'] != null,
+      // Only show as verified based on email_verified from API
+      isVerified: map['email_verified'] == true,
       userType: map['user_type'] ?? 'tourist',
       isSuspended: map['is_suspended'] == 1 || map['is_suspended'] == true,
       phoneVerified: map['phone_verified'] == 1 || map['phone_verified'] == true,

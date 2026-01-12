@@ -353,6 +353,9 @@ class ListingSyncService implements Syncable {
         if (index != -1) {
           _cachedListings[index] = result.data!;
         }
+
+        // Save to local database
+        await _saveListingLocally(result.data!);
       }
 
       return result;

@@ -1,6 +1,7 @@
 import 'package:easy_vacation/l10n/app_localizations.dart';
 import 'package:easy_vacation/services/api/listing_service.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
+import 'package:easy_vacation/services/api/profile_service.dart';
 import 'package:easy_vacation/services/sharedprefs.services.dart';
 import 'package:easy_vacation/screens/ListingDetailsScreen.dart';
 import 'package:easy_vacation/screens/Listings%20History/Listings%20History%20Widgets/PostImage.dart';
@@ -32,6 +33,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   List<Listing> _userListings = [];
   bool _isLoading = true;
+  bool _isVerified = false;
 
   String get displayName {
     if (widget.firstName != null && widget.firstName!.isNotEmpty) {
@@ -66,6 +68,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadUserListings();
+    _loadVerificationStatus();
+  }
+
+  Future<void> _loadVerificationStatus() async {
+    if (widget.userId == null) return;
+    
+    try {
+      final response = await ProfileService.instance.getUserById(widget.userId!);
+      if (response.isSuccess && response.data != null && mounted) {
+        setState(() {
+          _isVerified = response.data!.isVerified;
+        });
+      }
+    } catch (_) {
+      // Ignore errors
+    }
   }
 
   Future<void> _loadUserListings() async {
@@ -150,13 +168,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            displayName,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  displayName,
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: textColor,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (_isVerified) ...[
+                                const SizedBox(width: 6),
+                                const Icon(
+                                  Icons.verified,
+                                  color: Colors.blue,
+                                  size: 22,
+                                ),
+                              ],
+                            ],
                           ),
                           const SizedBox(height: 4),
                           Text(

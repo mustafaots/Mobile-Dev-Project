@@ -28,27 +28,29 @@ class HostInfoCubit extends Cubit<HostInfoState> {
         return;
       }
 
-      // Fetch host/owner info - first try local DB, then fall back to API
-      User? host = await userRepository.getUserById(post.ownerId);
-      if (host == null) {
-        // Try fetching from API if not found locally
-        final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
-        if (apiResponse.isSuccess && apiResponse.data != null) {
-          host = apiResponse.data;
-          // Optionally cache the user locally for future use
-          try {
-            await userRepository.insertUser(host!);
-          } catch (_) {
-            // Ignore cache errors
-          }
-        } else {
-          emit(const HostInfoError('Host not found'));
-          return;
+      // Fetch host/owner info - try API first for fresh verification status, fall back to local
+      User? host;
+      final apiResponse = await ProfileService.instance.getUserById(post.ownerId);
+      if (apiResponse.isSuccess && apiResponse.data != null) {
+        host = apiResponse.data;
+        // Cache the user locally for future use
+        try {
+          await userRepository.insertUser(host!);
+        } catch (_) {
+          // Ignore cache errors
         }
+      } else {
+        // Fall back to local DB if API fails
+        host = await userRepository.getUserById(post.ownerId);
+      }
+      
+      if (host == null) {
+        emit(const HostInfoError('Host not found'));
+        return;
       }
 
       // At this point, host is guaranteed to be non-null
-      final User hostUser = host!;
+      final User hostUser = host;
 
       // Fetch reviews to calculate rating and count
       final reviews = await reviewRepository.getReviewsByPostId(postId);

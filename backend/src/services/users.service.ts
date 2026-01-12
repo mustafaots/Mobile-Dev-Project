@@ -8,6 +8,8 @@ export interface UserWithAuth extends User {
   email: string | null;
   phone: string | null;
   phone_verified: boolean;
+  email_verified: boolean;
+  email_confirmed_at: string | null;
 }
 
 class UsersService extends BaseService<User> {
@@ -33,6 +35,8 @@ class UsersService extends BaseService<User> {
         email: null,
         phone: null,
         phone_verified: false,
+        email_verified: user.is_verified, // Use is_verified from users table
+        email_confirmed_at: null,
       };
     }
 
@@ -41,6 +45,9 @@ class UsersService extends BaseService<User> {
       email: authData.user?.email ?? null,
       phone: authData.user?.phone ?? null,
       phone_verified: !!authData.user?.phone_confirmed_at,
+      // Use is_verified from users table for consistency with /auth/email/status
+      email_verified: user.is_verified,
+      email_confirmed_at: authData.user?.email_confirmed_at ?? null,
     };
   }
 }

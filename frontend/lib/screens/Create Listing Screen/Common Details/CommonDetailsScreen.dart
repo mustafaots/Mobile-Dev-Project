@@ -15,6 +15,7 @@ import 'package:easy_vacation/screens/Create%20Listing%20Screen/Common%20Details
 import 'package:easy_vacation/screens/Listings%20History/ListingsHistoryScreen.dart';
 import 'package:easy_vacation/services/api/api_service_locator.dart';
 import 'package:easy_vacation/services/api/listing_service.dart';
+import 'package:easy_vacation/services/sync/listing_sync_service.dart';
 import 'package:easy_vacation/shared/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_vacation/screens/Create%20Listing%20Screen/MapLocationPicker.dart';
@@ -272,7 +273,9 @@ class _CommonDetailsScreenState extends State<CommonDetailsScreen> {
         images: imagesToSend,
       );
 
-      final result = await ApiServiceLocator.listings.updateListing(
+      // Use sync service to update both API and local database
+      final syncService = await ListingSyncService.getInstance();
+      final result = await syncService.updateListing(
         postData.id!,
         listing,
       );

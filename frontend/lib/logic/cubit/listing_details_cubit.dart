@@ -48,18 +48,18 @@ class ListingDetailsCubit extends Cubit<ListingDetailsState> {
         throw Exception('Post not found, using dummy data');
       }
 
-      // Load host info - first try local DB, then fall back to API
-      host = await userRepository.getUserById(post.ownerId);
-      if (host == null) {
-        final apiResponse = await ProfileService.instance.getUserById(
-          post.ownerId,
-        );
-        if (apiResponse.isSuccess && apiResponse.data != null) {
-          host = apiResponse.data;
-          try {
-            await userRepository.insertUser(host!);
-          } catch (_) {}
-        }
+      // Load host info - try API first for fresh verification status, fall back to local
+      final apiResponse = await ProfileService.instance.getUserById(
+        post.ownerId,
+      );
+      if (apiResponse.isSuccess && apiResponse.data != null) {
+        host = apiResponse.data;
+        try {
+          await userRepository.insertUser(host!);
+        } catch (_) {}
+      } else {
+        // Fall back to local DB if API fails
+        host = await userRepository.getUserById(post.ownerId);
       }
 
       // Load reviews
