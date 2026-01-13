@@ -19,6 +19,7 @@ class ReceivedBookingCard extends StatelessWidget {
   final VoidCallback onAccept;
   final VoidCallback onReject;
   final VoidCallback onRefresh;
+  final VoidCallback onViewDetails;
 
   const ReceivedBookingCard({
     super.key,
@@ -27,6 +28,7 @@ class ReceivedBookingCard extends StatelessWidget {
     required this.onAccept,
     required this.onReject,
     required this.onRefresh,
+    required this.onViewDetails,
   });
 
   @override
@@ -249,6 +251,28 @@ class ReceivedBookingCard extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
+                      SizedBox(
+                        width: 100,
+                        child: ElevatedButton(
+                          onPressed: onViewDetails,
+                          style: AppTheme.primaryButtonStyle.copyWith(
+                            minimumSize: WidgetStateProperty.all(
+                              const Size(0, 36),
+                            ),
+                            padding: WidgetStateProperty.all(
+                              const EdgeInsets.symmetric(vertical: 8),
+                            ),
+                          ),
+                          child: Text(
+                            loc.bookings_viewDetails,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: OutlinedButton.icon(
                           onPressed: isLoading ? null : onReject,
@@ -269,7 +293,7 @@ class ReceivedBookingCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: ElevatedButton.icon(
                           onPressed: isLoading ? null : onAccept,
