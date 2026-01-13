@@ -5,6 +5,7 @@ import 'package:easy_vacation/logic/cubit/image_gallery_cubit.dart';
 import 'package:easy_vacation/repositories/db_repositories/images_repository.dart';
 import 'package:easy_vacation/services/api/booking_service.dart';
 import 'package:easy_vacation/screens/BookingsWidgets/index.dart';
+import 'package:easy_vacation/screens/BookingsWidgets/client_details_bottom_sheet.dart';
 import 'package:easy_vacation/shared/ui_widgets/App_Bar.dart';
 import 'package:easy_vacation/shared/ui_widgets/app_progress_indicator.dart';
 import 'package:easy_vacation/utils/error_helper.dart';
@@ -40,15 +41,16 @@ class _ReceivedBookingsScreenContent extends StatelessWidget {
       body: BlocBuilder<ReceivedBookingsCubit, ReceivedBookingsState>(
         builder: (context, state) {
           if (state is ReceivedBookingsLoading) {
-            return const Center(
-              child: AppProgressIndicator(),
-            );
+            return const Center(child: AppProgressIndicator());
           }
 
           if (state is ReceivedBookingsError) {
             return Center(
               child: Text(
-                ErrorHelper.getLocalizedMessageFromString(state.message, context),
+                ErrorHelper.getLocalizedMessageFromString(
+                  state.message,
+                  context,
+                ),
               ),
             );
           }
@@ -192,6 +194,12 @@ class _ReceivedBookingsScreenContent extends StatelessWidget {
                 },
                 onRefresh: () {
                   context.read<ReceivedBookingsCubit>().reloadBookings();
+                },
+                onViewDetails: () {
+                  showClientDetailsBottomSheet(
+                    context: context,
+                    bookingWithDetails: bookingWithDetails,
+                  );
                 },
               ),
             );
